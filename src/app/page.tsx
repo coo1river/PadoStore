@@ -1,7 +1,9 @@
-export default function Home() {
+const Splash: React.FC = () => {
   return (
     <>
-      <p>흠</p>
+      <h1>스플래쉬 화면</h1>
     </>
   );
-}
+};
+
+export default Splash;
