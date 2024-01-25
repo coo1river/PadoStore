@@ -2,16 +2,11 @@ module.exports = {
   presets: ["next/babel"],
   plugins: [
     [
-      "@stylexjs/babel-plugin",
+      "babel-plugin-styled-components",
       {
-        dev: process.env.NODE_ENV === "development",
-        runtimeInjection: false,
-        genConditionalClasses: true,
-        treeshakeCompensation: true,
-        unstable_moduleResolution: {
-          type: "commonJS",
-          rootDir: __dirname as string,
-        },
+        ssr: true, // SSR을 위한 설정
+        displayName: true, // 클래스명에 컴포넌트 이름을 붙임
+        pure: true, // dead code elimination (사용되지 않는 속성 제거)
       },
     ],
   ],

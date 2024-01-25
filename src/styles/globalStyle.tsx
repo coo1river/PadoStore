@@ -1,0 +1,80 @@
+"use client";
+import { createGlobalStyle } from "styled-components";
+import reset from "styled-reset";
+import "../styles/fonts.css";
+
+const GlobalStyle = createGlobalStyle`
+${reset}
+
+
+:root {
+    /* 색 */
+    --color-main: #3EABFA;
+    --color-dark: #4b9f68;
+    --color-navy: #132644;
+    --color-lime: #E1FF67;
+    --color-blue: #1643DB;
+    --color-steelblue: #5472A1;
+    --color-maingrey: #C4C4C4;
+    --color-darkgrey: #767676;
+    --color-lightgrey: #DBDBDB;
+    --color-trans-grey: #f2f2f2;
+    --color-red: #EB5757;
+    --color-bg: #F2F2F2;
+
+    /* 폰트 */
+    --font-main: 'Pretendard', sans-serif;
+}
+
+body {
+    font-family: 'Pretendard', sans-serif;
+    overflow: scroll;
+    &::-webkit-scrollbar{
+        display: none;
+    }
+}
+
+input {
+    border : none;
+    font-family: 'Pretendard', sans-serif;
+}
+
+
+input:focus,
+input:active {
+  box-shadow: none;
+  outline: none;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+  font-size: 16px;
+    border: 0;
+    background: none;
+    font-family: 'Pretendard', sans-serif;
+}
+
+button:enabled {
+    cursor: pointer;
+}
+
+.a11y-hidden {
+        clip: rect(1px, 1px, 1px, 1px);
+        clip-path: inset(50%);
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+    }
+
+
+
+`;
+
+export default GlobalStyle;

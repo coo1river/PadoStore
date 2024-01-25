@@ -1,5 +1,6 @@
-const stylexPlugin = require("@stylexjs/nextjs-plugin");
-
-module.exports = stylexPlugin({
-  rootDir: __dirname,
-})({});
+module.exports = {
+  compiler: {
+    // ssr and displayName are configured by default
+    styledComponents: true,
+  },
+};
