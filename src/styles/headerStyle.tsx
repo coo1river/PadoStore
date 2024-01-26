@@ -28,19 +28,38 @@ export const LogoImg = styled.img`
   margin-right: 10px;
 `;
 
+export const SearchIptBox = styled.div`
+  position: relative;
+
+  .search_btn {
+    width: 30px;
+    height: 30px;
+
+    background-image: url(${searchIcon.src});
+    background-repeat: no-repeat;
+    background-size: 25px;
+
+    position: absolute;
+    top: 11px;
+    left: 87%;
+  }
+`;
+
 export const SearchInput = styled.input`
   width: 100%;
-  padding: 10px 20px;
+  padding: 10px 70px 10px 20px;
   box-sizing: border-box;
   border: 4px solid var(--color-main);
   border-radius: 20px;
   font-family: var(--font-main);
-  font-size: 20px;
+  font-size: 18px;
 
-  background-image: url(${searchIcon.src});
-  background-size: 25px;
-  background-repeat: no-repeat;
-  background-position: 265px center;
+  caret-color: var(--color-main);
+`;
+
+export const SearchIcon = styled.img`
+  width: 20px;
+  height: 20px;
 `;
 
 export const UploadBtns = styled.div`

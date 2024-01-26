@@ -1,5 +1,5 @@
 "use client";
-import { FooterCtn } from "@/styles/footer";
+import { FooterCtn } from "@/styles/footerStyle";
 import React from "react";
 
 const Footer: React.FC = () => {

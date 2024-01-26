@@ -7,7 +7,7 @@ export const FooterCtn = styled.footer`
   align-items: center;
 
   border-top: 1px solid #e7e7e7;
-  padding-top: 20px;
+  padding: 20px 0;
 
   div {
     display: flex;

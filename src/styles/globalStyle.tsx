@@ -27,6 +27,7 @@ ${reset}
 }
 
 body {
+    height: 100vh;
     font-family: 'Pretendard', sans-serif;
     overflow: scroll;
     &::-webkit-scrollbar{

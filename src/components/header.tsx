@@ -8,6 +8,7 @@ import {
   LogoDiv,
   LoginJoin,
   UploadBtns,
+  SearchIptBox,
 } from "@/styles/headerStyle";
 import { useRouter } from "next/navigation";
 
@@ -34,10 +35,11 @@ const Header: React.FC = () => {
           파도상점
         </LogoDiv>
       </LogoText>
-      <div>
+      <SearchIptBox>
         <label htmlFor="search-input" />
         <SearchInput id="search-input" />
-      </div>
+        <button className="search_btn" />
+      </SearchIptBox>
       <UploadBtns>
         <button>판매 / 교환 </button>
         <span>|</span>
