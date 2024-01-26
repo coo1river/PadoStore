@@ -13,8 +13,8 @@ export const LoginMain = styled.main`
   color: #2c2c2c;
 
   .login_text {
-    margin: 20px;
-    font-size: 20px;
+    margin: 25px;
+    font-size: 18px;
     font-weight: 700;
   }
 
@@ -60,7 +60,7 @@ export const LoginInput = styled.input`
   width: 100%;
   box-sizing: border-box;
   padding: 20px;
-  font-size: 16px;
+  font-size: 14px;
   background-color: transparent;
 
   &:focus {
@@ -70,6 +70,7 @@ export const LoginInput = styled.input`
 `;
 
 export const LoginBtn = styled.button`
+  font-weight: 700;
   margin: 20px 0;
   padding: 15px;
   background-color: var(--color-main);

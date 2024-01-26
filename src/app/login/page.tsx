@@ -1,4 +1,4 @@
-import { LoginMain, LoginInput, LoginBtn, SnsLogin } from "@/styles/loginStyle";
+import { LoginInput, LoginBtn, SnsLogin, LoginMain } from "@/styles/loginStyle";
 import React from "react";
 
 const Login: React.FC = () => {

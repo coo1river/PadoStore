@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const HomeMain = styled.main`
   width: 1200px;
+  height: calc(100% - 223px);
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -17,11 +18,36 @@ export const HomeMain = styled.main`
     padding: 7px 12px;
     border-radius: 30px;
   }
+
+  nav {
+    width: 100%;
+  }
+
+  .menu_tab {
+    display: flex;
+    justify-content: start;
+    margin: 20px 0;
+    gap: 100px;
+
+    li {
+      width: 50px;
+      font-size: 20px;
+      font-weight: 700;
+      margin: 10px;
+      padding-bottom: 10px;
+      text-align: center;
+      cursor: pointer;
+
+      &:first-child {
+        color: var(--color-main);
+        border-bottom: 4px solid var(--color-main);
+      }
+    }
+  }
 `;
 
 export const MainBanner = styled.article`
   cursor: pointer;
-  margin-bottom: 20px;
 
   & img {
     width: 1200px;

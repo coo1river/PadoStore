@@ -14,6 +14,7 @@ ${reset}
     --color-navy: #132644;
     --color-lime: #E1FF67;
     --color-blue: #1643DB;
+    --color-blackgrey: #2c2c2c;
     --color-steelblue: #5472A1;
     --color-maingrey: #C4C4C4;
     --color-darkgrey: #767676;

@@ -19,12 +19,12 @@ export const LogoDiv = styled.div`
 
 export const LogoText = styled.h1`
   color: var(--color-main);
-  font-size: 45px;
+  font-size: 40px;
   font-family: "SEOLLEIMcool";
 `;
 
 export const LogoImg = styled.img`
-  width: 50px;
+  width: 40px;
   margin-right: 10px;
 `;
 
@@ -37,11 +37,11 @@ export const SearchIptBox = styled.div`
 
     background-image: url(${searchIcon.src});
     background-repeat: no-repeat;
-    background-size: 25px;
+    background-size: 20px;
 
     position: absolute;
-    top: 11px;
-    left: 87%;
+    top: 12px;
+    left: 88%;
   }
 `;
 
@@ -52,7 +52,7 @@ export const SearchInput = styled.input`
   border: 4px solid var(--color-main);
   border-radius: 20px;
   font-family: var(--font-main);
-  font-size: 18px;
+  font-size: 16px;
 
   caret-color: var(--color-main);
 `;
@@ -62,14 +62,23 @@ export const SearchIcon = styled.img`
   height: 20px;
 `;
 
-export const UploadBtns = styled.div`
-  display: flex;
-  align-items: center;
+export const UploadBtn = styled.button`
+  background-color: var(--color-main);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+
+  &:active {
+    background-color: #3592d4;
+  }
 `;
 
 export const LoginJoin = styled.div`
-  margin: 30px;
-  font-size: 17px;
+  button {
+    font-size: 14px;
+  }
 
   & span:first-child {
     margin-right: 10px;

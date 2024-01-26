@@ -14,6 +14,13 @@ const Home: React.FC = () => {
       <MainBanner>
         <Image src={bannerImg} alt="배너 이미지" />
       </MainBanner>
+      <nav>
+        <ul className="menu_tab">
+          <li className="sell">판매</li>
+          <li className="trade">교환</li>
+          <li className="grp_purchase">공구</li>
+        </ul>
+      </nav>
       <NowSell>
         <h3>현재 판매 중!</h3>
         <div className="sell_list">

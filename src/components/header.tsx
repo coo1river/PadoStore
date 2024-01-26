@@ -7,8 +7,8 @@ import {
   LogoText,
   LogoDiv,
   LoginJoin,
-  UploadBtns,
   SearchIptBox,
+  UploadBtn,
 } from "@/styles/headerStyle";
 import { useRouter } from "next/navigation";
 
@@ -40,11 +40,7 @@ const Header: React.FC = () => {
         <SearchInput id="search-input" />
         <button className="search_btn" />
       </SearchIptBox>
-      <UploadBtns>
-        <button>판매 / 교환 </button>
-        <span>|</span>
-        <button>공동구매</button>
-      </UploadBtns>
+      <UploadBtn>글 등록▾</UploadBtn>
       <LoginJoin>
         <button onClick={handleClickLogin}>로그인</button>
         <button onClick={handleClickJoin}>회원가입</button>
