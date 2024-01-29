@@ -22,7 +22,7 @@ const Home: React.FC = () => {
         </ul>
       </nav>
       <NowSell>
-        <h3>현재 판매 중!</h3>
+        <h3 className="title_tag">현재 판매 중!</h3>
         <div className="sell_list">
           <div>
             <p>인형1</p>

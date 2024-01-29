@@ -9,7 +9,7 @@ export const HomeMain = styled.main`
   justify-items: center;
   align-items: center;
 
-  h3 {
+  .title_tag {
     margin-bottom: 10px;
     width: fit-content;
     font-size: 18px;
