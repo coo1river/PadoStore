@@ -22,7 +22,7 @@ const Home: React.FC = () => {
       </MainBanner>
       <nav>
         <ul className="menu_tab">
-          <li className="sell">판매</li>
+          <li className="sell">판매/구매</li>
           <li className="trade">교환</li>
           <li className="grp_purchase">공구</li>
         </ul>
@@ -34,6 +34,15 @@ const Home: React.FC = () => {
 
         {/* 판매 상품 */}
         <div className="sell_list">
+          <ProductArticle
+            onClick={() => {
+              router.push("/product");
+            }}
+          >
+            <img src={productImg1.src} alt="" />
+            <h4 className="product_title">귀여운 춘식이 쿠션쿠션쿠션쿠션</h4>
+            <p className="user_name">닉네임123</p>
+          </ProductArticle>
           <ProductArticle>
             <img src={productImg1.src} alt="" />
             <h4 className="product_title">귀여운 춘식이 쿠션쿠션쿠션쿠션</h4>
@@ -43,17 +52,12 @@ const Home: React.FC = () => {
             <img src={productImg1.src} alt="" />
             <h4 className="product_title">귀여운 춘식이 쿠션쿠션쿠션쿠션</h4>
             <p className="user_name">닉네임123</p>
-          </ProductArticle>{" "}
-          <ProductArticle>
-            <img src={productImg1.src} alt="" />
-            <h4 className="product_title">귀여운 춘식이 쿠션쿠션쿠션쿠션</h4>
-            <p className="user_name">닉네임123</p>
-          </ProductArticle>{" "}
+          </ProductArticle>
           <ProductArticle>
             <img src={productImg1.src} alt="" />
             <h4 className="product_title">귀여운 춘식이</h4>
             <p className="user_name">닉네임123</p>
-          </ProductArticle>{" "}
+          </ProductArticle>
           <ProductArticle>
             <img src={productImg1.src} alt="" />
             <h4 className="product_title">귀여운 춘식이 쿠션쿠션쿠션쿠션</h4>

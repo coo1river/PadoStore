@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import GlobalStyle from "@/styles/globalStyle";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import ScrollToTop from "./scrollToTop";
 
 export const metadata: Metadata = {
   title: "파도 상점",
@@ -16,6 +17,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
+        <ScrollToTop />
         <GlobalStyle />
         <Header />
         {children}

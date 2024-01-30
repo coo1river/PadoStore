@@ -16,21 +16,22 @@ const Profile: React.FC = () => {
       <div className="list_wrap">
         <nav>
           <ul className="nav_menu">
+            <p>내 게시물</p>
+            <li>거래 내역</li>
+            <li>공구 내역</li>
+            <p>구매 내역</p>
+            <li>거래 내역</li>
+            <li>공구 내역</li>
             <p>개인정보 수정</p>
-            <li>배송지 설정</li>
-            <li>계좌 설정</li>
-            <p>글 관리</p>
-            <li>판매 글</li>
-            <li>구매 글</li>
-            <li>교환 글</li>
-            <li>공구 글</li>
+            <li>프로필 설정</li>
+            <li>입금 폼 설정</li>
           </ul>
         </nav>
         <article className="article_list">
           <ul>
-            <li>판매 글</li>
-            <li>판매 글</li>
-            <li>판매 글</li>
+            <li>최신 글1</li>
+            <li>최신 글2</li>
+            <li>최신 글3</li>
           </ul>
         </article>
       </div>

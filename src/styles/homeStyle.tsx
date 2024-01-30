@@ -31,7 +31,7 @@ export const HomeMain = styled.main`
     gap: 100px;
 
     li {
-      width: 50px;
+      width: fit-content;
       font-size: 20px;
       font-weight: 700;
       margin: 10px;
