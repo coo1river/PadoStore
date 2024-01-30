@@ -2,15 +2,16 @@ import styled from "styled-components";
 
 export const HomeMain = styled.main`
   width: 1200px;
-  height: calc(100% - 223px);
+  height: calc(100% - 145px);
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-items: center;
   align-items: center;
+  padding-bottom: 30px;
 
   .title_tag {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     width: fit-content;
     font-size: 18px;
     background-color: var(--color-main);
@@ -55,7 +56,7 @@ export const MainBanner = styled.article`
   }
 `;
 
-export const NowSell = styled.section`
+export const ProductSection = styled.section`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -63,9 +64,39 @@ export const NowSell = styled.section`
 
   .sell_list {
     display: flex;
+    justify-content: space-between;
+  }
+`;
 
-    div {
-      width: 200px;
-    }
+export const ProductArticle = styled.article`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 10px;
+  height: 260px;
+  padding: 20px;
+  box-shadow: 0px 0px 4px 0px #0000001f;
+  border-radius: 15px;
+  cursor: pointer;
+
+  &:hover > * {
+    transform: scale(1.03);
+    transition: 0.1s all ease-in-out;
+  }
+
+  img {
+    width: 180px;
+    height: 180px;
+    border-radius: 15px;
+  }
+
+  .product_title {
+    width: 180px;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .user_name {
+    font-size: 14px;
   }
 `;

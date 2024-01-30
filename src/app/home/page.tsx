@@ -2,8 +2,14 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { HomeMain, MainBanner, NowSell } from "@/styles/homeStyle";
+import {
+  HomeMain,
+  MainBanner,
+  ProductSection,
+  ProductArticle,
+} from "@/styles/homeStyle";
 import bannerImg from "../../../public/assets/images/banner.png";
+import productImg1 from "../../../public/assets/images/product1.jpg";
 
 const Home: React.FC = () => {
   const router = useRouter();
@@ -21,26 +27,40 @@ const Home: React.FC = () => {
           <li className="grp_purchase">공구</li>
         </ul>
       </nav>
-      <NowSell>
+
+      {/* 판매 section */}
+      <ProductSection>
         <h3 className="title_tag">현재 판매 중!</h3>
+
+        {/* 판매 상품 */}
         <div className="sell_list">
-          <div>
-            <p>인형1</p>
-          </div>
-          <div>
-            <p>인형2</p>
-          </div>
-          <div>
-            <p>포카1</p>
-          </div>
-          <div>
-            <p>포카2</p>
-          </div>
-          <div>
-            <p>포카3</p>
-          </div>
+          <ProductArticle>
+            <img src={productImg1.src} alt="" />
+            <h4 className="product_title">귀여운 춘식이 쿠션쿠션쿠션쿠션</h4>
+            <p className="user_name">닉네임123</p>
+          </ProductArticle>
+          <ProductArticle>
+            <img src={productImg1.src} alt="" />
+            <h4 className="product_title">귀여운 춘식이 쿠션쿠션쿠션쿠션</h4>
+            <p className="user_name">닉네임123</p>
+          </ProductArticle>{" "}
+          <ProductArticle>
+            <img src={productImg1.src} alt="" />
+            <h4 className="product_title">귀여운 춘식이 쿠션쿠션쿠션쿠션</h4>
+            <p className="user_name">닉네임123</p>
+          </ProductArticle>{" "}
+          <ProductArticle>
+            <img src={productImg1.src} alt="" />
+            <h4 className="product_title">귀여운 춘식이</h4>
+            <p className="user_name">닉네임123</p>
+          </ProductArticle>{" "}
+          <ProductArticle>
+            <img src={productImg1.src} alt="" />
+            <h4 className="product_title">귀여운 춘식이 쿠션쿠션쿠션쿠션</h4>
+            <p className="user_name">닉네임123</p>
+          </ProductArticle>
         </div>
-      </NowSell>
+      </ProductSection>
     </HomeMain>
   );
 };
