@@ -51,6 +51,7 @@ export const MainBanner = styled.article`
   cursor: pointer;
 
   & img {
+    border-radius: 15px;
     width: 1200px;
     height: 320px;
   }

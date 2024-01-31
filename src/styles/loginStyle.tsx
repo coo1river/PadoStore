@@ -1,7 +1,5 @@
 "use client";
 import styled from "styled-components";
-import iconX from "../../public/assets/images/icon-x.png";
-import iconKakao from "../../public/assets/images/icon-kakao.png";
 
 export const LoginMain = styled.main`
   background-color: var(--color-trans-grey);
@@ -106,23 +104,39 @@ export const SnsLogin = styled.div`
   }
 
   .btn_wrap {
+    display: flex;
     margin: 0 auto;
   }
 
   button {
-    width: 50px;
-    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    border-radius: 10px;
+    color: white;
+    font-weight: 600;
   }
 
   .icon_x {
-    border-radius: 50px;
-    background-image: url(${iconX.src});
-    background-size: cover;
+    background-color: black;
+    padding-left: 30px;
     margin-right: 10px;
+
+    img {
+      width: 30px;
+      height: 30px;
+    }
   }
 
   .icon_kakao {
-    background-image: url(${iconKakao.src});
-    background-size: cover;
+    color: #353535;
+    padding-left: 30px;
+    background-color: #ffeb3b;
+
+    img {
+      width: 40px;
+      height: 40px;
+    }
   }
 `;
