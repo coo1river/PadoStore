@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 export const HomeMain = styled.main`
   width: 1200px;
-  height: calc(100% - 145px);
   margin: 0 auto;
   display: flex;
   flex-direction: column;

@@ -4,6 +4,7 @@ import { LoginMain } from "./loginStyle";
 export const ProfileMain = styled(LoginMain)`
   justify-content: start;
   align-items: start;
+  height: calc(100% - 235px);
 
   .img_profile {
     width: 100px;
@@ -21,6 +22,7 @@ export const ProfileMain = styled(LoginMain)`
 
     display: flex;
     margin: 0 auto;
+    margin-bottom: 30px;
     box-shadow: 0px 0px 4px 0px #0000001f;
   }
 
@@ -88,7 +90,6 @@ export const UserProfile = styled.section`
   margin: 0 auto;
   padding: 30px;
   gap: 30px;
-  /* border-bottom: 2px solid #cecece; */
 
   .nickname {
     font-weight: 700;
