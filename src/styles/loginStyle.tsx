@@ -7,8 +7,8 @@ export const LoginMain = styled.main`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: calc(100% - 223px);
   color: #2c2c2c;
+  height: calc(100vh - 215px);
 
   .login_text {
     margin: 25px;
