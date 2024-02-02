@@ -1,6 +1,6 @@
 import { LoginInput, LoginBtn, SnsLogin, LoginMain } from "@/styles/loginStyle";
 import React from "react";
-import iconX from "../../../public/assets/images/icon-x.png";
+import iconNaver from "../../../public/assets/images/icon-naver.png";
 import iconKakao from "../../../public/assets/images/icon-kakao.png";
 
 const Login: React.FC = () => {
@@ -32,13 +32,13 @@ const Login: React.FC = () => {
       <SnsLogin>
         <h4>SNS 로그인</h4>
         <div className="btn_wrap">
-          <button className="icon_x">
-            X로 로그인
-            <img src={iconX.src} alt="" />
-          </button>
           <button className="icon_kakao">
             카카오로 로그인
             <img src={iconKakao.src} alt="" />
+          </button>
+          <button className="icon_naver">
+            네이버로 로그인
+            <img src={iconNaver.src} alt="" />
           </button>
         </div>
       </SnsLogin>

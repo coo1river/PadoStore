@@ -113,15 +113,18 @@ export const SnsLogin = styled.div`
     justify-content: center;
     align-items: center;
     width: 200px;
+    height: 40px;
+    font-size: 15px;
     border-radius: 10px;
     color: white;
     font-weight: 600;
+    padding-left: 25px;
   }
 
-  .icon_x {
-    background-color: black;
-    padding-left: 30px;
+  .icon_kakao {
+    color: #353535;
     margin-right: 10px;
+    background-color: #ffeb3b;
 
     img {
       width: 30px;
@@ -129,10 +132,8 @@ export const SnsLogin = styled.div`
     }
   }
 
-  .icon_kakao {
-    color: #353535;
-    padding-left: 30px;
-    background-color: #ffeb3b;
+  .icon_naver {
+    background-color: #00c73c;
 
     img {
       width: 40px;
