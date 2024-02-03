@@ -13,7 +13,7 @@ export const CommonHeader = styled.header`
 export const LogoDiv = styled.div`
   display: flex;
   align-items: center;
-  margin: 40px;
+  margin-left: 80px;
   cursor: pointer;
 `;
 
@@ -41,19 +41,19 @@ export const SearchIptBox = styled.div`
 
     position: absolute;
     top: 12px;
-    left: 88%;
+    left: 97%;
   }
 `;
 
 export const SearchInput = styled.input`
   width: 100%;
+  margin-left: 25px;
   padding: 10px 70px 10px 20px;
   box-sizing: border-box;
   border: 4px solid var(--color-main);
   border-radius: 20px;
   font-family: var(--font-main);
   font-size: 16px;
-
   caret-color: var(--color-main);
 `;
 
@@ -69,13 +69,51 @@ export const UploadBtn = styled.button`
   border-radius: 10px;
   font-weight: 600;
   font-size: 14px;
+  position: relative;
 
   &:active {
     background-color: #3592d4;
   }
 `;
 
+// 모달 창
+export const ModalWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  box-shadow: 0px 0px 4px 0px #0000002f;
+  border-radius: 15px;
+  line-height: 2rem;
+  font-size: 15px;
+  font-weight: 600;
+  position: absolute;
+  margin-top: 10px;
+
+  li {
+    padding: 15px 30px;
+    border-radius: 15px;
+    cursor: pointer;
+
+    strong {
+      border-bottom: 3px solid #3eacfa6e;
+    }
+  }
+
+  li:first-child {
+    border-radius: 15px 15px 0 0;
+  }
+
+  li:nth-child(2) {
+    border-radius: 0 0 15px 15px;
+  }
+
+  li:hover {
+    background-color: #ececec;
+  }
+`;
+
 export const LoginJoin = styled.div`
+  margin-right: 60px;
   button {
     font-size: 14px;
   }
