@@ -22,6 +22,7 @@ const Home: React.FC = () => {
       </MainBanner>
       <nav>
         <ul className="menu_tab">
+          <li className="home">홈</li>
           <li className="sell">판매/구매</li>
           <li className="trade">교환</li>
           <li className="grp_purchase">공구</li>

@@ -19,7 +19,7 @@ const PostUploadModal: React.FC = () => {
     <ModalWrap>
       <ul>
         <li>
-          <strong>판매 / 구매 / 교환</strong> 글 올리기
+          <strong>판매 / 구매 / 교환 글</strong> 올리기
         </li>
         <li>
           <strong>공동구매 폼</strong> 올리기

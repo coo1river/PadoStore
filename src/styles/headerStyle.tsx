@@ -48,10 +48,10 @@ export const SearchIptBox = styled.div`
 export const SearchInput = styled.input`
   width: 100%;
   margin-left: 25px;
-  padding: 10px 70px 10px 20px;
+  padding: 10px 40px 10px 20px;
   box-sizing: border-box;
-  border: 4px solid var(--color-main);
-  border-radius: 20px;
+  border: 3px solid var(--color-main);
+  border-radius: 15px;
   font-family: var(--font-main);
   font-size: 16px;
   caret-color: var(--color-main);
