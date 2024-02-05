@@ -35,16 +35,26 @@ body {
     }
 }
 
-input {
-    border : none;
+input, textarea {
     font-family: 'Pretendard', sans-serif;
 }
 
 
+button:focus,
+button:active,
+textarea,
+textarea:focus,
+textarea:active,
+input,
 input:focus,
 input:active {
+border: none;
   box-shadow: none;
   outline: none;
+}
+
+textarea{
+    resize: none;
 }
 
 a {
@@ -62,6 +72,7 @@ button {
 button:enabled {
     cursor: pointer;
 }
+
 
 .a11y-hidden {
         clip: rect(1px, 1px, 1px, 1px);
