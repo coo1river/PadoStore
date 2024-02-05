@@ -1,10 +1,10 @@
 "use client";
 import { ProfileMain, UserProfile } from "@/styles/profileStyle";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import MyPost from "@/components/postList/myPost";
 import MyForm from "@/components/postList/myForm";
 import MyPurchase from "@/components/postList/myPurchase";
-import PartForm from "@/components/postList/partForm";
+import GroupPurchase from "@/components/postList/groupPurchase";
 
 const Profile: React.FC = () => {
   const [listState, setListState] = useState("myPost");
@@ -22,7 +22,7 @@ const Profile: React.FC = () => {
       listRender = <MyPurchase />;
       break;
     case "partForm":
-      listRender = <PartForm />;
+      listRender = <GroupPurchase />;
       break;
     default:
       listRender = null;

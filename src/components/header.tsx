@@ -13,15 +13,37 @@ import {
 } from "@/styles/headerStyle";
 import { useRouter } from "next/navigation";
 
+interface PostUploadModalProps {
+  setUploadModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 // 글 등록 버튼 클릭 시 나오는 모달 창
-const PostUploadModal: React.FC = () => {
+const PostUploadModal: React.FC<PostUploadModalProps> = ({
+  setUploadModal,
+}) => {
+  const router = useRouter();
+
+  const handleModalOff = () => {
+    setUploadModal(false);
+  };
+
   return (
     <ModalWrap>
       <ul>
-        <li>
+        <li
+          onClick={() => {
+            router.push("/upload/product");
+            handleModalOff();
+          }}
+        >
           <strong>판매 / 구매 / 교환 글</strong> 올리기
         </li>
-        <li>
+        <li
+          onClick={() => {
+            router.push("/upload/groupPurchase");
+            handleModalOff();
+          }}
+        >
           <strong>공동구매 폼</strong> 올리기
         </li>
       </ul>
@@ -40,23 +62,10 @@ const Header: React.FC = () => {
     setUploadModal(!uploadModal);
   };
 
-  // 버튼 클릭 시 해당 링크로 이동하는 함수
-  const handleClickHome = () => {
-    router.push("/home");
-  };
-
-  const handleClickLogin = () => {
-    router.push("/login");
-  };
-
-  const handleClickJoin = () => {
-    router.push("/join");
-  };
-
   return (
     <CommonHeader>
       <LogoText>
-        <LogoDiv onClick={handleClickHome}>
+        <LogoDiv onClick={() => router.push("/home")}>
           <LogoImg src="/assets/images/logo.png" alt="로고 이미지" />
           파도상점
         </LogoDiv>
@@ -68,11 +77,13 @@ const Header: React.FC = () => {
       </SearchIptBox>
       <div>
         <UploadBtn onClick={handleClickModal}>글 등록▾</UploadBtn>
-        {uploadModal ? <PostUploadModal /> : null}
+        {uploadModal ? (
+          <PostUploadModal setUploadModal={setUploadModal} />
+        ) : null}
       </div>
       <LoginJoin>
-        <button onClick={handleClickLogin}>로그인</button>
-        <button onClick={handleClickJoin}>회원가입</button>
+        <button onClick={() => router.push("/login")}>로그인</button>
+        <button onClick={() => router.push("/join")}>회원가입</button>
       </LoginJoin>
     </CommonHeader>
   );

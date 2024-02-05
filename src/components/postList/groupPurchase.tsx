@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 
-const PartForm: React.FC = () => {
+const GroupPurchase: React.FC = () => {
   return (
     <article className="article_list">
       <button>거래 중</button>
@@ -25,4 +25,4 @@ const PartForm: React.FC = () => {
   );
 };
 
-export default PartForm;
+export default GroupPurchase;
