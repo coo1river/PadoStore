@@ -78,3 +78,20 @@ export const UploadForm = styled.article`
     border-radius: 15px;
   }
 `;
+
+export const GroupForm = styled(UploadForm)`
+  .product_list {
+    background-color: white;
+    margin: 20px 0;
+  }
+
+  .product_add_wrap {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .btn_product_add {
+    background-color: var(--color-main);
+    color: white;
+  }
+`;
