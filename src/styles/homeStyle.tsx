@@ -56,11 +56,12 @@ export const MainBanner = styled.article`
   }
 `;
 
-export const ProductSection = styled.section`
+export const ProductTab = styled.section`
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: start;
+  margin-bottom: 40px;
 
   .sell_list {
     display: flex;

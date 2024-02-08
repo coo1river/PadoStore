@@ -1,10 +1,21 @@
-import { AccountInfoWrap } from "@/styles/accountInfoStyle";
+import { AccountInfoWrap, ProductSelect } from "@/styles/accountInfoStyle";
 
 const AccountInfo: React.FC = () => {
   return (
     <AccountInfoWrap>
-      <h2>입금 폼 작성</h2>
+      <h2 className="AccountInfo_title">입금 폼 작성</h2>
       <form className="account_info_form">
+        <ProductSelect>
+          <h3>상품 선택</h3>
+          <ul>
+            <li>라이언</li>
+            <li>춘식이</li>
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+        </ProductSelect>
+
         <label htmlFor="label-name">입금자 이름</label>
         <input
           id="label-name"

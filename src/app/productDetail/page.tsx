@@ -1,19 +1,22 @@
 "use client";
 import {
-  BuyBtn,
+  Button,
+  GroupSubmit,
   ProductContent,
   ProductImg,
+  ProductInfo,
   ProductMain,
 } from "@/styles/productStyle";
 import React from "react";
 import productImg1 from "../../../public/assets/images/product1.jpg";
+import AccountInfo from "@/components/accountInfo";
 
-const Product: React.FC = () => {
+const ProductDetail: React.FC = () => {
   return (
     <ProductMain>
       <h2 className="a11y-hidden">상품 페이지</h2>
       <section className="product_detail">
-        <ProductContent>
+        <ProductInfo>
           <ProductImg src={productImg1.src} />
           <div className="product_intro_wrap">
             <h3 className="product_title">상품1</h3>
@@ -28,15 +31,22 @@ const Product: React.FC = () => {
                 <option value="d">직직이</option>
               </select>
             </div>
-            <BuyBtn>구매하기</BuyBtn>
+            <div className="btns_wrap">
+              <button className="btn_like">찜하기</button>
+              <button className="btn_chat">구매 채팅하기</button>
+            </div>
           </div>
-        </ProductContent>
+        </ProductInfo>
         <ProductContent>
-          <p className="product_intro">너무 귀여운 춘식이 쿠션입니다.</p>
+          <p className="product_contents">너무 귀여운 춘식이 쿠션입니다.</p>
+          <GroupSubmit>
+            {/* 입금자 정보 폼 */}
+            <AccountInfo />
+          </GroupSubmit>
         </ProductContent>
       </section>
     </ProductMain>
   );
 };
 
-export default Product;
+export default ProductDetail;

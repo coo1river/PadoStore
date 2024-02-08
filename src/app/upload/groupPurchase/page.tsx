@@ -1,5 +1,5 @@
 "use client";
-import { GroupForm, UploadMain } from "@/styles/productUpload";
+import { GroupForm, UploadMain } from "@/styles/productUploadStyle";
 import AccountInfo from "@/components/accountInfo";
 
 const GroupPurchase: React.FC = () => {
@@ -57,8 +57,6 @@ const GroupPurchase: React.FC = () => {
             rows={10}
           />
 
-          {/* 입금자 정보 폼 */}
-          <AccountInfo />
           <button className="btn_upload">폼 업로드 하기</button>
         </GroupForm>
       </article>

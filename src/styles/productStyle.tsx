@@ -1,6 +1,7 @@
 "use client";
 import styled from "styled-components";
 import { HomeMain } from "./homeStyle";
+import { GroupForm } from "./productUploadStyle";
 
 export const ProductMain = styled(HomeMain)`
   .product_detail {
@@ -8,7 +9,7 @@ export const ProductMain = styled(HomeMain)`
   }
 `;
 
-export const ProductContent = styled.article`
+export const ProductInfo = styled.article`
   width: 100%;
   display: flex;
   justify-content: center;
@@ -37,9 +38,21 @@ export const ProductContent = styled.article`
     color: var(--color-main);
   }
 
-  .product_intro {
-    margin-top: 50px;
-    font-size: 18px;
+  button {
+    width: 200px;
+    height: 50px;
+    background-color: var(--color-main);
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    border-radius: 15px;
+    margin-right: 10px;
+  }
+
+  .btn_like {
+    background-color: white;
+    color: var(--color-main);
+    border: 2px solid var(--color-main);
   }
 `;
 
@@ -49,12 +62,17 @@ export const ProductImg = styled.img`
   border-radius: 15px;
 `;
 
-export const BuyBtn = styled.button`
-  width: 200px;
-  height: 50px;
-  background-color: var(--color-main);
-  color: white;
-  font-size: 20px;
-  font-weight: 600;
-  border-radius: 15px;
+export const ProductContent = styled.article`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .product_contents {
+    margin-top: 50px;
+    font-size: 18px;
+  }
+`;
+
+export const GroupSubmit = styled(GroupForm)`
+  width: 100%;
 `;
