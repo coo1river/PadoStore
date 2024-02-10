@@ -39,15 +39,19 @@ input, textarea {
     font-family: 'Pretendard', sans-serif;
 }
 
+select{
+    &:focus-visible{
+        outline:none;
+    }
+}
+
 
 button:focus,
 button:active,
 textarea,
 textarea:focus,
 textarea:active,
-input,
-input:focus,
-input:active {
+input{
 border: none;
   box-shadow: none;
   outline: none;

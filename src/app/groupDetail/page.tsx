@@ -9,7 +9,7 @@ import {
   ProductInfo,
   ProductMain,
 } from "@/styles/productStyle";
-import AccountInfo from "@/components/accountInfo";
+import AccountFormInfo from "@/components/accountInfo";
 
 const GroupDetail: React.FC = () => {
   return (
@@ -22,8 +22,12 @@ const GroupDetail: React.FC = () => {
             <div className="product_intro">
               <h3 className="product_title">상품1</h3>
               <p className="product_price">59,000원</p>
-              <p>• 판매 기간: 23/02/09 ~ 23/02/14</p>
-              <p>• 배송 방법: 택배</p>
+              <p>
+                <strong>• 판매 기간 : </strong>23/02/09 ~ 23/02/14
+              </p>
+              <p>
+                <strong>• 배송 방법 : </strong>택배
+              </p>
             </div>
             <div className="profile_wrap">
               <Image
@@ -45,7 +49,7 @@ const GroupDetail: React.FC = () => {
           </p>
           <GroupSubmit>
             {/* 입금자 정보 폼 */}
-            <AccountInfo />
+            <AccountFormInfo />
           </GroupSubmit>
         </ProductContent>
       </section>

@@ -24,6 +24,10 @@ export const ProductInfo = styled.article`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+    strong {
+      font-weight: 500;
+    }
   }
 
   .product_intro {

@@ -9,6 +9,8 @@ import {
 import React from "react";
 import productImg1 from "../../../public/assets/images/product1.jpg";
 import AccountInfo from "@/components/accountInfo";
+import profileImg from "../../../public/assets/images/profile.png";
+import Image from "next/image";
 
 const ProductDetail: React.FC = () => {
   return (
@@ -18,16 +20,23 @@ const ProductDetail: React.FC = () => {
         <ProductInfo>
           <ProductImg src={productImg1.src} />
           <div className="product_intro_button">
-            <h3 className="product_title">상품1</h3>
-            <p className="product_price">59,000원</p>
-            <div>
-              <h3>상품 선택</h3>
-              <select name="product" id="product-id">
-                <option value="a">라이언</option>
-                <option value="b">춘식</option>
-                <option value="c">알파카</option>
-                <option value="d">직직이</option>
-              </select>
+            <div className="product_intro">
+              <h3 className="product_title">상품1</h3>
+              <p className="product_price">59,000원</p>
+              <p>
+                <strong>• 상품 상태 : </strong> 미개봉(새 것)
+              </p>
+              <p>
+                <strong>• 배송 방법 : </strong>택배
+              </p>
+            </div>
+            <div className="profile_wrap">
+              <Image
+                className="img_profile"
+                src={profileImg}
+                alt="프로필 이미지"
+              />
+              <p className="user_name">목긴알파카123</p>
             </div>
             <div className="btns_wrap">
               <button className="btn_like">찜하기</button>
