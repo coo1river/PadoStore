@@ -1,6 +1,5 @@
 "use client";
 import {
-  Button,
   GroupSubmit,
   ProductContent,
   ProductImg,
@@ -18,10 +17,9 @@ const ProductDetail: React.FC = () => {
       <section className="product_detail">
         <ProductInfo>
           <ProductImg src={productImg1.src} />
-          <div className="product_intro_wrap">
+          <div className="product_intro_button">
             <h3 className="product_title">상품1</h3>
             <p className="product_price">59,000원</p>
-            <div></div>
             <div>
               <h3>상품 선택</h3>
               <select name="product" id="product-id">
@@ -38,11 +36,9 @@ const ProductDetail: React.FC = () => {
           </div>
         </ProductInfo>
         <ProductContent>
-          <p className="product_contents">너무 귀여운 춘식이 쿠션입니다.</p>
-          <GroupSubmit>
-            {/* 입금자 정보 폼 */}
-            <AccountInfo />
-          </GroupSubmit>
+          <p className="product_contents">
+            너무 귀여운 춘식이 쿠션입니다. 귀엽죠 귀엽죠
+          </p>
         </ProductContent>
       </section>
     </ProductMain>

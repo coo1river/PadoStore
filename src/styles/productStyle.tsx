@@ -1,4 +1,3 @@
-"use client";
 import styled from "styled-components";
 import { HomeMain } from "./homeStyle";
 import { GroupForm } from "./productUploadStyle";
@@ -20,22 +19,47 @@ export const ProductInfo = styled.article`
     border-bottom: 2px solid var(--color-trans-grey);
   }
 
-  .product_intro_wrap {
+  .product_intro_button {
     width: 800px;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-between;
+  }
+
+  .product_intro {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding-bottom: 40px;
+    border-bottom: 2px solid var(--color-trans-grey);
   }
 
   .product_title {
-    font-weight: 700;
+    font-weight: 600;
     font-size: 30px;
   }
 
   .product_price {
-    font-size: 25px;
+    font-size: 30px;
     font-weight: 700;
     color: var(--color-main);
+  }
+
+  .profile_wrap {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .img_profile {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+  }
+
+  .user_name {
+    font-size: 15px;
+    font-weight: 500;
   }
 
   button {
