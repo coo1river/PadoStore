@@ -1,9 +1,25 @@
-const Splash: React.FC = () => {
+"use client";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+const Welcome: React.FC = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const timer = setTimeout(() => {
+        router.push("/home");
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
   return (
     <>
-      <h1>스플래쉬 화면</h1>
+      <h2>Welcome</h2>
     </>
   );
 };
 
-export default Splash;
+export default Welcome;
