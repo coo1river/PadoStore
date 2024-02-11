@@ -55,6 +55,19 @@ export const SetProfileForm = styled.form`
   flex-direction: column;
 `;
 
+export const ImgWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+`;
+
+export const ImgProfile = styled.img`
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin: 0 auto;
+`;
+
 export const ImgLabel = styled.label`
   cursor: pointer;
   display: block;
@@ -62,8 +75,12 @@ export const ImgLabel = styled.label`
   box-shadow: 0px 0px 4px 0px #0000002f;
   width: 120px;
   height: 120px;
-  background-color: white;
   border-radius: 50%;
+
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
 `;
 
 export const ImgInput = styled.input`

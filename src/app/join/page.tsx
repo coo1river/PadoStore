@@ -1,34 +1,44 @@
 "use client";
-import { ImgInput, ImgLabel, JoinMain } from "@/styles/joinStyle";
-import { useRef, useState } from "react";
+import {
+  ImgInput,
+  ImgLabel,
+  ImgProfile,
+  ImgWrap,
+  JoinMain,
+} from "@/styles/joinStyle";
+import { ChangeEvent, useRef, useState } from "react";
+import ImgProfileBasic from "../../../public/assets/images/img-user-basic.png";
 
 const Join: React.FC = () => {
-  // 프로필 이미지 설정
-  const [imgProfile, setImgProfile] = useState(null);
-  // const inputRef = useRef<HTMLInputElement>(null);
+  // 프로필 이미지 useState 값으로 저장
+  const [imgProfile, setImgProfile] = useState<string | null>(null);
 
-  // const InputFile = useRef(null);
+  // useRef 사용
+  const InputRef = useRef<HTMLInputElement>(null);
 
-  // const onChangeFile = (e) => {
-  //   if(e.target.files[0]){
-  //     setImgProfile(e.target.files[0])
-  // }
+  // 이미지 변경 함수
+  const onChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files?.[0]) {
+      const fileURL = URL.createObjectURL(e.target.files?.[0]);
+      setImgProfile(fileURL);
+    }
+  };
 
   return (
     <JoinMain>
       <h2 className="text_h2">회원가입</h2>
       <form className="join_form">
-        <div className="img_wrap">
-          <img src="" alt="" />
+        <ImgWrap>
+          <ImgProfile src={imgProfile || ImgProfileBasic.src} />
           <ImgLabel htmlFor="img-profile" />
           <ImgInput
             type="file"
             id="img-profile"
             accept="image/*"
-            // onChange={onChangeFile}
-            // ref={InputFile}
+            onChange={onChangeFile}
+            ref={InputRef}
           />
-        </div>
+        </ImgWrap>
 
         <label htmlFor="input-id">아이디</label>
         <input type="text" id="input-id" placeholder="아이디" />
