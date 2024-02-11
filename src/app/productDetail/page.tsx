@@ -1,6 +1,5 @@
 "use client";
 import {
-  GroupSubmit,
   ProductContent,
   ProductImg,
   ProductInfo,
@@ -8,7 +7,6 @@ import {
 } from "@/styles/productStyle";
 import React from "react";
 import productImg1 from "../../../public/assets/images/product1.jpg";
-import AccountInfo from "@/components/accountInfo";
 import profileImg from "../../../public/assets/images/profile.png";
 import Image from "next/image";
 

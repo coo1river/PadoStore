@@ -20,6 +20,7 @@ export const ProductInfo = styled.article`
   }
 
   .product_intro_button {
+    margin: 20px 0;
     width: 800px;
     display: flex;
     flex-direction: column;

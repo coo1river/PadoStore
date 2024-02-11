@@ -33,7 +33,7 @@ const AccountFormInfo: React.FC = () => {
               어피치
               <div className="count_wrap">
                 <button>-</button>
-                <span>3</span>
+                <span>1</span>
                 <button>+</button>
               </div>
             </li>
@@ -41,7 +41,7 @@ const AccountFormInfo: React.FC = () => {
               프로도
               <div className="count_wrap">
                 <button>-</button>
-                <span>3</span>
+                <span>0</span>
                 <button>+</button>
               </div>
             </li>
@@ -49,7 +49,7 @@ const AccountFormInfo: React.FC = () => {
               무지
               <div className="count_wrap">
                 <button>-</button>
-                <span>3</span>
+                <span>0</span>
                 <button>+</button>
               </div>
             </li>
@@ -92,7 +92,7 @@ const AccountFormInfo: React.FC = () => {
 
           <div className="account_wrap">
             <div>
-              <label htmlFor="bank-name">입금 은행</label>
+              <label htmlFor="bank-name">• 입금 은행</label>
               <select name="bank-name" id="bank-name">
                 <option>국민은행</option>
                 <option>기업은행</option>
@@ -124,7 +124,7 @@ const AccountFormInfo: React.FC = () => {
             </div>
 
             <div>
-              <label htmlFor="account-name">입금자 이름</label>
+              <label htmlFor="account-name">• 입금자 이름</label>
               <input
                 id="account-name"
                 type="text"
@@ -133,7 +133,7 @@ const AccountFormInfo: React.FC = () => {
             </div>
 
             <div className="account_info">
-              <label htmlFor="account-number">입금자 계좌번호</label>
+              <label htmlFor="account-number">• 입금자 계좌번호</label>
               <input
                 id="account-number"
                 type="text"

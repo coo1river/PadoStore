@@ -49,7 +49,6 @@ export const ProductSelect = styled.article`
     font-weight: 600;
     font-size: 14px;
     background-color: #e1e1e14e;
-    border: 2px solid var(--color-trans-grey);
     padding: 8px 20px;
     margin: 10px 0;
     border-radius: 15px;
