@@ -14,7 +14,8 @@
     "react": "^18",
     "react-dom": "^18",
     "styled-components": "^6.1.8",
-    "styled-reset": "^4.5.2"
+    "styled-reset": "^4.5.2",
+    "zustand": "^4.5.0"
   },
   "devDependencies": {
     "@stylexjs/nextjs-plugin": "^0.4.1",
