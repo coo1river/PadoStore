@@ -8,6 +8,7 @@ import {
 } from "@/styles/joinStyle";
 import { ChangeEvent, useRef, useState } from "react";
 import ImgProfileBasic from "../../../public/assets/images/img-user-basic.png";
+import useInput from "@/hooks/useInput";
 
 const Join: React.FC = () => {
   // 프로필 이미지 useState 값으로 저장
@@ -23,6 +24,10 @@ const Join: React.FC = () => {
       setImgProfile(fileURL);
     }
   };
+
+  const email = useInput("");
+  const password = useInput("");
+  const username = useInput("");
 
   return (
     <JoinMain>
