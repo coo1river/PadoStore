@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, AxiosError } from "axios";
 
-interface ReqData {
+export interface ReqData {
   user_id: string;
   password: string;
   user_name: string;
