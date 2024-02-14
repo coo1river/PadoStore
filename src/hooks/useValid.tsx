@@ -1,3 +1,4 @@
+import { ReqData } from "@/api/joinApi";
 import { useState } from "react";
 
 interface Error {
@@ -7,7 +8,7 @@ interface Error {
   userNameErr: string;
 }
 
-const useValid = (): Error => {
+const useValid = (form: ReqData): Error => {
   const [error, setError] = useState<Error>({
     emailErr: "",
     pwErr: "",
@@ -15,7 +16,10 @@ const useValid = (): Error => {
     userNameErr: "",
   });
 
-  const EmailValid = () => {};
+  const EmailValid = () => {
+    if (!form.user_id) {
+    }
+  };
 
   return error;
 };

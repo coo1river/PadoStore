@@ -9,6 +9,7 @@ import {
 import { ChangeEvent, useRef, useState } from "react";
 import ImgProfileBasic from "../../../public/assets/images/img-user-basic.png";
 import useInput from "@/hooks/useInput";
+import joinApi from "@/api/joinApi";
 
 const Join: React.FC = () => {
   // 프로필 이미지 useState 값으로 저장
@@ -25,12 +26,29 @@ const Join: React.FC = () => {
     }
   };
 
-  const email = useInput("");
-  const password = useInput("");
-  const pwCheck = useInput("");
-  const username = useInput("");
-  const name = useInput("");
-  const number = useInput("");
+  const form = {
+    email: useInput(""),
+    password: useInput(""),
+    pwCheck: useInput(""),
+    username: useInput(""),
+    name: useInput(""),
+    number: useInput(""),
+  };
+
+  const handleJoin = async () => {
+    try {
+      const data = await joinApi({
+        user_id: form.email.value,
+        password: form.password.value,
+        user_name: form.username.value,
+        phone_number: form.number.value,
+        up_file: imgProfile,
+      });
+      console.log("가입 성공", data);
+    } catch (error) {
+      console.error("가입 실패", error);
+    }
+  };
 
   return (
     <JoinMain>
@@ -70,7 +88,9 @@ const Join: React.FC = () => {
         <input type="text" id="input-name" placeholder="이름" {...name} />
         <label htmlFor="input-num">전화번호</label>
         <input type="text" id="input-num" placeholder="전화번호" {...number} />
-        <button className="btn_join">다음</button>
+        <button className="btn_join" onClick={handleJoin}>
+          회원가입
+        </button>
       </form>
     </JoinMain>
   );
