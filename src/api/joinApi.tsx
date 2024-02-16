@@ -1,42 +1,33 @@
-import axios, { AxiosResponse, AxiosError } from "axios";
+import axios from "axios";
 
 export interface ReqData {
   user_id: string;
   password: string;
   user_name: string;
-  phone_number: string;
-  up_file: string | null;
-}
-
-interface ResData {
-  user_id: string;
-  password: string;
-  user_name: string;
   nickname: string;
+  email: string;
   phone_number: string;
-  addr_post: null | string;
-  addr: null | string;
-  addr_detail: null | string;
-  bank: null | string;
-  account_name: null | string;
-  account_number: null | string;
-  file_group_id: string;
-  file_id: number;
-  org_file: string;
-  up_file: string;
+  uploadfile: File | null;
 }
 
 const joinApi = async (data: ReqData) => {
-  const url = "/api/member/join";
+  const url = "api/member/join";
   const formData = new FormData();
   formData.append("user_id", data.user_id);
   formData.append("password", data.password);
   formData.append("user_name", data.user_name);
+  formData.append("nickname", data.nickname);
+  formData.append("email", data.email);
   formData.append("phone_number", data.phone_number);
-  formData.append("up_file", data.up_file || "");
+  formData.append("uploadfile", data.uploadfile || "");
+
+  console.log("FormData Contents:");
+  formData.forEach((value, key) => {
+    console.log(key + ": " + value);
+  });
 
   try {
-    const res = await axios.post<ResData>(url, formData, {
+    const res = await axios.post<ReqData>(url, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
