@@ -37,6 +37,15 @@ export const JoinMain = styled(LoginMain)`
     align-items: center;
   }
 
+  .btn_check {
+    margin-left: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: var(--color-main);
+    color: white;
+    font-weight: 500;
+  }
+
   .btn_join {
     padding: 10px;
     border-radius: 10px;

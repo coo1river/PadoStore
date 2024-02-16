@@ -21,11 +21,6 @@ const joinApi = async (data: ReqData) => {
   formData.append("phone_number", data.phone_number);
   formData.append("uploadfile", data.uploadfile || "");
 
-  console.log("FormData Contents:");
-  formData.forEach((value, key) => {
-    console.log(key + ": " + value);
-  });
-
   try {
     const res = await axios.post<ReqData>(url, formData, {
       headers: {

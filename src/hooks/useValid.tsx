@@ -17,7 +17,7 @@ const useValid = (form: ReqData): Error => {
   });
 
   const EmailValid = () => {
-    if (!form.user_id) {
+    if (!form.email) {
     }
   };
 

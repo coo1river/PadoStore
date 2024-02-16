@@ -1,4 +1,11 @@
 "use client";
+
+// 리액트 훅 import
+import { ChangeEvent, FormEvent, useRef, useState } from "react";
+
+import { useRouter } from "next/navigation";
+
+// 스타일 import
 import {
   ImgInput,
   ImgLabel,
@@ -6,12 +13,20 @@ import {
   ImgWrap,
   JoinMain,
 } from "@/styles/joinStyle";
-import { ChangeEvent, FormEvent, useRef, useState } from "react";
+
+// 기본 프로필 이미지 import
 import ImgProfileBasic from "../../../public/assets/images/img-user-basic.png";
+
+// 커스텀 훅, api import
 import useInput from "@/hooks/useInput";
 import joinApi from "@/api/joinApi";
+import idValidApi from "@/api/idValidApi";
+import emailValidApi from "@/api/emailValidApi";
 
 const Join: React.FC = () => {
+  // 라우터 사용
+  const router = useRouter();
+
   // 프로필 이미지 useState 값으로 저장
   const [imgProfile, setImgProfile] = useState<File | null>(null);
 
@@ -26,6 +41,7 @@ const Join: React.FC = () => {
     }
   };
 
+  // useInput으로 value, onChange 할당
   const form = {
     id: useInput(""),
     password: useInput(""),
@@ -36,6 +52,33 @@ const Join: React.FC = () => {
     number: useInput(""),
   };
 
+  // 아이디 중복 확인 api
+  const handleIdValid = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      const data = await idValidApi({
+        user_id: form.id.value,
+      });
+      console.log("아이디 중복 없음 가입 가능", data);
+    } catch (error) {
+      console.error("아이디 중복임 가입 불가능", error);
+    }
+  };
+
+  // 이메일 중복 확인 api
+  const handleEmailValid = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      const data = await emailValidApi({
+        email: form.email.value,
+      });
+      console.log("이메일 중복 없음 가입 가능", data);
+    } catch (error) {
+      console.error("이메일 중복임 가입 불가능", error);
+    }
+  };
+
+  // 회원가입 api 통신
   const handleJoin = async (e: FormEvent) => {
     e.preventDefault();
     try {
@@ -74,7 +117,13 @@ const Join: React.FC = () => {
           />
         </ImgWrap>
         <label htmlFor="input-id">아이디</label>
-        <input type="text" id="input-id" placeholder="아이디" {...form.id} />
+        <div>
+          <input type="text" id="input-id" placeholder="아이디" {...form.id} />
+          <button className="btn_check" onClick={handleIdValid}>
+            중복 확인
+          </button>
+        </div>
+
         <label htmlFor="input-pw">비밀번호</label>
         <input
           type="password"
@@ -82,6 +131,7 @@ const Join: React.FC = () => {
           placeholder="비밀번호"
           {...form.password}
         />
+
         <label htmlFor="input-pw">비밀번호 확인</label>
         <input
           type="password"
@@ -98,12 +148,17 @@ const Join: React.FC = () => {
         />
 
         <label htmlFor="input-email">이메일</label>
-        <input
-          type="text"
-          id="input-email"
-          placeholder="이메일"
-          {...form.email}
-        />
+        <div>
+          <input
+            type="text"
+            id="input-email"
+            placeholder="이메일"
+            {...form.email}
+          />
+          <button className="btn_check" onClick={handleEmailValid}>
+            중복 확인
+          </button>
+        </div>
 
         <label htmlFor="input-pw">이름</label>
         <input
