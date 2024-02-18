@@ -16,7 +16,9 @@ interface Data {
   id: string;
 }
 
-const useValid = (form: ReqData): Error => {
+const useValid = (
+  form: ReqData
+): { error: Error; IdValid: () => void; EmailValid: () => void } => {
   // 에러 메시지 관리
   const [error, setError] = useState<Error>({
     idErr: "",
@@ -64,7 +66,30 @@ const useValid = (form: ReqData): Error => {
     }
   };
 
-  return error;
+  // password 조건 정규표현식
+  const pwReg = /^(?=.*[a-z])(?=.*\d)(?=.*[@!#$~]).{6,16}$/;
+
+  // password 유효성 검사 함수
+  const pwValid = () => {
+    if (!form.password) {
+      setError({ ...error, pwErr: "필수 입력 항목입니다." });
+    }
+    if (!pwReg.test(form.password)) {
+      setError({ ...error, pwErr: "비밀번호 형식이 맞지 않습니다." });
+    }
+    if (form.password.length > 5) {
+      setError({ ...error, pwErr: "6자 이상 입력해 주세요." });
+    }
+    if (form.password.length < 17) {
+      setError({ ...error, pwErr: "16자 이하로 입력해 주세요." });
+    }
+  };
+
+  return {
+    error,
+    EmailValid,
+    IdValid,
+  };
 };
 
 export default useValid;
