@@ -1,6 +1,5 @@
 import emailValidApi from "@/api/emailValidApi";
 import idValidApi from "@/api/idValidApi";
-import { ReqData } from "@/api/joinApi";
 import { useState } from "react";
 
 interface Error {
@@ -13,12 +12,23 @@ interface Error {
 
 interface Data {
   email: string;
-  id: string;
+  user_id: string;
+  password: string;
+  pwCheck: string;
+  user_name: string;
+  nickname: string;
+  number: string;
 }
 
 const useValid = (
-  form: ReqData
-): { error: Error; IdValid: () => void; EmailValid: () => void } => {
+  form: Data
+): {
+  error: Error;
+  IdValid: () => void;
+  EmailValid: () => void;
+  PwValid: () => void;
+  PwCheckValid: () => void;
+} => {
   // 에러 메시지 관리
   const [error, setError] = useState<Error>({
     idErr: "",
@@ -70,7 +80,7 @@ const useValid = (
   const pwReg = /^(?=.*[a-z])(?=.*\d)(?=.*[@!#$~]).{6,16}$/;
 
   // password 유효성 검사 함수
-  const pwValid = () => {
+  const PwValid = () => {
     if (!form.password) {
       setError({ ...error, pwErr: "필수 입력 항목입니다." });
     }
@@ -85,10 +95,24 @@ const useValid = (
     }
   };
 
+  // password check 유효성 검사 함수
+  const PwCheckValid = () => {
+    if (!form.pwCheck) {
+      setError({ ...error, pwCheckErr: "필수 입력 항목입니다." });
+    }
+    if (form.password !== form.pwCheck) {
+      setError({ ...error, pwCheckErr: "비밀번호가 일치하지 않습니다." });
+    } else {
+      setError({ ...error, pwCheckErr: "" });
+    }
+  };
+
   return {
     error,
     EmailValid,
     IdValid,
+    PwValid,
+    PwCheckValid,
   };
 };
 

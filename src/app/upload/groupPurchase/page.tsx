@@ -1,6 +1,5 @@
 "use client";
 import { GroupForm, UploadMain } from "@/styles/productUploadStyle";
-import AccountInfo from "@/components/accountInfo";
 
 const GroupPurchase: React.FC = () => {
   return (
@@ -27,6 +26,15 @@ const GroupPurchase: React.FC = () => {
             type="text"
             placeholder="상품의 종류를 입력해 주세요"
           />
+
+          <label htmlFor="delivery-method">배송 방법</label>
+          <select name="delivery-method" id="delivery-method">
+            <option>택배 배송</option>
+            <option>등기 배송</option>
+            <option>준등기 배송</option>
+            <option>우편 배송</option>
+            <option>기타 배송</option>
+          </select>
 
           {/* 상품 추가 블록 */}
           <article className="product_list_article">

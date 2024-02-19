@@ -22,6 +22,7 @@ import useInput from "@/hooks/useInput";
 import joinApi from "@/api/joinApi";
 import idValidApi from "@/api/idValidApi";
 import emailValidApi from "@/api/emailValidApi";
+import useValid from "@/hooks/useValid";
 
 const Join: React.FC = () => {
   // 라우터 사용
@@ -51,6 +52,22 @@ const Join: React.FC = () => {
     username: useInput(""),
     number: useInput(""),
   };
+
+  const { error, EmailValid, IdValid, PwValid, PwCheckValid } = useValid({
+    email: form.email.value,
+    user_id: form.id.value,
+    password: form.password.value,
+    pwCheck: form.pwCheck.value,
+    user_name: form.username.value,
+    nickname: form.nickname.value,
+    number: form.number.value,
+  });
+
+  console.log("에러:", error);
+  console.log("이메일 유효성", EmailValid);
+  console.log("아이디 유효성 검사", IdValid);
+  console.log("비밀번호 유효성 검사", PwValid);
+  console.log("비밀번호 확인 유효성 검사", PwCheckValid);
 
   // 아이디 중복 확인 api
   const handleIdValid = async (e: FormEvent) => {
