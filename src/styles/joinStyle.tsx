@@ -17,15 +17,14 @@ export const JoinMain = styled(LoginMain)`
   }
 
   label {
-    margin-bottom: 10px;
-    font-weight: 500;
+    margin-bottom: 5px;
+    font-weight: 700;
   }
 
   input {
     padding: 10px;
     border-radius: 5px;
     outline: 2px solid #e4e4e4;
-    margin-bottom: 25px;
   }
 
   input:focus {
@@ -68,6 +67,7 @@ export const ImgWrap = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
+  margin-bottom: 20px;
 `;
 
 export const ImgProfile = styled.img`
@@ -94,4 +94,17 @@ export const ImgLabel = styled.label`
 
 export const ImgInput = styled.input`
   display: none;
+`;
+
+export const InfoText = styled.p`
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #808080;
+`;
+
+export const ErrorMessage = styled.p`
+  display: block;
+  color: red;
+  margin: 10px 0 15px 0;
+  font-size: 14px;
 `;

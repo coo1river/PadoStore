@@ -11,7 +11,7 @@ export interface ReqData {
 }
 
 const joinApi = async (data: ReqData) => {
-  const url = "api/member/join";
+  const url = "api/join";
   const formData = new FormData();
   formData.append("user_id", data.user_id);
   formData.append("password", data.password);

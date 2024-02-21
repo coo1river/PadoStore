@@ -7,10 +7,12 @@ import { useRouter } from "next/navigation";
 
 // 스타일 import
 import {
+  ErrorMessage,
   ImgInput,
   ImgLabel,
   ImgProfile,
   ImgWrap,
+  InfoText,
   JoinMain,
 } from "@/styles/joinStyle";
 
@@ -53,7 +55,16 @@ const Join: React.FC = () => {
     number: useInput(""),
   };
 
-  const { error, EmailValid, IdValid, PwValid, PwCheckValid } = useValid({
+  const {
+    error,
+    EmailValid,
+    IdValid,
+    PwValid,
+    PwCheckValid,
+    NicknameValid,
+    UserNameValid,
+    NumberValid,
+  } = useValid({
     email: form.email.value,
     user_id: form.id.value,
     password: form.password.value,
@@ -62,38 +73,6 @@ const Join: React.FC = () => {
     nickname: form.nickname.value,
     number: form.number.value,
   });
-
-  console.log("에러:", error);
-  console.log("이메일 유효성", EmailValid);
-  console.log("아이디 유효성 검사", IdValid);
-  console.log("비밀번호 유효성 검사", PwValid);
-  console.log("비밀번호 확인 유효성 검사", PwCheckValid);
-
-  // 아이디 중복 확인 api
-  const handleIdValid = async (e: FormEvent) => {
-    e.preventDefault();
-    try {
-      const data = await idValidApi({
-        user_id: form.id.value,
-      });
-      console.log("아이디 중복 없음 가입 가능", data);
-    } catch (error) {
-      console.error("아이디 중복임 가입 불가능", error);
-    }
-  };
-
-  // 이메일 중복 확인 api
-  const handleEmailValid = async (e: FormEvent) => {
-    e.preventDefault();
-    try {
-      const data = await emailValidApi({
-        email: form.email.value,
-      });
-      console.log("이메일 중복 없음 가입 가능", data);
-    } catch (error) {
-      console.error("이메일 중복임 가입 불가능", error);
-    }
-  };
 
   // 회원가입 api 통신
   const handleJoin = async (e: FormEvent) => {
@@ -118,6 +97,7 @@ const Join: React.FC = () => {
     <JoinMain>
       <h2 className="text_h2">회원가입</h2>
       <form className="join_form">
+        {/* 프로필 이미지 업로드 */}
         <ImgWrap>
           <ImgProfile
             src={
@@ -133,64 +113,89 @@ const Join: React.FC = () => {
             ref={InputRef}
           />
         </ImgWrap>
-        <label htmlFor="input-id">아이디</label>
-        <div>
-          <input type="text" id="input-id" placeholder="아이디" {...form.id} />
-          <button className="btn_check" onClick={handleIdValid}>
-            중복 확인
-          </button>
-        </div>
 
+        {/* 아이디 입력 */}
+        <label htmlFor="input-id">아이디</label>
+        <InfoText>5자 - 12자</InfoText>
+        <input
+          type="text"
+          id="input-id"
+          placeholder="아이디"
+          {...form.id}
+          onBlur={IdValid}
+        />
+        <ErrorMessage>{error.idErr as string}</ErrorMessage>
+
+        {/* 비밀번호 입력 */}
         <label htmlFor="input-pw">비밀번호</label>
+        <InfoText>
+          영소문자, 숫자, 특수문자(@, !, #, $)를 포함한 6자 - 16자
+        </InfoText>
         <input
           type="password"
           id="input-pw"
           placeholder="비밀번호"
           {...form.password}
+          onBlur={PwValid}
         />
+        <ErrorMessage>{error.pwErr as string}</ErrorMessage>
 
+        {/*  비밀번호 확인 입력 */}
         <label htmlFor="input-pw">비밀번호 확인</label>
         <input
           type="password"
           id="input-pwchk"
           placeholder="비밀번호 확인"
           {...form.pwCheck}
+          onBlur={PwCheckValid}
         />
+        <ErrorMessage>{error.pwCheckErr as string}</ErrorMessage>
+
+        {/* 닉네임 입력 */}
         <label htmlFor="input-nic">닉네임</label>
+        <InfoText>3자 - 10자</InfoText>
         <input
           type="text"
           id="input-nic"
           placeholder="닉네임"
           {...form.nickname}
+          onBlur={NicknameValid}
         />
+        <ErrorMessage>{error.nicknameErr as string}</ErrorMessage>
 
+        {/* 이메일 입력 */}
         <label htmlFor="input-email">이메일</label>
-        <div>
-          <input
-            type="text"
-            id="input-email"
-            placeholder="이메일"
-            {...form.email}
-          />
-          <button className="btn_check" onClick={handleEmailValid}>
-            중복 확인
-          </button>
-        </div>
+        <input
+          type="text"
+          id="input-email"
+          placeholder="이메일"
+          {...form.email}
+          onBlur={EmailValid}
+        />
+        <ErrorMessage>{error.emailErr as string}</ErrorMessage>
 
+        {/* 이름 입력 */}
         <label htmlFor="input-pw">이름</label>
         <input
           type="text"
           id="input-name"
           placeholder="이름"
           {...form.username}
+          onBlur={UserNameValid}
         />
+        <ErrorMessage>{error.userNameErr as string}</ErrorMessage>
+
+        {/* 전화번호 입력 */}
         <label htmlFor="input-num">전화번호</label>
         <input
           type="text"
           id="input-num"
           placeholder="전화번호"
           {...form.number}
+          onBlur={NumberValid}
         />
+        <ErrorMessage>{error.numberErr as string}</ErrorMessage>
+
         <button className="btn_join" onClick={handleJoin}>
           회원가입
         </button>
