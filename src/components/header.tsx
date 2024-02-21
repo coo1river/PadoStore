@@ -12,6 +12,7 @@ import {
   ModalWrap,
 } from "@/styles/headerStyle";
 import { useRouter } from "next/navigation";
+import useAuthStore from "@/store/useAuthStore";
 
 interface PostUploadModalProps {
   setUploadModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -62,6 +63,18 @@ const Header: React.FC = () => {
     setUploadModal(!uploadModal);
   };
 
+  // zustand에서 관리하는 authState로 로그인 상태 확인
+  const { authState, setAuthState } = useAuthStore();
+  const { token, setToken } = useAuthStore();
+
+  console.log(authState, token);
+
+  const handleLogout = () => {
+    setAuthState(false);
+    setToken(null);
+    sessionStorage.removeItem("userToken");
+  };
+
   return (
     <CommonHeader>
       <LogoText>
@@ -81,10 +94,17 @@ const Header: React.FC = () => {
           <PostUploadModal setUploadModal={setUploadModal} />
         ) : null}
       </div>
-      <LoginJoin>
-        <button onClick={() => router.push("/login")}>로그인</button>
-        <button onClick={() => router.push("/join")}>회원가입</button>
-      </LoginJoin>
+      {authState ? (
+        <LoginJoin>
+          <button onClick={() => router.push("/profile")}>프로필</button>
+          <button onClick={handleLogout}>로그아웃</button>
+        </LoginJoin>
+      ) : (
+        <LoginJoin>
+          <button onClick={() => router.push("/login")}>로그인</button>
+          <button onClick={() => router.push("/join")}>회원가입</button>
+        </LoginJoin>
+      )}
     </CommonHeader>
   );
 };
