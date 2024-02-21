@@ -26,6 +26,7 @@ const useValid = (
   form: Data
 ): {
   error: Error;
+  joinableState: boolean;
   IdValid: () => void;
   EmailValid: () => void;
   PwValid: () => void;
@@ -45,6 +46,25 @@ const useValid = (
     numberErr: "",
   });
 
+  const [joinable, setJoinable] = useState({
+    id: false,
+    email: false,
+    password: false,
+    pwCheck: false,
+    nickname: false,
+    userName: false,
+    number: false,
+  });
+
+  const joinableState =
+    joinable.id &&
+    joinable.email &&
+    joinable.password &&
+    joinable.pwCheck &&
+    joinable.nickname &&
+    joinable.userName &&
+    joinable.number;
+
   // id 조건 정규 표현식
   const idReg = /^[a-z]+[a-z0-9]{4,11}$/;
 
@@ -61,6 +81,7 @@ const useValid = (
     } else {
       const IdValid = await idValidApi({ user_id: form.user_id });
       setError({ ...error, idErr: IdValid });
+      setJoinable({ ...joinable, id: true });
     }
   };
 
@@ -79,6 +100,7 @@ const useValid = (
         ...error,
         emailErr: emailValid,
       });
+      setJoinable({ ...joinable, email: true });
     }
   };
 
@@ -97,6 +119,7 @@ const useValid = (
       setError({ ...error, pwErr: "16자 이하로 입력해 주세요." });
     } else {
       setError({ ...error, pwErr: "" });
+      setJoinable({ ...joinable, password: true });
     }
   };
 
@@ -108,6 +131,7 @@ const useValid = (
       setError({ ...error, pwCheckErr: "비밀번호가 일치하지 않습니다." });
     } else {
       setError({ ...error, pwCheckErr: "" });
+      setJoinable({ ...joinable, pwCheck: true });
     }
   };
 
@@ -118,6 +142,9 @@ const useValid = (
       setError({ ...error, nicknameErr: "3자 이상 입력해 주세요." });
     } else if (form.nickname.length > 10) {
       setError({ ...error, nicknameErr: "10자까지 입력 가능합니다." });
+    } else {
+      setError({ ...error, nicknameErr: "" });
+      setJoinable({ ...joinable, nickname: true });
     }
   };
 
@@ -130,7 +157,10 @@ const useValid = (
       setError({ ...error, userNameErr: "필수 입력 항목입니다." });
     } else if (!nameReg.test(form.user_name)) {
       setError({ ...error, userNameErr: "한글 혹은 영문만 입력 가능합니다." });
-    } else setError({ ...error, userNameErr: "" });
+    } else {
+      setError({ ...error, userNameErr: "" });
+      setJoinable({ ...joinable, userName: true });
+    }
   };
 
   // 휴대폰 번호 유효성 검사 함수
@@ -141,11 +171,13 @@ const useValid = (
       setError({ ...error, numberErr: "숫자만 입력 가능합니다." });
     } else {
       setError({ ...error, numberErr: "" });
+      setJoinable({ ...joinable, number: true });
     }
   };
 
   return {
     error,
+    joinableState,
     EmailValid,
     IdValid,
     PwValid,

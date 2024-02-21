@@ -49,8 +49,12 @@ export const JoinMain = styled(LoginMain)`
     padding: 10px;
     border-radius: 10px;
     width: 100%;
-    background-color: var(--color-main);
     color: white;
+    background-color: var(--color-main);
+
+    &:disabled {
+      background-color: #83c0ed;
+    }
   }
 `;
 

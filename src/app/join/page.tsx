@@ -22,8 +22,6 @@ import ImgProfileBasic from "../../../public/assets/images/img-user-basic.png";
 // 커스텀 훅, api import
 import useInput from "@/hooks/useInput";
 import joinApi from "@/api/joinApi";
-import idValidApi from "@/api/idValidApi";
-import emailValidApi from "@/api/emailValidApi";
 import useValid from "@/hooks/useValid";
 
 const Join: React.FC = () => {
@@ -57,6 +55,7 @@ const Join: React.FC = () => {
 
   const {
     error,
+    joinableState,
     EmailValid,
     IdValid,
     PwValid,
@@ -196,7 +195,11 @@ const Join: React.FC = () => {
         />
         <ErrorMessage>{error.numberErr as string}</ErrorMessage>
 
-        <button className="btn_join" onClick={handleJoin}>
+        <button
+          className="btn_join"
+          onClick={handleJoin}
+          disabled={!joinableState}
+        >
           회원가입
         </button>
       </form>
