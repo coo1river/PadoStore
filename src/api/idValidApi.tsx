@@ -9,7 +9,7 @@ const idValidApi = async (data: IdData) => {
   try {
     const res = await axios.post<IdData>(url, data);
     console.log("API 응답:", res.data);
-    return res.data ? "사용 가능한 아이디입니다." : "중복된 아이디입니다.";
+    return res.data;
   } catch (error) {
     console.log("API 오류:", error);
     throw error;

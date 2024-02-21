@@ -87,6 +87,7 @@ const Join: React.FC = () => {
         uploadfile: imgProfile,
       });
       console.log("가입 성공", data);
+      router.push("/home");
     } catch (error) {
       console.error("가입 실패", error);
     }

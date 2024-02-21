@@ -1,5 +1,6 @@
 import emailValidApi from "@/api/emailValidApi";
 import idValidApi from "@/api/idValidApi";
+import NicknameValidApi from "@/api/nicknameValidApi";
 import { useState } from "react";
 
 interface Error {
@@ -82,8 +83,11 @@ const useValid = (
       setError({ ...error, idErr: "유효한 아이디 형식이 아닙니다." });
     } else {
       const IdValid = await idValidApi({ user_id: form.user_id });
-      setError({ ...error, idErr: IdValid });
-      setJoinable({ ...joinable, id: true });
+      setError({
+        ...error,
+        idErr: IdValid ? "사용 가능한 아이디입니다." : "중복된 아이디입니다.",
+      });
+      IdValid ? setJoinable({ ...joinable, id: true }) : null;
     }
   };
 
@@ -100,9 +104,11 @@ const useValid = (
       const emailValid = await emailValidApi({ email: form.email });
       setError({
         ...error,
-        emailErr: emailValid,
+        emailErr: emailValid
+          ? "사용 가능한 이메일입니다."
+          : "중복된 이메일입니다.",
       });
-      setJoinable({ ...joinable, email: true });
+      emailValid ? setJoinable({ ...joinable, email: true }) : null;
     }
   };
 
@@ -137,7 +143,7 @@ const useValid = (
     }
   };
 
-  const NicknameValid = () => {
+  const NicknameValid = async () => {
     if (!form.nickname) {
       setError({ ...error, nicknameErr: "필수 입력 항목입니다." });
     } else if (form.nickname.length < 3) {
@@ -145,8 +151,14 @@ const useValid = (
     } else if (form.nickname.length > 10) {
       setError({ ...error, nicknameErr: "10자까지 입력 가능합니다." });
     } else {
-      setError({ ...error, nicknameErr: "" });
-      setJoinable({ ...joinable, nickname: true });
+      const NicknameValid = await NicknameValidApi({ nickname: form.nickname });
+      setError({
+        ...error,
+        nicknameErr: NicknameValid
+          ? "사용 가능한 닉네임입니다."
+          : "중복된 닉네임입니다.",
+      });
+      NicknameValid ? setJoinable({ ...joinable, nickname: true }) : null;
     }
   };
 
