@@ -1,6 +1,6 @@
 import styled from "styled-components";
+import { GroupForm } from "./UploadStyle";
 import { HomeMain } from "./homeStyle";
-import { GroupForm } from "./productUploadStyle";
 
 export const ProductMain = styled(HomeMain)`
   .product_detail {

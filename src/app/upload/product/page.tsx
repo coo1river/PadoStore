@@ -1,5 +1,5 @@
 "use client";
-import { UploadForm, UploadMain } from "@/styles/productUploadStyle";
+import { UploadForm, UploadMain } from "@/styles/UploadStyle";
 
 const Product: React.FC = () => {
   return (
