@@ -46,6 +46,7 @@ const useValid = (
     numberErr: "",
   });
 
+  // 모든 input 조건 상태 관리
   const [joinable, setJoinable] = useState({
     id: false,
     email: false,
@@ -56,6 +57,7 @@ const useValid = (
     number: false,
   });
 
+  // 모든 조건 true인 경우 가입 가능 상태로 변경
   const joinableState =
     joinable.id &&
     joinable.email &&
