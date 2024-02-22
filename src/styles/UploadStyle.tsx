@@ -14,6 +14,25 @@ export const UploadMain = styled.main`
   }
 `;
 
+export const ImgWrap = styled.div`
+  width: 800px;
+  border-radius: 50%;
+  margin: 0 auto;
+
+  .label_file {
+    display: block;
+    background-color: var(--color-lightgrey);
+    height: 300px;
+    margin: 0 150px;
+    border-radius: 15px;
+    cursor: pointer;
+  }
+
+  .input_file {
+    display: none;
+  }
+`;
+
 export const UploadForm = styled.article`
   width: 800px;
   margin: 30px 0;
@@ -43,19 +62,6 @@ export const UploadForm = styled.article`
     &:focus {
       outline: 2px solid var(--color-main);
     }
-  }
-
-  .label_file {
-    display: block;
-    background-color: var(--color-lightgrey);
-    height: 300px;
-    margin: 0 150px;
-    border-radius: 15px;
-    cursor: pointer;
-  }
-
-  .input_file {
-    display: none;
   }
 
   .btn_wrap button {

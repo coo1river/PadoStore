@@ -6,6 +6,7 @@ import {
   UploadMain,
   AddProduct,
   ProductList,
+  ImgWrap,
 } from "@/styles/UploadStyle";
 import { useState } from "react";
 
@@ -44,12 +45,17 @@ const GroupPurchase: React.FC = () => {
         count: productInfo.count.value,
       };
       setProductList((prevList) => [...prevList, newProduct]);
-
-      // input value 초기화
-      productInfo.name.clear();
-      productInfo.price.clear();
-      productInfo.count.clear();
     }
+
+    productInfo.name.onChange({
+      target: { value: "" },
+    } as React.ChangeEvent<HTMLInputElement>);
+    productInfo.price.onChange({
+      target: { value: "" },
+    } as React.ChangeEvent<HTMLInputElement>);
+    productInfo.count.onChange({
+      target: { value: "" },
+    } as React.ChangeEvent<HTMLInputElement>);
   };
 
   return (
@@ -57,13 +63,16 @@ const GroupPurchase: React.FC = () => {
       <h2>공동구매 폼</h2>
       <article>
         <GroupForm>
-          <label className="label_file" htmlFor="file-img" />
-          <input
-            className="input_file"
-            type="file"
-            id="file-img"
-            accept="image/*"
-          />
+          <ImgWrap>
+            <label className="label_file" htmlFor="file-img" />
+            <input
+              className="input_file"
+              type="file"
+              id="file-img"
+              accept="image/*"
+            />
+          </ImgWrap>
+
           <label htmlFor="product-title">폼 제목</label>
           <input
             id="product-title"
