@@ -39,6 +39,17 @@ export const UploadForm = styled.article`
   display: flex;
   flex-direction: column;
 
+  .add_switch_wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+
+    p {
+      font-size: 16px;
+    }
+  }
+
   label {
     font-size: 18px;
     font-weight: 700;
@@ -62,6 +73,10 @@ export const UploadForm = styled.article`
     &:focus {
       outline: 2px solid var(--color-main);
     }
+  }
+
+  textarea {
+    margin-bottom: 30px;
   }
 
   .btn_wrap button {
@@ -92,6 +107,18 @@ export const UploadForm = styled.article`
 `;
 
 export const GroupForm = styled(UploadForm)`
+  article {
+    margin-bottom: 20px;
+    background-color: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0px 0px 4px 0px #b4b4b42d;
+  }
+
+  input {
+    box-shadow: 0px 0px 4px 0px #5757572c;
+  }
+
   .product_list {
     background-color: white;
     margin: 20px 0;
@@ -105,6 +132,17 @@ export const GroupForm = styled(UploadForm)`
   .btn_product_add {
     background-color: var(--color-main);
     color: white;
+  }
+
+  .sale_period_wrap {
+    font-weight: 500;
+    input {
+      margin-left: 10px;
+
+      &:nth-child(2) {
+        margin-right: 30px;
+      }
+    }
   }
 
   select {
@@ -127,23 +165,31 @@ export const GroupForm = styled(UploadForm)`
   }
 `;
 
+export const SalePeriod = styled.article``;
+
+export const UserAccount = styled.article`
+  display: flex;
+  flex-direction: column;
+
+  label {
+    margin-right: 20px;
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  #account-name {
+    margin-right: 20px;
+  }
+`;
+
 export const AddProduct = styled.article`
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
 
-  padding: 20px;
-  box-shadow: 0px 0px 4px 0px #b4b4b42d;
-  background-color: white;
-  border-radius: 15px;
-
   label {
     width: 70px;
     font-size: 16px;
-  }
-
-  input {
-    box-shadow: 0px 0px 4px 0px #5757572c;
   }
 
   .product_name {
@@ -220,5 +266,86 @@ export const ProductList = styled.article`
       font-size: 18px;
       font-weight: 600;
     }
+  }
+`;
+
+export const AddInputList = styled.article`
+  #input_switch {
+    padding: 0;
+    position: absolute;
+    /* hidden */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .switch_label {
+    margin-bottom: 0;
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    width: 58px;
+    height: 28px;
+    background: #fff;
+    border: 2px solid var(--color-main);
+    border-radius: 20px;
+    transition: 0.2s;
+  }
+  .switch_label:hover {
+    background: #efefef;
+  }
+  .onf_btn {
+    position: absolute;
+    top: 4px;
+    left: 3px;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    background: var(--color-main);
+    transition: 0.2s;
+  }
+
+  /* checking style */
+  #input_switch:checked + .switch_label {
+    background: var(--color-main);
+    border: 2px solid var(--color-main);
+  }
+
+  #input_switch:checked + .switch_label:hover {
+    background: var(--color-main);
+  }
+
+  /* move */
+  #input_switch:checked + .switch_label .onf_btn {
+    left: 34px;
+    background: #fff;
+    box-shadow: 1px 2px 3px #00000020;
+  }
+
+  .add_input_el {
+    background-color: var(--color-trans-grey);
+    margin: 10px 0 20px 0;
+    border-radius: 15px;
+    padding: 10px;
+  }
+
+  .input_list_wrap {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .btn_add_input {
+    background-color: var(--color-main);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 15px;
+    width: fit-content;
+    font-weight: 600;
+    align-self: end;
   }
 `;
