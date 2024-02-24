@@ -20,6 +20,7 @@ const GroupPurchase: React.FC = () => {
   // zustand에서 token 가져오기
   const { token, setToken } = useAuthStore();
 
+  // api에 보낼 정보 담기
   const form = {
     board_type: "groupPurchase",
     user_id: token,
@@ -47,6 +48,7 @@ const GroupPurchase: React.FC = () => {
       setProductList((prevList) => [...prevList, newProduct]);
     }
 
+    // input value 초기화
     productInfo.name.onChange({
       target: { value: "" },
     } as React.ChangeEvent<HTMLInputElement>);
