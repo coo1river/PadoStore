@@ -9,12 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "axios": "^1.6.7",
     "babel-plugin-styled-components": "^2.1.4",
+    "http-proxy-middleware": "^2.0.6",
     "next": "14.1.0",
+    "next-transpile-modules": "^10.0.1",
+    "nextjs-cors": "^2.2.0",
     "react": "^18",
     "react-dom": "^18",
     "styled-components": "^6.1.8",
-    "styled-reset": "^4.5.2"
+    "styled-reset": "^4.5.2",
+    "zustand": "^4.5.0"
   },
   "devDependencies": {
     "@stylexjs/nextjs-plugin": "^0.4.1",
@@ -24,5 +29,6 @@
     "eslint": "^8",
     "eslint-config-next": "14.1.0",
     "typescript": "^5"
-  }
+  },
+  "proxy": "http://localhost:8080"
 }

@@ -1,54 +1,208 @@
 "use client";
-import { ImgInput, ImgLabel, JoinMain } from "@/styles/joinStyle";
-import { useRef, useState } from "react";
+
+// 리액트 훅 import
+import { ChangeEvent, FormEvent, useRef, useState } from "react";
+
+import { useRouter } from "next/navigation";
+
+// 스타일 import
+import {
+  ErrorMessage,
+  ImgInput,
+  ImgLabel,
+  ImgProfile,
+  ImgWrap,
+  InfoText,
+  JoinMain,
+} from "@/styles/joinStyle";
+
+// 기본 프로필 이미지 import
+import ImgProfileBasic from "../../../public/assets/images/img-user-basic.png";
+
+// 커스텀 훅, api import
+import useInput from "@/hooks/useInput";
+import joinApi from "@/api/joinApi";
+import useValid from "@/hooks/useValid";
 
 const Join: React.FC = () => {
-  // 프로필 이미지 설정
-  const [imgProfile, setImgProfile] = useState(null);
-  // const inputRef = useRef<HTMLInputElement>(null);
+  // 라우터 사용
+  const router = useRouter();
 
-  // const InputFile = useRef(null);
+  // 프로필 이미지 useState 값으로 저장
+  const [imgProfile, setImgProfile] = useState<File | null>(null);
 
-  // const onChangeFile = (e) => {
-  //   if(e.target.files[0]){
-  //     setImgProfile(e.target.files[0])
-  // }
+  // useRef 사용
+  const InputRef = useRef<HTMLInputElement>(null);
+
+  // 이미지 변경 함수
+  const onChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files?.[0]) {
+      const selectedFile = e.target.files[0];
+      setImgProfile(selectedFile);
+    }
+  };
+
+  // useInput으로 value, onChange 할당
+  const form = {
+    id: useInput(""),
+    password: useInput(""),
+    pwCheck: useInput(""),
+    nickname: useInput(""),
+    email: useInput(""),
+    username: useInput(""),
+    number: useInput(""),
+  };
+
+  const {
+    error,
+    joinableState,
+    EmailValid,
+    IdValid,
+    PwValid,
+    PwCheckValid,
+    NicknameValid,
+    UserNameValid,
+    NumberValid,
+  } = useValid({
+    email: form.email.value,
+    user_id: form.id.value,
+    password: form.password.value,
+    pwCheck: form.pwCheck.value,
+    user_name: form.username.value,
+    nickname: form.nickname.value,
+    number: form.number.value,
+  });
+
+  // 회원가입 api 통신
+  const handleJoin = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      const data = await joinApi({
+        user_id: form.id.value,
+        password: form.password.value,
+        user_name: form.username.value,
+        nickname: form.nickname.value,
+        email: form.email.value,
+        phone_number: form.number.value,
+        uploadfile: imgProfile,
+      });
+      console.log("가입 성공", data);
+      router.push("/home");
+    } catch (error) {
+      console.error("가입 실패", error);
+    }
+  };
 
   return (
     <JoinMain>
       <h2 className="text_h2">회원가입</h2>
       <form className="join_form">
-        <div className="img_wrap">
-          <img src="" alt="" />
+        {/* 프로필 이미지 업로드 */}
+        <ImgWrap>
+          <ImgProfile
+            src={
+              imgProfile ? URL.createObjectURL(imgProfile) : ImgProfileBasic.src
+            }
+          />
           <ImgLabel htmlFor="img-profile" />
           <ImgInput
             type="file"
             id="img-profile"
             accept="image/*"
-            // onChange={onChangeFile}
-            // ref={InputFile}
+            onChange={onChangeFile}
+            ref={InputRef}
           />
-        </div>
+        </ImgWrap>
 
+        {/* 아이디 입력 */}
         <label htmlFor="input-id">아이디</label>
-        <input type="text" id="input-id" placeholder="아이디" />
+        <InfoText>5자 - 12자</InfoText>
+        <input
+          type="text"
+          id="input-id"
+          placeholder="아이디"
+          {...form.id}
+          onBlur={IdValid}
+        />
+        <ErrorMessage>{error.idErr as string}</ErrorMessage>
 
+        {/* 비밀번호 입력 */}
         <label htmlFor="input-pw">비밀번호</label>
-        <input type="password" id="input-pw" placeholder="비밀번호" />
+        <InfoText>
+          영소문자, 숫자, 특수문자(@, !, #, $)를 포함한 6자 - 16자
+        </InfoText>
+        <input
+          type="password"
+          id="input-pw"
+          placeholder="비밀번호"
+          {...form.password}
+          onBlur={PwValid}
+        />
+        <ErrorMessage>{error.pwErr as string}</ErrorMessage>
 
+        {/*  비밀번호 확인 입력 */}
         <label htmlFor="input-pw">비밀번호 확인</label>
-        <input type="password" id="input-pwchk" placeholder="비밀번호 확인" />
+        <input
+          type="password"
+          id="input-pwchk"
+          placeholder="비밀번호 확인"
+          {...form.pwCheck}
+          onBlur={PwCheckValid}
+        />
+        <ErrorMessage>{error.pwCheckErr as string}</ErrorMessage>
 
+        {/* 닉네임 입력 */}
         <label htmlFor="input-nic">닉네임</label>
-        <input type="text" id="input-nic" placeholder="닉네임" />
+        <InfoText>3자 - 10자</InfoText>
+        <input
+          type="text"
+          id="input-nic"
+          placeholder="닉네임"
+          {...form.nickname}
+          onBlur={NicknameValid}
+        />
+        <ErrorMessage>{error.nicknameErr as string}</ErrorMessage>
 
+        {/* 이메일 입력 */}
+        <label htmlFor="input-email">이메일</label>
+        <input
+          type="text"
+          id="input-email"
+          placeholder="이메일"
+          {...form.email}
+          onBlur={EmailValid}
+        />
+        <ErrorMessage>{error.emailErr as string}</ErrorMessage>
+
+        {/* 이름 입력 */}
         <label htmlFor="input-pw">이름</label>
-        <input type="text" id="input-name" placeholder="이름" />
+        <input
+          type="text"
+          id="input-name"
+          placeholder="이름"
+          {...form.username}
+          onBlur={UserNameValid}
+        />
+        <ErrorMessage>{error.userNameErr as string}</ErrorMessage>
 
+        {/* 전화번호 입력 */}
         <label htmlFor="input-num">전화번호</label>
-        <input type="text" id="input-num" placeholder="전화번호" />
+        <input
+          type="text"
+          id="input-num"
+          placeholder="전화번호"
+          {...form.number}
+          onBlur={NumberValid}
+        />
+        <ErrorMessage>{error.numberErr as string}</ErrorMessage>
 
-        <button className="btn_join">다음</button>
+        <button
+          className="btn_join"
+          onClick={handleJoin}
+          disabled={!joinableState}
+        >
+          회원가입
+        </button>
       </form>
     </JoinMain>
   );

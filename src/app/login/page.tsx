@@ -1,9 +1,57 @@
+"use client";
 import { LoginInput, LoginBtn, SnsLogin, LoginMain } from "@/styles/loginStyle";
-import React from "react";
+import React, { FormEvent, useState } from "react";
 import iconNaver from "../../../public/assets/images/icon-naver.png";
 import iconKakao from "../../../public/assets/images/icon-kakao.png";
+import useInput from "@/hooks/useInput";
+import loginApi from "@/api/loginApi";
+import { ErrorMessage } from "@/styles/joinStyle";
+import { useRouter } from "next/navigation";
+import useAuthStore from "@/store/useAuthStore";
 
 const Login: React.FC = () => {
+  const router = useRouter();
+
+  const form = {
+    user_id: useInput(""),
+    password: useInput(""),
+  };
+
+  const [error, setError] = useState<string>("");
+
+  const { authState, setAuthState } = useAuthStore();
+  const { token, setToken } = useAuthStore();
+
+  // 로그인 함수(로그인 유효성 검사, api 호출)
+  const handleLogin = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!form.user_id && !form.password) {
+      setError("아이디와 비밀번호를 입력해 주세요.");
+    } else if (!form.user_id) {
+      setError("아이디를 입력해 주세요.");
+    } else if (!form.password) {
+      setError("비밀번호를 입력해 주세요.");
+    } else {
+      setError("");
+
+      // 유효성 검사 통과 시 api 호출
+      try {
+        const loginRes = await loginApi({
+          user_id: form.user_id.value,
+          password: form.password.value,
+        });
+
+        // zustand로 토큰 전역 관리, 세션 스토리지에 관리
+        setToken(loginRes.user_id);
+        setAuthState(true);
+        sessionStorage.setItem("userToken", loginRes.user_id);
+        router.push("/home");
+      } catch {
+        setError("아이디 또는 비밀번호가 일치하지 않습니다.");
+      }
+    }
+  };
+
   return (
     <LoginMain>
       <h2 className="a11y-hidden">로그인</h2>
@@ -12,16 +60,27 @@ const Login: React.FC = () => {
         <div className="login_ipt_wrap">
           <div className="input_wrap">
             <label htmlFor="input-id" />
-            <LoginInput id="input-id" placeholder="아이디" type="text" />
+            <LoginInput
+              id="input-id"
+              placeholder="아이디"
+              type="text"
+              {...form.user_id}
+            />
           </div>
 
           <div className="input_wrap">
             <label htmlFor="input-pw" />
-            <LoginInput id="input-pw" placeholder="비밀번호" type="password" />
+            <LoginInput
+              id="input-pw"
+              placeholder="비밀번호"
+              type="password"
+              {...form.password}
+            />
           </div>
         </div>
 
-        <LoginBtn>로그인</LoginBtn>
+        <ErrorMessage>{error}</ErrorMessage>
+        <LoginBtn onClick={handleLogin}>로그인</LoginBtn>
       </form>
 
       <div className="text_join">
