@@ -67,8 +67,6 @@ const Header: React.FC = () => {
   const { authState, setAuthState } = useAuthStore();
   const { token, setToken } = useAuthStore();
 
-  console.log(authState, token);
-
   const handleLogout = () => {
     setAuthState(false);
     setToken(null);

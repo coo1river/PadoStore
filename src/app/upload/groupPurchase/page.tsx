@@ -192,9 +192,9 @@ const GroupPurchase: React.FC = () => {
         />
 
         {/* 판매 기간 */}
-        <h3 className="a11y-hidden">판매 기간</h3>
+        <h3 className="product_title">판매 기간</h3>
         <SalePeriod>
-          <label htmlFor="sale-period">판매 기간</label>
+          <label htmlFor="sale-period" />
           <div className="sale_period_wrap">
             <span>• 시작 날짜</span>
             <input type="date" id="start-date" {...form.start_dt} />
@@ -346,8 +346,9 @@ const GroupPurchase: React.FC = () => {
         />
 
         {/* 추가 질문 */}
+        <h3 className="product_title">추가 질문</h3>
         <AddInputList>
-          <label htmlFor="add_input">추가 질문</label>
+          <label htmlFor="add_input" />
           <div className="add_switch_wrap">
             <p>추가 질문 받기</p>
             {/* 추가 질문 스위치 */}

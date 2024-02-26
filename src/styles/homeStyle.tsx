@@ -27,7 +27,7 @@ export const HomeMain = styled.main`
     display: flex;
     justify-content: start;
     margin: 20px 0;
-    gap: 100px;
+    gap: 24px;
 
     li {
       width: fit-content;
@@ -72,10 +72,8 @@ export const ProductTab = styled.section`
 export const ProductArticle = styled.article`
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
   gap: 10px;
-  height: 260px;
-  padding: 20px;
+  width: 200px;
   box-shadow: 0px 0px 4px 0px #0000001f;
   border-radius: 15px;
   cursor: pointer;
@@ -86,13 +84,16 @@ export const ProductArticle = styled.article`
   }
 
   img {
-    width: 180px;
-    height: 180px;
-    border-radius: 15px;
+    width: 100%;
+    border-radius: 15px 15px 0 0;
+  }
+
+  .product_info {
+    padding: 12px 16px;
   }
 
   .product_title {
-    width: 180px;
+    margin-bottom: 16px;
     font-size: 18px;
     font-weight: 600;
   }

@@ -18,28 +18,38 @@ const ProductSection: React.FC = () => {
           }}
         >
           <img src={productImg1.src} alt="" />
-          <h4 className="product_title">귀여운 춘식이 쿠션쿠션쿠션쿠션</h4>
-          <p className="user_name">닉네임123</p>
+          <div className="product_info">
+            <h4 className="product_title">귀여운 춘식이 쿠션쿠션쿠션쿠션</h4>
+            <p className="user_name">닉네임123</p>
+          </div>
         </ProductArticle>
         <ProductArticle>
           <img src={productImg1.src} alt="" />
-          <h4 className="product_title">귀여운 춘식이 쿠션쿠션쿠션쿠션</h4>
-          <p className="user_name">닉네임123</p>
+          <div className="product_info">
+            <h4 className="product_title">귀여운 춘식이 쿠션쿠션쿠션쿠션</h4>
+            <p className="user_name">닉네임123</p>
+          </div>
         </ProductArticle>
         <ProductArticle>
           <img src={productImg1.src} alt="" />
-          <h4 className="product_title">귀여운 춘식이 쿠션쿠션쿠션쿠션</h4>
-          <p className="user_name">닉네임123</p>
+          <div className="product_info">
+            <h4 className="product_title">귀여운 춘식이 쿠션쿠션쿠션쿠션</h4>
+            <p className="user_name">닉네임123</p>
+          </div>
         </ProductArticle>
         <ProductArticle>
           <img src={productImg1.src} alt="" />
-          <h4 className="product_title">귀여운 춘식이</h4>
-          <p className="user_name">닉네임123</p>
+          <div className="product_info">
+            <h4 className="product_title">귀여운 춘식이</h4>
+            <p className="user_name">닉네임123</p>
+          </div>
         </ProductArticle>
         <ProductArticle>
           <img src={productImg1.src} alt="" />
-          <h4 className="product_title">귀여운 춘식이 쿠션쿠션쿠션쿠션</h4>
-          <p className="user_name">닉네임123</p>
+          <div className="product_info">
+            <h4 className="product_title">귀여운 춘식이 쿠션쿠션쿠션쿠션</h4>
+            <p className="user_name">닉네임123</p>
+          </div>
         </ProductArticle>
       </div>
     </ProductTab>
