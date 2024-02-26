@@ -1,4 +1,5 @@
 "use client";
+import groupUploadApi, { GroupReq } from "@/api/groupUploadApi";
 import useInput from "@/hooks/useInput";
 import useAuthStore from "@/store/useAuthStore";
 import {
@@ -10,69 +11,85 @@ import {
   AddInputList,
   UserAccount,
   SalePeriod,
+  ImgFile,
 } from "@/styles/UploadStyle";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, FormEvent, useRef, useState } from "react";
 
 interface Product {
-  name: string;
-  price: string;
-  count: string;
+  product_name: string;
+  product_price: string;
+  org_quantity: string;
 }
 
 const GroupPurchase: React.FC = () => {
+  // 라우터 사용
+  const router = useRouter();
+
   // zustand에서 token 가져오기
   const { token, setToken } = useAuthStore();
 
-  // api에 보낼 정보 담기
-  const form = {
-    board_type: "groupPurchase",
-    user_id: token,
-    title: useInput(""),
-    content: useInput(""),
-    product: {
-      product_name: useInput(""),
-      product_price: useInput(""),
-      org_quantity: useInput(""),
-      post_method: useState(""),
-      input: useInput(""),
-      start_dt: useInput(""),
-      end_dt: useInput(""),
-    },
-    user: {
-      bank: useInput(""),
-      accout_name: useInput(""),
-      account_number: useInput(""),
-    },
-  };
+  const [imgFile, setImgFile] = useState<File | null>(null);
 
-  // useInput 사용으로 사용 정보 내용 담기
-  const productInfo = {
-    name: useInput(""),
-    price: useInput(""),
-    count: useInput(""),
-  };
+  const [postStatus, setPostStatus] = useState<string>("InProgress");
 
   // 상품 리스트 배열로 저장
   const [productList, setProductList] = useState<Product[]>([]);
 
+  const setActiveClass = (status: string) => {
+    return postStatus === status ? "active" : "";
+  };
+
+  // api에 보낼 정보 담기
+  const form = {
+    title: useInput(""),
+    content: useInput(""),
+    post_method: useInput(""),
+    start_dt: useInput(""),
+    end_dt: useInput(""),
+    input: useInput(""),
+    bank: useInput(""),
+    account_name: useInput(""),
+    account_number: useInput(""),
+  };
+
+  // useRef 사용
+  const InputRef = useRef<HTMLInputElement>(null);
+
+  // 이미지 변경 함수
+  const onChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files?.[0]) {
+      const selectedFile = e.target.files[0];
+      setImgFile(selectedFile);
+    }
+  };
+
+  // useInput 사용으로 사용 정보 내용 담기
+  const productInfo = {
+    product_name: useInput(""),
+    product_price: useInput(""),
+    org_quantity: useInput(""),
+  };
+
   const handleAddProduct = () => {
-    if (productInfo.name) {
+    if (productInfo) {
       const newProduct: Product = {
-        name: productInfo.name.value,
-        price: productInfo.price.value,
-        count: productInfo.count.value,
+        product_name: productInfo.product_name.value,
+        product_price: productInfo.product_price.value,
+        org_quantity: productInfo.org_quantity.value,
       };
+
       setProductList((prevList) => [...prevList, newProduct]);
     }
 
     // input value 초기화
-    productInfo.name.onChange({
+    productInfo.product_name.onChange({
       target: { value: "" },
     } as React.ChangeEvent<HTMLInputElement>);
-    productInfo.price.onChange({
+    productInfo.product_price.onChange({
       target: { value: "" },
     } as React.ChangeEvent<HTMLInputElement>);
-    productInfo.count.onChange({
+    productInfo.org_quantity.onChange({
       target: { value: "" },
     } as React.ChangeEvent<HTMLInputElement>);
   };
@@ -85,13 +102,47 @@ const GroupPurchase: React.FC = () => {
 
   // 추가 질문 등록 함수
   const handleAddInput = () => {
-    if (form.product.input) {
-      setAddInputList((prevList) => [...prevList, form.product.input.value]);
+    if (form.input) {
+      setAddInputList((prevList) => [...prevList, form.input.value]);
     }
 
-    form.product.input.onChange({
+    form.input.onChange({
       target: { value: "" },
     } as React.ChangeEvent<HTMLInputElement>);
+  };
+
+  const dataReq: GroupReq = {
+    board_type: "groupPurchase",
+    user_id: token!,
+    title: form.title.value,
+    content: form.content.value,
+    post_status: postStatus,
+    uploadfiles: imgFile,
+    product: {
+      post_method: form.post_method.value,
+      start_dt: form.start_dt.value,
+      end_dt: form.end_dt.value,
+      input: addInputList,
+    },
+    product_detail: productList,
+    user: {
+      bank: form.bank.value,
+      account_name: form.account_name.value,
+      account_number: form.account_number.value,
+    },
+  };
+
+  // 글 업로드 api 통신
+  const handleUpload = async (e: FormEvent) => {
+    e.preventDefault();
+    console.log(dataReq);
+    try {
+      const data = await groupUploadApi(dataReq);
+      console.log("업로드 성공", data);
+      router.push("/home");
+    } catch (error) {
+      console.error("업로드 실패", error);
+    }
   };
 
   return (
@@ -99,15 +150,34 @@ const GroupPurchase: React.FC = () => {
       <h2>공동구매 폼</h2>
       <GroupForm>
         <ImgWrap>
+          {imgFile && (
+            <ImgFile src={URL.createObjectURL(imgFile)} alt="이미지 파일" />
+          )}
           <label className="label_file" htmlFor="file-img" />
           <input
             className="input_file"
             type="file"
             id="file-img"
             accept="image/*"
+            onChange={onChangeFile}
+            ref={InputRef}
           />
         </ImgWrap>
         <label htmlFor="product-title">폼 제목</label>
+        <div className="btns_wrap">
+          <button
+            className={`btn_status ${setActiveClass("InProgress")}`}
+            onClick={() => setPostStatus("InProgress")}
+          >
+            진행 중
+          </button>
+          <button
+            className={`btn_status ${setActiveClass("Completed")}`}
+            onClick={() => setPostStatus("Completed")}
+          >
+            완료
+          </button>
+        </div>
         <input
           id="product-title"
           type="text"
@@ -127,9 +197,9 @@ const GroupPurchase: React.FC = () => {
           <label htmlFor="sale-period">판매 기간</label>
           <div className="sale_period_wrap">
             <span>• 시작 날짜</span>
-            <input type="date" id="start-date" {...form.product.start_dt} />
+            <input type="date" id="start-date" {...form.start_dt} />
             <span>• 종료 날짜</span>
-            <input type="date" id="end-date" {...form.product.end_dt} />
+            <input type="date" id="end-date" {...form.end_dt} />
           </div>
         </SalePeriod>
 
@@ -142,10 +212,16 @@ const GroupPurchase: React.FC = () => {
               type="text"
               id="account-name"
               placeholder="예금주를 입력해 주세요"
-              {...form.user.accout_name}
+              {...form.account_name}
             />
             <label htmlFor="back-name">• 은행명</label>
-            <select name="bank-name" id="bank-name" {...form.user.bank}>
+            <select
+              name="bank-name"
+              id="bank-name"
+              value={form.bank.value}
+              onChange={form.bank.onChange}
+            >
+              <option value="none">- 은행 선택 -</option>
               <option value="국민은행">국민은행</option>
               <option value="기업은행">기업은행</option>
               <option value="농협은행">농협은행</option>
@@ -180,17 +256,24 @@ const GroupPurchase: React.FC = () => {
             type="type"
             id="account-number"
             placeholder="계좌 번호를 입력해 주세요"
+            {...form.account_number}
           />
         </UserAccount>
 
         {/* 배송 방법 */}
         <label htmlFor="delivery-method">배송 방법</label>
-        <select name="delivery-method" id="delivery-method">
-          <option>택배 배송</option>
-          <option>등기 배송</option>
-          <option>준등기 배송</option>
-          <option>우편 배송</option>
-          <option>기타 배송</option>
+        <select
+          name="delivery-method"
+          id="delivery-method"
+          value={form.post_method.value}
+          onChange={form.post_method.onChange}
+        >
+          <option value="none">- 배송 방법 선택 -</option>
+          <option value="택배">택배 배송</option>
+          <option value="등기">등기 배송</option>
+          <option value="준등기">준등기 배송</option>
+          <option value="우편">우편 배송</option>
+          <option value="기타">기타 배송</option>
         </select>
 
         {/* 상품 등록 블록 */}
@@ -201,7 +284,7 @@ const GroupPurchase: React.FC = () => {
             <input
               type="text"
               placeholder="상품명을 입력해 주세요"
-              {...productInfo.name}
+              {...productInfo.product_name}
             />
           </div>
 
@@ -211,14 +294,14 @@ const GroupPurchase: React.FC = () => {
               id="product-price"
               type="text"
               placeholder="상품의 가격을 입력해 주세요"
-              {...productInfo.price}
+              {...productInfo.product_price}
             />
             <label htmlFor="product-count">• 수량</label>
             <input
               id="product-price"
               type="text"
-              placeholder="상품의 가격을 입력해 주세요"
-              {...productInfo.count}
+              placeholder="상품의 수량을 입력해 주세요"
+              {...productInfo.org_quantity}
             />
           </div>
           <button className="btn_product_add" onClick={handleAddProduct}>
@@ -227,24 +310,28 @@ const GroupPurchase: React.FC = () => {
         </AddProduct>
 
         {/* 상품 리스트 */}
-        <h3 className="product_title">상품 리스트</h3>
-        <ProductList>
-          <ul className="product_list">
-            {productList.map((product, index) => (
-              <li className="product_el" key={index}>
-                <div>
-                  •<p className="product_name"> {product.name}</p>
-                </div>
-                <div>
-                  <p className="product_count">{product.count}개</p>
-                  <p className="product_price">
-                    {Number(product.price).toLocaleString()}원
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </ProductList>
+        {productList.length > 0 && (
+          <>
+            <h3 className="product_title">상품 리스트</h3>
+            <ProductList>
+              <ul className="product_list">
+                {productList.map((product, index) => (
+                  <li className="product_el" key={index}>
+                    <div>
+                      •<p className="product_name"> {product.product_name}</p>
+                    </div>
+                    <div>
+                      <p className="product_count">{product.org_quantity}개</p>
+                      <p className="product_price">
+                        {Number(product.product_price).toLocaleString()}원
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </ProductList>
+          </>
+        )}
 
         {/* 상품 설명 */}
         <label htmlFor="product-contents">상품 설명</label>
@@ -291,7 +378,7 @@ const GroupPurchase: React.FC = () => {
                 type="text"
                 id="add_input"
                 placeholder="추가 질문을 작성해 주세요"
-                {...form.product.input}
+                {...form.input}
               />
               <button className="btn_add_input" onClick={handleAddInput}>
                 질문 추가하기
@@ -300,7 +387,9 @@ const GroupPurchase: React.FC = () => {
           ) : null}
         </AddInputList>
 
-        <button className="btn_upload">폼 업로드 하기</button>
+        <button className="btn_upload" onClick={handleUpload}>
+          폼 업로드 하기
+        </button>
       </GroupForm>
     </UploadMain>
   );

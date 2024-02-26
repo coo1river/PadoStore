@@ -85,7 +85,9 @@ const Login: React.FC = () => {
 
       <div className="text_join">
         <p>아직 회원이 아니신가요?</p>
-        <button className="btn_join">회원가입</button>
+        <button className="btn_join" onClick={() => router.push("/join")}>
+          회원가입
+        </button>
       </div>
 
       <SnsLogin>
