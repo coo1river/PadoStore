@@ -65,13 +65,6 @@ const GroupPurchase: React.FC = () => {
     if (e.target.files?.[0]) {
       const selectedFile = e.target.files[0];
       setImgFile(selectedFile);
-
-      try {
-        const res = await uploadApi(selectedFile);
-        setFileId(res.file_id);
-      } catch (uploadError) {
-        console.error("이미지 업로드 오류:", uploadError);
-      }
     }
   };
 
@@ -134,10 +127,10 @@ const GroupPurchase: React.FC = () => {
       start_dt: form.start_dt.value,
       end_dt: form.end_dt.value,
     },
-    product_question: {
+    questionList: {
       input: addInputList,
     },
-    product_detail: productList,
+    productDetail: productList,
     user: {
       bank: form.bank.value,
       account_name: form.account_name.value,
@@ -146,16 +139,24 @@ const GroupPurchase: React.FC = () => {
   };
 
   // 글 업로드 api 통신
-  const handleUpload = async (e: FormEvent) => {
+  const handleUpload = (e: FormEvent) => {
     e.preventDefault();
     console.log(dataReq);
-    try {
-      const data = await groupUploadApi(dataReq);
-      console.log("업로드 성공", data);
-      router.push("/home");
-    } catch (error) {
-      console.error("업로드 실패", error);
-    }
+
+    uploadApi(imgFile)
+      .then((res) => {
+        setFileId(res.file_id);
+        if (fileId) {
+          return groupUploadApi(dataReq);
+        }
+      })
+      .then((data) => {
+        console.log("업로드 성공", data);
+        router.push("/home");
+      })
+      .catch((error) => {
+        console.error("업로드 실패", error);
+      });
   };
 
   return (

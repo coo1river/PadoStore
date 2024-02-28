@@ -12,10 +12,10 @@ export interface GroupReq {
     start_dt: string;
     end_dt: string;
   };
-  product_question: {
+  questionList: {
     input: string[];
   };
-  product_detail: {
+  productDetail: {
     product_name: string;
     product_price: string;
     org_quantity: string;
@@ -42,9 +42,9 @@ const groupUploadApi = async (data: GroupReq) => {
       start_dt: data.product.start_dt,
       end_dt: data.product.end_dt,
     },
-    product_detail: [JSON.stringify(data.product_detail)],
-    product_question: {
-      input: [JSON.stringify(data.product_question.input)],
+    productDetail: [JSON.stringify(data.productDetail)],
+    questionList: {
+      input: [JSON.stringify(data.questionList.input)],
     },
     user: {
       bank: "String",
