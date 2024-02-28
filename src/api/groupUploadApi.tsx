@@ -6,15 +6,15 @@ export interface GroupReq {
   title: string;
   content: string;
   post_status: string;
-  file_group_id: number | null;
+  file_group_id: string | "";
   product: {
     post_method: string;
     start_dt: string;
     end_dt: string;
   };
   questionList: {
-    input: string[];
-  };
+    input: string;
+  }[];
   productDetail: {
     product_name: string;
     product_price: string;
@@ -36,20 +36,20 @@ const groupUploadApi = async (data: GroupReq) => {
     title: data.title,
     content: data.content,
     post_status: data.post_status,
-    file_group_id: "String",
+    file_group_id: data.file_group_id,
     product: {
       post_method: data.product.post_method,
       start_dt: data.product.start_dt,
       end_dt: data.product.end_dt,
     },
-    productDetail: [JSON.stringify(data.productDetail)],
+    productDetail: data.productDetail,
     questionList: {
-      input: [JSON.stringify(data.questionList.input)],
+      input: data.questionList,
     },
     user: {
-      bank: "String",
-      account_name: "String",
-      account_number: "String",
+      bank: data.user.bank,
+      account_name: data.user.account_name,
+      account_number: data.user.account_number,
     },
   };
 

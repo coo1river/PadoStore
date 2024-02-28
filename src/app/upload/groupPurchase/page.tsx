@@ -23,6 +23,10 @@ interface Product {
   org_quantity: string;
 }
 
+interface Input {
+  input: string;
+}
+
 const GroupPurchase: React.FC = () => {
   // 라우터 사용
   const router = useRouter();
@@ -31,7 +35,7 @@ const GroupPurchase: React.FC = () => {
   const { token, setToken } = useAuthStore();
 
   // file_id 저장
-  const [fileId, setFileId] = useState<number | null>(null);
+  const fileId = useRef<string>("");
   const [imgFile, setImgFile] = useState<File | null>(null);
 
   // 게시물 상태(진행 중, 완료) 관리
@@ -51,7 +55,6 @@ const GroupPurchase: React.FC = () => {
     post_method: useInput(""),
     start_dt: useInput(""),
     end_dt: useInput(""),
-    input: useInput(""),
     bank: useInput(""),
     account_name: useInput(""),
     account_number: useInput(""),
@@ -73,6 +76,10 @@ const GroupPurchase: React.FC = () => {
     product_name: useInput(""),
     product_price: useInput(""),
     org_quantity: useInput(""),
+  };
+
+  const addInput = {
+    input: useInput(""),
   };
 
   const handleAddProduct = () => {
@@ -102,15 +109,18 @@ const GroupPurchase: React.FC = () => {
   const [addInputState, setAddInputState] = useState<boolean>(false);
 
   // 추가 질문 리스트 배열로 저장
-  const [addInputList, setAddInputList] = useState<string[]>([]);
+  const [addInputList, setAddInputList] = useState<Input[]>([]);
 
   // 추가 질문 등록 함수
   const handleAddInput = () => {
-    if (form.input) {
-      setAddInputList((prevList) => [...prevList, form.input.value]);
+    if (addInput) {
+      const newInput: Input = {
+        input: addInput.input.value,
+      };
+      setAddInputList((prevList) => [...prevList, newInput]);
     }
 
-    form.input.onChange({
+    addInput.input.onChange({
       target: { value: "" },
     } as React.ChangeEvent<HTMLInputElement>);
   };
@@ -121,15 +131,13 @@ const GroupPurchase: React.FC = () => {
     title: form.title.value,
     content: form.content.value,
     post_status: postStatus,
-    file_group_id: fileId,
+    file_group_id: fileId.current,
     product: {
       post_method: form.post_method.value,
       start_dt: form.start_dt.value,
       end_dt: form.end_dt.value,
     },
-    questionList: {
-      input: addInputList,
-    },
+    questionList: addInputList,
     productDetail: productList,
     user: {
       bank: form.bank.value,
@@ -138,21 +146,13 @@ const GroupPurchase: React.FC = () => {
     },
   };
 
-  // 글 업로드 api 통신
   const handleUpload = (e: FormEvent) => {
     e.preventDefault();
-    console.log(dataReq);
 
     uploadApi(imgFile)
       .then((res) => {
-        setFileId(res.file_id);
-        if (fileId) {
-          return groupUploadApi(dataReq);
-        }
-      })
-      .then((data) => {
-        console.log("업로드 성공", data);
-        router.push("/home");
+        fileId.current = res.file_group_id;
+        groupUploadApi({ ...dataReq, file_group_id: fileId.current });
       })
       .catch((error) => {
         console.error("업로드 실패", error);
@@ -383,9 +383,9 @@ const GroupPurchase: React.FC = () => {
           {addInputState ? (
             <div className="input_list_wrap">
               <ul>
-                {addInputList.map((input, index) => (
+                {addInputList.map((item, index) => (
                   <li className="add_input_el" key={index}>
-                    • {input}
+                    • {item.input}
                   </li>
                 ))}
               </ul>
@@ -393,7 +393,7 @@ const GroupPurchase: React.FC = () => {
                 type="text"
                 id="add_input"
                 placeholder="추가 질문을 작성해 주세요"
-                {...form.input}
+                {...addInput.input}
               />
               <button className="btn_add_input" onClick={handleAddInput}>
                 질문 추가하기
