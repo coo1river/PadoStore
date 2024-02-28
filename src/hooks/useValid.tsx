@@ -1,6 +1,7 @@
 import emailValidApi from "@/api/emailValidApi";
 import idValidApi from "@/api/idValidApi";
 import NicknameValidApi from "@/api/nicknameValidApi";
+import numberValidApi from "@/api/numberValidApi";
 import { useState } from "react";
 
 interface Error {
@@ -178,14 +179,18 @@ const useValid = (
   };
 
   // 휴대폰 번호 유효성 검사 함수
-  const NumberValid = () => {
+  const NumberValid = async () => {
     if (!form.number) {
       setError({ ...error, numberErr: "필수 입력 항목입니다." });
     } else if (isNaN(Number(form.number))) {
       setError({ ...error, numberErr: "숫자만 입력 가능합니다." });
     } else {
-      setError({ ...error, numberErr: "" });
-      setJoinable({ ...joinable, number: true });
+      const numberValid = await numberValidApi({ number: form.number });
+      setError({
+        ...error,
+        numberErr: numberValid ? "사용 중인 번호입니다" : "중복된 번호입니다.",
+      });
+      numberValid ? setJoinable({ ...joinable, number: true }) : null;
     }
   };
 

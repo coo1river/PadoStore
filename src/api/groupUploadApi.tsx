@@ -6,12 +6,14 @@ export interface GroupReq {
   title: string;
   content: string;
   post_status: string;
-  uploadfiles: File | null;
+  file_group_id: number | null;
   product: {
     post_method: string;
     start_dt: string;
     end_dt: string;
-    input: string[] | null;
+  };
+  product_question: {
+    input: string[];
   };
   product_detail: {
     product_name: string;
@@ -27,40 +29,32 @@ export interface GroupReq {
 
 const groupUploadApi = async (data: GroupReq) => {
   const url = "/api/board/group-order/post";
-  const formData = new FormData();
 
-  // 상품 정보 객체
-  const productObj = {
-    product_name: data.product_detail[0].product_name,
-    product_price: data.product_detail[0].product_price,
-    org_quantity: data.product_detail[0].org_quantity,
+  const req = {
+    board_type: data.board_type,
+    user_id: data.user_id,
+    title: data.title,
+    content: data.content,
+    post_status: data.post_status,
+    file_group_id: "String",
+    product: {
+      post_method: data.product.post_method,
+      start_dt: data.product.start_dt,
+      end_dt: data.product.end_dt,
+    },
+    product_detail: [JSON.stringify(data.product_detail)],
+    product_question: {
+      input: [JSON.stringify(data.product_question.input)],
+    },
+    user: {
+      bank: "String",
+      account_name: "String",
+      account_number: "String",
+    },
   };
 
-  formData.append("board_type", data.board_type);
-  formData.append("user_id", data.user_id);
-  formData.append("title", data.user_id);
-  formData.append("content", data.content);
-  formData.append("board_status", data.post_status);
-
-  formData.append("uploadfiles", data.uploadfiles || "");
-  formData.append("post_method", data.product.post_method);
-  formData.append("start_dt", data.product.start_dt);
-  formData.append("end_dt", data.product.end_dt);
-  formData.append("input", JSON.stringify(data.product.input));
-
-  formData.append("product_detail", JSON.stringify(productObj));
-
-  formData.append("bank", data.user.bank);
-  formData.append("account_name", data.user.account_name);
-  formData.append("account_number", data.user.account_number);
-
   try {
-    const res = await axios.post<GroupReq>(url, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-
+    const res = await axios.post<GroupReq>(url, req);
     console.log("API 응답:", res.data);
     return res.data;
   } catch (error) {

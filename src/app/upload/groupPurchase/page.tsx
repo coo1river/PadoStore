@@ -1,5 +1,6 @@
 "use client";
 import groupUploadApi, { GroupReq } from "@/api/groupUploadApi";
+import uploadApi from "@/api/uploadApi";
 import useInput from "@/hooks/useInput";
 import useAuthStore from "@/store/useAuthStore";
 import {
@@ -29,8 +30,11 @@ const GroupPurchase: React.FC = () => {
   // zustand에서 token 가져오기
   const { token, setToken } = useAuthStore();
 
+  // file_id 저장
+  const [fileId, setFileId] = useState<number | null>(null);
   const [imgFile, setImgFile] = useState<File | null>(null);
 
+  // 게시물 상태(진행 중, 완료) 관리
   const [postStatus, setPostStatus] = useState<string>("InProgress");
 
   // 상품 리스트 배열로 저장
@@ -56,11 +60,18 @@ const GroupPurchase: React.FC = () => {
   // useRef 사용
   const InputRef = useRef<HTMLInputElement>(null);
 
-  // 이미지 변경 함수
-  const onChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
+  // 이미지 변경, 업로드 시 api 요청 함수
+  const onChangeFile = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
       const selectedFile = e.target.files[0];
       setImgFile(selectedFile);
+
+      try {
+        const res = await uploadApi(selectedFile);
+        setFileId(res.file_id);
+      } catch (uploadError) {
+        console.error("이미지 업로드 오류:", uploadError);
+      }
     }
   };
 
@@ -117,11 +128,13 @@ const GroupPurchase: React.FC = () => {
     title: form.title.value,
     content: form.content.value,
     post_status: postStatus,
-    uploadfiles: imgFile,
+    file_group_id: fileId,
     product: {
       post_method: form.post_method.value,
       start_dt: form.start_dt.value,
       end_dt: form.end_dt.value,
+    },
+    product_question: {
       input: addInputList,
     },
     product_detail: productList,

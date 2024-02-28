@@ -22,18 +22,23 @@ interface PostUploadModalProps {
 const PostUploadModal: React.FC<PostUploadModalProps> = ({
   setUploadModal,
 }) => {
+  // 라우터 사용
   const router = useRouter();
 
+  // 모달 창 끄기
   const handleModalOff = () => {
     setUploadModal(false);
   };
+
+  // zustand에서 token 가져오기
+  const { token, setToken } = useAuthStore();
 
   return (
     <ModalWrap>
       <ul>
         <li
           onClick={() => {
-            router.push("/upload/product");
+            token ? router.push("/upload/product") : router.push("/login");
             handleModalOff();
           }}
         >
@@ -41,7 +46,9 @@ const PostUploadModal: React.FC<PostUploadModalProps> = ({
         </li>
         <li
           onClick={() => {
-            router.push("/upload/groupPurchase");
+            token
+              ? router.push("/upload/groupPurchase")
+              : router.push("/login");
             handleModalOff();
           }}
         >
