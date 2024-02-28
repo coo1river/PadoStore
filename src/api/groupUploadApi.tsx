@@ -43,9 +43,7 @@ const groupUploadApi = async (data: GroupReq) => {
       end_dt: data.product.end_dt,
     },
     productDetail: data.productDetail,
-    questionList: {
-      input: data.questionList,
-    },
+    questionList: data.questionList,
     user: {
       bank: data.user.bank,
       account_name: data.user.account_name,
