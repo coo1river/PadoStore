@@ -1,6 +1,7 @@
 "use client";
 import groupUploadApi, { GroupReq } from "@/api/groupUploadApi";
 import uploadApi from "@/api/uploadApi";
+import { BankOptions, DeliveryOptions } from "@/components/bankOption";
 import useInput from "@/hooks/useInput";
 import useAuthStore from "@/store/useAuthStore";
 import {
@@ -34,8 +35,6 @@ const GroupPurchase: React.FC = () => {
   // zustand에서 token 가져오기
   const { token, setToken } = useAuthStore();
 
-  // file_id 저장
-  const fileId = useRef<string>("");
   const [imgFile, setImgFile] = useState<File | null>(null);
 
   // 게시물 상태(진행 중, 완료) 관리
@@ -131,7 +130,7 @@ const GroupPurchase: React.FC = () => {
     title: form.title.value,
     content: form.content.value,
     post_status: postStatus,
-    file_group_id: fileId.current,
+    file_group_id: "",
     product: {
       post_method: form.post_method.value,
       start_dt: form.start_dt.value,
@@ -150,9 +149,15 @@ const GroupPurchase: React.FC = () => {
     e.preventDefault();
 
     uploadApi(imgFile)
-      .then((res) => {
-        fileId.current = res.file_group_id;
-        groupUploadApi({ ...dataReq, file_group_id: fileId.current });
+      .then(async (res) => {
+        return await groupUploadApi({
+          ...dataReq,
+          file_group_id: res.file_group_id,
+        });
+      })
+      .then((data) => {
+        console.log("업로드 성공", data);
+        router.push("/home");
       })
       .catch((error) => {
         console.error("업로드 실패", error);
@@ -235,34 +240,7 @@ const GroupPurchase: React.FC = () => {
               value={form.bank.value}
               onChange={form.bank.onChange}
             >
-              <option value="none">- 은행 선택 -</option>
-              <option value="국민은행">국민은행</option>
-              <option value="기업은행">기업은행</option>
-              <option value="농협은행">농협은행</option>
-              <option value="신한은행">신한은행</option>
-              <option value="산업은행">산업은행</option>
-              <option value="우리은행">우리은행</option>
-              <option value="한국씨티은행">한국씨티은행</option>
-              <option value="하나은행">하나은행</option>
-              <option value="SC제일은행">SC제일은행</option>
-              <option value="경남은행">경남은행</option>
-              <option value="광주은행">광주은행</option>
-              <option value="대구은행">대구은행</option>
-              <option value="부산은행">부산은행</option>
-              <option value="저축은행">저축은행</option>
-              <option value="새마을금고">새마을금고</option>
-              <option value="케이뱅크">케이뱅크</option>
-              <option value="토스뱅크">토스뱅크</option>
-              <option value="교보증권">교보증권</option>
-              <option value="대신증권">대신증권</option>
-              <option value="미래에셋증권">미래에셋증권</option>
-              <option value="유진투자증권">유진투자증권</option>
-              <option value="신한투자증권">신한투자증권</option>
-              <option value="키움증권">키움증권</option>
-              <option value="하나증권">하나증권</option>
-              <option value="하나투자증권">하나투자증권</option>
-              <option value="KB증권">KB증권</option>
-              <option value="NH투자증권">NH투자증권</option>
+              <BankOptions />
             </select>
           </div>
           <label htmlFor="account-number">• 계좌 번호</label>
@@ -283,11 +261,7 @@ const GroupPurchase: React.FC = () => {
           onChange={form.post_method.onChange}
         >
           <option value="none">- 배송 방법 선택 -</option>
-          <option value="택배">택배 배송</option>
-          <option value="등기">등기 배송</option>
-          <option value="준등기">준등기 배송</option>
-          <option value="우편">우편 배송</option>
-          <option value="기타">기타 배송</option>
+          <DeliveryOptions />
         </select>
 
         {/* 상품 등록 블록 */}
