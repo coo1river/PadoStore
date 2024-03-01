@@ -1,7 +1,7 @@
 "use client";
 import groupUploadApi, { GroupReq } from "@/api/groupUploadApi";
 import uploadApi from "@/api/uploadApi";
-import { BankOptions, DeliveryOptions } from "@/components/bankOption";
+import { BankOptions, DeliveryOptions } from "@/components/selectOption";
 import useInput from "@/hooks/useInput";
 import useAuthStore from "@/store/useAuthStore";
 import {
@@ -42,10 +42,6 @@ const GroupPurchase: React.FC = () => {
 
   // 상품 리스트 배열로 저장
   const [productList, setProductList] = useState<Product[]>([]);
-
-  const setActiveClass = (status: string) => {
-    return postStatus === status ? "active" : "";
-  };
 
   // api에 보낼 정보 담기
   const form = {
@@ -125,7 +121,7 @@ const GroupPurchase: React.FC = () => {
   };
 
   const dataReq: GroupReq = {
-    board_type: "groupPurchase",
+    board_type: "GroupPurchase",
     user_id: token!,
     title: form.title.value,
     content: form.content.value,
@@ -183,20 +179,6 @@ const GroupPurchase: React.FC = () => {
           />
         </ImgWrap>
         <label htmlFor="product-title">폼 제목</label>
-        <div className="btns_wrap">
-          <button
-            className={`btn_status ${setActiveClass("InProgress")}`}
-            onClick={() => setPostStatus("InProgress")}
-          >
-            진행 중
-          </button>
-          <button
-            className={`btn_status ${setActiveClass("Completed")}`}
-            onClick={() => setPostStatus("Completed")}
-          >
-            완료
-          </button>
-        </div>
         <input
           id="product-title"
           type="text"
@@ -260,7 +242,6 @@ const GroupPurchase: React.FC = () => {
           value={form.post_method.value}
           onChange={form.post_method.onChange}
         >
-          <option value="none">- 배송 방법 선택 -</option>
           <DeliveryOptions />
         </select>
 

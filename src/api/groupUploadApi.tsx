@@ -30,29 +30,8 @@ export interface GroupReq {
 const groupUploadApi = async (data: GroupReq) => {
   const url = "/api/board/group-order/post";
 
-  const req = {
-    board_type: data.board_type,
-    user_id: data.user_id,
-    title: data.title,
-    content: data.content,
-    post_status: data.post_status,
-    file_group_id: data.file_group_id,
-    product: {
-      post_method: data.product.post_method,
-      start_dt: data.product.start_dt,
-      end_dt: data.product.end_dt,
-    },
-    productDetail: data.productDetail,
-    questionList: data.questionList,
-    user: {
-      bank: data.user.bank,
-      account_name: data.user.account_name,
-      account_number: data.user.account_number,
-    },
-  };
-
   try {
-    const res = await axios.post<GroupReq>(url, req);
+    const res = await axios.post<GroupReq>(url, data);
     console.log("API 응답:", res.data);
     return res.data;
   } catch (error) {

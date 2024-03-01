@@ -91,16 +91,6 @@ export const UploadForm = styled.article`
     margin-bottom: 30px;
   }
 
-  .btn_wrap button {
-    padding: 5px 20px;
-    border-radius: 15px;
-    font-weight: 600;
-    border: 1px solid var(--color-lightgrey);
-    background-color: white;
-    color: #2e2e2e;
-    margin: 0 10px 10px 0;
-  }
-
   .textarea_contents {
     font-family: var(--font-main);
     border-radius: 15px;
@@ -114,6 +104,53 @@ export const UploadForm = styled.article`
     color: white;
     font-weight: 700;
     border-radius: 15px;
+  }
+
+  .btn_status {
+    padding: 5px 20px;
+    border-radius: 15px;
+    font-weight: 600;
+    border: 1px solid var(--color-lightgrey);
+    background-color: white;
+    color: #2e2e2e;
+    margin: 0 10px 10px 0;
+
+    &:hover {
+      transition: 0.4s;
+      background-color: #d1d1d1bd;
+    }
+  }
+
+  .active {
+    color: white;
+    background-color: var(--color-main);
+
+    &:hover {
+      background-color: #328fd2;
+    }
+  }
+
+  select {
+    padding: 16px;
+    margin-bottom: 25px;
+    box-shadow: 0px 0px 3px 0px #6d6d6d4e;
+    border-radius: 15px;
+    border: none;
+    font-family: var(--font-main);
+    font-size: 16px;
+
+    &:focus-visible {
+      outline: none;
+    }
+
+    &:focus,
+    &:active {
+      outline: 2px solid var(--color-main);
+    }
+  }
+
+  option {
+    padding: 16px;
   }
 `;
 
@@ -189,7 +226,7 @@ export const GroupForm = styled(UploadForm)`
     border-radius: 15px;
     border: none;
     font-family: var(--font-main);
-    font-size: 15px;
+    font-size: 16px;
 
     &:focus-visible {
       outline: none;

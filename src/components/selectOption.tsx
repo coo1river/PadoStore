@@ -33,6 +33,7 @@ const BankOptions: React.FC = () => {
 
   return (
     <>
+      <option value="none">- 은행 선택 -</option>
       {banks.map((bank, index) => (
         <option key={index} value={bank}>
           {bank}
@@ -53,6 +54,7 @@ const DeliveryOptions: React.FC = () => {
 
   return (
     <>
+      <option value="none">- 배송 방법 선택 -</option>
       {deliveryMethods.map((method, index) => (
         <option key={index} value={method}>
           {method}
@@ -62,4 +64,24 @@ const DeliveryOptions: React.FC = () => {
   );
 };
 
-export { BankOptions, DeliveryOptions };
+const ProductStatus: React.FC = () => {
+  const productStatusOption: string[] = [
+    "미개봉",
+    "새상품과 비슷함",
+    "사용감 있음",
+    "사용감 많음",
+  ];
+
+  return (
+    <>
+      <option value="none">- 상품 상태 -</option>
+      {productStatusOption.map((status, index) => (
+        <option key={index} value={status}>
+          {status}
+        </option>
+      ))}
+    </>
+  );
+};
+
+export { BankOptions, DeliveryOptions, ProductStatus };
