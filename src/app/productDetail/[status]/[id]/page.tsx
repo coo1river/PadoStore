@@ -5,14 +5,39 @@ import {
   ProductInfo,
   ProductMain,
 } from "@/styles/productStyle";
-import React from "react";
-import productImg1 from "../../../public/assets/images/product1.jpg";
-import profileImg from "../../../public/assets/images/profile.png";
+import React, { useEffect, useState } from "react";
+import productImg1 from "@/../public/assets/images/product1.jpg";
+import profileImg from "@/../public/assets/images/profile.png";
 import Image from "next/image";
+import postDetailApi from "@/api/postDetailApi";
 
-const ProductDetail: React.FC = () => {
+const ProductDetail: React.FC = (props) => {
+  // console.log(props);
+
+  const status = "InProgress";
+  const id = 17;
+
+  const [data, setData] = useState("");
+  console.log(data);
+
+  useEffect(() => {
+    const detail = async () => {
+      const res = await postDetailApi(status, id);
+      setData(res.data);
+    };
+    detail();
+    console.log(data);
+  }, []);
+
   return (
     <ProductMain>
+      <button
+        onClick={() => {
+          console.log(data);
+        }}
+      >
+        버튼
+      </button>
       <h2 className="a11y-hidden">상품 페이지</h2>
       <section className="product_detail">
         <ProductInfo>

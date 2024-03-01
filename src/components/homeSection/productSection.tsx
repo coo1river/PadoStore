@@ -1,10 +1,12 @@
 "use client";
 import { ProductArticle, ProductTab } from "@/styles/homeStyle";
 import productImg1 from "../../../public/assets/images/product1.jpg";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const ProductSection: React.FC = () => {
   const router = useRouter();
+  const params = useSearchParams();
+  console.log(params);
 
   return (
     <ProductTab>
@@ -14,7 +16,7 @@ const ProductSection: React.FC = () => {
       <div className="sell_list">
         <ProductArticle
           onClick={() => {
-            router.push("/productDetail");
+            router.push(`/productDetail/:status/:id`);
           }}
         >
           <img src={productImg1.src} alt="" />
