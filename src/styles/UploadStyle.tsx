@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import iconLandScape from "@/../public/assets/svgs/landscape.svg";
 
 export const UploadMain = styled.main`
   display: flex;
@@ -23,9 +24,8 @@ export const ImgWrap = styled.div`
   .label_file {
     position: absolute;
     display: block;
-    width: 500px;
+    width: 300px;
     height: 300px;
-    box-shadow: 0px 0px 4px 0px #0000002f;
     margin: 0 auto;
     border-radius: 15px;
     cursor: pointer;
@@ -41,10 +41,19 @@ export const ImgWrap = styled.div`
 `;
 
 export const ImgFile = styled.img`
-  width: 500px;
+  object-fit: contain;
+  width: 300px;
   height: 300px;
   margin: 0 auto;
   border-radius: 15px;
+`;
+
+export const BasicImg = styled.div`
+  border-radius: 15px;
+  margin: 0 auto;
+  width: 300px;
+  height: 300px;
+  background: white url(${iconLandScape.src}) center/70px no-repeat;
 `;
 
 export const UploadForm = styled.article`

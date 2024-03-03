@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
-import productImg1 from "../../../public/assets/images/group1.jpg";
-import profileImg from "../../../public/assets/images/profile.png";
+import productImg1 from "@/../public/assets/images/group1.jpg";
+import profileImg from "@/../public/assets/images/profile.png";
 import {
   GroupSubmit,
   ProductContent,

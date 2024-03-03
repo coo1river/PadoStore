@@ -3,7 +3,13 @@ import productUploadApi from "@/api/productUploadApi";
 import { DeliveryOptions, ProductStatus } from "@/components/selectOption";
 import useInput from "@/hooks/useInput";
 import useAuthStore from "@/store/useAuthStore";
-import { ImgFile, ImgWrap, UploadForm, UploadMain } from "@/styles/UploadStyle";
+import {
+  BasicImg,
+  ImgFile,
+  ImgWrap,
+  UploadForm,
+  UploadMain,
+} from "@/styles/UploadStyle";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
 
@@ -21,11 +27,6 @@ const Product: React.FC = () => {
     product_status: useInput(""),
     post_method: useInput(""),
   };
-  const userInfo = {
-    bank: useInput(""),
-    account_name: useInput(""),
-    account_number: useInput(""),
-  };
 
   // 게시물 타입 관리
   const [boardType, setBoardType] = useState<string>("Sell");
@@ -36,7 +37,9 @@ const Product: React.FC = () => {
     user_id: token,
     title: title.value,
     content: content.value,
+    post_status: "InProgress",
     product: {
+      product_price: productInfo.product_price.value,
       product_status: productInfo.product_status.value,
       post_method: productInfo.post_method.value,
     },
@@ -63,6 +66,19 @@ const Product: React.FC = () => {
   const handleUpload = async (e: FormEvent) => {
     e.preventDefault();
 
+    // 각 input에 값이 비었을 경우 alert 창 띄우기
+    if (
+      !title.value ||
+      !productInfo.product_price.value ||
+      !productInfo.product_status.value ||
+      !productInfo.post_method.value ||
+      !content.value ||
+      !imgFile
+    ) {
+      alert("필수 항목을 입력해 주세요");
+      return;
+    }
+
     try {
       const data = await productUploadApi(req);
       console.log("업로드 성공", data);
@@ -74,12 +90,14 @@ const Product: React.FC = () => {
 
   return (
     <UploadMain>
-      <h2>상품 업로드</h2>
+      <h2 className="a11y-hidden">상품 업로드</h2>
       <article>
         <UploadForm>
           <ImgWrap>
-            {imgFile && (
+            {imgFile ? (
               <ImgFile src={URL.createObjectURL(imgFile)} alt="이미지 파일" />
+            ) : (
+              <BasicImg />
             )}
             <label className="label_file" htmlFor="file-img" />
             <input
@@ -91,7 +109,6 @@ const Product: React.FC = () => {
               ref={InputRef}
             />
           </ImgWrap>
-
           <label htmlFor="product-title">상품 이름</label>
           <div className="btn_wrap">
             <button
@@ -124,9 +141,19 @@ const Product: React.FC = () => {
           <label htmlFor="product-price">가격</label>
           <input
             id="product-price"
-            type="text"
+            type="string"
             placeholder="상품의 가격을 입력해 주세요"
-            {...productInfo.product_price}
+            // 쉼표로 가격 표시
+            value={productInfo.product_price.value.replace(
+              /\B(?=(\d{3})+(?!\d))/g,
+              ","
+            )}
+            onChange={(e) => {
+              const formattedValue = e.target.value.replace(/[^\d]/g, "");
+              productInfo.product_price.onChange({
+                target: { value: formattedValue },
+              } as React.ChangeEvent<HTMLInputElement>);
+            }}
           />
 
           {/* 상품 상태 */}

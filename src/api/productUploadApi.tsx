@@ -5,7 +5,9 @@ export interface ProductReq {
   user_id: string | null;
   title: string;
   content: string;
+  post_status: string;
   product: {
+    product_price: string;
     product_status: string;
     post_method: string;
   };

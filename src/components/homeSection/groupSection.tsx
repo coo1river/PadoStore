@@ -13,7 +13,7 @@ const GroupSection: React.FC = () => {
       <div className="sell_list">
         <ProductArticle
           onClick={() => {
-            router.push("/groupDetail");
+            router.push(`/groupDetail/:status/:id`);
           }}
         >
           <img src={groupImg1.src} alt="" />

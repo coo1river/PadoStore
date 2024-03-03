@@ -9,43 +9,37 @@ import React, { useEffect, useState } from "react";
 import productImg1 from "@/../public/assets/images/product1.jpg";
 import profileImg from "@/../public/assets/images/profile.png";
 import Image from "next/image";
-import postDetailApi from "@/api/postDetailApi";
+import postDetailApi, { Res } from "@/api/postDetailApi";
 
 const ProductDetail: React.FC = (props) => {
   // console.log(props);
 
-  const status = "InProgress";
-  const id = 17;
+  const status = "Sell";
+  const id = 1;
 
-  const [data, setData] = useState("");
-  console.log(data);
+  const [data, setData] = useState<Res | null>(null);
 
   useEffect(() => {
     const detail = async () => {
       const res = await postDetailApi(status, id);
-      setData(res.data);
+      console.log(res);
+      setData(res);
     };
     detail();
-    console.log(data);
   }, []);
+
+  console.log(data?.title);
 
   return (
     <ProductMain>
-      <button
-        onClick={() => {
-          console.log(data);
-        }}
-      >
-        버튼
-      </button>
       <h2 className="a11y-hidden">상품 페이지</h2>
       <section className="product_detail">
         <ProductInfo>
           <ProductImg src={productImg1.src} />
           <div className="product_intro_button">
             <div className="product_intro">
-              <h3 className="product_title">상품1</h3>
-              <p className="product_price">59,000원</p>
+              <h3 className="product_title">{data?.title}</h3>
+              <p className="product_price"></p>
               <p>
                 <strong>• 상품 상태 : </strong> 미개봉(새 것)
               </p>

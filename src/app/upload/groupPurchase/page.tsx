@@ -14,6 +14,7 @@ import {
   UserAccount,
   SalePeriod,
   ImgFile,
+  BasicImg,
 } from "@/styles/UploadStyle";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
@@ -76,6 +77,11 @@ const GroupPurchase: React.FC = () => {
   const addInput = {
     input: useInput(""),
   };
+
+  // 오늘 날짜 가져오기
+  const date = new Date();
+  date.setDate(date.getDate() + 1);
+  const today = date.toISOString().split("T")[0];
 
   const handleAddProduct = () => {
     if (productInfo) {
@@ -144,6 +150,23 @@ const GroupPurchase: React.FC = () => {
   const handleUpload = (e: FormEvent) => {
     e.preventDefault();
 
+    // 각 input에 값이 비었을 경우 alert 창 띄우기
+    if (
+      !form.title.value ||
+      !form.content.value ||
+      !form.post_method.value ||
+      !form.start_dt.value ||
+      !form.end_dt.value ||
+      !form.bank.value ||
+      !form.account_name.value ||
+      !form.account_number.value ||
+      !imgFile ||
+      productList.length === 0
+    ) {
+      alert("필수 항목을 입력해 주세요");
+      return;
+    }
+
     uploadApi(imgFile)
       .then(async (res) => {
         return await groupUploadApi({
@@ -162,11 +185,13 @@ const GroupPurchase: React.FC = () => {
 
   return (
     <UploadMain>
-      <h2>공동구매 폼</h2>
+      <h2 className="a11y-hidden">공동구매 폼</h2>
       <GroupForm>
         <ImgWrap>
-          {imgFile && (
+          {imgFile ? (
             <ImgFile src={URL.createObjectURL(imgFile)} alt="이미지 파일" />
+          ) : (
+            <BasicImg />
           )}
           <label className="label_file" htmlFor="file-img" />
           <input
@@ -198,7 +223,7 @@ const GroupPurchase: React.FC = () => {
           <label htmlFor="sale-period" />
           <div className="sale_period_wrap">
             <span>• 시작 날짜</span>
-            <input type="date" id="start-date" {...form.start_dt} />
+            <input type="date" id="start-date" min={today} {...form.start_dt} />
             <span>• 종료 날짜</span>
             <input type="date" id="end-date" {...form.end_dt} />
           </div>
@@ -227,7 +252,7 @@ const GroupPurchase: React.FC = () => {
           </div>
           <label htmlFor="account-number">• 계좌 번호</label>
           <input
-            type="type"
+            type="number"
             id="account-number"
             placeholder="계좌 번호를 입력해 주세요"
             {...form.account_number}
@@ -263,12 +288,21 @@ const GroupPurchase: React.FC = () => {
               id="product-price"
               type="text"
               placeholder="상품의 가격을 입력해 주세요"
-              {...productInfo.product_price}
+              value={productInfo.product_price.value.replace(
+                /\B(?=(\d{3})+(?!\d))/g,
+                ","
+              )}
+              onChange={(e) => {
+                const formattedValue = e.target.value.replace(/[^\d]/g, "");
+                productInfo.product_price.onChange({
+                  target: { value: formattedValue },
+                } as React.ChangeEvent<HTMLInputElement>);
+              }}
             />
             <label htmlFor="product-count">• 수량</label>
             <input
               id="product-price"
-              type="text"
+              type="number"
               placeholder="상품의 수량을 입력해 주세요"
               {...productInfo.org_quantity}
             />
