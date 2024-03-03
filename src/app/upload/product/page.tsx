@@ -1,5 +1,6 @@
 "use client";
 import productUploadApi from "@/api/productUploadApi";
+import uploadApi from "@/api/uploadApi";
 import { DeliveryOptions, ProductStatus } from "@/components/selectOption";
 import useInput from "@/hooks/useInput";
 import useAuthStore from "@/store/useAuthStore";
@@ -38,6 +39,7 @@ const Product: React.FC = () => {
     title: title.value,
     content: content.value,
     post_status: "InProgress",
+    file_group_id: "",
     product: {
       product_price: productInfo.product_price.value,
       product_status: productInfo.product_status.value,
@@ -79,13 +81,20 @@ const Product: React.FC = () => {
       return;
     }
 
-    try {
-      const data = await productUploadApi(req);
-      console.log("업로드 성공", data);
-      router.push("/home");
-    } catch (error) {
-      console.error("에러", error);
-    }
+    uploadApi(imgFile)
+      .then(async (res) => {
+        return await productUploadApi({
+          ...req,
+          file_group_id: res.file_group_id,
+        });
+      })
+      .then((data) => {
+        console.log("업로드 성공", data);
+        router.push("/home");
+      })
+      .catch((error) => {
+        console.error("업로드 실패", error);
+      });
   };
 
   return (
