@@ -28,6 +28,7 @@ ${reset}
 }
 
 body {
+    color: #333333;
     font-family: 'Pretendard', sans-serif;
     overflow: scroll;
     &::-webkit-scrollbar{

@@ -51,6 +51,7 @@ export const MainBanner = styled.article`
 
   & img {
     border-radius: 15px;
+    object-fit: cover;
     width: 1200px;
     height: 320px;
   }
@@ -94,11 +95,21 @@ export const ProductArticle = styled.article`
 
   .product_title {
     margin-bottom: 16px;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
   }
 
   .user_name {
     font-size: 14px;
+  }
+
+  .product_price {
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .price_nickname {
+    display: flex;
+    justify-content: space-between;
   }
 `;

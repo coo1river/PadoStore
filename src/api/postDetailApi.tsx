@@ -56,14 +56,11 @@ export interface Res {
     org_file: string;
     up_file: string;
     file_group_id: string;
-  };
+  }[];
 }
 
-const postDetailApi = async (
-  board_status: string,
-  post_id: number
-): Promise<Res> => {
-  const url = `/api/board/${board_status}/${post_id}`;
+const postDetailApi = async (post_id: number): Promise<Res> => {
+  const url = `/api/board/${post_id}`;
   try {
     const res = await axios.get(url);
     console.log("API 성공", res.data);

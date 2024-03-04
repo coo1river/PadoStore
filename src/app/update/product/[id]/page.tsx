@@ -1,5 +1,6 @@
 "use client";
-import productUploadApi from "@/api/productUploadApi";
+import { Res } from "@/api/postDetailApi";
+import updateApi from "@/api/updateApi";
 import uploadApi from "@/api/uploadApi";
 import { DeliveryOptions, ProductStatus } from "@/components/selectOption";
 import useInput from "@/hooks/useInput";
@@ -12,16 +13,54 @@ import {
   UploadMain,
 } from "@/styles/UploadStyle";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
-const Product: React.FC = () => {
-  // 라우터 사용
+export default function ProductUpdate() {
   const router = useRouter();
+  const post_id = 5;
+
+  // 게시물 타입 관리
+  const [boardType, setBoardType] = useState<string | undefined>("");
+
+  const [data, setData] = useState<Res | null>(null);
+
+  // 이미지 파일 상태 관리
+  const [imgFile, setImgFile] = useState<string | File | undefined>("");
+
+  // 게시물 수정 데이터 불러 오기
+  useEffect(() => {
+    const update = async () => {
+      const res = await updateApi(post_id);
+      console.log(res);
+      setData(res);
+    };
+    update();
+  }, []);
+
+  // board type 불러오기
+  useEffect(() => {
+    setBoardType(data?.board_type);
+  }, [data?.board_type]);
+
+  useEffect(() => {
+    setImgFile(data?.file[0].up_file);
+  }, [data?.file]);
+
+  useEffect(() => {
+    console.log(imgFile);
+  }, [imgFile]);
+
   // zustand에서 token 가져오기
   const { token, setToken } = useAuthStore();
 
   // useInput 사용으로 사용 정보 내용 담기
-  const title = useInput("");
+  const title = useInput(data?.title ?? "");
   const content = useInput("");
   const productInfo = {
     product_price: useInput(""),
@@ -29,10 +68,30 @@ const Product: React.FC = () => {
     post_method: useInput(""),
   };
 
-  // 게시물 타입 관리
-  const [boardType, setBoardType] = useState<string>("Sell");
+  // data 값이 업데이트 되면 input value 업데이트
+  useEffect(() => {
+    title.setValue(data?.title || "");
+    content.setValue(data?.content || "");
+    productInfo.product_status.setValue(data?.product.product_status || "");
+    productInfo.post_method.setValue(data?.product.post_method || "");
+  }, [data]);
 
-  // api에 보낼 정보 담기
+  // useRef 사용
+  const InputRef = useRef<HTMLInputElement>(null);
+
+  // 이미지 변경 함수
+  const onChangeFile = async (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files?.[0]) {
+      const selectedFile = e.target.files[0];
+      setImgFile(selectedFile);
+    }
+  };
+
+  const setActiveClass = (status: string) => {
+    return boardType === status ? "active" : "";
+  };
+
+  // api에 보낼 수정 데이터 정보 담기
   const req = {
     board_type: boardType,
     user_id: token,
@@ -47,28 +106,9 @@ const Product: React.FC = () => {
     },
   };
 
-  const setActiveClass = (status: string) => {
-    return boardType === status ? "active" : "";
-  };
-
-  // 이미지 파일 상태 관리
-  const [imgFile, setImgFile] = useState<File | null>(null);
-
-  // useRef 사용
-  const InputRef = useRef<HTMLInputElement>(null);
-
-  // 이미지 변경 함수
-  const onChangeFile = async (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.[0]) {
-      const selectedFile = e.target.files[0];
-      setImgFile(selectedFile);
-    }
-  };
-
-  const handleUpload = async (e: FormEvent) => {
+  const handleUpdate = async (e: FormEvent) => {
     e.preventDefault();
 
-    // 각 input에 값이 비었을 경우 alert 창 띄우기
     if (
       !title.value ||
       !productInfo.product_price.value ||
@@ -83,17 +123,17 @@ const Product: React.FC = () => {
 
     uploadApi(imgFile)
       .then(async (res) => {
-        return await productUploadApi({
+        return await updateApi(post_id, {
           ...req,
           file_group_id: res.file_group_id,
         });
       })
       .then((data) => {
-        console.log("업로드 성공", data);
+        console.log("수정 성공", data);
         router.push("/home");
       })
       .catch((error) => {
-        console.error("업로드 실패", error);
+        console.error("수정 실패", error);
       });
   };
 
@@ -104,7 +144,16 @@ const Product: React.FC = () => {
         <UploadForm>
           <ImgWrap>
             {imgFile ? (
-              <ImgFile src={URL.createObjectURL(imgFile)} alt="이미지 파일" />
+              <ImgFile
+                src={
+                  typeof imgFile === "string"
+                    ? `/upload/${imgFile}`
+                    : imgFile
+                    ? URL.createObjectURL(imgFile)
+                    : undefined
+                }
+                alt="이미지 파일"
+              />
             ) : (
               <BasicImg />
             )}
@@ -143,7 +192,8 @@ const Product: React.FC = () => {
             id="product-title"
             type="text"
             placeholder="상품의 이름을 입력해 주세요"
-            {...title}
+            value={title.value}
+            onChange={title.onChange}
           />
 
           {/* 상품 가격 */}
@@ -195,16 +245,15 @@ const Product: React.FC = () => {
             id="product-contents"
             cols={50}
             rows={10}
-            {...content}
+            value={content.value}
+            onChange={content.onChange}
           />
 
-          <button className="btn_upload" onClick={handleUpload}>
+          <button className="btn_upload" onClick={handleUpdate}>
             상품 업로드 하기
           </button>
         </UploadForm>
       </article>
     </UploadMain>
   );
-};
-
-export default Product;
+}
