@@ -64,6 +64,8 @@ export const ProductSelect = styled.article`
   }
 
   span {
+    text-align: center;
+    width: 15px;
     font-weight: 400;
     padding: 6.1px 25px;
     background-color: white;

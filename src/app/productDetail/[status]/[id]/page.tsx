@@ -7,8 +7,6 @@ import {
   ProfileImg,
 } from "@/styles/productStyle";
 import React, { useEffect, useState } from "react";
-import profileImg from "@/../public/assets/images/profile.png";
-import Image from "next/image";
 import postDetailApi, { Res } from "@/api/postDetailApi";
 import DetailModal from "@/components/detailModal";
 
@@ -33,8 +31,6 @@ const ProductDetail: React.FC = (props) => {
   const handleClickMenu = () => {
     setMenuModal(!menuModal);
   };
-
-  console.log(data?.userFile.up_file);
 
   return (
     <ProductMain>

@@ -1,17 +1,38 @@
 "use client";
-import Image from "next/image";
 import productImg1 from "@/../public/assets/images/group1.jpg";
-import profileImg from "@/../public/assets/images/profile.png";
 import {
   GroupSubmit,
   ProductContent,
   ProductImg,
   ProductInfo,
   ProductMain,
+  ProfileImg,
 } from "@/styles/productStyle";
 import AccountFormInfo from "@/components/accountInfo";
+import { useEffect, useState } from "react";
+import postDetailApi, { Res } from "@/api/postDetailApi";
+import DetailModal from "@/components/detailModal";
 
 const GroupDetail: React.FC = () => {
+  const id = 2;
+
+  const [data, setData] = useState<Res | null>(null);
+
+  useEffect(() => {
+    const detail = async () => {
+      const res = await postDetailApi(id);
+      console.log(res);
+      setData(res);
+    };
+    detail();
+  }, []);
+
+  const [menuModal, setMenuModal] = useState<boolean>(false);
+
+  const handleClickMenu = () => {
+    setMenuModal(!menuModal);
+  };
+
   return (
     <ProductMain>
       <h2 className="a11y-hidden">상품 페이지</h2>
@@ -20,22 +41,27 @@ const GroupDetail: React.FC = () => {
           <ProductImg src={productImg1.src} />
           <div className="product_intro_button">
             <div className="product_intro">
-              <h3 className="product_title">상품1</h3>
-              <p className="product_price">59,000원</p>
+              <div className="title_update">
+                <h3 className="product_title">{data?.title}</h3>
+                <button className="btn_update" onClick={handleClickMenu} />
+                {menuModal ? <DetailModal /> : null}
+              </div>
               <p>
-                <strong>• 판매 기간 : </strong>23/02/09 ~ 23/02/14
+                <strong>• 판매 기간 : </strong>
+                {data?.product.start_dt} ~ {data?.product.end_dt}
               </p>
               <p>
-                <strong>• 배송 방법 : </strong>택배
+                <strong>• 배송 방법 : </strong>
+                {data?.product.post_method}
               </p>
             </div>
             <div className="profile_wrap">
-              <Image
+              <ProfileImg
                 className="img_profile"
-                src={profileImg}
+                src={`/upload/${data?.userFile.up_file}`}
                 alt="프로필 이미지"
               />
-              <p className="user_name">목긴알파카123</p>
+              <p className="user_name">{data?.user.nickname}</p>
             </div>
             <div className="btns_wrap">
               <button className="btn_like">찜하기</button>
@@ -44,12 +70,10 @@ const GroupDetail: React.FC = () => {
           </div>
         </ProductInfo>
         <ProductContent>
-          <p className="product_contents">
-            너무 귀여운 브라운 쿠션입니다. 귀엽죠 귀엽죠
-          </p>
+          <p className="product_contents">{data?.content}</p>
           <GroupSubmit>
             {/* 입금자 정보 폼 */}
-            <AccountFormInfo />
+            <AccountFormInfo data={data} />
           </GroupSubmit>
         </ProductContent>
       </section>
