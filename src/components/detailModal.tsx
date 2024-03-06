@@ -1,6 +1,7 @@
 import { DetailModalDiv } from "@/styles/detailModalStyle";
 import { useRouter } from "next/navigation";
 import React from "react";
+import ModalFilter from "./modalFilter";
 
 export default function DetailModal() {
   const router = useRouter();

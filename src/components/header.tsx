@@ -13,6 +13,7 @@ import {
 } from "@/styles/headerStyle";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
+import ModalFilter from "./modalFilter";
 
 interface PostUploadModalProps {
   setUploadModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -96,7 +97,9 @@ const Header: React.FC = () => {
       <div>
         <UploadBtn onClick={handleClickModal}>글 등록▾</UploadBtn>
         {uploadModal ? (
-          <PostUploadModal setUploadModal={setUploadModal} />
+          <ModalFilter onClose={handleClickModal}>
+            <PostUploadModal setUploadModal={setUploadModal} />
+          </ModalFilter>
         ) : null}
       </div>
       {authState ? (

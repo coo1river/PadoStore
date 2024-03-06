@@ -100,6 +100,12 @@ export const ProductInfo = styled.article`
   }
 `;
 
+export const ProfileImg = styled.img`
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+`;
+
 export const ProductImg = styled.img`
   object-fit: contain;
   width: 400px;

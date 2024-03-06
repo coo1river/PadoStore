@@ -23,7 +23,7 @@ import React, {
 
 export default function ProductUpdate() {
   const router = useRouter();
-  const post_id = 5;
+  const post_id = 1;
 
   // 게시물 타입 관리
   const [boardType, setBoardType] = useState<string | undefined>("");
@@ -36,7 +36,7 @@ export default function ProductUpdate() {
   // 게시물 수정 데이터 불러 오기
   useEffect(() => {
     const update = async () => {
-      const res = await updateApi(post_id);
+      const res = await updateApi("get", post_id);
       console.log(res);
       setData(res);
     };
@@ -60,10 +60,10 @@ export default function ProductUpdate() {
   const { token, setToken } = useAuthStore();
 
   // useInput 사용으로 사용 정보 내용 담기
-  const title = useInput(data?.title ?? "");
+  const title = useInput("");
   const content = useInput("");
   const productInfo = {
-    product_price: useInput(""),
+    price: useInput(""),
     product_status: useInput(""),
     post_method: useInput(""),
   };
@@ -72,6 +72,7 @@ export default function ProductUpdate() {
   useEffect(() => {
     title.setValue(data?.title || "");
     content.setValue(data?.content || "");
+    productInfo.price.setValue(data?.product.price || "");
     productInfo.product_status.setValue(data?.product.product_status || "");
     productInfo.post_method.setValue(data?.product.post_method || "");
   }, [data]);
@@ -93,6 +94,7 @@ export default function ProductUpdate() {
 
   // api에 보낼 수정 데이터 정보 담기
   const req = {
+    post_id: post_id,
     board_type: boardType,
     user_id: token,
     title: title.value,
@@ -100,7 +102,7 @@ export default function ProductUpdate() {
     post_status: "InProgress",
     file_group_id: "",
     product: {
-      product_price: productInfo.product_price.value,
+      price: productInfo.price.value,
       product_status: productInfo.product_status.value,
       post_method: productInfo.post_method.value,
     },
@@ -111,7 +113,7 @@ export default function ProductUpdate() {
 
     if (
       !title.value ||
-      !productInfo.product_price.value ||
+      !productInfo.price.value ||
       !productInfo.product_status.value ||
       !productInfo.post_method.value ||
       !content.value ||
@@ -123,7 +125,7 @@ export default function ProductUpdate() {
 
     uploadApi(imgFile)
       .then(async (res) => {
-        return await updateApi(post_id, {
+        return await updateApi("put", post_id, {
           ...req,
           file_group_id: res.file_group_id,
         });
@@ -203,13 +205,12 @@ export default function ProductUpdate() {
             type="string"
             placeholder="상품의 가격을 입력해 주세요"
             // 쉼표로 가격 표시
-            value={productInfo.product_price.value.replace(
-              /\B(?=(\d{3})+(?!\d))/g,
-              ","
-            )}
+            value={productInfo.price.value
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             onChange={(e) => {
               const formattedValue = e.target.value.replace(/[^\d]/g, "");
-              productInfo.product_price.onChange({
+              productInfo.price.onChange({
                 target: { value: formattedValue },
               } as React.ChangeEvent<HTMLInputElement>);
             }}

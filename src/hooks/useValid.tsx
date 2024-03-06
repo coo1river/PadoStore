@@ -188,7 +188,9 @@ const useValid = (
       const numberValid = await numberValidApi({ number: form.number });
       setError({
         ...error,
-        numberErr: numberValid ? "사용 중인 번호입니다" : "중복된 번호입니다.",
+        numberErr: numberValid
+          ? "사용 가능한 번호입니다"
+          : "중복된 번호입니다.",
       });
       numberValid ? setJoinable({ ...joinable, number: true }) : null;
     }

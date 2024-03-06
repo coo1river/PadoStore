@@ -41,7 +41,7 @@ const Product: React.FC = () => {
     post_status: "InProgress",
     file_group_id: "",
     product: {
-      product_price: productInfo.product_price.value,
+      price: productInfo.product_price.value,
       product_status: productInfo.product_status.value,
       post_method: productInfo.post_method.value,
     },
@@ -80,6 +80,7 @@ const Product: React.FC = () => {
       alert("필수 항목을 입력해 주세요");
       return;
     }
+    console.log(req);
 
     uploadApi(imgFile)
       .then(async (res) => {

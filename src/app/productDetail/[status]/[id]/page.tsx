@@ -4,6 +4,7 @@ import {
   ProductInfo,
   ProductMain,
   ProductImg,
+  ProfileImg,
 } from "@/styles/productStyle";
 import React, { useEffect, useState } from "react";
 import profileImg from "@/../public/assets/images/profile.png";
@@ -14,7 +15,7 @@ import DetailModal from "@/components/detailModal";
 const ProductDetail: React.FC = (props) => {
   // console.log(props);
 
-  const id = 5;
+  const id = 1;
 
   const [data, setData] = useState<Res | null>(null);
 
@@ -32,6 +33,8 @@ const ProductDetail: React.FC = (props) => {
   const handleClickMenu = () => {
     setMenuModal(!menuModal);
   };
+
+  console.log(data?.userFile.up_file);
 
   return (
     <ProductMain>
@@ -60,9 +63,9 @@ const ProductDetail: React.FC = (props) => {
               </p>
             </div>
             <div className="profile_wrap">
-              <Image
+              <ProfileImg
                 className="img_profile"
-                src={profileImg}
+                src={`/upload/${data?.userFile.up_file}`}
                 alt="프로필 이미지"
               />
               <p className="user_name">{data?.user.nickname}</p>

@@ -12,6 +12,7 @@ export interface Res {
   update_dt: string;
   post_status: string;
   product: {
+    price: string;
     product_id: number;
     post_id: number;
     product_status: string;
@@ -50,6 +51,9 @@ export interface Res {
     account_name: null;
     account_number: null;
     file_group_id: string;
+  };
+  userFile: {
+    up_file: string;
   };
   file: {
     file_id: number;

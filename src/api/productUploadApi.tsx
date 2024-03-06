@@ -8,7 +8,7 @@ export interface ProductReq {
   post_status: string;
   file_group_id: string | "";
   product: {
-    product_price: string;
+    price: string;
     product_status: string;
     post_method: string;
   };
