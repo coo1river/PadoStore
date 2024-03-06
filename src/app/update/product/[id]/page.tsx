@@ -52,10 +52,6 @@ export default function ProductUpdate() {
     setImgFile(data?.file[0].up_file);
   }, [data?.file]);
 
-  useEffect(() => {
-    console.log(imgFile);
-  }, [imgFile]);
-
   // zustand에서 token 가져오기
   const { token, setToken } = useAuthStore();
 
@@ -125,7 +121,7 @@ export default function ProductUpdate() {
 
     uploadApi(imgFile)
       .then(async (res) => {
-        return await updateApi("put", post_id, {
+        return await updateApi("put", undefined, {
           ...req,
           file_group_id: res.file_group_id,
         });

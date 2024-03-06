@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Res } from "./postDetailApi";
+import { GroupReq } from "./groupUploadApi";
 
 interface UpdateRes {
   post_id: number;
@@ -19,7 +20,7 @@ interface UpdateRes {
 const updateApi = async (
   method: string,
   post_id?: number,
-  data?: UpdateRes
+  data?: UpdateRes | GroupReq
 ): Promise<Res> => {
   const getUrl = `/api/board/update/${post_id}`;
   const putUrl = "/api/board/update";
