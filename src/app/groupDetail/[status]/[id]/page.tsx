@@ -38,7 +38,10 @@ const GroupDetail: React.FC = () => {
       <h2 className="a11y-hidden">상품 페이지</h2>
       <section className="product_detail">
         <ProductInfo>
-          <ProductImg src={productImg1.src} />
+          <ProductImg
+            src={`/upload/${data?.file[0].up_file}`}
+            alt="상품 이미지"
+          />
           <div className="product_intro_button">
             <div className="product_intro">
               <div className="title_update">

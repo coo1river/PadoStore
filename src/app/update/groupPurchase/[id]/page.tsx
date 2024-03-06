@@ -210,6 +210,7 @@ const GroupPurchaseUpdate: React.FC = () => {
       .then(async (res) => {
         return await updateApi("put", undefined, {
           ...dataReq,
+          post_id: post_id,
           file_group_id: res.file_group_id,
         });
       })
