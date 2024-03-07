@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { GroupForm } from "./UploadStyle";
 import { HomeMain } from "./homeStyle";
+import iconMenu from "@/../public/assets/svgs/menu-dots.svg";
 
 export const ProductMain = styled(HomeMain)`
   .product_detail {
@@ -37,6 +38,20 @@ export const ProductInfo = styled.article`
     gap: 30px;
     padding-bottom: 40px;
     border-bottom: 2px solid var(--color-trans-grey);
+  }
+
+  .title_update {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+
+    .btn_update {
+      margin-right: 20px;
+      width: 20px;
+      height: 20px;
+
+      background: url(${iconMenu.src}) center/15px no-repeat;
+    }
   }
 
   .product_title {
@@ -85,10 +100,18 @@ export const ProductInfo = styled.article`
   }
 `;
 
+export const ProfileImg = styled.img`
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+`;
+
 export const ProductImg = styled.img`
-  width: fit-content;
+  object-fit: contain;
+  width: 400px;
   height: 400px;
   border-radius: 15px;
+  background-color: var(--color-trans-grey);
 `;
 
 export const ProductContent = styled.article`

@@ -11,7 +11,7 @@ export interface ReqData {
 }
 
 const joinApi = async (data: ReqData) => {
-  const url = "api/join";
+  const url = "/api/join";
   const formData = new FormData();
   formData.append("user_id", data.user_id);
   formData.append("password", data.password);
@@ -19,7 +19,10 @@ const joinApi = async (data: ReqData) => {
   formData.append("nickname", data.nickname);
   formData.append("email", data.email);
   formData.append("phone_number", data.phone_number);
-  formData.append("uploadfile", data.uploadfile || "");
+
+  if (data.uploadfile) {
+    formData.append("uploadfile", data.uploadfile);
+  }
 
   try {
     const res = await axios.post<ReqData>(url, formData, {

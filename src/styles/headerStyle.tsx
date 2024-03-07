@@ -88,6 +88,7 @@ export const ModalWrap = styled.div`
   font-weight: 600;
   position: absolute;
   margin-top: 10px;
+  z-index: 10;
 
   li {
     padding: 15px 30px;

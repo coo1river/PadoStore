@@ -13,6 +13,7 @@ import {
 } from "@/styles/headerStyle";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
+import ModalFilter from "./modalFilter";
 
 interface PostUploadModalProps {
   setUploadModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -22,18 +23,23 @@ interface PostUploadModalProps {
 const PostUploadModal: React.FC<PostUploadModalProps> = ({
   setUploadModal,
 }) => {
+  // 라우터 사용
   const router = useRouter();
 
+  // 모달 창 끄기
   const handleModalOff = () => {
     setUploadModal(false);
   };
+
+  // zustand에서 token 가져오기
+  const { token, setToken } = useAuthStore();
 
   return (
     <ModalWrap>
       <ul>
         <li
           onClick={() => {
-            router.push("/upload/product");
+            token ? router.push("/upload/product") : router.push("/login");
             handleModalOff();
           }}
         >
@@ -41,7 +47,9 @@ const PostUploadModal: React.FC<PostUploadModalProps> = ({
         </li>
         <li
           onClick={() => {
-            router.push("/upload/groupPurchase");
+            token
+              ? router.push("/upload/groupPurchase")
+              : router.push("/login");
             handleModalOff();
           }}
         >
@@ -67,8 +75,6 @@ const Header: React.FC = () => {
   const { authState, setAuthState } = useAuthStore();
   const { token, setToken } = useAuthStore();
 
-  console.log(authState, token);
-
   const handleLogout = () => {
     setAuthState(false);
     setToken(null);
@@ -91,7 +97,9 @@ const Header: React.FC = () => {
       <div>
         <UploadBtn onClick={handleClickModal}>글 등록▾</UploadBtn>
         {uploadModal ? (
-          <PostUploadModal setUploadModal={setUploadModal} />
+          <ModalFilter onClose={handleClickModal}>
+            <PostUploadModal setUploadModal={setUploadModal} />
+          </ModalFilter>
         ) : null}
       </div>
       {authState ? (

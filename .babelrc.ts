@@ -9,5 +9,6 @@ module.exports = {
         pure: true, // dead code elimination (사용되지 않는 속성 제거)
       },
     ],
+    ["inline-react-svg"],
   ],
 };

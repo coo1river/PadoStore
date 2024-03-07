@@ -4,8 +4,38 @@ import {
   ProductSelect,
   UserInfo,
 } from "@/styles/accountInfoStyle";
+import { BankOptions } from "./selectOption";
+import { Res } from "@/api/postDetailApi";
+import { useEffect, useState } from "react";
 
-const AccountFormInfo: React.FC = () => {
+interface Props {
+  data: Res | null;
+}
+
+const AccountFormInfo: React.FC<Props> = ({ data }) => {
+  // 상품 개수 만큼 배열 만들기
+  const [countArray, setCountArray] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (data?.productDetail) {
+      const generatedCountArray = Array.from(
+        { length: data.productDetail.length },
+        () => 0
+      );
+      setCountArray(generatedCountArray);
+    }
+  }, [data?.productDetail]);
+
+  const handleClick = (index: number, increment: number) => {
+    setCountArray((prevCountArray) => {
+      const updatedCount = [...prevCountArray];
+      if (increment === 1 || (increment === -1 && updatedCount[index] > 0)) {
+        updatedCount[index] += increment;
+      }
+      return updatedCount;
+    });
+  };
+
   return (
     <AccountInfoWrap>
       <h2 className="AccountInfo_title">입금 폼 작성</h2>
@@ -13,46 +43,28 @@ const AccountFormInfo: React.FC = () => {
         <ProductSelect>
           <h3>상품 선택</h3>
           <ul>
-            <li>
-              라이언
-              <div className="count_wrap">
-                <button>-</button>
-                <span>3</span>
-                <button>+</button>
-              </div>
-            </li>
-            <li>
-              춘식이
-              <div className="count_wrap">
-                <button>-</button>
-                <span>3</span>
-                <button>+</button>
-              </div>
-            </li>
-            <li>
-              어피치
-              <div className="count_wrap">
-                <button>-</button>
-                <span>1</span>
-                <button>+</button>
-              </div>
-            </li>
-            <li>
-              프로도
-              <div className="count_wrap">
-                <button>-</button>
-                <span>0</span>
-                <button>+</button>
-              </div>
-            </li>
-            <li>
-              무지
-              <div className="count_wrap">
-                <button>-</button>
-                <span>0</span>
-                <button>+</button>
-              </div>
-            </li>
+            {data?.productDetail?.map(
+              (detail: Res["productDetail"][0], index: number) => (
+                <li key={index}>
+                  {detail.product_name}
+                  <div className="count_wrap">
+                    <button
+                      type="button"
+                      onClick={() => handleClick(index, -1)}
+                    >
+                      -
+                    </button>
+                    <span>{countArray[index]}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleClick(index, +1)}
+                    >
+                      +
+                    </button>
+                  </div>
+                </li>
+              )
+            )}
           </ul>
         </ProductSelect>
 
@@ -94,32 +106,7 @@ const AccountFormInfo: React.FC = () => {
             <div>
               <label htmlFor="bank-name">• 입금 은행</label>
               <select name="bank-name" id="bank-name">
-                <option>국민은행</option>
-                <option>기업은행</option>
-                <option>농협은행</option>
-                <option>신한은행</option>
-                <option>산업은행</option>
-                <option>우리은행</option>
-                <option>한국씨티은행</option>
-                <option>하나은행</option>
-                <option>SC제일은행</option>
-                <option>경남은행</option>
-                <option>광주은행</option>
-                <option>대구은행</option>
-                <option>부산은행</option>
-                <option>저축은행</option>
-                <option>새마을금고</option>
-                <option>케이뱅크</option>
-                <option>토스뱅크</option>
-                <option>교보증권</option>
-                <option>대신증권</option>
-                <option>미래에셋증권</option> <option>유진투자증권</option>
-                <option>신한투자증권</option>
-                <option>키움증권</option>
-                <option>하나증권</option>
-                <option>하나투자증권</option>
-                <option>KB증권</option>
-                <option>NH투자증권</option>
+                <BankOptions />
               </select>
             </div>
 

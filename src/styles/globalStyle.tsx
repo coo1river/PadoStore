@@ -28,11 +28,19 @@ ${reset}
 }
 
 body {
+    color: #333333;
     font-family: 'Pretendard', sans-serif;
     overflow: scroll;
     &::-webkit-scrollbar{
         display: none;
     }
+}
+
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 input, textarea {

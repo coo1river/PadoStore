@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import iconLandScape from "@/../public/assets/svgs/landscape.svg";
+import iconClose from "@/../public/assets/svgs/close.svg";
 
 export const UploadMain = styled.main`
   display: flex;
@@ -12,25 +14,55 @@ export const UploadMain = styled.main`
     font-weight: 700;
     margin-bottom: 10px;
   }
+
+  .btn_del {
+    margin-left: 10px;
+    width: 20px;
+    height: 20px;
+    background-size: 20px;
+    background-image: url(${iconClose.src});
+  }
 `;
 
 export const ImgWrap = styled.div`
-  width: 800px;
-  border-radius: 50%;
-  margin: 0 auto;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 
   .label_file {
+    position: absolute;
     display: block;
-    background-color: var(--color-lightgrey);
+    width: 300px;
     height: 300px;
-    margin: 0 150px;
+    margin: 0 auto;
     border-radius: 15px;
     cursor: pointer;
+
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
   }
 
   .input_file {
     display: none;
   }
+`;
+
+export const ImgFile = styled.img`
+  object-fit: contain;
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
+  border-radius: 15px;
+`;
+
+export const BasicImg = styled.div`
+  border-radius: 15px;
+  margin: 0 auto;
+  width: 300px;
+  height: 300px;
+  background: white url(${iconLandScape.src}) center/70px no-repeat;
 `;
 
 export const UploadForm = styled.article`
@@ -44,10 +76,6 @@ export const UploadForm = styled.article`
     justify-content: space-between;
     align-items: center;
     margin: 10px 0;
-
-    p {
-      font-size: 16px;
-    }
   }
 
   label {
@@ -67,7 +95,7 @@ export const UploadForm = styled.article`
   textarea {
     caret-color: var(--color-main);
     padding: 15px 25px;
-    font-size: 15px;
+    font-size: 16px;
     box-shadow: 0px 0px 4px 0px #b4b4b42d;
 
     &:focus {
@@ -76,18 +104,9 @@ export const UploadForm = styled.article`
   }
 
   textarea {
+    padding: 16px 24px;
+    font-size: 16px;
     margin-bottom: 30px;
-  }
-
-  .btn_wrap button {
-    padding: 5px 20px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    border-radius: 15px;
-    background-color: white;
-    color: #2e2e2e;
-    font-weight: 600;
-    border: 1px solid var(--color-lightgrey);
   }
 
   .textarea_contents {
@@ -104,6 +123,53 @@ export const UploadForm = styled.article`
     font-weight: 700;
     border-radius: 15px;
   }
+
+  .btn_status {
+    padding: 5px 20px;
+    border-radius: 15px;
+    font-weight: 600;
+    border: 1px solid var(--color-lightgrey);
+    background-color: white;
+    color: #2e2e2e;
+    margin: 0 10px 10px 0;
+
+    &:hover {
+      transition: 0.4s;
+      background-color: #d1d1d1bd;
+    }
+  }
+
+  .active {
+    color: white;
+    background-color: var(--color-main);
+
+    &:hover {
+      background-color: #328fd2;
+    }
+  }
+
+  select {
+    padding: 16px;
+    margin-bottom: 25px;
+    box-shadow: 0px 0px 3px 0px #6d6d6d4e;
+    border-radius: 15px;
+    border: none;
+    font-family: var(--font-main);
+    font-size: 16px;
+
+    &:focus-visible {
+      outline: none;
+    }
+
+    &:focus,
+    &:active {
+      outline: 2px solid var(--color-main);
+    }
+  }
+
+  option {
+    padding: 16px;
+  }
 `;
 
 export const GroupForm = styled(UploadForm)`
@@ -112,11 +178,34 @@ export const GroupForm = styled(UploadForm)`
     background-color: white;
     border-radius: 15px;
     padding: 20px;
-    box-shadow: 0px 0px 4px 0px #b4b4b42d;
   }
 
   input {
     box-shadow: 0px 0px 4px 0px #5757572c;
+  }
+
+  .btn_status {
+    padding: 5px 20px;
+    border-radius: 15px;
+    font-weight: 600;
+    border: 1px solid var(--color-lightgrey);
+    background-color: white;
+    color: #2e2e2e;
+    margin: 0 10px 10px 0;
+
+    &:hover {
+      transition: 0.4s;
+      background-color: #bebebebe;
+    }
+  }
+
+  .active {
+    color: white;
+    background-color: var(--color-main);
+
+    &:hover {
+      background-color: #328fd2;
+    }
   }
 
   .product_list {
@@ -136,23 +225,26 @@ export const GroupForm = styled(UploadForm)`
 
   .sale_period_wrap {
     font-weight: 500;
-    input {
-      margin-left: 10px;
+    span {
+      margin-right: 24px;
+    }
 
+    input {
+      margin: 0;
       &:nth-child(2) {
-        margin-right: 30px;
+        margin-right: 40px;
       }
     }
   }
 
   select {
-    padding: 10px 15px;
+    padding: 16px;
     margin-bottom: 25px;
     box-shadow: 0px 0px 3px 0px #6d6d6d4e;
     border-radius: 15px;
     border: none;
     font-family: var(--font-main);
-    font-size: 15px;
+    font-size: 16px;
 
     &:focus-visible {
       outline: none;
@@ -162,6 +254,10 @@ export const GroupForm = styled(UploadForm)`
     &:active {
       outline: 2px solid var(--color-main);
     }
+  }
+
+  option {
+    padding: 16px;
   }
 `;
 
@@ -225,11 +321,12 @@ export const AddProduct = styled.article`
   }
 
   .btn_product_add {
-    padding: 10px 20px;
+    margin-top: 16px;
+    padding: 16px 24px;
     border-radius: 15px;
     width: fit-content;
     font-weight: 700;
-    font-size: 15px;
+    font-size: 16px;
     align-self: end;
   }
 `;
@@ -263,13 +360,27 @@ export const ProductList = styled.article`
     }
 
     .product_name {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 600;
     }
   }
 `;
 
 export const AddInputList = styled.article`
+  padding: 10px 20px !important;
+
+  .input_wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  p {
+    color: #2e2e2e;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
   #input_switch {
     padding: 0;
     position: absolute;
@@ -337,15 +448,19 @@ export const AddInputList = styled.article`
   .input_list_wrap {
     display: flex;
     flex-direction: column;
+    margin-bottom: 10px;
   }
 
   .btn_add_input {
     background-color: var(--color-main);
     color: white;
-    padding: 10px 20px;
+    border-radius: 15px;
+    align-self: end;
+
+    padding: 16px 24px;
     border-radius: 15px;
     width: fit-content;
-    font-weight: 600;
-    align-self: end;
+    font-weight: 700;
+    font-size: 16px;
   }
 `;
