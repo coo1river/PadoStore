@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import iconLandScape from "@/../public/assets/svgs/landscape.svg";
+import iconClose from "@/../public/assets/svgs/close.svg";
 
 export const UploadMain = styled.main`
   display: flex;
@@ -12,6 +13,14 @@ export const UploadMain = styled.main`
     font-size: 18px;
     font-weight: 700;
     margin-bottom: 10px;
+  }
+
+  .btn_del {
+    margin-left: 10px;
+    width: 20px;
+    height: 20px;
+    background-size: 20px;
+    background-image: url(${iconClose.src});
   }
 `;
 
@@ -359,6 +368,12 @@ export const ProductList = styled.article`
 
 export const AddInputList = styled.article`
   padding: 10px 20px !important;
+
+  .input_wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
   p {
     color: #2e2e2e;

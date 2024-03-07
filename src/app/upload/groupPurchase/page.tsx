@@ -44,6 +44,17 @@ const GroupPurchase: React.FC = () => {
   // 상품 리스트 배열로 저장
   const [productList, setProductList] = useState<Product[]>([]);
 
+  // 클릭 시 해당 상품 삭제
+  const handleRemoveProduct = (index: number) => {
+    setProductList((prevList) => {
+      const newList = [
+        ...prevList.slice(0, index),
+        ...prevList.slice(index + 1),
+      ];
+      return newList;
+    });
+  };
+
   // api에 보낼 정보 담기
   const form = {
     title: useInput(""),
@@ -124,6 +135,16 @@ const GroupPurchase: React.FC = () => {
     addInput.input.onChange({
       target: { value: "" },
     } as React.ChangeEvent<HTMLInputElement>);
+  };
+
+  const handleRemoveInput = (index: number) => {
+    setAddInputList((prevList) => {
+      const newList = [
+        ...prevList.slice(0, index),
+        ...prevList.slice(index + 1),
+      ];
+      return newList;
+    });
   };
 
   const dataReq: GroupReq = {
@@ -328,6 +349,10 @@ const GroupPurchase: React.FC = () => {
                       <p className="product_price">
                         {Number(product.product_price).toLocaleString()}원
                       </p>
+                      <button
+                        className="btn_del"
+                        onClick={() => handleRemoveProduct(index)}
+                      />
                     </div>
                   </li>
                 ))}
@@ -374,7 +399,13 @@ const GroupPurchase: React.FC = () => {
               <ul>
                 {addInputList.map((item, index) => (
                   <li className="add_input_el" key={index}>
-                    • {item.input}
+                    <div className="input_wrap">
+                      <p>• {item.input}</p>
+                      <button
+                        className="btn_del"
+                        onClick={() => handleRemoveInput(index)}
+                      />
+                    </div>
                   </li>
                 ))}
               </ul>
