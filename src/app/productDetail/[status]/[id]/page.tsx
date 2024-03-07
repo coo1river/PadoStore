@@ -46,7 +46,7 @@ const ProductDetail: React.FC = (props) => {
               <div className="title_update">
                 <h3 className="product_title">{data?.title}</h3>
                 <button className="btn_update" onClick={handleClickMenu} />
-                {menuModal ? <DetailModal /> : null}
+                {menuModal ? <DetailModal data={data?.file_group_id} /> : null}
               </div>
               <p className="product_price"></p>
               <p>

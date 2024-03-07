@@ -1,10 +1,15 @@
 import { DetailModalDiv } from "@/styles/detailModalStyle";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
-import ModalFilter from "./modalFilter";
+import deleteApi from "@/api/deleteApi";
 
-export default function DetailModal() {
+interface Props {
+  data: string | undefined;
+}
+
+const DetailModal: React.FC<Props> = ({ data }) => {
   const router = useRouter();
+
   const path = usePathname();
 
   const post_id = 1;
@@ -19,13 +24,23 @@ export default function DetailModal() {
     }
   };
 
+  // post_id와 data(file_group_id) 전달하여 해당 글 삭제
+  const deleteRouter = async () => {
+    try {
+      await deleteApi(post_id, data);
+    } catch (error) {
+      console.error("삭제 오류:", error);
+    }
+  };
   return (
     <DetailModalDiv>
       <ul>
         <li>상태 변경</li>
         <li onClick={updateRouter}>수정</li>
-        <li>삭제</li>
+        <li onClick={deleteRouter}>삭제</li>
       </ul>
     </DetailModalDiv>
   );
-}
+};
+
+export default DetailModal;
