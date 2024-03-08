@@ -23,7 +23,7 @@ import React, {
 
 export default function ProductUpdate() {
   const router = useRouter();
-  const post_id = 1;
+  const post_id = 3;
 
   // 게시물 타입 관리
   const [boardType, setBoardType] = useState<string | undefined>("");

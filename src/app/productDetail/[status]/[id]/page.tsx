@@ -13,7 +13,7 @@ import DetailModal from "@/components/detailModal";
 const ProductDetail: React.FC = (props) => {
   // console.log(props);
 
-  const id = 1;
+  const id = 3;
 
   const [data, setData] = useState<Res | null>(null);
 

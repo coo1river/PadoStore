@@ -12,15 +12,15 @@ const DetailModal: React.FC<Props> = ({ data }) => {
 
   const path = usePathname();
 
-  const post_id = 1;
-  const group_id = 2;
+  const post_id = 3;
+  const group_id = 4;
 
   // pathname 확인 후 알맞은 수정 페이지로 이동
   const updateRouter = () => {
-    if (path.startsWith("/groupDetail/")) {
-      router.push(`/update/groupPurchase/${post_id}`);
-    } else if (path.startsWith("/productDetail/")) {
+    if (path.startsWith("/productDetail/")) {
       router.push(`/update/product/${group_id}`);
+    } else if (path.startsWith("/groupDetail/")) {
+      router.push(`/update/groupPurchase/${post_id}`);
     }
   };
 

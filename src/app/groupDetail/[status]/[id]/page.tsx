@@ -14,7 +14,7 @@ import postDetailApi, { Res } from "@/api/postDetailApi";
 import DetailModal from "@/components/detailModal";
 
 const GroupDetail: React.FC = () => {
-  const id = 2;
+  const id = 4;
 
   const [data, setData] = useState<Res | null>(null);
 

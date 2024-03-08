@@ -38,7 +38,7 @@ const GroupPurchaseUpdate: React.FC = () => {
   // 수정할 데이터 저장하기
   const [data, setData] = useState<Res | null>(null);
 
-  const post_id = 2;
+  const post_id = 4;
 
   // zustand에서 token 가져오기
   const { token, setToken } = useAuthStore();
