@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { HomeList } from "@/app/home/page";
 
 interface Props {
-  productList: HomeList[]; // productList로 변경
+  productList: HomeList[];
 }
 
 const ProductSection: React.FC<Props> = ({ productList }) => {

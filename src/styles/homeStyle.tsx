@@ -74,7 +74,7 @@ export const ProductArticle = styled.article`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 200px;
+  width: 210px;
   box-shadow: 0px 0px 4px 0px #0000001f;
   border-radius: 15px;
   cursor: pointer;
@@ -94,22 +94,30 @@ export const ProductArticle = styled.article`
   }
 
   .product_title {
+    height: 30px;
     margin-bottom: 16px;
     font-size: 16px;
-    font-weight: 600;
   }
 
   .user_name {
-    font-size: 14px;
+    font-size: 13px;
   }
 
   .product_price {
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
+  }
+
+  .period {
+    font-size: 12px;
+    background-color: var(--color-trans-grey);
+    padding: 5px;
+    border-radius: 5px;
   }
 
   .price_nickname {
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
 `;

@@ -14,12 +14,16 @@ const MarketTab: React.FC = () => {
   const router = useRouter();
 
   const params = {
-    board_type: "
-  }
+    board_type: "GroupPurchase",
+    limit: 10,
+    current_page: 1,
+    sort_by: "",
+    order: "ASC",
+  };
 
   useEffect(() => {
     const marketData = async () => {
-      const data = await homeTabApi();
+      const data = await homeTabApi("market", params);
       console.log(data);
     };
     marketData();
