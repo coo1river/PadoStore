@@ -6,7 +6,7 @@ interface Login {
 }
 
 const loginApi = async (data: Login) => {
-  const url = "api/login";
+  const url = "/api/login";
   try {
     const res = await axios.post<Login>(url, data);
     console.log("API 응답:", res.data);

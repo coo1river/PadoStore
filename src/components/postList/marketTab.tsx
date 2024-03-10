@@ -4,7 +4,7 @@ import productImg1 from "../../../public/assets/images/product1.jpg";
 import { useRouter } from "next/navigation";
 import { HomeList } from "@/app/home/page";
 import { useEffect, useState } from "react";
-import homeTabApi from "@/api/homeTabApi";
+import Pagination from "../pagination";
 
 interface Props {
   productList: HomeList[];
@@ -13,6 +13,13 @@ interface Props {
 const MarketTab: React.FC = () => {
   const router = useRouter();
 
+  // 총 포스트 개수 관리
+  const [totalPosts, setTotalPosts] = useState<number>(60);
+
+  // 현재 페이지 관리
+  const [page, setPage] = useState<number>(1);
+
+  // api 요청에 보낼 데이터 담기
   const params = {
     board_type: "GroupPurchase",
     limit: 10,
@@ -21,13 +28,17 @@ const MarketTab: React.FC = () => {
     order: "ASC",
   };
 
+  // useEffect(() => {
+  //   const marketData = async () => {
+  //     const data = await homeTabApi("market", params);
+  //     console.log(data);
+  //   };
+  //   marketData();
+  // }, []);
+
   useEffect(() => {
-    const marketData = async () => {
-      const data = await homeTabApi("market", params);
-      console.log(data);
-    };
-    marketData();
-  }, []);
+    console.log(page);
+  }, [page]);
 
   return (
     <ProductTab>
@@ -48,6 +59,7 @@ const MarketTab: React.FC = () => {
           </div>
         </ProductArticle>
       </div>
+      <Pagination totalPosts={totalPosts} page={page} setPage={setPage} />
     </ProductTab>
   );
 };

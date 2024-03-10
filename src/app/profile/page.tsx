@@ -1,12 +1,15 @@
 "use client";
 import { ProfileMain, UserProfile } from "@/styles/profileStyle";
 import React, { useState } from "react";
-import MyPost from "@/components/postList/myPost";
-import MyForm from "@/components/postList/myForm";
-import MyPurchase from "@/components/postList/myPurchase";
-import GroupPurchase from "@/components/postList/groupPurchase";
+import MyPost from "@/components/profilePostList/myPost";
+import MyForm from "@/components/profilePostList/myForm";
+import MyPurchase from "@/components/profilePostList/myPurchase";
+import GroupPurchase from "@/components/profilePostList/groupPurchase";
+import { useRouter } from "next/navigation";
 
 const Profile: React.FC = () => {
+  const router = useRouter();
+
   const [listState, setListState] = useState("myPost");
 
   let listRender;
@@ -50,15 +53,15 @@ const Profile: React.FC = () => {
       <section className="list_wrap">
         <nav>
           <ul className="nav_menu">
-            <p>내 게시물</p>
-            <li onClick={() => setListState("myPost")}>거래 내역</li>
-            <li onClick={() => setListState("myForm")}>공구 내역</li>
+            <p>거래 내역</p>
+            <li onClick={() => setListState("myPost")}>판매 내역</li>
+            <li onClick={() => setListState("myForm")}>구매 내역</li>
 
-            <p>구매 내역</p>
-            <li onClick={() => setListState("myPurchase")}>거래 내역</li>
-            <li onClick={() => setListState("partForm")}>공구 내역</li>
+            <p>공구 내역</p>
+            <li onClick={() => setListState("myPurchase")}>판매 폼</li>
+            <li onClick={() => setListState("partForm")}>구매 폼</li>
             <p>개인정보 수정</p>
-            <li>프로필 설정</li>
+            <li onClick={() => router.push("/profile/edit")}>프로필 설정</li>
             <li>입금 폼 설정</li>
           </ul>
         </nav>
