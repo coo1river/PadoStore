@@ -29,7 +29,7 @@ export const HomeMain = styled.main`
     margin: 20px 0;
     gap: 24px;
 
-    li {
+    .btn_tab {
       width: fit-content;
       font-size: 20px;
       font-weight: 700;
@@ -37,11 +37,11 @@ export const HomeMain = styled.main`
       padding-bottom: 10px;
       text-align: center;
       cursor: pointer;
+    }
 
-      &:first-child {
-        color: var(--color-main);
-        border-bottom: 4px solid var(--color-main);
-      }
+    .active {
+      color: var(--color-main);
+      border-bottom: 4px solid var(--color-main);
     }
   }
 `;

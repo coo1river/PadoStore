@@ -2,11 +2,18 @@
 import { ProductArticle, ProductTab } from "@/styles/homeStyle";
 import productImg1 from "../../../public/assets/images/product1.jpg";
 import { useRouter, useSearchParams } from "next/navigation";
+import { HomeList } from "@/app/home/page";
 
-const ProductSection: React.FC = () => {
+interface Props {
+  productList: HomeList[]; // productList로 변경
+}
+
+const ProductSection: React.FC<Props> = ({ productList }) => {
   const router = useRouter();
   const params = useSearchParams();
   console.log(params);
+
+  console.log(productList);
 
   return (
     <ProductTab>
