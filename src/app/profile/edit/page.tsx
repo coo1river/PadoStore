@@ -83,7 +83,6 @@ const EditProfile: React.FC = () => {
 
   const {
     error,
-    joinableState,
     EmailValid,
     IdValid,
     PwValid,
@@ -124,6 +123,8 @@ const EditProfile: React.FC = () => {
           account_number: null,
           file_group_id: res.file_group_id,
         };
+
+        console.log(resData);
 
         return await editProfileApi("put", undefined, resData);
       })

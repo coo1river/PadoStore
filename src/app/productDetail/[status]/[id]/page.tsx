@@ -13,9 +13,16 @@ import DetailModal from "@/components/detailModal";
 const ProductDetail: React.FC = (props) => {
   // console.log(props);
 
-  const id = 3;
+  const id = 11;
 
   const [data, setData] = useState<Res | null>(null);
+
+  // 이미지 파일 상태 관리
+  const [imgFile, setImgFile] = useState<string | File | undefined>("");
+
+  useEffect(() => {
+    setImgFile(data?.file[0].up_file);
+  }, [data?.file]);
 
   useEffect(() => {
     const detail = async () => {
@@ -38,7 +45,11 @@ const ProductDetail: React.FC = (props) => {
       <section className="product_detail">
         <ProductInfo>
           <ProductImg
-            src={`/upload/${data?.file[0].up_file}`}
+            src={
+              data?.file && data?.file[0]?.up_file
+                ? `/upload/${data?.file[0]?.up_file}`
+                : undefined
+            }
             alt="상품 이미지"
           />
           <div className="product_intro_button">
@@ -61,7 +72,11 @@ const ProductDetail: React.FC = (props) => {
             <div className="profile_wrap">
               <ProfileImg
                 className="img_profile"
-                src={`/upload/${data?.userFile.up_file}`}
+                src={
+                  data?.userFile && data?.userFile.up_file
+                    ? `/upload/${data?.userFile.up_file}`
+                    : undefined
+                }
                 alt="프로필 이미지"
               />
               <p className="user_name">{data?.user.nickname}</p>
