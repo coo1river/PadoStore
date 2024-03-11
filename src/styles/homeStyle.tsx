@@ -65,8 +65,9 @@ export const ProductTab = styled.section`
   margin-bottom: 40px;
 
   .sell_list {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
   }
 `;
 
@@ -92,6 +93,12 @@ export const ProductArticle = styled.article`
 
   .product_info {
     padding: 12px 16px;
+  }
+
+  .product_type {
+    font-weight: bold;
+    color: var(--color-main);
+    margin-right: 5px;
   }
 
   .product_title {

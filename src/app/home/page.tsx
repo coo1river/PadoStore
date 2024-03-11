@@ -3,10 +3,12 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { HomeMain, MainBanner } from "@/styles/homeStyle";
 import bannerImg from "../../../public/assets/images/banner.png";
-import ProductSection from "@/components/homeSection/productSection";
+import ProductSection, {
+  GroupOrderList,
+} from "@/components/homeSection/productSection";
 import GroupSection from "@/components/homeSection/groupSection";
 import homeListApi from "@/api/homeListApi";
-import MarketTab from "@/components/postList/marketTab";
+import MarketTab, { Data, MarketItem } from "@/components/postList/marketTab";
 import GroupPurchaseTab from "@/components/postList/groupPurchaseTab";
 
 export interface HomeList {
@@ -22,9 +24,9 @@ export interface HomeList {
   post_status: string;
 }
 
-interface HomeData {
-  marketList: HomeList[];
-  groupOrderList: HomeList[];
+export interface HomeData {
+  groupOrderList: GroupOrderList[];
+  marketList: MarketItem[];
 }
 
 const Home: React.FC = () => {
@@ -50,8 +52,8 @@ const Home: React.FC = () => {
       case "Home":
         return (
           <>
-            <ProductSection productList={data?.marketList || []} />
-            <GroupSection />
+            <ProductSection marketList={data?.marketList || []} />
+            <GroupSection groupOrderList={data?.groupOrderList || []} />
           </>
         );
       case "Market":

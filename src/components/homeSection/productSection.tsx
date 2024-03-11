@@ -1,19 +1,41 @@
 "use client";
 import { ProductArticle, ProductTab } from "@/styles/homeStyle";
-import productImg1 from "../../../public/assets/images/product1.jpg";
 import { useRouter, useSearchParams } from "next/navigation";
-import { HomeList } from "@/app/home/page";
+import { HomeData, HomeList } from "@/app/home/page";
+import { MarketItem, Product, User } from "../postList/marketTab";
 
-interface Props {
-  productList: HomeList[];
+export interface GroupOrderList {
+  fileList: {
+    file_id: number;
+    org_file: string;
+    up_file: string;
+    file_group_id: string;
+  }[];
+  groupOrder: {
+    board_type: string;
+    content: string;
+    file_group_id: string | null;
+    insert_dt: string;
+    post_id: number;
+    post_status: string;
+    title: string;
+    update_dt: string | null;
+    user_id: string;
+    view_count: number;
+  };
+  product: Product;
+  user: User;
 }
 
-const ProductSection: React.FC<Props> = ({ productList }) => {
+interface ProductSectionProps {
+  marketList: MarketItem[];
+}
+
+const ProductSection: React.FC<ProductSectionProps> = ({ marketList }) => {
   const router = useRouter();
   const params = useSearchParams();
-  console.log(params);
 
-  console.log(productList);
+  console.log(marketList);
 
   return (
     <ProductTab>
@@ -21,48 +43,33 @@ const ProductSection: React.FC<Props> = ({ productList }) => {
 
       {/* 상품 리스트 */}
       <div className="sell_list">
-        <ProductArticle
-          onClick={() => {
-            router.push(`/productDetail/:status/:id`);
-          }}
-        >
-          <img src={productImg1.src} alt="" />
-          <div className="product_info">
-            <h4 className="product_title">귀여운 춘식이 쿠션</h4>
-            <div className="price_nickname">
-              <p className="product_price">1000원</p>
-              <p className="user_name">닉네임</p>
-            </div>
-          </div>
-        </ProductArticle>
-        <ProductArticle>
-          <img src={productImg1.src} alt="" />
-          <div className="product_info">
-            <h4 className="product_title">귀여운 춘식이 쿠션쿠션쿠션쿠션</h4>
-            <p className="user_name">닉네임123</p>
-          </div>
-        </ProductArticle>
-        <ProductArticle>
-          <img src={productImg1.src} alt="" />
-          <div className="product_info">
-            <h4 className="product_title">귀여운 춘식이 쿠션쿠션쿠션쿠션</h4>
-            <p className="user_name">닉네임123</p>
-          </div>
-        </ProductArticle>
-        <ProductArticle>
-          <img src={productImg1.src} alt="" />
-          <div className="product_info">
-            <h4 className="product_title">귀여운 춘식이</h4>
-            <p className="user_name">닉네임123</p>
-          </div>
-        </ProductArticle>
-        <ProductArticle>
-          <img src={productImg1.src} alt="" />
-          <div className="product_info">
-            <h4 className="product_title">귀여운 춘식이 쿠션쿠션쿠션쿠션</h4>
-            <p className="user_name">닉네임123</p>
-          </div>
-        </ProductArticle>
+        {marketList &&
+          marketList.map((item) => {
+            return (
+              <ProductArticle
+                key={item.market.post_id}
+                onClick={() => {
+                  router.push(`/productDetail/:status/${item.market.post_id}`);
+                }}
+              >
+                <img
+                  src={
+                    item.fileList && item.fileList.length > 0
+                      ? `/upload/${item.fileList[0]?.up_file}`
+                      : undefined
+                  }
+                  alt="상품 이미지"
+                />
+                <div className="product_info">
+                  <h4 className="product_title">{item.market.title}</h4>
+                  <div className="price_nickname">
+                    <p className="product_price">{item.product?.price}원</p>
+                    <p className="user_name">{item.user?.nickname}</p>
+                  </div>
+                </div>
+              </ProductArticle>
+            );
+          })}
       </div>
     </ProductTab>
   );

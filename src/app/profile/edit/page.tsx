@@ -78,7 +78,9 @@ const EditProfile: React.FC = () => {
   }, [data]);
 
   useEffect(() => {
-    setImgProfile(data?.userFile.up_file);
+    data?.userFile && data?.userFile.up_file
+      ? setImgProfile(data?.userFile.up_file)
+      : setImgProfile(ImgProfileBasic.src);
   }, [data?.userFile]);
 
   const {
@@ -109,19 +111,21 @@ const EditProfile: React.FC = () => {
         console.log(res);
 
         const resData: EditReq = {
-          user_id: form.id.value,
-          password: form.password.value,
-          user_name: form.username.value,
-          nickname: form.nickname.value,
-          phone_number: form.number.value,
-          email: form.email.value,
-          addr_post: null,
-          addr: null,
-          addr_detail: null,
-          bank: null,
-          account_name: null,
-          account_number: null,
-          file_group_id: res.file_group_id,
+          user: {
+            user_id: form.id.value,
+            password: form.password.value,
+            user_name: form.username.value,
+            nickname: form.nickname.value,
+            phone_number: form.number.value,
+            email: form.email.value,
+            addr_post: null,
+            addr: null,
+            addr_detail: null,
+            bank: null,
+            account_name: null,
+            account_number: null,
+            file_group_id: res.file_group_id,
+          },
         };
 
         console.log(resData);
@@ -142,7 +146,7 @@ const EditProfile: React.FC = () => {
       <form className="join_form">
         {/* 프로필 이미지 업로드 */}
         <ImgWrap>
-          {imgProfile ? (
+          {data?.userFile && data?.userFile?.up_file ? (
             <ImgProfile
               src={
                 typeof imgProfile === "string"

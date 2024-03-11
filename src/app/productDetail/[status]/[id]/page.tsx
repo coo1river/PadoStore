@@ -9,6 +9,8 @@ import {
 import React, { useEffect, useState } from "react";
 import postDetailApi, { Res } from "@/api/postDetailApi";
 import DetailModal from "@/components/detailModal";
+import { ImgProfile } from "@/styles/joinStyle";
+import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
 
 const ProductDetail: React.FC = (props) => {
   // console.log(props);
@@ -70,15 +72,20 @@ const ProductDetail: React.FC = (props) => {
               </p>
             </div>
             <div className="profile_wrap">
-              <ProfileImg
-                className="img_profile"
-                src={
-                  data?.userFile && data?.userFile.up_file
-                    ? `/upload/${data?.userFile.up_file}`
-                    : undefined
-                }
-                alt="프로필 이미지"
-              />
+              {data?.userFile && data?.userFile.up_file ? (
+                <ProfileImg
+                  className="img_profile"
+                  src={
+                    data?.userFile && data?.userFile.up_file
+                      ? `/upload/${data?.userFile.up_file}`
+                      : undefined
+                  }
+                  alt="프로필 이미지"
+                />
+              ) : (
+                <ImgProfile src={ImgProfileBasic.src} />
+              )}
+
               <p className="user_name">{data?.user.nickname}</p>
             </div>
             <div className="btns_wrap">

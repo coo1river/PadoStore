@@ -8,7 +8,7 @@ interface HomeTabParams {
   order: string;
 }
 
-export default async function homeTabApi(tab: string, params: HomeTabParams) {
+export default async function homeTabApi(tab: string, data: HomeTabParams) {
   let url: string;
 
   if (tab === "market") {
@@ -20,9 +20,7 @@ export default async function homeTabApi(tab: string, params: HomeTabParams) {
   }
 
   try {
-    const res = await axios.get(url, {
-      params: params,
-    });
+    const res = await axios.get(url, { params: data });
     console.log("API 응답:", res.data);
     return res.data;
   } catch (error) {

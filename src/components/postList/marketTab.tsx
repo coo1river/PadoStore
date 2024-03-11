@@ -1,20 +1,70 @@
 "use client";
 import { ProductArticle, ProductTab } from "@/styles/homeStyle";
-import productImg1 from "../../../public/assets/images/product1.jpg";
 import { useRouter } from "next/navigation";
-import { HomeList } from "@/app/home/page";
 import { useEffect, useState } from "react";
 import Pagination from "../pagination";
+import homeTabApi from "@/api/homeTabApi";
 
-interface Props {
-  productList: HomeList[];
+export interface Product {
+  end_dt: string | null;
+  post_id: number;
+  post_method: string;
+  price: string;
+  product_id: number;
+  product_status: string;
+  start_dt: string | null;
+}
+
+export interface User {
+  account_name: string | null;
+  account_number: string | null;
+  addr: string | null;
+  addr_detail: string | null;
+  addr_post: string | null;
+  bank: string | null;
+  email: string;
+  file_group_id: string;
+  nickname: string;
+  password: string;
+  phone_number: string;
+  user_id: string;
+  user_name: string;
+}
+
+export interface MarketItem {
+  fileList: {
+    file_id: number;
+    org_file: string;
+    up_file: string;
+    file_group_id: string;
+  }[];
+  market: {
+    board_type: string;
+    content: string;
+    file_group_id: string | null;
+    insert_dt: string;
+    post_id: number;
+    post_status: string;
+    title: string;
+    update_dt: string | null;
+    user_id: string;
+    view_count: number;
+  };
+  product: Product;
+  user: User;
+}
+
+// 데이터 전체 타입
+export interface Data {
+  marketList: MarketItem[];
 }
 
 const MarketTab: React.FC = () => {
   const router = useRouter();
+  const [data, setData] = useState<Data | null>(null);
 
   // 총 포스트 개수 관리
-  const [totalPosts, setTotalPosts] = useState<number>(60);
+  const [totalPosts, setTotalPosts] = useState<number>(0);
 
   // 현재 페이지 관리
   const [page, setPage] = useState<number>(1);
@@ -23,41 +73,65 @@ const MarketTab: React.FC = () => {
   const params = {
     board_type: "GroupPurchase",
     limit: 10,
-    current_page: 1,
-    sort_by: "",
+    current_page: page,
+    sort_by: "post_id",
     order: "ASC",
   };
 
-  // useEffect(() => {
-  //   const marketData = async () => {
-  //     const data = await homeTabApi("market", params);
-  //     console.log(data);
-  //   };
-  //   marketData();
-  // }, []);
-
+  // api를 통해 data 가져오기
   useEffect(() => {
-    console.log(page);
-  }, [page]);
+    const marketData = async () => {
+      const data = await homeTabApi("market", params);
+      setTotalPosts(data?.totalCount);
+      setData(data);
+    };
+    marketData();
+  }, []);
 
   return (
     <ProductTab>
       {/* 상품 리스트 */}
       <div className="sell_list">
-        <ProductArticle
-          onClick={() => {
-            router.push(`/productDetail/:status/:id`);
-          }}
-        >
-          <img src={productImg1.src} alt="" />
-          <div className="product_info">
-            <h4 className="product_title">귀여운 춘식이 쿠션</h4>
-            <div className="price_nickname">
-              <p className="product_price">1000원</p>
-              <p className="user_name">닉네임</p>
-            </div>
-          </div>
-        </ProductArticle>
+        {data?.marketList &&
+          data.marketList.map((item) => {
+            const marketBoardType = item.market.board_type;
+            const boardType =
+              marketBoardType === "Sell"
+                ? "판매"
+                : marketBoardType === "Purchase"
+                ? "구매"
+                : marketBoardType === "Trade"
+                ? "교환"
+                : "";
+
+            return (
+              <ProductArticle
+                key={item.market.post_id}
+                onClick={() => {
+                  router.push(`/productDetail/:status/${item.market.post_id}`);
+                }}
+              >
+                <img
+                  src={
+                    item.fileList && item.fileList.length > 0
+                      ? `/upload/${item.fileList[0]?.up_file}`
+                      : undefined
+                  }
+                  alt="상품 이미지"
+                />
+                <div className="product_info">
+                  <h4 className="product_title">
+                    <strong className="product_type">[{boardType}]</strong>
+                    {item.market.title}
+                  </h4>
+                  <div className="price_nickname">
+                    <p className="product_price">{item.product?.price}원</p>
+                    <p className="user_name">{item.user?.nickname}</p>
+                  </div>
+                </div>
+              </ProductArticle>
+            );
+          })}
       </div>
       <Pagination totalPosts={totalPosts} page={page} setPage={setPage} />
     </ProductTab>

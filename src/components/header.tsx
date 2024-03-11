@@ -79,6 +79,7 @@ const Header: React.FC = () => {
     setAuthState(false);
     setToken(null);
     sessionStorage.removeItem("userToken");
+    router.push("/home");
   };
 
   return (

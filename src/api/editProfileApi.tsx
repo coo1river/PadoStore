@@ -24,19 +24,21 @@ export interface EditRes {
 }
 
 export interface EditReq {
-  user_id: string;
-  password: string;
-  user_name: string;
-  nickname: string;
-  phone_number: string;
-  email: string;
-  addr_post: string | null;
-  addr: string | null;
-  addr_detail: string | null;
-  bank: string | null;
-  account_name: string | null;
-  account_number: string | null;
-  file_group_id: string;
+  user: {
+    user_id: string;
+    password: string;
+    user_name: string;
+    nickname: string;
+    phone_number: string;
+    email: string;
+    addr_post: string | null;
+    addr: string | null;
+    addr_detail: string | null;
+    bank: string | null;
+    account_name: string | null;
+    account_number: string | null;
+    file_group_id: string;
+  };
 }
 
 export default async function editProfileApi(
