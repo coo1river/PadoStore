@@ -62,8 +62,6 @@ const GroupPurchaseTab: React.FC = () => {
 
   return (
     <ProductTab>
-      <h3 className="title_tag">공구 진행 중!</h3>
-
       {/* 상품 리스트 */}
       <div className="sell_list">
         {data?.groupOrderList &&

@@ -37,7 +37,6 @@ export interface EditReq {
     bank: string | null;
     account_name: string | null;
     account_number: string | null;
-    file_group_id: string;
   };
 }
 

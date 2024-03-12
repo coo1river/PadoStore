@@ -33,7 +33,6 @@ interface ProductSectionProps {
 
 const ProductSection: React.FC<ProductSectionProps> = ({ marketList }) => {
   const router = useRouter();
-  const params = useSearchParams();
 
   console.log(marketList);
 
@@ -45,11 +44,22 @@ const ProductSection: React.FC<ProductSectionProps> = ({ marketList }) => {
       <div className="sell_list">
         {marketList &&
           marketList.map((item) => {
+            const marketBoardType = item.market.board_type;
+            const boardType =
+              marketBoardType === "Sell"
+                ? "판매"
+                : marketBoardType === "Purchase"
+                ? "구매"
+                : marketBoardType === "Trade"
+                ? "교환"
+                : "";
             return (
               <ProductArticle
                 key={item.market.post_id}
                 onClick={() => {
-                  router.push(`/productDetail/:status/${item.market.post_id}`);
+                  router.push(
+                    `/productDetail/${item.market.post_status}/${item.market.post_id}`
+                  );
                 }}
               >
                 <img
@@ -61,7 +71,10 @@ const ProductSection: React.FC<ProductSectionProps> = ({ marketList }) => {
                   alt="상품 이미지"
                 />
                 <div className="product_info">
-                  <h4 className="product_title">{item.market.title}</h4>
+                  <h4 className="product_title">
+                    <strong className="product_type">[{boardType}]</strong>
+                    {item.market.title}
+                  </h4>
                   <div className="price_nickname">
                     <p className="product_price">{item.product?.price}원</p>
                     <p className="user_name">{item.user?.nickname}</p>

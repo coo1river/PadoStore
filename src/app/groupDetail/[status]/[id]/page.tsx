@@ -13,9 +13,10 @@ import { useEffect, useState } from "react";
 import postDetailApi, { Res } from "@/api/postDetailApi";
 import DetailModal from "@/components/detailModal";
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
+import { useParams } from "next/navigation";
 
 const GroupDetail: React.FC = () => {
-  const id = 12;
+  const params = useParams();
 
   const [data, setData] = useState<Res | null>(null);
 
@@ -28,7 +29,7 @@ const GroupDetail: React.FC = () => {
 
   useEffect(() => {
     const detail = async () => {
-      const res = await postDetailApi(id);
+      const res = await postDetailApi(params.id);
       console.log(res);
       setData(res);
     };
@@ -94,7 +95,16 @@ const GroupDetail: React.FC = () => {
           </div>
         </ProductInfo>
         <ProductContent>
-          <p className="product_contents">{data?.content}</p>
+          <p className="product_contents">
+            {data?.content.split("\n").map((line) => {
+              return (
+                <>
+                  {line}
+                  <br />
+                </>
+              );
+            })}
+          </p>
           <GroupSubmit>
             {/* 입금자 정보 폼 */}
             <AccountFormInfo data={data} />

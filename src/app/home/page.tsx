@@ -10,6 +10,7 @@ import GroupSection from "@/components/homeSection/groupSection";
 import homeListApi from "@/api/homeListApi";
 import MarketTab, { Data, MarketItem } from "@/components/postList/marketTab";
 import GroupPurchaseTab from "@/components/postList/groupPurchaseTab";
+import { useRouter } from "next/navigation";
 
 export interface HomeList {
   post_id: number;
@@ -31,6 +32,7 @@ export interface HomeData {
 
 const Home: React.FC = () => {
   const [data, setData] = useState<HomeData | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const homeData = async () => {
@@ -69,7 +71,11 @@ const Home: React.FC = () => {
     <HomeMain>
       <h2 className="a11y-hidden">홈</h2>
       <MainBanner>
-        <Image src={bannerImg} alt="배너 이미지" />
+        <Image
+          onClick={() => router.push("/groupDetail/InProgress/11")}
+          src={bannerImg}
+          alt="배너 이미지"
+        />
       </MainBanner>
       <nav>
         <ul className="menu_tab">

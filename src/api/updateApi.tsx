@@ -3,7 +3,7 @@ import { Res } from "./postDetailApi";
 import { GroupReq } from "./groupUploadApi";
 
 interface UpdateRes {
-  post_id: number;
+  post_id: string;
   user_id: string | null;
   board_type: string | undefined;
   title: string;
@@ -19,7 +19,7 @@ interface UpdateRes {
 
 const updateApi = async (
   method: string,
-  post_id?: number,
+  post_id?: string,
   data?: UpdateRes | GroupReq
 ): Promise<Res> => {
   const getUrl = `/api/board/update/${post_id}`;

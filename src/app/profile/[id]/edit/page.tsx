@@ -24,7 +24,7 @@ import useInput from "@/hooks/useInput";
 import useValid from "@/hooks/useValid";
 import editProfileApi, { EditReq, EditRes } from "@/api/editProfileApi";
 import useAuthStore from "@/store/useAuthStore";
-import uploadApi from "@/api/uploadApi";
+import profileUploadApi from "@/api/profileUploadApi";
 
 const EditProfile: React.FC = () => {
   // 라우터 사용
@@ -92,6 +92,7 @@ const EditProfile: React.FC = () => {
     NicknameValid,
     UserNameValid,
     NumberValid,
+    joinableState,
   } = useValid({
     email: form.email.value,
     user_id: form.id.value,
@@ -106,11 +107,11 @@ const EditProfile: React.FC = () => {
   const handleEditProfile = async (e: FormEvent) => {
     e.preventDefault();
 
-    uploadApi(imgProfile)
-      .then(async (res) => {
-        console.log(res);
-
-        const resData: EditReq = {
+    try {
+      // 이미지 업로드와 프로필 수정을 병렬로 실행
+      const [uploadResult, editResult] = await Promise.all([
+        profileUploadApi(imgProfile, token),
+        editProfileApi("put", undefined, {
           user: {
             user_id: form.id.value,
             password: form.password.value,
@@ -124,20 +125,16 @@ const EditProfile: React.FC = () => {
             bank: null,
             account_name: null,
             account_number: null,
-            file_group_id: res.file_group_id,
           },
-        };
+        }),
+      ]);
 
-        console.log(resData);
-
-        return await editProfileApi("put", undefined, resData);
-      })
-      .then((data) => {
-        console.log("수정 성공", data);
-      })
-      .catch((error) => {
-        console.error("수정 실패", error);
-      });
+      console.log("이미지 업로드 결과:", uploadResult);
+      console.log("프로필 수정 결과:", editResult);
+      console.log("수정 성공");
+    } catch (error) {
+      console.error("수정 실패", error);
+    }
   };
 
   return (
@@ -146,7 +143,7 @@ const EditProfile: React.FC = () => {
       <form className="join_form">
         {/* 프로필 이미지 업로드 */}
         <ImgWrap>
-          {data?.userFile && data?.userFile?.up_file ? (
+          {imgProfile ? (
             <ImgProfile
               src={
                 typeof imgProfile === "string"

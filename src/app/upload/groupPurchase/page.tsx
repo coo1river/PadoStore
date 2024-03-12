@@ -60,6 +60,7 @@ const GroupPurchase: React.FC = () => {
     title: useInput(""),
     content: useInput(""),
     post_method: useInput(""),
+    post_price: useInput(""),
     start_dt: useInput(""),
     end_dt: useInput(""),
     bank: useInput(""),
@@ -158,6 +159,7 @@ const GroupPurchase: React.FC = () => {
       post_method: form.post_method.value,
       start_dt: form.start_dt.value,
       end_dt: form.end_dt.value,
+      post_price: form.post_price.value,
     },
     questionList: addInputList,
     productDetail: productList,
@@ -176,6 +178,7 @@ const GroupPurchase: React.FC = () => {
       !form.title.value ||
       !form.content.value ||
       !form.post_method.value ||
+      !form.post_price.value ||
       !form.start_dt.value ||
       !form.end_dt.value ||
       !form.bank.value ||
@@ -246,7 +249,7 @@ const GroupPurchase: React.FC = () => {
             <span>• 시작 날짜</span>
             <input type="date" id="start-date" min={today} {...form.start_dt} />
             <span>• 종료 날짜</span>
-            <input type="date" id="end-date" {...form.end_dt} />
+            <input type="date" id="end-date" min={today} {...form.end_dt} />
           </div>
         </SalePeriod>
 
@@ -290,6 +293,21 @@ const GroupPurchase: React.FC = () => {
         >
           <DeliveryOptions />
         </select>
+
+        {/* 배송비 */}
+        <label htmlFor="delivery_price">배송비</label>
+        <input
+          id="delivery-price"
+          type="text"
+          placeholder="배송비를 입력해 주세요"
+          value={form.post_price.value.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          onChange={(e) => {
+            const formattedValue = e.target.value.replace(/[^\d]/g, "");
+            form.post_price.onChange({
+              target: { value: formattedValue },
+            } as React.ChangeEvent<HTMLInputElement>);
+          }}
+        />
 
         {/* 상품 등록 블록 */}
         <h3 className="product_title">상품 등록</h3>

@@ -22,7 +22,7 @@ const GroupSection: React.FC<GroupSectionProps> = ({ groupOrderList }) => {
                 key={item.groupOrder.post_id}
                 onClick={() => {
                   router.push(
-                    `/productDetail/:status/${item.groupOrder.post_id}`
+                    `/groupDetail/${item.groupOrder.post_status}/${item.groupOrder.post_id}`
                   );
                 }}
               >

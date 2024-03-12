@@ -48,10 +48,12 @@ export const HomeMain = styled.main`
 
 export const MainBanner = styled.article`
   cursor: pointer;
+  background-color: var(--color-trans-grey);
+  border-radius: 15px;
 
   & img {
     border-radius: 15px;
-    object-fit: cover;
+    object-fit: contain;
     width: 1200px;
     height: 320px;
   }
@@ -104,7 +106,7 @@ export const ProductArticle = styled.article`
   .product_title {
     height: 30px;
     margin-bottom: 16px;
-    font-size: 16px;
+    font-size: 17px;
   }
 
   .user_name {

@@ -1,5 +1,5 @@
 import { DetailModalDiv } from "@/styles/detailModalStyle";
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import React from "react";
 import deleteApi from "@/api/deleteApi";
 
@@ -12,15 +12,14 @@ const DetailModal: React.FC<Props> = ({ data }) => {
 
   const path = usePathname();
 
-  const post_id = 11;
-  const group_id = 4;
+  const { id } = useParams<{ id?: string }>();
 
   // pathname 확인 후 알맞은 수정 페이지로 이동
   const updateRouter = () => {
     if (path.startsWith("/productDetail/")) {
-      router.push(`/update/product/${post_id}`);
+      router.push(`/update/product/${id}`);
     } else if (path.startsWith("/groupDetail/")) {
-      router.push(`/update/groupPurchase/${group_id}`);
+      router.push(`/update/groupPurchase/${id}`);
     }
   };
 

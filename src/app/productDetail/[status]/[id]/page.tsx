@@ -9,13 +9,14 @@ import {
 import React, { useEffect, useState } from "react";
 import postDetailApi, { Res } from "@/api/postDetailApi";
 import DetailModal from "@/components/detailModal";
-import { ImgProfile } from "@/styles/joinStyle";
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
+import { useParams } from "next/navigation";
 
 const ProductDetail: React.FC = (props) => {
   // console.log(props);
 
-  const id = 11;
+  const params = useParams();
+  console.log(params.id);
 
   const [data, setData] = useState<Res | null>(null);
 
@@ -28,7 +29,7 @@ const ProductDetail: React.FC = (props) => {
 
   useEffect(() => {
     const detail = async () => {
-      const res = await postDetailApi(id);
+      const res = await postDetailApi(params.id);
       console.log(res);
       setData(res);
     };
@@ -83,7 +84,7 @@ const ProductDetail: React.FC = (props) => {
                   alt="프로필 이미지"
                 />
               ) : (
-                <ImgProfile src={ImgProfileBasic.src} />
+                <ProfileImg src={ImgProfileBasic.src} />
               )}
 
               <p className="user_name">{data?.user.nickname}</p>
@@ -95,7 +96,16 @@ const ProductDetail: React.FC = (props) => {
           </div>
         </ProductInfo>
         <ProductContent>
-          <p className="product_contents">{data?.content}</p>
+          <p className="product_contents">
+            {data?.content.split("\n").map((line) => {
+              return (
+                <>
+                  {line}
+                  <br />
+                </>
+              );
+            })}
+          </p>
         </ProductContent>
       </section>
     </ProductMain>

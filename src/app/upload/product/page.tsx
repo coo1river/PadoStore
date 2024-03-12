@@ -84,6 +84,7 @@ const Product: React.FC = () => {
 
     uploadApi(imgFile)
       .then(async (res) => {
+        console.log(res);
         return await productUploadApi({
           ...req,
           file_group_id: res.file_group_id,

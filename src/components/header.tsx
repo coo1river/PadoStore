@@ -105,7 +105,9 @@ const Header: React.FC = () => {
       </div>
       {authState ? (
         <LoginJoin>
-          <button onClick={() => router.push("/profile")}>프로필</button>
+          <button onClick={() => router.push(`/profile/${token}`)}>
+            프로필
+          </button>
           <button onClick={handleLogout}>로그아웃</button>
         </LoginJoin>
       ) : (

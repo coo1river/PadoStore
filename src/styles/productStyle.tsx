@@ -36,7 +36,7 @@ export const ProductInfo = styled.article`
     display: flex;
     flex-direction: column;
     gap: 30px;
-    padding-bottom: 40px;
+    padding-bottom: 60px;
     border-bottom: 2px solid var(--color-trans-grey);
   }
 

@@ -6,14 +6,6 @@ export const ProfileMain = styled(LoginMain)`
   align-items: start;
   height: calc(100% - 235px);
 
-  .img_profile {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    box-shadow: 0px 0px 4px 0px #0000001f;
-    background-color: white;
-  }
-
   .list_wrap {
     background-color: white;
     border-radius: 15px;
@@ -78,6 +70,12 @@ export const ProfileMain = styled(LoginMain)`
       text-align: center;
     }
   }
+`;
+
+export const ImgProfile = styled.img`
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
 `;
 
 export const UserProfile = styled.section`

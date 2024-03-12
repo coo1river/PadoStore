@@ -12,7 +12,7 @@ import {
   UploadForm,
   UploadMain,
 } from "@/styles/UploadStyle";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, {
   ChangeEvent,
   FormEvent,
@@ -23,7 +23,7 @@ import React, {
 
 export default function ProductUpdate() {
   const router = useRouter();
-  const post_id = 11;
+  const params = useParams();
 
   // 게시물 타입 관리
   const [boardType, setBoardType] = useState<string | undefined>("");
@@ -36,7 +36,7 @@ export default function ProductUpdate() {
   // 게시물 수정 데이터 불러 오기
   useEffect(() => {
     const update = async () => {
-      const res = await updateApi("get", post_id);
+      const res = await updateApi("get", params.id);
       console.log(res);
       setData(res);
     };
@@ -90,7 +90,7 @@ export default function ProductUpdate() {
 
   // api에 보낼 수정 데이터 정보 담기
   const req = {
-    post_id: post_id,
+    post_id: params.id,
     board_type: boardType,
     user_id: token,
     title: title.value,
