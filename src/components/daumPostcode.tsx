@@ -1,6 +1,7 @@
 import React from "react";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import styled from "styled-components";
+import ModalFilter from "./modal/modalFilter";
 
 export interface AddressData {
   zonecode: string;
@@ -34,7 +35,7 @@ const DaumPostcode: React.FC<PostcodeProps> = ({ onComplete, ...props }) => {
 
   return (
     <PostCodeModal>
-      <DaumPostcodeEmbed onComplete={handleComplete} {...props} />;
+      <DaumPostcodeEmbed onComplete={handleComplete} {...props} />
     </PostCodeModal>
   );
 };
@@ -42,10 +43,11 @@ const DaumPostcode: React.FC<PostcodeProps> = ({ onComplete, ...props }) => {
 export default DaumPostcode;
 
 const PostCodeModal = styled.div`
-  width: 400px;
+  width: 500px;
   box-shadow: 0px 0px 4px 0px #0000002f;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 200;
 `;

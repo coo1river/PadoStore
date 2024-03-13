@@ -71,26 +71,32 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
 
         <UserInfo>
           <h3>입금자 정보</h3>
-          <label htmlFor="user-name">• 이름</label>
-          <input
-            id="user-name"
-            type="text"
-            placeholder="입금자 이름을 입력해 주세요"
-          />
+          <div>
+            <label htmlFor="user-name">• 이름</label>
+            <input
+              id="user-name"
+              type="text"
+              placeholder="입금자 이름을 입력해 주세요"
+            />
+          </div>
 
-          <label htmlFor="user-email">• 이메일 주소</label>
-          <input
-            id="user-email"
-            type="text"
-            placeholder="이메일을 입력해 주세요"
-          />
+          <div>
+            <label htmlFor="user-email">• 이메일</label>
+            <input
+              id="user-email"
+              type="text"
+              placeholder="이메일을 입력해 주세요"
+            />
+          </div>
 
-          <label htmlFor="user-number">• 휴대전화 번호</label>
-          <input
-            id="user-number"
-            type="text"
-            placeholder="휴대전화 번호를 입력해 주세요"
-          />
+          <div>
+            <label htmlFor="user-number">• 전화번호</label>
+            <input
+              id="user-number"
+              type="text"
+              placeholder="휴대전화 번호를 입력해 주세요"
+            />
+          </div>
 
           <AddressForm />
         </UserInfo>

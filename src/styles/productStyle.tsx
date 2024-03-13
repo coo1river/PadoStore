@@ -120,8 +120,10 @@ export const ProductContent = styled.article`
   justify-content: center;
 
   .product_contents {
+    line-height: 1.5rem;
     margin-top: 50px;
     font-size: 18px;
+    font-weight: 500;
   }
 `;
 

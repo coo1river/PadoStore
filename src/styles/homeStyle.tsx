@@ -77,7 +77,7 @@ export const ProductArticle = styled.article`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 210px;
+  width: 220px;
   box-shadow: 0px 0px 4px 0px #0000001f;
   border-radius: 15px;
   cursor: pointer;
@@ -94,7 +94,7 @@ export const ProductArticle = styled.article`
   }
 
   .product_info {
-    padding: 12px 16px;
+    padding: 12px 15px;
   }
 
   .product_type {
@@ -106,7 +106,7 @@ export const ProductArticle = styled.article`
   .product_title {
     height: 30px;
     margin-bottom: 16px;
-    font-size: 17px;
+    font-size: 16px;
   }
 
   .user_name {

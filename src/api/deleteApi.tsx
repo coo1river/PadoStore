@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default async function deleteApi(
-  post_id: number,
+  post_id: string | undefined,
   file_group_id: string | undefined
 ) {
   const url = "/api/board/delete";

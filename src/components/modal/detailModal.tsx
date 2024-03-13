@@ -2,6 +2,7 @@ import { DetailModalDiv } from "@/styles/detailModalStyle";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import React from "react";
 import deleteApi from "@/api/deleteApi";
+import useAuthStore from "@/store/useAuthStore";
 
 interface Props {
   data: string | undefined;
@@ -9,6 +10,8 @@ interface Props {
 
 const DetailModal: React.FC<Props> = ({ data }) => {
   const router = useRouter();
+
+  // zustand에서 token 가져오기
 
   const path = usePathname();
 
@@ -26,7 +29,8 @@ const DetailModal: React.FC<Props> = ({ data }) => {
   // post_id와 data(file_group_id) 전달하여 해당 글 삭제
   const deleteRouter = async () => {
     try {
-      await deleteApi(post_id, data);
+      await deleteApi(id, data);
+      router.push("/home");
     } catch (error) {
       console.error("삭제 오류:", error);
     }

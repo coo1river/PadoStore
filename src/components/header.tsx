@@ -13,7 +13,7 @@ import {
 } from "@/styles/headerStyle";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
-import ModalFilter from "./modalFilter";
+import ModalFilter from "./modal/modalFilter";
 
 interface PostUploadModalProps {
   setUploadModal: React.Dispatch<React.SetStateAction<boolean>>;

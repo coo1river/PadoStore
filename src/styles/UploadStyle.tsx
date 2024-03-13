@@ -86,8 +86,7 @@ export const UploadForm = styled.article`
   }
 
   input {
-    background-color: white;
-    border-radius: 15px;
+    border-radius: 12px;
     margin-bottom: 25px;
   }
 
@@ -181,7 +180,7 @@ export const GroupForm = styled(UploadForm)`
   }
 
   input {
-    box-shadow: 0px 0px 4px 0px #5757572c;
+    box-shadow: 0px 0px 4px 0px#57575745;
   }
 
   .btn_status {

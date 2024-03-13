@@ -8,7 +8,7 @@ import {
 } from "@/styles/productStyle";
 import React, { useEffect, useState } from "react";
 import postDetailApi, { Res } from "@/api/postDetailApi";
-import DetailModal from "@/components/detailModal";
+import DetailModal from "@/components/modal/detailModal";
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
 import { useParams } from "next/navigation";
 
