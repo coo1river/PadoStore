@@ -106,6 +106,7 @@ const EditProfile: React.FC = () => {
   //  프로필 수정 api 통신
   const handleEditProfile = async (e: FormEvent) => {
     e.preventDefault();
+    console.log(imgProfile, token);
 
     try {
       // 이미지 업로드와 프로필 수정을 병렬로 실행

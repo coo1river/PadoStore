@@ -7,6 +7,7 @@ import {
 import { BankOptions } from "./selectOption";
 import { Res } from "@/api/postDetailApi";
 import { useEffect, useState } from "react";
+import AddressForm from "./addressForm";
 
 interface Props {
   data: Res | null;
@@ -91,12 +92,7 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
             placeholder="휴대전화 번호를 입력해 주세요"
           />
 
-          <label htmlFor="user-address">• 주소지 입력</label>
-          <input
-            id="user-address"
-            type="text"
-            placeholder="주소를 입력해 주세요"
-          />
+          <AddressForm />
         </UserInfo>
 
         <AccountInfo>

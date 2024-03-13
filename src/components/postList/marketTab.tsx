@@ -125,7 +125,9 @@ const MarketTab: React.FC = () => {
                     {item.market.title}
                   </h4>
                   <div className="price_nickname">
-                    <p className="product_price">{item.product?.price}원</p>
+                    <p className="product_price">
+                      {parseInt(item.product.price).toLocaleString()}원
+                    </p>
                     <p className="user_name">{item.user?.nickname}</p>
                   </div>
                 </div>

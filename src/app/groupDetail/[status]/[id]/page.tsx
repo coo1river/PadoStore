@@ -9,7 +9,7 @@ import {
   ProfileImg,
 } from "@/styles/productStyle";
 import AccountFormInfo from "@/components/accountInfo";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import postDetailApi, { Res } from "@/api/postDetailApi";
 import DetailModal from "@/components/detailModal";
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
@@ -96,14 +96,12 @@ const GroupDetail: React.FC = () => {
         </ProductInfo>
         <ProductContent>
           <p className="product_contents">
-            {data?.content.split("\n").map((line) => {
-              return (
-                <>
-                  {line}
-                  <br />
-                </>
-              );
-            })}
+            {data?.content.split("\n").map((line, index) => (
+              <React.Fragment key={index}>
+                {line}
+                <br />
+              </React.Fragment>
+            ))}
           </p>
           <GroupSubmit>
             {/* 입금자 정보 폼 */}

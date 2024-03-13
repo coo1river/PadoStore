@@ -82,7 +82,9 @@ const Profile: React.FC = () => {
             <li onClick={() => setListState("myPurchase")}>판매 폼</li>
             <li onClick={() => setListState("partForm")}>구매 폼</li>
             <p>개인정보 수정</p>
-            <li onClick={() => router.push("/profile/edit")}>프로필 설정</li>
+            <li onClick={() => router.push(`/profile/${token}/edit`)}>
+              프로필 설정
+            </li>
             <li>입금 폼 설정</li>
           </ul>
         </nav>

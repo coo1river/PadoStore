@@ -4,7 +4,7 @@ export default async function profileUploadApi(
   uploadfile: File | string | undefined,
   user_id: string | null
 ) {
-  const url = "/api/profile/upload";
+  const url = "/api/user/upload";
   const formData = new FormData();
 
   if (uploadfile) {

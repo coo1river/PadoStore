@@ -34,8 +34,6 @@ interface ProductSectionProps {
 const ProductSection: React.FC<ProductSectionProps> = ({ marketList }) => {
   const router = useRouter();
 
-  console.log(marketList);
-
   return (
     <ProductTab>
       <h3 className="title_tag">현재 판매 중!</h3>
@@ -53,6 +51,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({ marketList }) => {
                 : marketBoardType === "Trade"
                 ? "교환"
                 : "";
+
             return (
               <ProductArticle
                 key={item.market.post_id}
@@ -76,7 +75,9 @@ const ProductSection: React.FC<ProductSectionProps> = ({ marketList }) => {
                     {item.market.title}
                   </h4>
                   <div className="price_nickname">
-                    <p className="product_price">{item.product?.price}원</p>
+                    <p className="product_price">
+                      {parseInt(item.product.price).toLocaleString()}원
+                    </p>
                     <p className="user_name">{item.user?.nickname}</p>
                   </div>
                 </div>
