@@ -189,6 +189,12 @@ export const UploadForm = styled.article`
       background-color: var(--color-main);
     }
   }
+
+  .tag_list {
+    padding: 10px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
 `;
 
 export const GroupForm = styled(UploadForm)`

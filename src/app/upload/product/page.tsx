@@ -12,7 +12,7 @@ import {
   UploadMain,
 } from "@/styles/UploadStyle";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 
 const Product: React.FC = () => {
   // 라우터 사용
@@ -37,21 +37,26 @@ const Product: React.FC = () => {
   // 게시물 타입 관리
   const [boardType, setBoardType] = useState<string>("Sell");
 
-  // 태그 추가 함수
   const handleAddTag = () => {
-    if (tag.value.trim() !== "") {
+    const currentTagCount = tagList.split(",").length;
+
+    if (currentTagCount < 3 && tag.value.trim() !== "") {
       setTagList((prevTagList) => {
         if (prevTagList !== "") {
-          return prevTagList + ", " + tag.value.trim();
+          return prevTagList + " " + tag.value.trim();
         } else {
           return tag.value.trim();
         }
       });
 
-      // 입력 필드 초기화
+      // input 값 초기화
       tag.setValue("#");
     }
   };
+
+  useEffect(() => {
+    console.log(tagList);
+  }, [tagList]);
 
   // api에 보낼 정보 담기
   const req = {
@@ -61,12 +66,15 @@ const Product: React.FC = () => {
     content: content.value,
     post_status: "InProgress",
     file_group_id: "",
+    tag: tagList,
     product: {
       price: productInfo.product_price.value,
       product_status: productInfo.product_status.value,
       post_method: productInfo.post_method.value,
     },
   };
+
+  console.log(req);
 
   const setActiveClass = (status: string) => {
     return boardType === status ? "active" : "";
@@ -88,7 +96,6 @@ const Product: React.FC = () => {
 
   // tag input에 # 고정
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // 만약 값이 #으로 시작하지 않으면 #을 추가
     if (!event.target.value.startsWith("#")) {
       tag.setValue("#" + event.target.value);
     } else {
@@ -112,7 +119,6 @@ const Product: React.FC = () => {
       alert("필수 항목을 입력해 주세요");
       return;
     }
-    console.log(req);
 
     uploadApi(imgFile)
       .then(async (res) => {
@@ -242,8 +248,9 @@ const Product: React.FC = () => {
               value={tag.value}
               onChange={handleChange}
             />
-            <button>추가</button>
+            <button onClick={handleAddTag}>추가</button>
           </div>
+          <p className="tag_list">{tagList}</p>
 
           <button className="btn_upload" onClick={handleUpload}>
             상품 업로드 하기
