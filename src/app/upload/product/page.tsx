@@ -29,9 +29,29 @@ const Product: React.FC = () => {
     product_status: useInput(""),
     post_method: useInput(""),
   };
+  const tag = useInput("#");
+
+  // 태그 관리
+  const [tagList, setTagList] = useState<string>("");
 
   // 게시물 타입 관리
   const [boardType, setBoardType] = useState<string>("Sell");
+
+  // 태그 추가 함수
+  const handleAddTag = () => {
+    if (tag.value.trim() !== "") {
+      setTagList((prevTagList) => {
+        if (prevTagList !== "") {
+          return prevTagList + ", " + tag.value.trim();
+        } else {
+          return tag.value.trim();
+        }
+      });
+
+      // 입력 필드 초기화
+      tag.setValue("#");
+    }
+  };
 
   // api에 보낼 정보 담기
   const req = {
@@ -66,6 +86,17 @@ const Product: React.FC = () => {
     }
   };
 
+  // tag input에 # 고정
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // 만약 값이 #으로 시작하지 않으면 #을 추가
+    if (!event.target.value.startsWith("#")) {
+      tag.setValue("#" + event.target.value);
+    } else {
+      tag.setValue(event.target.value);
+    }
+  };
+
+  // 게시물 업로드 함수
   const handleUpload = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -198,8 +229,21 @@ const Product: React.FC = () => {
             id="product-contents"
             cols={50}
             rows={10}
-            {...content}
+            value={content.value}
+            onChange={content.onChange}
           />
+
+          {/* 상품 태그 */}
+          <label htmlFor="product-tag">상품 태그</label>
+          <div className="tag_wrap">
+            <input
+              type="text"
+              placeholder="상품 태그를 입력해 주세요(3개)"
+              value={tag.value}
+              onChange={handleChange}
+            />
+            <button>추가</button>
+          </div>
 
           <button className="btn_upload" onClick={handleUpload}>
             상품 업로드 하기

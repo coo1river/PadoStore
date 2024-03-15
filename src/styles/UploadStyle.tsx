@@ -169,6 +169,26 @@ export const UploadForm = styled.article`
   option {
     padding: 16px;
   }
+
+  .tag_wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    input {
+      flex-grow: 1;
+      margin-bottom: 0;
+      margin-right: 10px;
+    }
+
+    button {
+      padding: 15px 20px;
+      border-radius: 15px;
+      font-weight: 700;
+      color: white;
+      background-color: var(--color-main);
+    }
+  }
 `;
 
 export const GroupForm = styled(UploadForm)`

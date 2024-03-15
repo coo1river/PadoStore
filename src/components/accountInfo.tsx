@@ -102,7 +102,7 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
         </UserInfo>
 
         <AccountInfo>
-          <h3>계좌 정보</h3>
+          <h3>환불 계좌 정보</h3>
 
           <div className="account_wrap">
             <div>
