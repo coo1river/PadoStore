@@ -54,10 +54,6 @@ const Product: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(tagList);
-  }, [tagList]);
-
   // api에 보낼 정보 담기
   const req = {
     board_type: boardType,
@@ -73,8 +69,6 @@ const Product: React.FC = () => {
       post_method: productInfo.post_method.value,
     },
   };
-
-  console.log(req);
 
   const setActiveClass = (status: string) => {
     return boardType === status ? "active" : "";
@@ -183,7 +177,8 @@ const Product: React.FC = () => {
             id="product-title"
             type="text"
             placeholder="상품의 이름을 입력해 주세요"
-            {...title}
+            value={title.value}
+            onChange={title.onChange}
           />
 
           {/* 상품 가격 */}
