@@ -8,7 +8,7 @@ import ProductSection, {
 } from "@/components/homeSection/productSection";
 import GroupSection from "@/components/homeSection/groupSection";
 import homeListApi from "@/api/homeListApi";
-import MarketTab, { Data, MarketItem } from "@/components/postList/marketTab";
+import MarketTab, { MarketItem } from "@/components/postList/marketTab";
 import GroupPurchaseTab from "@/components/postList/groupPurchaseTab";
 import { useRouter } from "next/navigation";
 

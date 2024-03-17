@@ -42,34 +42,6 @@ export const ProfileMain = styled(LoginMain)`
       cursor: pointer;
     }
   }
-
-  .article_list {
-    margin: 10px 20px;
-    padding: 20px;
-    width: 100%;
-    line-height: 1.5rem;
-
-    button {
-      padding: 5px 20px;
-      border-radius: 15px;
-      margin: 0 10px 10px 0;
-      font-weight: 600;
-      background-color: var(--color-trans-grey);
-    }
-
-    ul {
-      margin: 15px 0;
-    }
-
-    li {
-      padding: 5px 0;
-      border-bottom: 2px solid var(--color-trans-grey);
-    }
-
-    p {
-      text-align: center;
-    }
-  }
 `;
 
 export const ImgProfile = styled.img`
@@ -117,5 +89,58 @@ export const UserProfile = styled.section`
     span {
       font-weight: 700;
     }
+  }
+`;
+
+export const ArticleList = styled.article`
+  margin: 10px 20px;
+  padding: 20px;
+  width: 100%;
+  line-height: 1.5rem;
+
+  button {
+    padding: 5px 20px;
+    border-radius: 15px;
+    margin: 0 10px 10px 0;
+    font-weight: 600;
+    background-color: var(--color-trans-grey);
+
+    &.active {
+      background-color: var(--color-main);
+      color: white;
+    }
+  }
+
+  ul {
+    margin: 15px 0;
+  }
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 2px solid var(--color-trans-grey);
+    cursor: pointer;
+  }
+
+  p {
+    text-align: center;
+  }
+
+  .product_id {
+    visibility: hidden;
+  }
+
+  .product_title {
+    font-weight: 600;
+  }
+
+  .nickname_dt_wrap {
+    display: flex;
+    gap: 10px;
+  }
+
+  .product_date {
+    font-size: 13px;
   }
 `;

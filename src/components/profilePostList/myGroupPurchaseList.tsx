@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 
-const MyForm: React.FC = () => {
+const MyGroupPurchaseList: React.FC = () => {
   return (
     <article className="article_list">
       <button>거래 중</button>
@@ -25,4 +25,4 @@ const MyForm: React.FC = () => {
   );
 };
 
-export default MyForm;
+export default MyGroupPurchaseList;

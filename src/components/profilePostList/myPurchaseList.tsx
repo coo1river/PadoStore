@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 
-const GroupPurchase: React.FC = () => {
+const MyPurchaseList: React.FC = () => {
   return (
     <article className="article_list">
       <button>거래 중</button>
@@ -25,4 +25,4 @@ const GroupPurchase: React.FC = () => {
   );
 };
 
-export default GroupPurchase;
+export default MyPurchaseList;

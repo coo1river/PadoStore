@@ -17,8 +17,6 @@ export default function Search() {
         return <MarketTab api={"search"} />;
       case "GroupPurchase":
         return <GroupPurchaseTab api={"search"} />;
-      default:
-        return null;
     }
   };
 
