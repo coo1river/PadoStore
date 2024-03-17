@@ -93,7 +93,7 @@ const Header: React.FC = () => {
       <SearchIptBox>
         <label htmlFor="search-input" />
         <SearchInput id="search-input" />
-        <button className="search_btn" />
+        <button onClick={() => router.push("/search")} className="search_btn" />
       </SearchIptBox>
       <div>
         <UploadBtn onClick={handleClickModal}>글 등록▾</UploadBtn>

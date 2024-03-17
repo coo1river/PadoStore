@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Pagination from "../pagination";
 import homeTabApi from "@/api/homeTabApi";
+import searchApi from "@/api/searchApi";
 
 export interface Product {
   end_dt: string | null;
@@ -59,7 +60,11 @@ export interface Data {
   marketList: MarketItem[];
 }
 
-const MarketTab: React.FC = () => {
+interface Props {
+  api: string;
+}
+
+const MarketTab: React.FC<Props> = ({ api }) => {
   const router = useRouter();
   const [data, setData] = useState<Data | null>(null);
 
@@ -78,14 +83,22 @@ const MarketTab: React.FC = () => {
     order: "ASC",
   };
 
-  // api를 통해 data 가져오기
+  // api(home tab / search)를 통해 data 가져오기
   useEffect(() => {
-    const marketData = async () => {
-      const data = await homeTabApi("market", params);
-      setTotalPosts(data?.totalCount);
-      setData(data);
+    const fetchData = async () => {
+      let data;
+      switch (api) {
+        case "hometab":
+          data = await homeTabApi("market", params);
+          setTotalPosts(data?.totalCount);
+          setData(data);
+        case "search":
+          data = await searchApi();
+          setTotalPosts(data?.totalCount);
+          setData(data);
+      }
     };
-    marketData();
+    fetchData();
   }, []);
 
   return (

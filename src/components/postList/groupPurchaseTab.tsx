@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import homeTabApi from "@/api/homeTabApi";
 import { Product, User } from "./marketTab";
 import Pagination from "../pagination";
+import searchApi from "@/api/searchApi";
 
 export interface GroupItem {
   fileList: {
@@ -33,7 +34,11 @@ export interface Data {
   groupOrderList: GroupItem[];
 }
 
-const GroupPurchaseTab: React.FC = () => {
+interface Props {
+  api: string;
+}
+
+const GroupPurchaseTab: React.FC<Props> = ({ api }) => {
   const router = useRouter();
   const [data, setData] = useState<Data | null>(null);
 
@@ -52,12 +57,20 @@ const GroupPurchaseTab: React.FC = () => {
   };
 
   useEffect(() => {
-    const marketData = async () => {
-      const data = await homeTabApi("group", params);
-      setTotalPosts(data?.totalCount);
-      setData(data);
+    const fetchData = async () => {
+      let data;
+      switch (api) {
+        case "hometab":
+          data = await homeTabApi("group", params);
+          setTotalPosts(data?.totalCount);
+          setData(data);
+        case "search":
+          data = await searchApi();
+          setTotalPosts(data?.totalCount);
+          setData(data);
+      }
     };
-    marketData();
+    fetchData();
   }, []);
 
   return (

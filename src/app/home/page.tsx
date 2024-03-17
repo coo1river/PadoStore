@@ -59,9 +59,9 @@ const Home: React.FC = () => {
           </>
         );
       case "Market":
-        return <MarketTab />;
+        return <MarketTab api={"hometab"} />;
       case "GroupPurchase":
-        return <GroupPurchaseTab />;
+        return <GroupPurchaseTab api={"hometab"} />;
       default:
         return null;
     }
