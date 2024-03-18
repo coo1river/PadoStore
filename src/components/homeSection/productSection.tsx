@@ -56,9 +56,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({ marketList }) => {
               <ProductArticle
                 key={item.market.post_id}
                 onClick={() => {
-                  router.push(
-                    `/productDetail/${item.market.post_status}/${item.market.post_id}`
-                  );
+                  router.push(`/productDetail/${item.market.post_id}`);
                 }}
               >
                 <img

@@ -1,22 +1,21 @@
 "use client";
 import {
+  GroupSubmit,
   ProductContent,
+  ProductImg,
   ProductInfo,
   ProductMain,
-  ProductImg,
   ProfileImg,
 } from "@/styles/productStyle";
+import AccountFormInfo from "@/components/accountInfo";
 import React, { useEffect, useState } from "react";
 import postDetailApi, { Res } from "@/api/postDetailApi";
 import DetailModal from "@/components/modal/detailModal";
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
 import { useParams } from "next/navigation";
 
-const ProductDetail: React.FC = (props) => {
-  // console.log(props);
-
+const GroupDetail: React.FC = () => {
   const params = useParams();
-  console.log(params.id);
 
   const [data, setData] = useState<Res | null>(null);
 
@@ -62,10 +61,9 @@ const ProductDetail: React.FC = (props) => {
                 <button className="btn_update" onClick={handleClickMenu} />
                 {menuModal ? <DetailModal data={data?.file_group_id} /> : null}
               </div>
-              <p className="product_price"></p>
               <p>
-                <strong>• 상품 상태 : </strong>
-                {data?.product.product_status}
+                <strong>• 판매 기간 : </strong>
+                {data?.product.start_dt} ~ {data?.product.end_dt}
               </p>
               <p>
                 <strong>• 배송 방법 : </strong>
@@ -91,25 +89,27 @@ const ProductDetail: React.FC = (props) => {
             </div>
             <div className="btns_wrap">
               <button className="btn_like">찜하기</button>
-              <button className="btn_chat">구매 채팅하기</button>
+              <button className="btn_purchase">구매하기</button>
             </div>
           </div>
         </ProductInfo>
         <ProductContent>
           <p className="product_contents">
-            {data?.content.split("\n").map((line) => {
-              return (
-                <>
-                  {line}
-                  <br />
-                </>
-              );
-            })}
+            {data?.content.split("\n").map((line, index) => (
+              <React.Fragment key={index}>
+                {line}
+                <br />
+              </React.Fragment>
+            ))}
           </p>
+          <GroupSubmit>
+            {/* 입금자 정보 폼 */}
+            <AccountFormInfo data={data} />
+          </GroupSubmit>
         </ProductContent>
       </section>
     </ProductMain>
   );
 };
 
-export default ProductDetail;
+export default GroupDetail;

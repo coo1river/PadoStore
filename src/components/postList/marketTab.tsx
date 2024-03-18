@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Pagination from "../pagination";
 import homeTabApi from "@/api/homeTabApi";
 import searchApi from "@/api/searchApi";
+import { GroupItem } from "./groupPurchaseTab";
 
 export interface Product {
   end_dt: string | null;
@@ -58,6 +59,7 @@ export interface MarketItem {
 // 데이터 전체 타입
 export interface Data {
   marketList: MarketItem[];
+  groupOrderList: GroupItem[];
 }
 
 interface Props {

@@ -1,22 +1,23 @@
 "use client";
-import productImg1 from "@/../public/assets/images/group1.jpg";
 import {
-  GroupSubmit,
   ProductContent,
-  ProductImg,
   ProductInfo,
   ProductMain,
+  ProductImg,
   ProfileImg,
+  SoldOutFilter,
 } from "@/styles/productStyle";
-import AccountFormInfo from "@/components/accountInfo";
 import React, { useEffect, useState } from "react";
 import postDetailApi, { Res } from "@/api/postDetailApi";
 import DetailModal from "@/components/modal/detailModal";
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
 import { useParams } from "next/navigation";
 
-const GroupDetail: React.FC = () => {
+const ProductDetail: React.FC = (props) => {
+  // console.log(props);
+
   const params = useParams();
+  console.log(params.id);
 
   const [data, setData] = useState<Res | null>(null);
 
@@ -47,6 +48,7 @@ const GroupDetail: React.FC = () => {
       <h2 className="a11y-hidden">상품 페이지</h2>
       <section className="product_detail">
         <ProductInfo>
+          {data?.post_status === "Completed" ? <SoldOutFilter /> : null}
           <ProductImg
             src={
               data?.file && data?.file[0]?.up_file
@@ -60,11 +62,14 @@ const GroupDetail: React.FC = () => {
               <div className="title_update">
                 <h3 className="product_title">{data?.title}</h3>
                 <button className="btn_update" onClick={handleClickMenu} />
-                {menuModal ? <DetailModal data={data?.file_group_id} /> : null}
+                {menuModal ? (
+                  <DetailModal data={data} setMenuModal={handleClickMenu} />
+                ) : null}
               </div>
+              <p className="product_price"></p>
               <p>
-                <strong>• 판매 기간 : </strong>
-                {data?.product.start_dt} ~ {data?.product.end_dt}
+                <strong>• 상품 상태 : </strong>
+                {data?.product.product_status}
               </p>
               <p>
                 <strong>• 배송 방법 : </strong>
@@ -90,27 +95,25 @@ const GroupDetail: React.FC = () => {
             </div>
             <div className="btns_wrap">
               <button className="btn_like">찜하기</button>
-              <button className="btn_purchase">구매하기</button>
+              <button className="btn_chat">구매 채팅하기</button>
             </div>
           </div>
         </ProductInfo>
         <ProductContent>
           <p className="product_contents">
-            {data?.content.split("\n").map((line, index) => (
-              <React.Fragment key={index}>
-                {line}
-                <br />
-              </React.Fragment>
-            ))}
+            {data?.content.split("\n").map((line) => {
+              return (
+                <>
+                  {line}
+                  <br />
+                </>
+              );
+            })}
           </p>
-          <GroupSubmit>
-            {/* 입금자 정보 폼 */}
-            <AccountFormInfo data={data} />
-          </GroupSubmit>
         </ProductContent>
       </section>
     </ProductMain>
   );
 };
 
-export default GroupDetail;
+export default ProductDetail;

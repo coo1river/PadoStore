@@ -10,7 +10,7 @@ import MyPurchaseList from "@/components/profilePostList/myPurchaseList";
 import MySalesList from "@/components/profilePostList/mySalesList";
 import MyGroupPurchaseList from "@/components/profilePostList/myGroupPurchaseList";
 import MyGroupSalesList from "@/components/profilePostList/myGroupSalesList";
-import { Data, MarketItem } from "@/components/postList/marketTab";
+import { Data } from "@/components/postList/marketTab";
 
 const Profile: React.FC = () => {
   const router = useRouter();
@@ -27,13 +27,17 @@ const Profile: React.FC = () => {
 
   const [listType, setListType] = useState<string>("market");
 
-  const [postStatus, setPostStatus] = useState<string>("InProgress");
+  const [listState, setListState] = useState<string>("InProgress");
+
+  const setActiveClass = (status: string) => {
+    return listState === status ? "active" : "";
+  };
 
   const params = {
     user_id: token,
     board_type: "GroupPurchase",
     limit: 10,
-    post_status: postStatus,
+    post_status: listState,
     current_page: page,
     sort_by: "post_id",
     order: "ASC",
@@ -58,37 +62,49 @@ const Profile: React.FC = () => {
     fetchData();
   }, []);
 
-  const [listTap, setlistTap] = useState("myPost");
+  // listState(거래 중, 거래 완료) 탭 전환 시 api 요청
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await mySalesListApi(listType, params);
+      setList(data);
+    };
+    fetchData();
+  }, [listState]);
+
+  const [listTap, setlistTap] = useState("mySales");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await mySalesListApi(listType, params);
+      setList(data);
+    };
+    fetchData();
+  }, [listType]);
 
   let listRender;
 
   switch (listTap) {
-    case "myPost":
+    case "mySales":
       listRender = <MySalesList marketList={list?.marketList || []} />;
       break;
-    case "myForm":
+    case "myPurchase":
       listRender = <MyPurchaseList />;
       break;
-    case "myPurchase":
-      listRender = <MyGroupSalesList />;
+    case "myGroupSales":
+      listRender = <MyGroupSalesList groupList={list?.groupOrderList || []} />;
       break;
-    case "partForm":
+    case "myGroupPurchase":
       listRender = <MyGroupPurchaseList />;
       break;
     default:
       listRender = null;
   }
 
-  const [listState, setListState] = useState<string>("InProgress");
-
-  const setActiveClass = (status: string) => {
-    return listState === status ? "active" : "";
-  };
-
   return (
     <ProfileMain>
       <h2 className="a11y-hidden">프로필</h2>
       <UserProfile>
+        {/* 유저 프로필 */}
         <ImgProfile
           src={
             data?.userFile ? `/upload/${data?.userFile?.up_file}` : undefined
@@ -100,24 +116,53 @@ const Profile: React.FC = () => {
         </div>
         <div className="btns_wrap">
           <button>
-            찜 목록 <span>7</span>
+            찜 목록 <span>{data?.favoriteCount}</span>
           </button>
           <button>
-            후기 <span>4</span>
+            후기 <span>{data?.reviewCount}</span>
           </button>
         </div>
       </UserProfile>
 
+      {/* 사이드 메뉴 바 */}
       <section className="list_wrap">
         <nav>
           <ul className="nav_menu">
             <p>거래 내역</p>
-            <li onClick={() => setlistTap("myPost")}>판매 내역</li>
-            <li onClick={() => setlistTap("myForm")}>구매 내역</li>
+            <li
+              onClick={() => {
+                setlistTap("mySales");
+                setListType("market");
+              }}
+            >
+              판매 내역
+            </li>
+            <li
+              onClick={() => {
+                setlistTap("myPurchase");
+                setListType("market");
+              }}
+            >
+              구매 내역
+            </li>
 
             <p>공구 내역</p>
-            <li onClick={() => setlistTap("myPurchase")}>판매 폼</li>
-            <li onClick={() => setlistTap("partForm")}>구매 폼</li>
+            <li
+              onClick={() => {
+                setlistTap("myGroupSales");
+                setListType("group");
+              }}
+            >
+              판매 폼
+            </li>
+            <li
+              onClick={() => {
+                setlistTap("myGroupPurchase");
+                setListType("group");
+              }}
+            >
+              구매 폼
+            </li>
             <p>개인정보 수정</p>
             <li onClick={() => router.push(`/profile/${token}/edit`)}>
               프로필 설정
@@ -125,25 +170,25 @@ const Profile: React.FC = () => {
             <li>입금 폼 설정</li>
           </ul>
         </nav>
-        {
-          <ArticleList>
-            <button
-              type="button"
-              className={`btn_tab ${setActiveClass("InProgress")}`}
-              onClick={() => setListState("InProgress")}
-            >
-              거래 중
-            </button>
-            <button
-              type="button"
-              className={`btn_tab ${setActiveClass("Completed")}`}
-              onClick={() => setListState("Completed")}
-            >
-              거래 완료
-            </button>
-            {listRender}
-          </ArticleList>
-        }
+
+        {/* 게시물 목록 */}
+        <ArticleList>
+          <button
+            type="button"
+            className={`btn_tab ${setActiveClass("InProgress")}`}
+            onClick={() => setListState("InProgress")}
+          >
+            거래 중
+          </button>
+          <button
+            type="button"
+            className={`btn_tab ${setActiveClass("Completed")}`}
+            onClick={() => setListState("Completed")}
+          >
+            거래 완료
+          </button>
+          {listRender}
+        </ArticleList>
       </section>
     </ProfileMain>
   );

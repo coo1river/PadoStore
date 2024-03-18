@@ -1,27 +1,37 @@
 "use client";
 import React from "react";
+import { GroupItem } from "../postList/groupPurchaseTab";
+import { useRouter } from "next/navigation";
 
-const MyGroupSalesList: React.FC = () => {
+interface Props {
+  groupList: GroupItem[];
+}
+
+const MyGroupSalesList: React.FC<Props> = ({ groupList }) => {
+  const router = useRouter();
   return (
-    <article className="article_list">
-      <button>거래 중</button>
-      <button>거래 완료</button>
-      <ul>
-        <li>구매 글1</li>
-        <li>구매 글2</li>
-        <li>구매 글3</li>
-        <li>구매 글4</li>
-        <li>구매 글5</li>
-        <li>구매 글6</li>
-        <li>구매 글7</li>
-        <li>구매 글8</li>
-        <li>구매 글9</li>
-        <li>구매 글10</li>
-        <li>구매 글11</li>
-        <li>구매 글12</li>
-      </ul>
-      <p>- 1 -</p>
-    </article>
+    <ul className="myProfile_list">
+      {groupList.map((item) => {
+        const date = item.groupOrder.insert_dt.split("-").slice(1).join("-");
+        return (
+          <li
+            key={item.groupOrder.post_id}
+            onClick={() =>
+              router.push(
+                `/productDetail/${item.groupOrder.post_status}/${item.groupOrder.post_id}`
+              )
+            }
+          >
+            <p className="product_id">{item.groupOrder.post_id}</p>
+            <p className="product_title">{item.groupOrder.title}</p>
+            <div className="nickname_dt_wrap">
+              <p className="product_nickname">{item.user.nickname}</p>
+              <p className="product_date">{date}</p>
+            </div>
+          </li>
+        );
+      })}
+    </ul>
   );
 };
 

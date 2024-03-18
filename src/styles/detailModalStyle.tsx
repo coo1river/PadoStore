@@ -28,5 +28,9 @@ export const DetailModalDiv = styled.div`
     &:nth-child(3):hover {
       border-radius: 0 0 15px 15px;
     }
+
+    &.active {
+      color: var(--color-main);
+    }
   }
 `;

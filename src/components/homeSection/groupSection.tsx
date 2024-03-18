@@ -21,9 +21,7 @@ const GroupSection: React.FC<GroupSectionProps> = ({ groupOrderList }) => {
               <ProductArticle
                 key={item.groupOrder.post_id}
                 onClick={() => {
-                  router.push(
-                    `/groupDetail/${item.groupOrder.post_status}/${item.groupOrder.post_id}`
-                  );
+                  router.push(`/groupDetail/${item.groupOrder.post_id}`);
                 }}
               >
                 <img

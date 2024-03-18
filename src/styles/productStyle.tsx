@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { GroupForm } from "./UploadStyle";
 import { HomeMain } from "./homeStyle";
 import iconMenu from "@/../public/assets/svgs/menu-dots.svg";
+import iconSoldOut from "@/../public/assets/images/soldout.png";
 
 export const ProductMain = styled(HomeMain)`
   .product_detail {
@@ -14,6 +15,7 @@ export const ProductInfo = styled.article`
   display: flex;
   justify-content: center;
   gap: 5rem;
+  position: relative;
 
   &:first-child {
     padding-bottom: 10px;
@@ -104,6 +106,17 @@ export const ProfileImg = styled.img`
   width: 35px;
   height: 35px;
   border-radius: 50%;
+`;
+
+export const SoldOutFilter = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 400px;
+  height: 400px;
+  background: url(${iconSoldOut.src}) center / 250px no-repeat;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
 `;
 
 export const ProductImg = styled.img`
