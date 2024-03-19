@@ -7,6 +7,7 @@ export interface GroupReq {
   content: string;
   post_status: string;
   file_group_id: string | "";
+  tag: string | null;
   product: {
     post_method: string;
     start_dt: string;

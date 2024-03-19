@@ -1,6 +1,7 @@
 import {
   AccountInfo,
   AccountInfoWrap,
+  InputWrap,
   ProductSelect,
   UserInfo,
 } from "@/styles/accountInfoStyle";
@@ -8,6 +9,7 @@ import { BankOptions } from "./selectOption";
 import { Res } from "@/api/postDetailApi";
 import { useEffect, useState } from "react";
 import AddressForm from "./addressForm";
+import useInput from "@/hooks/useInput";
 
 interface Props {
   data: Res | null;
@@ -17,6 +19,7 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
   // 상품 개수 만큼 배열 만들기
   const [countArray, setCountArray] = useState<number[]>([]);
 
+  // 공구 폼 정보 가져오기
   useEffect(() => {
     if (data?.productDetail) {
       const generatedCountArray = Array.from(
@@ -27,6 +30,7 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
     }
   }, [data?.productDetail]);
 
+  // 상품 카운트 함수
   const handleClick = (index: number, increment: number) => {
     setCountArray((prevCountArray) => {
       const updatedCount = [...prevCountArray];
@@ -36,6 +40,27 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
       return updatedCount;
     });
   };
+
+  const form = {
+    name: useInput(""),
+    email: useInput(""),
+    number: useInput(""),
+  };
+
+  const calculateTotalPrice = () => {
+    let totalPrice = 0;
+    if (data && data.productDetail) {
+      data.productDetail.forEach((detail, index) => {
+        totalPrice += parseInt(detail.product_price) * countArray[index];
+      });
+    }
+    return totalPrice;
+  };
+
+  // 총 상품 값
+  const totalPrice = calculateTotalPrice();
+  // 총 합계
+  const totalAmount = (Number(data?.product.post_price) || 0) + totalPrice;
 
   return (
     <AccountInfoWrap>
@@ -47,9 +72,13 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
             {data?.productDetail?.map(
               (detail: Res["productDetail"][0], index: number) => (
                 <li key={index}>
-                  {detail.product_name}
+                  <p>{detail.product_name}</p>
                   <div className="count_wrap">
+                    <p className="product_price">
+                      {Number(detail.product_price).toLocaleString()}원
+                    </p>
                     <button
+                      className="btn_count"
                       type="button"
                       onClick={() => handleClick(index, -1)}
                     >
@@ -57,6 +86,7 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
                     </button>
                     <span>{countArray[index]}</span>
                     <button
+                      className="btn_count"
                       type="button"
                       onClick={() => handleClick(index, +1)}
                     >
@@ -67,6 +97,21 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
               )
             )}
           </ul>
+          <div className="price_wrap">
+            <p>배송비</p>
+            <p className="price">
+              {data?.product.post_price.toLocaleString()} 원
+            </p>
+          </div>
+          <div className="price_wrap">
+            <p>상품 금액</p>
+            <p className="price">{totalPrice.toLocaleString()} 원</p>
+          </div>
+
+          <div className="total_price">
+            <p>합계</p>
+            <p>{totalAmount.toLocaleString()} 원</p>
+          </div>
         </ProductSelect>
 
         <UserInfo>
@@ -131,6 +176,20 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
             </div>
           </div>
         </AccountInfo>
+
+        <InputWrap>
+          <h3>추가 질문</h3>
+          <div className="input_wrap">
+            <label htmlFor="add-input" />
+            <div>
+              {data?.questionList.map((question, index) => (
+                <p key={index}>• {question.input}</p>
+              ))}
+              <input id="add-input" type="text" />
+            </div>
+          </div>
+        </InputWrap>
+
         <button className="btn_submit">폼 제출하기</button>
       </form>
     </AccountInfoWrap>

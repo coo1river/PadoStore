@@ -81,6 +81,10 @@ const Profile: React.FC = () => {
     fetchData();
   }, [listType]);
 
+  useEffect(() => {
+    console.log(listTap);
+  }, [listTap]);
+
   let listRender;
 
   switch (listTap) {
@@ -130,6 +134,7 @@ const Profile: React.FC = () => {
           <ul className="nav_menu">
             <p>거래 내역</p>
             <li
+              className={listTap === "mySales" ? "active" : ""}
               onClick={() => {
                 setlistTap("mySales");
                 setListType("market");
@@ -138,6 +143,7 @@ const Profile: React.FC = () => {
               판매 내역
             </li>
             <li
+              className={listTap === "myPurchase" ? "active" : ""}
               onClick={() => {
                 setlistTap("myPurchase");
                 setListType("market");
@@ -148,6 +154,7 @@ const Profile: React.FC = () => {
 
             <p>공구 내역</p>
             <li
+              className={listTap === "myGroupSales" ? "active" : ""}
               onClick={() => {
                 setlistTap("myGroupSales");
                 setListType("group");
@@ -156,6 +163,7 @@ const Profile: React.FC = () => {
               판매 폼
             </li>
             <li
+              className={listTap === "myGroupPurchase" ? "active" : ""}
               onClick={() => {
                 setlistTap("myGroupPurchase");
                 setListType("group");

@@ -25,7 +25,6 @@ export const ProfileMain = styled(LoginMain)`
     flex-direction: column;
 
     font-size: 14px;
-    line-height: 3rem;
     box-sizing: border-box;
     padding: 20px;
     color: white;
@@ -33,13 +32,25 @@ export const ProfileMain = styled(LoginMain)`
     background-color: var(--color-main);
 
     p {
+      padding-left: 10px;
+      line-height: 2rem;
       font-size: 18px;
       font-weight: 700;
-      border-bottom: 2px solid white;
+      border-bottom: 3px solid white;
     }
 
     li {
+      font-size: 15px;
+      margin: 10px 0;
+      padding: 10px;
       cursor: pointer;
+
+      &.active {
+        background-color: white;
+        color: var(--color-main);
+        border-radius: 15px;
+        font-weight: bold;
+      }
     }
   }
 `;

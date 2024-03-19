@@ -110,6 +110,11 @@ const ProductDetail: React.FC = (props) => {
               );
             })}
           </p>
+          <ul className="tag_list">
+            {data?.tag.split(" ").map((item, index) => (
+              <li key={index}>{item}</li>
+            ))}
+          </ul>
         </ProductContent>
       </section>
     </ProductMain>

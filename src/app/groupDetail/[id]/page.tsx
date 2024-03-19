@@ -59,7 +59,9 @@ const GroupDetail: React.FC = () => {
               <div className="title_update">
                 <h3 className="product_title">{data?.title}</h3>
                 <button className="btn_update" onClick={handleClickMenu} />
-                {menuModal ? <DetailModal data={data?.file_group_id} /> : null}
+                {menuModal ? (
+                  <DetailModal data={data} setMenuModal={handleClickMenu} />
+                ) : null}
               </div>
               <p>
                 <strong>• 판매 기간 : </strong>
@@ -102,6 +104,11 @@ const GroupDetail: React.FC = () => {
               </React.Fragment>
             ))}
           </p>
+          <ul className="tag_list">
+            {data?.tag.split(" ").map((item, index) => (
+              <li key={index}>{item}</li>
+            ))}
+          </ul>
           <GroupSubmit>
             {/* 입금자 정보 폼 */}
             <AccountFormInfo data={data} />

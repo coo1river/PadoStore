@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 export const AccountInfoWrap = styled.section`
-  margin: 50px 0;
   padding: 30px;
   border-radius: 15px;
   box-shadow: 0px 0px 4px 0px #b4b4b44e;
@@ -26,6 +25,7 @@ export const AccountInfoWrap = styled.section`
   }
 
   input {
+    box-shadow: 0px 0px 4px 0px #91919145;
     padding: 10px 20px;
   }
 
@@ -47,9 +47,9 @@ export const AccountInfoWrap = styled.section`
 export const ProductSelect = styled.article`
   li {
     font-weight: 600;
-    font-size: 14px;
+    font-size: 15px;
     background-color: #e1e1e14e;
-    padding: 8px 20px;
+    padding: 10px 20px;
     margin: 10px 0;
     border-radius: 15px;
     display: flex;
@@ -71,18 +71,49 @@ export const ProductSelect = styled.article`
     background-color: white;
   }
 
-  button {
+  .product_price {
+    margin-right: 15px;
+  }
+
+  .btn_count {
     padding: 5px 12px;
     background-color: var(--color-main);
     color: white;
 
-    &:first-child {
+    &:nth-child(2) {
       border-radius: 8px 0 0 8px;
     }
 
-    &:nth-child(3) {
+    &:nth-child(4) {
       border-radius: 0 8px 8px 0;
     }
+  }
+
+  .price_wrap {
+    padding: 10px 20px;
+    margin: 10px 0;
+    font-size: 15px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .price {
+    font-weight: bold;
+  }
+
+  .post_price {
+    text-align: center;
+  }
+
+  .total_price {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--color-main);
+    color: white;
+    padding: 10px 20px;
+    margin: 10px 0;
+    border-radius: 15px;
+    font-weight: 700;
   }
 `;
 
@@ -132,5 +163,25 @@ export const AccountInfo = styled.article`
     &:active {
       outline: 2px solid var(--color-main);
     }
+  }
+`;
+
+export const InputWrap = styled.article`
+  display: flex;
+  flex-direction: column;
+
+  p {
+    font-size: 15px;
+    font-weight: 500;
+    margin-right: 10px;
+  }
+
+  div {
+    display: flex;
+    align-items: center;
+  }
+
+  input {
+    margin: 0;
   }
 `;
