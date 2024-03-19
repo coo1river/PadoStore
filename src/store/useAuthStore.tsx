@@ -12,7 +12,7 @@ const useAuthStore = create<AuthStore>((set) => {
   const storedToken = sessionStorage.getItem("userToken");
 
   return {
-    token: storedToken || null,
+    token: storedToken,
     // sessionStorage에 userToken 값이 있는 경우 true로 설정
     authState: !!storedToken,
     setToken: (newToken) => set({ token: newToken }),

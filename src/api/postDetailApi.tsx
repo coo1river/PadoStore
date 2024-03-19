@@ -17,6 +17,7 @@ export interface Res {
     post_id: number;
     product_status: string;
     post_method: string;
+    post_price: string;
     start_dt: string;
     end_dt: string;
   };
@@ -63,7 +64,7 @@ export interface Res {
   }[];
 }
 
-const postDetailApi = async (post_id: number): Promise<Res> => {
+const postDetailApi = async (post_id: string | string[]): Promise<Res> => {
   const url = `/api/board/${post_id}`;
   try {
     const res = await axios.get(url);

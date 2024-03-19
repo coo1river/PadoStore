@@ -18,7 +18,7 @@ import {
   ImgFile,
   BasicImg,
 } from "@/styles/UploadStyle";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 
 interface Product {
@@ -34,11 +34,10 @@ interface Input {
 const GroupPurchaseUpdate: React.FC = () => {
   // 라우터 사용
   const router = useRouter();
+  const { id } = useParams<{ id?: string }>();
 
   // 수정할 데이터 저장하기
   const [data, setData] = useState<Res | null>(null);
-
-  const post_id = 2;
 
   // zustand에서 token 가져오기
   const { token, setToken } = useAuthStore();
@@ -51,10 +50,21 @@ const GroupPurchaseUpdate: React.FC = () => {
   // 상품 리스트 배열로 저장
   const [productList, setProductList] = useState<Product[]>([]);
 
+  // 클릭 시 해당 상품 삭제
+  const handleRemoveProduct = (index: number) => {
+    setProductList((prevList) => {
+      const newList = [
+        ...prevList.slice(0, index),
+        ...prevList.slice(index + 1),
+      ];
+      return newList;
+    });
+  };
+
   // 게시물 수정 데이터 불러 오기
   useEffect(() => {
     const update = async () => {
-      const res = await updateApi("get", post_id);
+      const res = await updateApi("get", id);
       console.log(res);
       setData(res);
     };
@@ -70,6 +80,7 @@ const GroupPurchaseUpdate: React.FC = () => {
     title: useInput(""),
     content: useInput(""),
     post_method: useInput(""),
+    post_price: useInput(""),
     start_dt: useInput(""),
     end_dt: useInput(""),
     bank: useInput(""),
@@ -147,6 +158,16 @@ const GroupPurchaseUpdate: React.FC = () => {
     } as React.ChangeEvent<HTMLInputElement>);
   };
 
+  const handleRemoveInput = (index: number) => {
+    setAddInputList((prevList) => {
+      const newList = [
+        ...prevList.slice(0, index),
+        ...prevList.slice(index + 1),
+      ];
+      return newList;
+    });
+  };
+
   const dataReq: GroupReq = {
     board_type: "GroupPurchase",
     user_id: token!,
@@ -158,6 +179,7 @@ const GroupPurchaseUpdate: React.FC = () => {
       post_method: form.post_method.value,
       start_dt: form.start_dt.value,
       end_dt: form.end_dt.value,
+      post_price: form.post_price.value,
     },
     questionList: addInputList,
     productDetail: productList,
@@ -173,6 +195,7 @@ const GroupPurchaseUpdate: React.FC = () => {
     form.title.setValue(data?.title || "");
     form.content.setValue(data?.content || "");
     form.post_method.setValue(data?.product.post_method || "");
+    form.post_price.setValue(data?.product.post_price || "");
     form.start_dt.setValue(data?.product.start_dt || "");
     form.end_dt.setValue(data?.product.end_dt || "");
     form.account_name.setValue(data?.user.account_name || "");
@@ -210,7 +233,7 @@ const GroupPurchaseUpdate: React.FC = () => {
       .then(async (res) => {
         return await updateApi("put", undefined, {
           ...dataReq,
-          post_id: post_id,
+          post_id: id,
           file_group_id: res.file_group_id,
         });
       })
@@ -333,6 +356,23 @@ const GroupPurchaseUpdate: React.FC = () => {
           <DeliveryOptions />
         </select>
 
+        {/* 배송비 */}
+        <label htmlFor="delivery_price">배송비</label>
+        <input
+          id="delivery-price"
+          type="text"
+          placeholder="배송비를 입력해 주세요"
+          value={form.post_price.value
+            .toString()
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          onChange={(e) => {
+            const formattedValue = e.target.value.replace(/[^\d]/g, "");
+            form.post_price.onChange({
+              target: { value: formattedValue },
+            } as React.ChangeEvent<HTMLInputElement>);
+          }}
+        />
+
         {/* 상품 등록 블록 */}
         <h3 className="product_title">상품 등록</h3>
         <AddProduct>
@@ -393,6 +433,10 @@ const GroupPurchaseUpdate: React.FC = () => {
                       <p className="product_price">
                         {Number(product.product_price).toLocaleString()}원
                       </p>
+                      <button
+                        className="btn_del"
+                        onClick={() => handleRemoveProduct(index)}
+                      />
                     </div>
                   </li>
                 ))}
@@ -440,7 +484,13 @@ const GroupPurchaseUpdate: React.FC = () => {
               <ul>
                 {addInputList.map((item, index) => (
                   <li className="add_input_el" key={index}>
-                    • {item.input}
+                    <div className="input_wrap">
+                      <p>• {item.input}</p>
+                      <button
+                        className="btn_del"
+                        onClick={() => handleRemoveInput(index)}
+                      />
+                    </div>
                   </li>
                 ))}
               </ul>

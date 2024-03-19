@@ -13,7 +13,7 @@ import {
 } from "@/styles/headerStyle";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
-import ModalFilter from "./modalFilter";
+import ModalFilter from "./modal/modalFilter";
 
 interface PostUploadModalProps {
   setUploadModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -79,6 +79,7 @@ const Header: React.FC = () => {
     setAuthState(false);
     setToken(null);
     sessionStorage.removeItem("userToken");
+    router.push("/home");
   };
 
   return (
@@ -92,7 +93,7 @@ const Header: React.FC = () => {
       <SearchIptBox>
         <label htmlFor="search-input" />
         <SearchInput id="search-input" />
-        <button className="search_btn" />
+        <button onClick={() => router.push("/search")} className="search_btn" />
       </SearchIptBox>
       <div>
         <UploadBtn onClick={handleClickModal}>글 등록▾</UploadBtn>
@@ -104,7 +105,9 @@ const Header: React.FC = () => {
       </div>
       {authState ? (
         <LoginJoin>
-          <button onClick={() => router.push("/profile")}>프로필</button>
+          <button onClick={() => router.push(`/profile/${token}`)}>
+            프로필
+          </button>
           <button onClick={handleLogout}>로그아웃</button>
         </LoginJoin>
       ) : (

@@ -5,7 +5,7 @@ interface Nickname {
 }
 
 const NicknameValidApi = async (data: Nickname) => {
-  const url = "api/nickname-check";
+  const url = "/api/nickname-check";
 
   try {
     const res = await axios.post<Nickname>(url, data);

@@ -12,11 +12,12 @@ import {
   UploadMain,
 } from "@/styles/UploadStyle";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 
 const Product: React.FC = () => {
   // 라우터 사용
   const router = useRouter();
+
   // zustand에서 token 가져오기
   const { token, setToken } = useAuthStore();
 
@@ -28,9 +29,30 @@ const Product: React.FC = () => {
     product_status: useInput(""),
     post_method: useInput(""),
   };
+  const tag = useInput("#");
+
+  // 태그 관리
+  const [tagList, setTagList] = useState<string>("");
 
   // 게시물 타입 관리
   const [boardType, setBoardType] = useState<string>("Sell");
+
+  const handleAddTag = () => {
+    const currentTagCount = tagList.split(",").length;
+
+    if (currentTagCount < 3 && tag.value.trim() !== "") {
+      setTagList((prevTagList) => {
+        if (prevTagList !== "") {
+          return prevTagList + " " + tag.value.trim();
+        } else {
+          return tag.value.trim();
+        }
+      });
+
+      // input 값 초기화
+      tag.setValue("#");
+    }
+  };
 
   // api에 보낼 정보 담기
   const req = {
@@ -40,6 +62,7 @@ const Product: React.FC = () => {
     content: content.value,
     post_status: "InProgress",
     file_group_id: "",
+    tag: tagList,
     product: {
       price: productInfo.product_price.value,
       product_status: productInfo.product_status.value,
@@ -65,6 +88,16 @@ const Product: React.FC = () => {
     }
   };
 
+  // tag input에 # 고정
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.value.startsWith("#")) {
+      tag.setValue("#" + event.target.value);
+    } else {
+      tag.setValue(event.target.value);
+    }
+  };
+
+  // 게시물 업로드 함수
   const handleUpload = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -80,10 +113,10 @@ const Product: React.FC = () => {
       alert("필수 항목을 입력해 주세요");
       return;
     }
-    console.log(req);
 
     uploadApi(imgFile)
       .then(async (res) => {
+        console.log(res);
         return await productUploadApi({
           ...req,
           file_group_id: res.file_group_id,
@@ -144,7 +177,8 @@ const Product: React.FC = () => {
             id="product-title"
             type="text"
             placeholder="상품의 이름을 입력해 주세요"
-            {...title}
+            value={title.value}
+            onChange={title.onChange}
           />
 
           {/* 상품 가격 */}
@@ -196,8 +230,22 @@ const Product: React.FC = () => {
             id="product-contents"
             cols={50}
             rows={10}
-            {...content}
+            value={content.value}
+            onChange={content.onChange}
           />
+
+          {/* 상품 태그 */}
+          <label htmlFor="product-tag">상품 태그</label>
+          <div className="tag_wrap">
+            <input
+              type="text"
+              placeholder="상품 태그를 입력해 주세요(3개)"
+              value={tag.value}
+              onChange={handleChange}
+            />
+            <button onClick={handleAddTag}>추가</button>
+          </div>
+          <p className="tag_list">{tagList}</p>
 
           <button className="btn_upload" onClick={handleUpload}>
             상품 업로드 하기

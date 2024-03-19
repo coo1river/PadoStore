@@ -5,21 +5,32 @@ import {
   ProductMain,
   ProductImg,
   ProfileImg,
+  SoldOutFilter,
 } from "@/styles/productStyle";
 import React, { useEffect, useState } from "react";
 import postDetailApi, { Res } from "@/api/postDetailApi";
-import DetailModal from "@/components/detailModal";
+import DetailModal from "@/components/modal/detailModal";
+import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
+import { useParams } from "next/navigation";
 
 const ProductDetail: React.FC = (props) => {
   // console.log(props);
 
-  const id = 1;
+  const params = useParams();
+  console.log(params.id);
 
   const [data, setData] = useState<Res | null>(null);
 
+  // 이미지 파일 상태 관리
+  const [imgFile, setImgFile] = useState<string | File | undefined>("");
+
+  useEffect(() => {
+    setImgFile(data?.file[0].up_file);
+  }, [data?.file]);
+
   useEffect(() => {
     const detail = async () => {
-      const res = await postDetailApi(id);
+      const res = await postDetailApi(params.id);
       console.log(res);
       setData(res);
     };
@@ -37,8 +48,13 @@ const ProductDetail: React.FC = (props) => {
       <h2 className="a11y-hidden">상품 페이지</h2>
       <section className="product_detail">
         <ProductInfo>
+          {data?.post_status === "Completed" ? <SoldOutFilter /> : null}
           <ProductImg
-            src={`/upload/${data?.file[0].up_file}`}
+            src={
+              data?.file && data?.file[0]?.up_file
+                ? `/upload/${data?.file[0]?.up_file}`
+                : undefined
+            }
             alt="상품 이미지"
           />
           <div className="product_intro_button">
@@ -46,7 +62,9 @@ const ProductDetail: React.FC = (props) => {
               <div className="title_update">
                 <h3 className="product_title">{data?.title}</h3>
                 <button className="btn_update" onClick={handleClickMenu} />
-                {menuModal ? <DetailModal data={data?.file_group_id} /> : null}
+                {menuModal ? (
+                  <DetailModal data={data} setMenuModal={handleClickMenu} />
+                ) : null}
               </div>
               <p className="product_price"></p>
               <p>
@@ -59,11 +77,20 @@ const ProductDetail: React.FC = (props) => {
               </p>
             </div>
             <div className="profile_wrap">
-              <ProfileImg
-                className="img_profile"
-                src={`/upload/${data?.userFile.up_file}`}
-                alt="프로필 이미지"
-              />
+              {data?.userFile && data?.userFile.up_file ? (
+                <ProfileImg
+                  className="img_profile"
+                  src={
+                    data?.userFile && data?.userFile.up_file
+                      ? `/upload/${data?.userFile.up_file}`
+                      : undefined
+                  }
+                  alt="프로필 이미지"
+                />
+              ) : (
+                <ProfileImg src={ImgProfileBasic.src} />
+              )}
+
               <p className="user_name">{data?.user.nickname}</p>
             </div>
             <div className="btns_wrap">
@@ -73,7 +100,16 @@ const ProductDetail: React.FC = (props) => {
           </div>
         </ProductInfo>
         <ProductContent>
-          <p className="product_contents">{data?.content}</p>
+          <p className="product_contents">
+            {data?.content.split("\n").map((line) => {
+              return (
+                <>
+                  {line}
+                  <br />
+                </>
+              );
+            })}
+          </p>
         </ProductContent>
       </section>
     </ProductMain>

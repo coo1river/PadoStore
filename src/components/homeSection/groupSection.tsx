@@ -1,8 +1,12 @@
 import { ProductArticle, ProductTab } from "@/styles/homeStyle";
-import groupImg1 from "../../../public/assets/images/group1.jpg";
 import { useRouter } from "next/navigation";
+import { GroupOrderList } from "./productSection";
 
-const GroupSection: React.FC = () => {
+export interface GroupSectionProps {
+  groupOrderList: GroupOrderList[];
+}
+
+const GroupSection: React.FC<GroupSectionProps> = ({ groupOrderList }) => {
   const router = useRouter();
 
   return (
@@ -11,35 +15,33 @@ const GroupSection: React.FC = () => {
 
       {/* 상품 리스트 */}
       <div className="sell_list">
-        <ProductArticle
-          onClick={() => {
-            router.push(`/groupDetail/:status/:id`);
-          }}
-        >
-          <img src={groupImg1.src} alt="" />
-          <h4 className="product_title">귀여운 브라운 쿠션쿠션</h4>
-          <p className="user_name">닉네임123</p>
-        </ProductArticle>
-        <ProductArticle>
-          <img src={groupImg1.src} alt="" />
-          <h4 className="product_title">귀여운 브라운 쿠션쿠션</h4>
-          <p className="user_name">닉네임123</p>
-        </ProductArticle>
-        <ProductArticle>
-          <img src={groupImg1.src} alt="" />
-          <h4 className="product_title">귀여운 브라운 쿠션쿠션</h4>
-          <p className="user_name">닉네임123</p>
-        </ProductArticle>
-        <ProductArticle>
-          <img src={groupImg1.src} alt="" />
-          <h4 className="product_title">귀여운 브라운</h4>
-          <p className="user_name">닉네임123</p>
-        </ProductArticle>
-        <ProductArticle>
-          <img src={groupImg1.src} alt="" />
-          <h4 className="product_title">귀여운 브라우니</h4>
-          <p className="user_name">닉네임123</p>
-        </ProductArticle>
+        {groupOrderList &&
+          groupOrderList.map((item) => {
+            return (
+              <ProductArticle
+                key={item.groupOrder.post_id}
+                onClick={() => {
+                  router.push(`/groupDetail/${item.groupOrder.post_id}`);
+                }}
+              >
+                <img
+                  src={
+                    item.fileList && item.fileList.length > 0
+                      ? `/upload/${item.fileList[0]?.up_file}`
+                      : undefined
+                  }
+                  alt="상품 이미지"
+                />
+                <div className="product_info">
+                  <h4 className="product_title">{item.groupOrder.title}</h4>
+                  <div className="price_nickname">
+                    <p className="period">~{item.product?.end_dt}</p>
+                    <p className="user_name">{item.user?.nickname}</p>
+                  </div>
+                </div>
+              </ProductArticle>
+            );
+          })}
       </div>
     </ProductTab>
   );

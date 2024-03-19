@@ -86,8 +86,7 @@ export const UploadForm = styled.article`
   }
 
   input {
-    background-color: white;
-    border-radius: 15px;
+    border-radius: 12px;
     margin-bottom: 25px;
   }
 
@@ -170,6 +169,32 @@ export const UploadForm = styled.article`
   option {
     padding: 16px;
   }
+
+  .tag_wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    input {
+      flex-grow: 1;
+      margin-bottom: 0;
+      margin-right: 10px;
+    }
+
+    button {
+      padding: 15px 20px;
+      border-radius: 15px;
+      font-weight: 700;
+      color: white;
+      background-color: var(--color-main);
+    }
+  }
+
+  .tag_list {
+    padding: 10px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
 `;
 
 export const GroupForm = styled(UploadForm)`
@@ -181,7 +206,7 @@ export const GroupForm = styled(UploadForm)`
   }
 
   input {
-    box-shadow: 0px 0px 4px 0px #5757572c;
+    box-shadow: 0px 0px 4px 0px#57575745;
   }
 
   .btn_status {

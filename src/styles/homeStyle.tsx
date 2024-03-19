@@ -29,7 +29,7 @@ export const HomeMain = styled.main`
     margin: 20px 0;
     gap: 24px;
 
-    li {
+    .btn_tab {
       width: fit-content;
       font-size: 20px;
       font-weight: 700;
@@ -37,21 +37,23 @@ export const HomeMain = styled.main`
       padding-bottom: 10px;
       text-align: center;
       cursor: pointer;
+    }
 
-      &:first-child {
-        color: var(--color-main);
-        border-bottom: 4px solid var(--color-main);
-      }
+    .active {
+      color: var(--color-main);
+      border-bottom: 4px solid var(--color-main);
     }
   }
 `;
 
 export const MainBanner = styled.article`
   cursor: pointer;
+  background-color: var(--color-trans-grey);
+  border-radius: 15px;
 
   & img {
     border-radius: 15px;
-    object-fit: cover;
+    object-fit: contain;
     width: 1200px;
     height: 320px;
   }
@@ -65,8 +67,9 @@ export const ProductTab = styled.section`
   margin-bottom: 40px;
 
   .sell_list {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
   }
 `;
 
@@ -74,10 +77,11 @@ export const ProductArticle = styled.article`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 200px;
+  width: 220px;
   box-shadow: 0px 0px 4px 0px #0000001f;
   border-radius: 15px;
   cursor: pointer;
+  margin-bottom: 50px;
 
   &:hover > * {
     transform: scale(1.03);
@@ -86,30 +90,45 @@ export const ProductArticle = styled.article`
 
   img {
     width: 100%;
+    height: 100%;
     border-radius: 15px 15px 0 0;
   }
 
   .product_info {
-    padding: 12px 16px;
+    padding: 12px 15px;
+  }
+
+  .product_type {
+    font-weight: bold;
+    color: var(--color-main);
+    margin-right: 5px;
   }
 
   .product_title {
+    height: 30px;
     margin-bottom: 16px;
     font-size: 16px;
-    font-weight: 600;
   }
 
   .user_name {
-    font-size: 14px;
+    font-size: 13px;
   }
 
   .product_price {
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
+  }
+
+  .period {
+    font-size: 12px;
+    background-color: var(--color-trans-grey);
+    padding: 5px;
+    border-radius: 5px;
   }
 
   .price_nickname {
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
 `;

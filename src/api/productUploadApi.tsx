@@ -7,6 +7,7 @@ export interface ProductReq {
   content: string;
   post_status: string;
   file_group_id: string | "";
+  tag: string | null;
   product: {
     price: string;
     product_status: string;

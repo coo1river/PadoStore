@@ -5,7 +5,7 @@ interface EmailData {
 }
 
 const emailValidApi = async (data: EmailData) => {
-  const url = "api/email-check";
+  const url = "/api/email-check";
   try {
     const res = await axios.post<EmailData>(url, data);
 

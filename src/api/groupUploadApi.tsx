@@ -11,6 +11,7 @@ export interface GroupReq {
     post_method: string;
     start_dt: string;
     end_dt: string;
+    post_price: string;
   };
   questionList: {
     input: string;

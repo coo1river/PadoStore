@@ -4,7 +4,7 @@ interface IdData {
   user_id: string;
 }
 const idValidApi = async (data: IdData) => {
-  const url = "api/id-check";
+  const url = "/api/id-check";
 
   try {
     const res = await axios.post<IdData>(url, data);

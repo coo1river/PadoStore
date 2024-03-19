@@ -15,7 +15,7 @@ export const AccountInfoWrap = styled.section`
   h3 {
     border-radius: 10px;
     color: black;
-    font-size: 17px;
+    font-size: 18px;
     margin: 20px 0;
     font-weight: 700;
   }
@@ -90,11 +90,21 @@ export const UserInfo = styled.article`
   margin-top: 20px;
   display: flex;
   flex-direction: column;
+
+  label {
+    display: inline-block;
+    width: 82px;
+  }
+
+  input {
+    margin-right: 10px;
+  }
 `;
 
 export const AccountInfo = styled.article`
   .account_wrap {
     display: flex;
+
     gap: 30px;
   }
 

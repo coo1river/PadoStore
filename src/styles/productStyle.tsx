@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { GroupForm } from "./UploadStyle";
 import { HomeMain } from "./homeStyle";
 import iconMenu from "@/../public/assets/svgs/menu-dots.svg";
+import iconSoldOut from "@/../public/assets/images/soldout.png";
 
 export const ProductMain = styled(HomeMain)`
   .product_detail {
@@ -14,6 +15,7 @@ export const ProductInfo = styled.article`
   display: flex;
   justify-content: center;
   gap: 5rem;
+  position: relative;
 
   &:first-child {
     padding-bottom: 10px;
@@ -36,7 +38,7 @@ export const ProductInfo = styled.article`
     display: flex;
     flex-direction: column;
     gap: 30px;
-    padding-bottom: 40px;
+    padding-bottom: 60px;
     border-bottom: 2px solid var(--color-trans-grey);
   }
 
@@ -106,6 +108,17 @@ export const ProfileImg = styled.img`
   border-radius: 50%;
 `;
 
+export const SoldOutFilter = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 400px;
+  height: 400px;
+  background: url(${iconSoldOut.src}) center / 250px no-repeat;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+`;
+
 export const ProductImg = styled.img`
   object-fit: contain;
   width: 400px;
@@ -120,8 +133,10 @@ export const ProductContent = styled.article`
   justify-content: center;
 
   .product_contents {
+    line-height: 1.5rem;
     margin-top: 50px;
     font-size: 18px;
+    font-weight: 500;
   }
 `;
 
