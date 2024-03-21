@@ -22,10 +22,12 @@ const GroupDetail: React.FC = () => {
   // 이미지 파일 상태 관리
   const [imgFile, setImgFile] = useState<string | File | undefined>("");
 
+  // 프로필 이미지 가져오기
   useEffect(() => {
     setImgFile(data?.file[0].up_file);
   }, [data?.file]);
 
+  // 게시물 정보 가져오기
   useEffect(() => {
     const detail = async () => {
       const res = await postDetailApi(params.id);
@@ -35,8 +37,10 @@ const GroupDetail: React.FC = () => {
     detail();
   }, []);
 
+  // 게시물 메뉴 모달 상태 관리
   const [menuModal, setMenuModal] = useState<boolean>(false);
 
+  // 게시물 메뉴 열기 함수
   const handleClickMenu = () => {
     setMenuModal(!menuModal);
   };

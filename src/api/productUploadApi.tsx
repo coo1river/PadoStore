@@ -21,7 +21,6 @@ const productUploadApi = async (data: ProductReq) => {
   try {
     const res = await axios.post<ProductReq>(url, data);
     console.log("API 응답:", res.data);
-    console.log(res.status);
     return res.data;
   } catch (error) {
     console.error("API 오류:", error);

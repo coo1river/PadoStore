@@ -86,6 +86,36 @@ const GroupPurchaseUpdate: React.FC = () => {
     bank: useInput(""),
     account_name: useInput(""),
     account_number: useInput(""),
+    tag: useInput("#"),
+  };
+
+  // 태그 관리
+  const [tagList, setTagList] = useState<string>("");
+
+  const handleAddTag = () => {
+    const currentTagCount = tagList.split(",").length;
+
+    if (currentTagCount < 3 && form.tag.value.trim() !== "") {
+      setTagList((prevTagList) => {
+        if (prevTagList !== "") {
+          return prevTagList + " " + form.tag.value.trim();
+        } else {
+          return form.tag.value.trim();
+        }
+      });
+
+      // input 값 초기화
+      form.tag.setValue("#");
+    }
+  };
+
+  // tag input에 # 고정
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.value.startsWith("#")) {
+      form.tag.setValue("#" + event.target.value);
+    } else {
+      form.tag.setValue(event.target.value);
+    }
   };
 
   // useRef 사용
@@ -170,11 +200,12 @@ const GroupPurchaseUpdate: React.FC = () => {
 
   const dataReq: GroupReq = {
     board_type: "GroupPurchase",
-    user_id: token!,
+    user_id: token,
     title: form.title.value,
     content: form.content.value,
     post_status: postStatus,
     file_group_id: "",
+    tag: tagList,
     product: {
       post_method: form.post_method.value,
       start_dt: form.start_dt.value,
@@ -239,7 +270,7 @@ const GroupPurchaseUpdate: React.FC = () => {
       })
       .then((data) => {
         console.log("수정 성공", data);
-        // router.push("/home");
+        router.push(`/groupDetail/${data?.post_id}`);
       })
       .catch((error) => {
         console.error("수정 실패", error);
@@ -507,6 +538,19 @@ const GroupPurchaseUpdate: React.FC = () => {
             </div>
           ) : null}
         </AddInputList>
+
+        {/* 상품 태그 */}
+        <label htmlFor="product-tag">상품 태그</label>
+        <div className="tag_wrap">
+          <input
+            type="text"
+            placeholder="상품 태그를 입력해 주세요(3개)"
+            value={form.tag.value}
+            onChange={handleChange}
+          />
+          <button onClick={handleAddTag}>추가</button>
+        </div>
+        <p className="tag_list">{data?.tag}</p>
 
         <button className="btn_upload" onClick={handleUpload}>
           폼 업로드 하기

@@ -154,3 +154,22 @@ export const ProductContent = styled.article`
 export const GroupSubmit = styled(GroupForm)`
   width: 100%;
 `;
+
+export const SubmitComplted = styled.main`
+  height: calc(100% - 215px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .icon_check {
+    width: 80px;
+    height: 80px;
+  }
+
+  .complted_text {
+    margin: 20px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+`;

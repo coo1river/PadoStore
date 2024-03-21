@@ -3,7 +3,7 @@ import { Res } from "./postDetailApi";
 import { GroupReq } from "./groupUploadApi";
 
 interface UpdateRes {
-  post_id: string;
+  post_id: string | undefined;
   user_id: string | null;
   board_type: string | undefined;
   title: string;

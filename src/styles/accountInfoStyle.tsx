@@ -5,6 +5,10 @@ export const AccountInfoWrap = styled.section`
   border-radius: 15px;
   box-shadow: 0px 0px 4px 0px #b4b4b44e;
 
+  article {
+    margin: 0;
+  }
+
   .AccountInfo_title {
     margin-bottom: 20px;
     font-size: 20px;
@@ -22,6 +26,7 @@ export const AccountInfoWrap = styled.section`
   label {
     font-size: 15px;
     font-weight: 500;
+    margin-left: 5px;
   }
 
   input {
@@ -135,7 +140,6 @@ export const UserInfo = styled.article`
 export const AccountInfo = styled.article`
   .account_wrap {
     display: flex;
-
     gap: 30px;
   }
 
@@ -169,6 +173,7 @@ export const AccountInfo = styled.article`
 export const InputWrap = styled.article`
   display: flex;
   flex-direction: column;
+  justify-content: center;
 
   p {
     font-size: 15px;
@@ -181,7 +186,24 @@ export const InputWrap = styled.article`
     align-items: center;
   }
 
+  label {
+    display: inline-block;
+    width: 90px;
+    margin-bottom: 25px;
+  }
+
   input {
-    margin: 0;
+    margin-right: 30px;
+  }
+`;
+
+export const DepositInfoWrap = styled.article`
+  label {
+    display: inline-block;
+    width: 80px;
+  }
+
+  input {
+    margin-right: 30px;
   }
 `;

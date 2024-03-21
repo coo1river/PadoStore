@@ -4,45 +4,64 @@ import styled from "styled-components";
 import DaumPostcode, { AddressData } from "./daumPostcode";
 import ModalFilter from "./modal/modalFilter";
 
-export default function AddressForm() {
-  const form = {
-    name: useInput(""),
-    zipcode: useInput(""),
-    address: useInput(""),
-    addr_detail: useInput(""),
-  };
+interface FormField {
+  value: string | undefined;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setValue: React.Dispatch<React.SetStateAction<string>>;
+}
+
+interface Form {
+  post_name: FormField;
+  post_zipcode: FormField;
+  post_address: FormField;
+  post_addr_detail: FormField;
+}
+
+interface Props {
+  form: Form;
+}
+
+export default function AddressForm({ form }: Props) {
+  // const form = {
+  //   name: useInput(""),
+  //   zipcode: useInput(""),
+  //   address: useInput(""),
+  //   addr_detail: useInput(""),
+  // };
+
+  console.log(form);
 
   const [modal, setModal] = useState<boolean>(false);
 
   const handleComplete = (data: AddressData) => {
-    form.zipcode.setValue(data.zonecode);
-    form.address.setValue(data.address);
+    form.post_zipcode.setValue(data.zonecode);
+    form.post_address.setValue(data.address);
     console.log(data);
     // 모달을 닫습니다.
     setModal(false);
   };
 
   return (
-    <AddressInputForm>
+    <AddressInputWrap>
       <h3>주소 정보</h3>
 
-      <label htmlFor="input-name">• 받는 사람</label>
+      <label htmlFor="input-name">받는 사람</label>
       <input
         id="input-name"
         type="text"
         placeholder="이름"
-        value={form.name.value}
-        onChange={form.name.onChange}
+        value={form.post_name.value}
+        onChange={form.post_name.onChange}
       />
 
       <div>
-        <label htmlFor="input-zipcode">• 우편번호</label>
+        <label htmlFor="input-zipcode">우편번호</label>
         <input
           id="input-zipcode"
           type="text"
           placeholder="우편번호"
-          value={form.zipcode.value}
-          onChange={form.zipcode.onChange}
+          value={form.post_zipcode.value}
+          onChange={form.post_zipcode.onChange}
         />
         {/* 다음 주소 검색 모달 창 */}
         {modal ? (
@@ -62,39 +81,45 @@ export default function AddressForm() {
       </div>
 
       <div>
-        <label htmlFor="input-addr">• 주소</label>
+        <label htmlFor="input-addr">주소</label>
         <input
           id="input-addr"
           type="text"
           placeholder="주소"
-          value={form.address.value}
-          onChange={form.address.onChange}
+          value={form.post_address.value}
+          onChange={form.post_address.onChange}
         />
       </div>
 
       <div>
-        <label htmlFor="input-addr-detail">• 상세 주소</label>
+        <label htmlFor="input-addr-detail">상세 주소</label>
         <input
           id="input-addr-detail"
           type="text"
           placeholder="상세 주소"
-          value={form.addr_detail.value}
-          onChange={form.addr_detail.onChange}
+          value={form.post_addr_detail.value}
+          onChange={form.post_addr_detail.onChange}
         />
       </div>
-    </AddressInputForm>
+    </AddressInputWrap>
   );
 }
 
-const AddressInputForm = styled.section`
+const AddressInputWrap = styled.article`
   position: relative;
 
   .btn_search_zipcode {
+    margin-left: 10px;
     padding: 10px 20px;
     color: white;
     border-radius: 12px;
     font-weight: 700;
     background-color: var(--color-main);
+  }
+
+  label {
+    display: inline-block;
+    width: 80px;
   }
 
   #input-addr {

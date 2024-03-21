@@ -23,7 +23,7 @@ import React, {
 
 export default function ProductUpdate() {
   const router = useRouter();
-  const params = useParams();
+  const { id } = useParams<{ id?: string }>();
 
   // 게시물 타입 관리
   const [boardType, setBoardType] = useState<string | undefined>("");
@@ -36,8 +36,7 @@ export default function ProductUpdate() {
   // 게시물 수정 데이터 불러 오기
   useEffect(() => {
     const update = async () => {
-      const res = await updateApi("get", params.id);
-      console.log(res);
+      const res = await updateApi("get", id);
       setData(res);
     };
     update();
@@ -62,6 +61,35 @@ export default function ProductUpdate() {
     price: useInput(""),
     product_status: useInput(""),
     post_method: useInput(""),
+  };
+  const tag = useInput("#");
+
+  const [tagList, setTagList] = useState<string>("");
+
+  const handleAddTag = () => {
+    const currentTagCount = tagList.split(",").length;
+
+    if (currentTagCount < 3 && tag.value.trim() !== "") {
+      setTagList((prevTagList) => {
+        if (prevTagList !== "") {
+          return prevTagList + " " + tag.value.trim();
+        } else {
+          return tag.value.trim();
+        }
+      });
+
+      // input 값 초기화
+      tag.setValue("#");
+    }
+  };
+
+  // tag input에 # 고정
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.value.startsWith("#")) {
+      tag.setValue("#" + event.target.value);
+    } else {
+      tag.setValue(event.target.value);
+    }
   };
 
   // data 값이 업데이트 되면 input value 업데이트
@@ -90,13 +118,14 @@ export default function ProductUpdate() {
 
   // api에 보낼 수정 데이터 정보 담기
   const req = {
-    post_id: params.id,
+    post_id: id,
     board_type: boardType,
     user_id: token,
     title: title.value,
     content: content.value,
     post_status: "InProgress",
     file_group_id: "",
+    tag: tagList,
     product: {
       price: productInfo.price.value,
       product_status: productInfo.product_status.value,
@@ -245,6 +274,19 @@ export default function ProductUpdate() {
             value={content.value}
             onChange={content.onChange}
           />
+
+          {/* 상품 태그 */}
+          <label htmlFor="product-tag">상품 태그</label>
+          <div className="tag_wrap">
+            <input
+              type="text"
+              placeholder="상품 태그를 입력해 주세요(3개)"
+              value={tag.value}
+              onChange={handleChange}
+            />
+            <button onClick={handleAddTag}>추가</button>
+          </div>
+          <p className="tag_list">{tagList}</p>
 
           <button className="btn_upload" onClick={handleUpdate}>
             상품 업로드 하기
