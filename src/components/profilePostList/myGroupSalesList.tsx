@@ -17,9 +17,7 @@ const MyGroupSalesList: React.FC<Props> = ({ groupList }) => {
           <li
             key={item.groupOrder.post_id}
             onClick={() =>
-              router.push(
-                `/productDetail/${item.groupOrder.post_status}/${item.groupOrder.post_id}`
-              )
+              router.push(`/productDetail/${item.groupOrder.post_id}`)
             }
           >
             <p className="product_id">{item.groupOrder.post_id}</p>
