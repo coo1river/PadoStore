@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   LogoImg,
   CommonHeader,
@@ -14,6 +14,8 @@ import {
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
 import ModalFilter from "./modal/modalFilter";
+import useInput from "@/hooks/useInput";
+import searchApi, { SearchReq } from "@/api/searchApi";
 
 interface PostUploadModalProps {
   setUploadModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -82,6 +84,8 @@ const Header: React.FC = () => {
     router.push("/home");
   };
 
+  const keywords = useInput("");
+
   return (
     <CommonHeader>
       <LogoText>
@@ -90,11 +94,22 @@ const Header: React.FC = () => {
           파도상점
         </LogoDiv>
       </LogoText>
+
+      {/* 검색 창 */}
       <SearchIptBox>
         <label htmlFor="search-input" />
-        <SearchInput id="search-input" />
-        <button onClick={() => router.push("/search")} className="search_btn" />
+        <SearchInput
+          id="search-input"
+          type="text"
+          value={keywords.value}
+          onChange={keywords.onChange}
+        />
+        <button
+          onClick={() => router.push(`/search/${keywords.value}`)}
+          className="search_btn"
+        />
       </SearchIptBox>
+
       <div>
         <UploadBtn onClick={handleClickModal}>글 등록▾</UploadBtn>
         {uploadModal ? (

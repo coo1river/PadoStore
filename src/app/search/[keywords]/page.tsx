@@ -2,10 +2,15 @@
 import GroupPurchaseTab from "@/components/postList/groupPurchaseTab";
 import MarketTab from "@/components/postList/marketTab";
 import { HomeMain } from "@/styles/homeStyle";
+import { useParams } from "next/navigation";
 import React, { useState } from "react";
 
 export default function Search() {
   const [tabStatus, setTabStatus] = useState<string>("Market");
+
+  const { keywords } = useParams<{ keywords?: string }>();
+
+  const decodedKeywords = keywords ? decodeURIComponent(keywords) : "";
 
   const setActiveClass = (status: string) => {
     return tabStatus === status ? "active" : "";
@@ -14,9 +19,9 @@ export default function Search() {
   const renderTabContent = () => {
     switch (tabStatus) {
       case "Market":
-        return <MarketTab api={"search"} />;
+        return <MarketTab api={"search"} keywords={decodedKeywords} />;
       case "GroupPurchase":
-        return <GroupPurchaseTab api={"search"} />;
+        return <GroupPurchaseTab api={"search"} keywords={decodedKeywords} />;
     }
   };
 

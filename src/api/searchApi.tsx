@@ -1,10 +1,19 @@
 import axios from "axios";
 
-export default async function searchApi() {
-  const url = "/api/search";
+export interface SearchReq {
+  board_type: string | null;
+  limit: number;
+  current_page: number;
+  sort_by: string | null;
+  order: string | null;
+  searchItem: string;
+}
+
+export default async function searchApi(data: SearchReq) {
+  const url = "/api/search/market/list";
 
   try {
-    const res = await axios.get(url);
+    const res = await axios.get(url, { data });
     console.log("API 응답:", res.data);
     return res.data;
   } catch (error) {

@@ -36,9 +36,10 @@ export interface Data {
 
 interface Props {
   api: string;
+  keywords: string;
 }
 
-const GroupPurchaseTab: React.FC<Props> = ({ api }) => {
+const GroupPurchaseTab: React.FC<Props> = ({ api, keywords }) => {
   const router = useRouter();
   const [data, setData] = useState<Data | null>(null);
 
@@ -54,6 +55,7 @@ const GroupPurchaseTab: React.FC<Props> = ({ api }) => {
     current_page: 1,
     sort_by: "",
     order: "ASC",
+    searchItem: keywords || null,
   };
 
   useEffect(() => {
