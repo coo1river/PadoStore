@@ -99,6 +99,7 @@ export default function ProductUpdate() {
     productInfo.price.setValue(data?.product.price || "");
     productInfo.product_status.setValue(data?.product.product_status || "");
     productInfo.post_method.setValue(data?.product.post_method || "");
+    setTagList(data?.tag);
   }, [data]);
 
   // useRef 사용
@@ -147,23 +148,36 @@ export default function ProductUpdate() {
       alert("필수 항목을 입력해 주세요");
       return;
     }
-
-    uploadApi(imgFile)
-      .then(async (res) => {
-        return await updateApi("put", undefined, {
-          ...req,
-          file_group_id: res.file_group_id,
+    // 이미지 파일이 변경된 경우에만 uploadAPi 호출
+    if (typeof imgFile !== "string") {
+      uploadApi(imgFile)
+        .then(async (res) => {
+          return await updateApi("put", undefined, {
+            ...req,
+            file_group_id: res.file_group_id,
+          });
+        })
+        .then((data) => {
+          console.log("수정 성공", data);
+          router.push("/home");
+        })
+        .catch((error) => {
+          console.error("수정 실패", error);
         });
+    } else {
+      updateApi("put", undefined, {
+        ...req,
+        file_group_id: data?.file[0].file_group_id,
       })
-      .then((data) => {
-        console.log("수정 성공", data);
-        router.push("/home");
-      })
-      .catch((error) => {
-        console.error("수정 실패", error);
-      });
+        .then((data) => {
+          console.log("수정 성공", data);
+          router.push("/home");
+        })
+        .catch((error) => {
+          console.error("수정 실패", error);
+        });
+    }
   };
-
   return (
     <UploadMain>
       <h2 className="a11y-hidden">상품 업로드</h2>

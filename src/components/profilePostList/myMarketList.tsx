@@ -7,7 +7,7 @@ interface Props {
   marketList: MarketItem[];
 }
 
-const MySalesList: React.FC<Props> = ({ marketList }) => {
+const MyMarketList: React.FC<Props> = ({ marketList }) => {
   const router = useRouter();
   return (
     <ul className="myProfile_list">
@@ -31,4 +31,4 @@ const MySalesList: React.FC<Props> = ({ marketList }) => {
   );
 };
 
-export default MySalesList;
+export default MyMarketList;

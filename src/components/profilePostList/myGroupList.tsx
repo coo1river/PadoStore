@@ -7,7 +7,7 @@ interface Props {
   groupList: GroupItem[];
 }
 
-const MyGroupSalesList: React.FC<Props> = ({ groupList }) => {
+const MyGroupList: React.FC<Props> = ({ groupList }) => {
   const router = useRouter();
   return (
     <ul className="myProfile_list">
@@ -33,4 +33,4 @@ const MyGroupSalesList: React.FC<Props> = ({ groupList }) => {
   );
 };
 
-export default MyGroupSalesList;
+export default MyGroupList;

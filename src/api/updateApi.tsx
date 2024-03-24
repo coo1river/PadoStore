@@ -8,7 +8,7 @@ interface UpdateRes {
   board_type: string | undefined;
   title: string;
   content: string;
-  file_group_id: string;
+  file_group_id: string | undefined;
   post_status: string;
   product: {
     price: string;
