@@ -2,6 +2,7 @@
 import productUploadApi from "@/api/productUploadApi";
 import uploadApi from "@/api/uploadApi";
 import { DeliveryOptions, ProductStatus } from "@/components/selectOption";
+import TagInput from "@/components/tagInput";
 import useInput from "@/hooks/useInput";
 import useAuthStore from "@/store/useAuthStore";
 import {
@@ -29,30 +30,12 @@ const Product: React.FC = () => {
     product_status: useInput(""),
     post_method: useInput(""),
   };
-  const tag = useInput("#");
 
   // 태그 관리
   const [tagList, setTagList] = useState<string>("");
 
   // 게시물 타입 관리
   const [boardType, setBoardType] = useState<string>("Sell");
-
-  const handleAddTag = () => {
-    const currentTagCount = tagList.split(",").length;
-
-    if (currentTagCount < 3 && tag.value.trim() !== "") {
-      setTagList((prevTagList) => {
-        if (prevTagList !== "") {
-          return prevTagList + " " + tag.value.trim();
-        } else {
-          return tag.value.trim();
-        }
-      });
-
-      // input 값 초기화
-      tag.setValue("#");
-    }
-  };
 
   // api에 보낼 정보 담기
   const req = {
@@ -85,15 +68,6 @@ const Product: React.FC = () => {
     if (e.target.files?.[0]) {
       const selectedFile = e.target.files[0];
       setImgFile(selectedFile);
-    }
-  };
-
-  // tag input에 # 고정
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.value.startsWith("#")) {
-      tag.setValue("#" + event.target.value);
-    } else {
-      tag.setValue(event.target.value);
     }
   };
 
@@ -234,18 +208,7 @@ const Product: React.FC = () => {
             onChange={content.onChange}
           />
 
-          {/* 상품 태그 */}
-          <label htmlFor="product-tag">상품 태그</label>
-          <div className="tag_wrap">
-            <input
-              type="text"
-              placeholder="상품 태그를 입력해 주세요(3개)"
-              value={tag.value}
-              onChange={handleChange}
-            />
-            <button onClick={handleAddTag}>추가</button>
-          </div>
-          <p className="tag_list">{tagList}</p>
+          <TagInput tagList={tagList || ""} setTagList={setTagList} />
 
           <button className="btn_upload" onClick={handleUpload}>
             상품 업로드 하기

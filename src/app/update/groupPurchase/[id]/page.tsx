@@ -1,9 +1,10 @@
 "use client";
-import groupUploadApi, { GroupReq } from "@/api/groupUploadApi";
+import { GroupReq } from "@/api/groupUploadApi";
 import { Res } from "@/api/postDetailApi";
 import updateApi from "@/api/updateApi";
 import uploadApi from "@/api/uploadApi";
 import { BankOptions, DeliveryOptions } from "@/components/selectOption";
+import TagInput from "@/components/tagInput";
 import useInput from "@/hooks/useInput";
 import useAuthStore from "@/store/useAuthStore";
 import {
@@ -86,37 +87,10 @@ const GroupPurchaseUpdate: React.FC = () => {
     bank: useInput(""),
     account_name: useInput(""),
     account_number: useInput(""),
-    tag: useInput("#"),
   };
 
   // 태그 관리
   const [tagList, setTagList] = useState<string>("");
-
-  const handleAddTag = () => {
-    const currentTagCount = tagList.split(",").length;
-
-    if (currentTagCount < 3 && form.tag.value.trim() !== "") {
-      setTagList((prevTagList) => {
-        if (prevTagList !== "") {
-          return prevTagList + " " + form.tag.value.trim();
-        } else {
-          return form.tag.value.trim();
-        }
-      });
-
-      // input 값 초기화
-      form.tag.setValue("#");
-    }
-  };
-
-  // tag input에 # 고정
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.value.startsWith("#")) {
-      form.tag.setValue("#" + event.target.value);
-    } else {
-      form.tag.setValue(event.target.value);
-    }
-  };
 
   // useRef 사용
   const InputRef = useRef<HTMLInputElement>(null);
@@ -260,21 +234,37 @@ const GroupPurchaseUpdate: React.FC = () => {
       return;
     }
 
-    uploadApi(imgFile)
-      .then(async (res) => {
-        return await updateApi("put", undefined, {
-          ...dataReq,
-          post_id: id,
-          file_group_id: res.file_group_id,
+    // 이미지 파일이 변경된 경우에만 uploadAPi 호출
+    if (typeof imgFile !== "string") {
+      uploadApi(imgFile)
+        .then(async (res) => {
+          return await updateApi("put", undefined, {
+            ...dataReq,
+            post_id: id,
+            file_group_id: res.file_group_id,
+          });
+        })
+        .then((data) => {
+          console.log("수정 성공", data);
+          router.push("/home");
+        })
+        .catch((error) => {
+          console.error("수정 실패", error);
         });
+    } else {
+      updateApi("put", undefined, {
+        ...dataReq,
+        post_id: id,
+        file_group_id: data?.file[0].file_group_id,
       })
-      .then((data) => {
-        console.log("수정 성공", data);
-        router.push(`/groupDetail/${data?.post_id}`);
-      })
-      .catch((error) => {
-        console.error("수정 실패", error);
-      });
+        .then((data) => {
+          console.log("수정 성공", data);
+          router.push("/home");
+        })
+        .catch((error) => {
+          console.error("수정 실패", error);
+        });
+    }
   };
 
   return (
@@ -326,7 +316,7 @@ const GroupPurchaseUpdate: React.FC = () => {
         <SalePeriod>
           <label htmlFor="sale-period" />
           <div className="sale_period_wrap">
-            <span>• 시작 날짜</span>
+            <span>시작 날짜</span>
             <input
               type="date"
               id="start-date"
@@ -334,7 +324,7 @@ const GroupPurchaseUpdate: React.FC = () => {
               value={form.start_dt.value}
               onChange={form.start_dt.onChange}
             />
-            <span>• 종료 날짜</span>
+            <span>종료 날짜</span>
             <input
               type="date"
               id="end-date"
@@ -348,7 +338,7 @@ const GroupPurchaseUpdate: React.FC = () => {
         <h3 className="product_title">판매 계좌 정보</h3>
         <UserAccount>
           <div>
-            <label htmlFor="account-name">• 예금주</label>
+            <label htmlFor="account-name">예금주</label>
             <input
               type="text"
               id="account-name"
@@ -356,7 +346,7 @@ const GroupPurchaseUpdate: React.FC = () => {
               value={form.account_name.value}
               onChange={form.account_name.onChange}
             />
-            <label htmlFor="back-name">• 은행명</label>
+            <label htmlFor="back-name">은행명</label>
             <select
               name="bank-name"
               id="bank-name"
@@ -366,7 +356,7 @@ const GroupPurchaseUpdate: React.FC = () => {
               <BankOptions />
             </select>
           </div>
-          <label htmlFor="account-number">• 계좌 번호</label>
+          <label htmlFor="account-number">계좌 번호</label>
           <input
             type="number"
             id="account-number"
@@ -408,7 +398,7 @@ const GroupPurchaseUpdate: React.FC = () => {
         <h3 className="product_title">상품 등록</h3>
         <AddProduct>
           <div className="product_name">
-            <label htmlFor="product_add">• 상품명</label>
+            <label htmlFor="product_add">상품명</label>
             <input
               type="text"
               placeholder="상품명을 입력해 주세요"
@@ -418,7 +408,7 @@ const GroupPurchaseUpdate: React.FC = () => {
           </div>
 
           <div className="price_and_count">
-            <label htmlFor="product-price">• 가격</label>
+            <label htmlFor="product-price">가격</label>
             <input
               id="product-price"
               type="text"
@@ -434,7 +424,7 @@ const GroupPurchaseUpdate: React.FC = () => {
                 } as React.ChangeEvent<HTMLInputElement>);
               }}
             />
-            <label htmlFor="product-count">• 수량</label>
+            <label htmlFor="product-count">수량</label>
             <input
               id="product-price"
               type="number"
@@ -457,7 +447,7 @@ const GroupPurchaseUpdate: React.FC = () => {
                 {productList.map((product, index) => (
                   <li className="product_el" key={index}>
                     <div>
-                      •<p className="product_name"> {product.product_name}</p>
+                      <p className="product_name"> {product.product_name}</p>
                     </div>
                     <div>
                       <p className="product_count">{product.org_quantity}개</p>
@@ -516,7 +506,7 @@ const GroupPurchaseUpdate: React.FC = () => {
                 {addInputList.map((item, index) => (
                   <li className="add_input_el" key={index}>
                     <div className="input_wrap">
-                      <p>• {item.input}</p>
+                      <p>{item.input}</p>
                       <button
                         className="btn_del"
                         onClick={() => handleRemoveInput(index)}
@@ -539,18 +529,7 @@ const GroupPurchaseUpdate: React.FC = () => {
           ) : null}
         </AddInputList>
 
-        {/* 상품 태그 */}
-        <label htmlFor="product-tag">상품 태그</label>
-        <div className="tag_wrap">
-          <input
-            type="text"
-            placeholder="상품 태그를 입력해 주세요(3개)"
-            value={form.tag.value}
-            onChange={handleChange}
-          />
-          <button onClick={handleAddTag}>추가</button>
-        </div>
-        <p className="tag_list">{data?.tag}</p>
+        <TagInput tagList={tagList || ""} setTagList={setTagList} />
 
         <button className="btn_upload" onClick={handleUpload}>
           폼 업로드 하기

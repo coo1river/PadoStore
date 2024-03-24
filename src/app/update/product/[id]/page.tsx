@@ -3,6 +3,7 @@ import { Res } from "@/api/postDetailApi";
 import updateApi from "@/api/updateApi";
 import uploadApi from "@/api/uploadApi";
 import { DeliveryOptions, ProductStatus } from "@/components/selectOption";
+import TagInput from "@/components/tagInput";
 import useInput from "@/hooks/useInput";
 import useAuthStore from "@/store/useAuthStore";
 import {
@@ -62,35 +63,8 @@ export default function ProductUpdate() {
     product_status: useInput(""),
     post_method: useInput(""),
   };
-  const tag = useInput("#");
 
   const [tagList, setTagList] = useState<string>("");
-
-  const handleAddTag = () => {
-    const currentTagCount = tagList.split(",").length;
-
-    if (currentTagCount < 3 && tag.value.trim() !== "") {
-      setTagList((prevTagList) => {
-        if (prevTagList !== "") {
-          return prevTagList + " " + tag.value.trim();
-        } else {
-          return tag.value.trim();
-        }
-      });
-
-      // input 값 초기화
-      tag.setValue("#");
-    }
-  };
-
-  // tag input에 # 고정
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.value.startsWith("#")) {
-      tag.setValue("#" + event.target.value);
-    } else {
-      tag.setValue(event.target.value);
-    }
-  };
 
   // data 값이 업데이트 되면 input value 업데이트
   useEffect(() => {
@@ -99,7 +73,7 @@ export default function ProductUpdate() {
     productInfo.price.setValue(data?.product.price || "");
     productInfo.product_status.setValue(data?.product.product_status || "");
     productInfo.post_method.setValue(data?.product.post_method || "");
-    setTagList(data?.tag);
+    setTagList(data?.tag || "");
   }, [data]);
 
   // useRef 사용
@@ -178,6 +152,7 @@ export default function ProductUpdate() {
         });
     }
   };
+
   return (
     <UploadMain>
       <h2 className="a11y-hidden">상품 업로드</h2>
@@ -290,17 +265,7 @@ export default function ProductUpdate() {
           />
 
           {/* 상품 태그 */}
-          <label htmlFor="product-tag">상품 태그</label>
-          <div className="tag_wrap">
-            <input
-              type="text"
-              placeholder="상품 태그를 입력해 주세요(3개)"
-              value={tag.value}
-              onChange={handleChange}
-            />
-            <button onClick={handleAddTag}>추가</button>
-          </div>
-          <p className="tag_list">{tagList}</p>
+          <TagInput tagList={tagList || ""} setTagList={setTagList} />
 
           <button className="btn_upload" onClick={handleUpdate}>
             상품 업로드 하기
