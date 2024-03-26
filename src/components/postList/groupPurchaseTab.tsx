@@ -36,7 +36,7 @@ export interface Data {
 
 interface Props {
   api: string;
-  keywords: string;
+  keywords?: string;
 }
 
 const GroupPurchaseTab: React.FC<Props> = ({ api, keywords }) => {
@@ -55,7 +55,6 @@ const GroupPurchaseTab: React.FC<Props> = ({ api, keywords }) => {
     current_page: 1,
     sort_by: "",
     order: "ASC",
-    searchItem: keywords || null,
   };
 
   useEffect(() => {
@@ -66,10 +65,13 @@ const GroupPurchaseTab: React.FC<Props> = ({ api, keywords }) => {
           data = await homeTabApi("group", params);
           setTotalPosts(data?.totalCount);
           setData(data);
-        // case "search":
-        //   data = await searchApi();
-        //   setTotalPosts(data?.totalCount);
-        //   setData(data);
+          break;
+        case "search":
+          data = await searchApi({ ...params, searchItem: keywords });
+          console.log(params);
+          setTotalPosts(data?.totalCount);
+          setData(data);
+          break;
       }
     };
     fetchData();

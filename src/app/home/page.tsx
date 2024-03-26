@@ -39,7 +39,6 @@ const Home: React.FC = () => {
       const data = await homeListApi("InProgress");
       setData(data);
     };
-
     homeData();
   }, []);
 

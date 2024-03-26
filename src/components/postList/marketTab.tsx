@@ -64,7 +64,7 @@ export interface Data {
 
 interface Props {
   api: string;
-  keywords: string;
+  keywords?: string;
 }
 
 const MarketTab: React.FC<Props> = ({ api, keywords }) => {
@@ -84,7 +84,6 @@ const MarketTab: React.FC<Props> = ({ api, keywords }) => {
     current_page: page,
     sort_by: "post_id",
     order: "ASC",
-    searchItem: keywords,
   };
 
   // api(home tab / search)를 통해 data 가져오기
@@ -96,10 +95,13 @@ const MarketTab: React.FC<Props> = ({ api, keywords }) => {
           data = await homeTabApi("market", params);
           setTotalPosts(data?.totalCount);
           setData(data);
+          break;
         case "search":
-          data = await searchApi(params);
+          data = await searchApi({ ...params, searchItem: keywords });
+          console.log(params);
           setTotalPosts(data?.totalCount);
           setData(data);
+          break;
       }
     };
     fetchData();
