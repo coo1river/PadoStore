@@ -1,37 +1,23 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<h1>🌊파도상점🌊</h1>
 
-## Getting Started
+![Group 2 (3)](https://github.com/coo1river/PadoStore/assets/122965945/014eea84-65ef-4096-81c7-5c9cf7ee0faf)
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+<br>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 목차
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. [프로젝트 소개](#intro)
+2. [프로젝트 멤버 소개 및 역할](#team)
+3. [기술 스택](#technology-stack)
+4. [기능 및 구조]
+5. [협업 방식]
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+<br>
 
-## Learn More
+## <span id="intro">1. 프로젝트 소개</span>
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-# Project_FE
+- 세상의 모든 팬들을 위한 **거래, 공동구매 플랫폼**입니다.
+- 팬들끼리 서로 판매, 구매, 교환이 가능하며 공동구매 폼을 업로드 할 수 있습니다.
+- 판매, 구매, 교환 시 **채팅**을 통해 거래할 수 있습니다.
+- 공동구매 폼 제출 시 유저의 **입금 폼**을 작성하며, 공동구매 관리 또한 가능합니다.
