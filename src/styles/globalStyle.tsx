@@ -28,7 +28,6 @@ ${reset}
 }
 
 body {
-    height: 100vh;
     color: #333333;
     font-family: 'Pretendard', sans-serif;
     overflow: scroll;

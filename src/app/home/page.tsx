@@ -11,6 +11,7 @@ import homeListApi from "@/api/homeListApi";
 import MarketTab, { MarketItem } from "@/components/postList/marketTab";
 import GroupPurchaseTab from "@/components/postList/groupPurchaseTab";
 import { useRouter } from "next/navigation";
+import Pagination from "@/components/pagination";
 
 export interface HomeList {
   post_id: number;
@@ -48,6 +49,12 @@ const Home: React.FC = () => {
     return tabStatus === status ? "active" : "";
   };
 
+  // 총 포스트 개수 관리
+  const [totalPosts, setTotalPosts] = useState<number>(0);
+
+  // 현재 페이지 관리
+  const [page, setPage] = useState<number>(1);
+
   const renderTabContent = () => {
     switch (tabStatus) {
       case "Home":
@@ -58,9 +65,27 @@ const Home: React.FC = () => {
           </>
         );
       case "Market":
-        return <MarketTab api={"hometab"} />;
+        return (
+          <>
+            <MarketTab
+              api={"hometab"}
+              page={page}
+              setTotalPosts={setTotalPosts}
+            />
+            <Pagination totalPosts={totalPosts} page={page} setPage={setPage} />
+          </>
+        );
       case "GroupPurchase":
-        return <GroupPurchaseTab api={"hometab"} />;
+        return (
+          <>
+            <GroupPurchaseTab
+              api={"hometab"}
+              page={page}
+              setTotalPosts={setTotalPosts}
+            />
+            <Pagination totalPosts={totalPosts} page={page} setPage={setPage} />
+          </>
+        );
       default:
         return null;
     }
@@ -72,6 +97,7 @@ const Home: React.FC = () => {
       <MainBanner>
         <Image
           onClick={() => router.push("/groupDetail/InProgress/11")}
+          priority
           src={bannerImg}
           alt="배너 이미지"
         />

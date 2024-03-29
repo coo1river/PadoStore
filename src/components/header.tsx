@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { KeyboardEvent, useState } from "react";
 import {
   LogoImg,
   CommonHeader,
@@ -15,7 +15,6 @@ import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
 import ModalFilter from "./modal/modalFilter";
 import useInput from "@/hooks/useInput";
-import searchApi, { SearchReq } from "@/api/searchApi";
 
 interface PostUploadModalProps {
   setUploadModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -77,6 +76,7 @@ const Header: React.FC = () => {
   const { authState, setAuthState } = useAuthStore();
   const { token, setToken } = useAuthStore();
 
+  // 로그아웃 함수
   const handleLogout = () => {
     setAuthState(false);
     setToken(null);
@@ -84,7 +84,15 @@ const Header: React.FC = () => {
     router.push("/home");
   };
 
+  // 검색 키워드 저장
   const keywords = useInput("");
+
+  // enter 키로 검색하기
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      router.push(`/search/${keywords.value}`);
+    }
+  };
 
   return (
     <CommonHeader>
@@ -103,6 +111,7 @@ const Header: React.FC = () => {
           type="text"
           value={keywords.value}
           onChange={keywords.onChange}
+          onKeyDown={handleKeyDown}
         />
         <button
           onClick={() => router.push(`/search/${keywords.value}`)}

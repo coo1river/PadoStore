@@ -13,11 +13,8 @@ import DetailModal from "@/components/modal/detailModal";
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
 import { useParams } from "next/navigation";
 
-const ProductDetail: React.FC = (props) => {
-  // console.log(props);
-
+const ProductDetail: React.FC = () => {
   const params = useParams();
-  console.log(params.id);
 
   const [data, setData] = useState<Res | null>(null);
 
@@ -101,12 +98,12 @@ const ProductDetail: React.FC = (props) => {
         </ProductInfo>
         <ProductContent>
           <p className="product_contents">
-            {data?.content.split("\n").map((line) => {
+            {data?.content.split("\n").map((line, index) => {
               return (
-                <>
+                <React.Fragment key={index}>
                   {line}
                   <br />
-                </>
+                </React.Fragment>
               );
             })}
           </p>

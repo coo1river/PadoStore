@@ -131,6 +131,7 @@ export const ProductContent = styled.article`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-bottom: 30px;
 
   .product_contents {
     line-height: 1.5rem;
