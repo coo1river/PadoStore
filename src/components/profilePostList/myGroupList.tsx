@@ -10,7 +10,7 @@ interface Props {
 
 const MyGroupList: React.FC<Props> = ({ groupList, routePath }) => {
   const router = useRouter();
-  console.log("가나다라", routePath);
+
   return (
     <ul className="myProfile_list">
       {groupList.map((item) => {

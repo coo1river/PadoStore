@@ -64,7 +64,8 @@ const Login: React.FC = () => {
               id="input-id"
               placeholder="아이디"
               type="text"
-              {...form.user_id}
+              value={form.user_id.value}
+              onChange={form.user_id.onChange}
             />
           </div>
 
@@ -74,7 +75,8 @@ const Login: React.FC = () => {
               id="input-pw"
               placeholder="비밀번호"
               type="password"
-              {...form.password}
+              value={form.password.value}
+              onChange={form.password.onChange}
             />
           </div>
         </div>

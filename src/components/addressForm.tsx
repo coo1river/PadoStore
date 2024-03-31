@@ -22,15 +22,6 @@ interface Props {
 }
 
 export default function AddressForm({ form }: Props) {
-  // const form = {
-  //   name: useInput(""),
-  //   zipcode: useInput(""),
-  //   address: useInput(""),
-  //   addr_detail: useInput(""),
-  // };
-
-  console.log(form);
-
   const [modal, setModal] = useState<boolean>(false);
 
   const handleComplete = (data: AddressData) => {

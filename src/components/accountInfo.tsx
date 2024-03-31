@@ -72,8 +72,6 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
     account_number: useInput(""),
   };
 
-  console.log(form);
-
   // 질문 답변 리스트 배열로 저장
   const [answerList, setAnswerList] = useState<{ input: string }[]>([]);
 
@@ -138,8 +136,6 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
     orderProductList: orderProductList || [],
   };
 
-  console.log("req", req);
-
   const hadleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -164,7 +160,7 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
     try {
       const fetchData = await orderApi(req);
       console.log("주문 성공", fetchData);
-      router.push(`/groupDetail/${data?.post_id}/complted`);
+      router.push(`/groupDetail/${data?.post_id}/completed`);
     } catch (error) {
       console.error("주문 실패", error);
     }

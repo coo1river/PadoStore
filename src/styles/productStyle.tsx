@@ -156,7 +156,7 @@ export const GroupSubmit = styled(GroupForm)`
   width: 100%;
 `;
 
-export const SubmitComplted = styled.main`
+export const SubmitCompleted = styled.main`
   height: calc(100% - 215px);
   display: flex;
   flex-direction: column;
@@ -168,7 +168,7 @@ export const SubmitComplted = styled.main`
     height: 80px;
   }
 
-  .complted_text {
+  .completed_text {
     margin: 20px;
     font-size: 20px;
     font-weight: bold;
