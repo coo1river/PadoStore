@@ -5,10 +5,12 @@ import { useRouter } from "next/navigation";
 
 interface Props {
   groupList: GroupItem[];
+  routePath: string;
 }
 
-const MyGroupList: React.FC<Props> = ({ groupList }) => {
+const MyGroupList: React.FC<Props> = ({ groupList, routePath }) => {
   const router = useRouter();
+  console.log("가나다라", routePath);
   return (
     <ul className="myProfile_list">
       {groupList.map((item) => {
@@ -17,7 +19,7 @@ const MyGroupList: React.FC<Props> = ({ groupList }) => {
           <li
             key={item.groupOrder.post_id}
             onClick={() =>
-              router.push(`/productDetail/${item.groupOrder.post_id}`)
+              router.push(`${routePath}/${item.groupOrder.post_id}`)
             }
           >
             <p className="product_id">{item.groupOrder.post_id}</p>

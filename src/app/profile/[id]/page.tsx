@@ -67,6 +67,7 @@ const Profile: React.FC = () => {
 
   const [listTap, setlistTap] = useState("mySales");
 
+  // 각 탭에 따른 컴포넌트 렌더
   let listRender;
 
   switch (listTap) {
@@ -77,11 +78,23 @@ const Profile: React.FC = () => {
       listRender = <MyMarketList marketList={list?.marketList || []} />;
       break;
     case "myGroupSales":
-      listRender = <MyGroupList groupList={list?.groupOrderList || []} />;
+      listRender = (
+        <MyGroupList
+          groupList={list?.groupOrderList || []}
+          routePath="/groupManage"
+        />
+      );
       break;
     case "myGroupPurchase":
-      listRender = <MyGroupList groupList={list?.groupOrderList || []} />;
+      listRender = (
+        <MyGroupList
+          groupList={list?.groupOrderList || []}
+          routePath="/productDetail"
+        />
+      );
       break;
+case "orderDetail":
+  listRender = <
     default:
       listRender = null;
   }
