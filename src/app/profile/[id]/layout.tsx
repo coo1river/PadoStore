@@ -1,7 +1,7 @@
 "use client";
 import { ArticleList, ProfileMain, UserProfile } from "@/styles/profileStyle";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
 import viewProfileApi, { ViewProfileRes } from "@/api/viewProfileApi";
 import { ImgProfile } from "@/styles/profileStyle";
@@ -29,6 +29,10 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
 
   // 현재 리스트 상태(거래 중/거래 완료) 관리
   const [listState, setListState] = useState<string>("InProgress");
+
+  // pathname을 가져온 뒤 groupManage인 경우 button 렌더링 x
+  const path = usePathname();
+  const renderButtons = !path.includes("groupManage");
 
   const setActiveClass = (status: string) => {
     return listState === status ? "active" : "";
@@ -207,20 +211,24 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
 
         {/* 게시물 목록 */}
         <ArticleList>
-          <button
-            type="button"
-            className={`btn_tab ${setActiveClass("InProgress")}`}
-            onClick={() => setListState("InProgress")}
-          >
-            거래 중
-          </button>
-          <button
-            type="button"
-            className={`btn_tab ${setActiveClass("Completed")}`}
-            onClick={() => setListState("Completed")}
-          >
-            거래 완료
-          </button>
+          {renderButtons && (
+            <>
+              <button
+                type="button"
+                className={`btn_tab ${setActiveClass("InProgress")}`}
+                onClick={() => setListState("InProgress")}
+              >
+                거래 중
+              </button>
+              <button
+                type="button"
+                className={`btn_tab ${setActiveClass("Completed")}`}
+                onClick={() => setListState("Completed")}
+              >
+                거래 완료
+              </button>
+            </>
+          )}
           {children}
         </ArticleList>
       </section>

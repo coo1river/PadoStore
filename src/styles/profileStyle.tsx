@@ -155,3 +155,56 @@ export const ArticleList = styled.article`
     font-size: 13px;
   }
 `;
+
+export const OrderDetail = styled.main`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+
+  h2 {
+    font-size: 22px;
+    font-weight: 600;
+  }
+
+  .progress_wrap {
+    gap: 80px;
+    margin: 20px;
+  }
+
+  .progress_and_text {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  div {
+    display: flex;
+    text-align: center;
+  }
+
+  .bar_wrap {
+    margin: 20px;
+    top: 48px;
+    position: absolute;
+  }
+
+  p {
+    font-weight: 600;
+    font-size: 15px;
+  }
+`;
+
+export const OrderProgress = styled.img`
+  width: 50px;
+  height: 50px;
+  z-index: 10;
+`;
+
+export const OrderProgressBar = styled.div`
+  margin-bottom: 30px;
+  width: 150px;
+  height: 5px;
+  background-color: var(--color-main);
+`;
