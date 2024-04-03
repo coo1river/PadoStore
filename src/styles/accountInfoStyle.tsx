@@ -49,6 +49,25 @@ export const AccountInfoWrap = styled.section`
   }
 `;
 
+export const SellerInfo = styled.article`
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  strong {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  p {
+    margin-left: 5px;
+    display: flex;
+    gap: 10px;
+  }
+`;
+
 export const ProductSelect = styled.article`
   li {
     font-weight: 600;

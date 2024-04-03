@@ -4,6 +4,7 @@ import {
   DepositInfoWrap,
   InputWrap,
   ProductSelect,
+  SellerInfo,
   UserInfo,
 } from "@/styles/accountInfoStyle";
 import { BankOptions } from "./selectOption";
@@ -39,11 +40,11 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
     }
   }, [data?.productDetail]);
 
-  useEffect(() => {
-    form.email.setValue(data?.user.email || "");
-    form.name.setValue(data?.user.user_name || "");
-    form.number.setValue(data?.user.phone_number || "");
-  }, [data]);
+  // useEffect(() => {
+  //   form.email.setValue(data?.user.email || "");
+  //   form.name.setValue(data?.user.user_name || "");
+  //   form.number.setValue(data?.user.phone_number || "");
+  // }, [data]);
 
   // 상품 카운트 함수
   const handleClick = (index: number, increment: number) => {
@@ -169,7 +170,22 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
   return (
     <AccountInfoWrap>
       <h2 className="AccountInfo_title">입금 폼 작성</h2>
+
       <form className="account_info_form">
+        <SellerInfo>
+          <h3>판매자 계좌</h3>
+          <div>
+            <p>
+              <strong>예금주</strong>
+              {data?.user.account_name}
+            </p>
+            <p>
+              <strong>계좌 정보</strong>
+              {data?.user.bank} {data?.user.account_number}
+            </p>
+          </div>
+        </SellerInfo>
+
         <ProductSelect>
           <h3>상품 선택</h3>
           <ul>
