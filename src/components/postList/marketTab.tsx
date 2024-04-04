@@ -131,9 +131,7 @@ const MarketTab: React.FC<Props> = ({ page, api, keywords, setTotalPosts }) => {
                 <ProductArticle
                   key={item.market.post_id}
                   onClick={() => {
-                    router.push(
-                      `/productDetail/:status/${item.market.post_id}`
-                    );
+                    router.push(`/productDetail/${item.market.post_id}`);
                   }}
                 >
                   <img

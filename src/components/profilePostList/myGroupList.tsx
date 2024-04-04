@@ -58,7 +58,6 @@ const MyGroupList: React.FC<Props> = ({ groupList, routePath }) => {
 
   // zustand에서 token 가져오기
   const { token, setToken } = useAuthStore();
-  console.log("그룹리스트", groupList);
 
   return (
     <ul className="myProfile_list">
@@ -87,7 +86,9 @@ const MyGroupList: React.FC<Props> = ({ groupList, routePath }) => {
             key={postId}
             onClick={() => {
               const routeId = isGroupOrder ? item.order.order_id : postId;
-              router.push(`/profile/${token}/${routePath}/${routeId}`);
+              routePath === "groupManage"
+                ? router.push(`/${routePath}/${routeId}`)
+                : router.push(`/profile/${token}/${routePath}/${routeId}`);
             }}
           >
             <p className="product_id">{postId}</p>

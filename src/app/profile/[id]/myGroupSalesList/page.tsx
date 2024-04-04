@@ -40,7 +40,7 @@ const MyGroupSalesList: React.FC = () => {
   return (
     <MyGroupList
       groupList={list?.groupOrderList || []}
-      routePath="/productDetail"
+      routePath="groupManage"
     />
   );
 };

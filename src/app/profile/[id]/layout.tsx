@@ -30,9 +30,9 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
   // 현재 리스트 상태(거래 중/거래 완료) 관리
   const [listState, setListState] = useState<string>("InProgress");
 
-  // pathname을 가져온 뒤 groupManage인 경우 button 렌더링 x
+  // pathname을 가져온 뒤 groupManage 혹은 orderDetail인 경우 button 렌더링 x
   const path = usePathname();
-  const renderButtons = !path.includes("groupManage");
+  const renderButtons = !path.includes("groupManage" && "orderDetail");
 
   const setActiveClass = (status: string) => {
     return listState === status ? "active" : "";
@@ -67,12 +67,12 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
     fetchData();
   }, []);
 
-  const [listTap, setlistTap] = useState("mySales");
+  const [listMenu, setListMenu] = useState("mySales");
 
   // 각 탭에 따른 컴포넌트 렌더
   useEffect(() => {
     let path;
-    switch (listTap) {
+    switch (listMenu) {
       case "mySales":
         path = `/profile/${token}/mySalesList`;
         break;
@@ -90,10 +90,10 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
     }
 
     router.push(path);
-  }, [listTap]);
+  }, [listMenu]);
 
   useEffect(() => {
-    switch (listTap) {
+    switch (listMenu) {
       case "mySales":
       case "myGroupSales":
         setListTab("Sales");
@@ -105,7 +105,7 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
       default:
         break;
     }
-  }, [listTap]);
+  }, [listMenu]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -128,11 +128,6 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
 
     fetchData();
   }, [listTab, listType, listState, page]);
-
-  useEffect(() => {
-    console.log("listTab", listTab);
-    console.log("listType", listType);
-  }, [listType, listTab]);
 
   return (
     <ProfileMain>
@@ -164,18 +159,18 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
           <ul className="nav_menu">
             <p>거래 내역</p>
             <li
-              className={listTap === "mySales" ? "active" : ""}
+              className={listMenu === "mySales" ? "active" : ""}
               onClick={() => {
-                setlistTap("mySales");
+                setListMenu("mySales");
                 setListType("market");
               }}
             >
               판매 내역
             </li>
             <li
-              className={listTap === "myPurchase" ? "active" : ""}
+              className={listMenu === "myPurchase" ? "active" : ""}
               onClick={() => {
-                setlistTap("myPurchase");
+                setListMenu("myPurchase");
                 setListType("market");
               }}
             >
@@ -184,18 +179,18 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
 
             <p>공구 내역</p>
             <li
-              className={listTap === "myGroupSales" ? "active" : ""}
+              className={listMenu === "myGroupSales" ? "active" : ""}
               onClick={() => {
-                setlistTap("myGroupSales");
+                setListMenu("myGroupSales");
                 setListType("group");
               }}
             >
               판매 폼
             </li>
             <li
-              className={listTap === "myGroupPurchase" ? "active" : ""}
+              className={listMenu === "myGroupPurchase" ? "active" : ""}
               onClick={() => {
-                setlistTap("myGroupPurchase");
+                setListMenu("myGroupPurchase");
                 setListType("group");
               }}
             >

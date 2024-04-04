@@ -10,6 +10,7 @@ export const ProfileMain = styled(LoginMain)`
     background-color: white;
     border-radius: 15px;
     width: 100%;
+    height: calc(100vh - 410px);
     max-width: 1080px;
 
     display: flex;
@@ -156,11 +157,11 @@ export const ArticleList = styled.article`
   }
 `;
 
+// 주문 상세
 export const OrderDetail = styled.main`
   display: flex;
   align-items: center;
   flex-direction: column;
-  position: relative;
 
   h2 {
     font-size: 22px;
@@ -168,7 +169,7 @@ export const OrderDetail = styled.main`
   }
 
   .progress_wrap {
-    gap: 80px;
+    gap: 82px;
     margin: 20px;
   }
 
@@ -186,7 +187,7 @@ export const OrderDetail = styled.main`
 
   .bar_wrap {
     margin: 20px;
-    top: 48px;
+    top: 21px;
     position: absolute;
   }
 
@@ -194,6 +195,37 @@ export const OrderDetail = styled.main`
     font-weight: 600;
     font-size: 15px;
   }
+
+  .progress_wrap_article {
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+`;
+
+export const OrderDetArticle = styled.article`
+  display: flex;
+
+  .product_info_wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+  }
+
+  .product_title {
+    font-size: 24px;
+  }
+
+  .product_nickname {
+    font-size: 16px;
+  }
+`;
+
+export const ProductImg = styled.img`
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
 `;
 
 export const OrderProgress = styled.img`
@@ -207,4 +239,22 @@ export const OrderProgressBar = styled.div`
   width: 150px;
   height: 5px;
   background-color: var(--color-main);
+`;
+
+// 공구 관리 상세
+export const ManageMain = styled(ProfileMain)`
+  padding: 30px 0;
+
+  h2 {
+    width: 1080px;
+    font-size: 24px;
+    font-weight: bold;
+    padding-left: 30px;
+    margin: 0 auto;
+  }
+
+  .list_wrap {
+    margin-top: 30px;
+    height: calc(100vh - 370px);
+  }
 `;

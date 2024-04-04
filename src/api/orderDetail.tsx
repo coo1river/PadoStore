@@ -43,8 +43,8 @@ export interface OrderData {
   orderProductList: OrderProduct[];
 }
 
-export default async function orderDetailApi(post_id: string | string[]) {
-  const url = `/api/order/${post_id}`;
+export default async function orderDetailApi(order_id: string | string[]) {
+  const url = `/api/order/${order_id}`;
 
   try {
     const res = await axios.get(url);
