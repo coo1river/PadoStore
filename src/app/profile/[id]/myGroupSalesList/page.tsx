@@ -1,5 +1,6 @@
 "use client";
 import mySalesListApi from "@/api/mySalesListApi";
+import TradeStatusBtn from "@/components/button/tradeStatusBtn";
 import { Data } from "@/components/postList/marketTab";
 import MyGroupList from "@/components/profilePostList/myGroupList";
 import useAuthStore from "@/store/useAuthStore";
@@ -35,13 +36,16 @@ const MyGroupSalesList: React.FC = () => {
     };
 
     fetchData();
-  }, []);
+  }, [listState]);
 
   return (
-    <MyGroupList
-      groupList={list?.groupOrderList || []}
-      routePath="groupManage"
-    />
+    <>
+      <TradeStatusBtn listState={listState} setListState={setListState} />
+      <MyGroupList
+        groupList={list?.groupOrderList || []}
+        routePath="groupManage"
+      />
+    </>
   );
 };
 

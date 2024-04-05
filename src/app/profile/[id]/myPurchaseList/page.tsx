@@ -1,5 +1,6 @@
 "use client";
 import myPurchaseListApi from "@/api/myPurchaseListApi";
+import TradeStatusBtn from "@/components/button/tradeStatusBtn";
 import { Data } from "@/components/postList/marketTab";
 import MyMarketList from "@/components/profilePostList/myMarketList";
 import useAuthStore from "@/store/useAuthStore";
@@ -35,9 +36,14 @@ const MyPurchaseList: React.FC = () => {
     };
 
     fetchData();
-  }, []);
+  }, [listState]);
 
-  return <MyMarketList marketList={list?.marketList || []} />;
+  return (
+    <>
+      <TradeStatusBtn listState={listState} setListState={setListState} />
+      <MyMarketList marketList={list?.marketList || []} />
+    </>
+  );
 };
 
 export default MyPurchaseList;

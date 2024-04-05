@@ -27,16 +27,7 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
 
   const [listTab, setListTab] = useState<string>("Sales");
 
-  // 현재 리스트 상태(거래 중/거래 완료) 관리
   const [listState, setListState] = useState<string>("InProgress");
-
-  // pathname을 가져온 뒤 groupManage 혹은 orderDetail인 경우 button 렌더링 x
-  const path = usePathname();
-  const renderButtons = !path.includes("groupManage" && "orderDetail");
-
-  const setActiveClass = (status: string) => {
-    return listState === status ? "active" : "";
-  };
 
   const params = {
     user_id: token,
@@ -107,28 +98,6 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
     }
   }, [listMenu]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let apiCall;
-        if (listTab === "Sales") {
-          apiCall = mySalesListApi;
-        } else if (listTab === "Purchase") {
-          apiCall = myPurchaseListApi;
-        }
-
-        if (apiCall) {
-          const listData = await apiCall(listType, params);
-          setList(listData);
-        }
-      } catch (error) {
-        console.error("error:", error);
-      }
-    };
-
-    fetchData();
-  }, [listTab, listType, listState, page]);
-
   return (
     <ProfileMain>
       <h2 className="a11y-hidden">프로필</h2>
@@ -197,7 +166,7 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
               구매 폼
             </li>
             <p>개인정보 수정</p>
-            <li onClick={() => router.push(`/profile/${token}/edit`)}>
+            <li onClick={() => router.push(`/editProfile/${token}`)}>
               프로필 설정
             </li>
             <li>입금 폼 설정</li>
@@ -205,27 +174,7 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
         </nav>
 
         {/* 게시물 목록 */}
-        <ArticleList>
-          {renderButtons && (
-            <>
-              <button
-                type="button"
-                className={`btn_tab ${setActiveClass("InProgress")}`}
-                onClick={() => setListState("InProgress")}
-              >
-                거래 중
-              </button>
-              <button
-                type="button"
-                className={`btn_tab ${setActiveClass("Completed")}`}
-                onClick={() => setListState("Completed")}
-              >
-                거래 완료
-              </button>
-            </>
-          )}
-          {children}
-        </ArticleList>
+        <ArticleList>{children}</ArticleList>
       </section>
     </ProfileMain>
   );
