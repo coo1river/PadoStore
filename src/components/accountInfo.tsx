@@ -40,12 +40,6 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
     }
   }, [data?.productDetail]);
 
-  // useEffect(() => {
-  //   form.email.setValue(data?.user.email || "");
-  //   form.name.setValue(data?.user.user_name || "");
-  //   form.number.setValue(data?.user.phone_number || "");
-  // }, [data]);
-
   // 상품 카운트 함수
   const handleClick = (index: number, increment: number) => {
     setCountArray((prevCountArray) => {
@@ -97,6 +91,7 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
 
   // 총 상품 값
   const totalPrice = calculateTotalPrice();
+
   // 총 합계
   const totalAmount = (Number(data?.product.post_price) || 0) + totalPrice;
 
@@ -123,6 +118,7 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
       order_status: "입금전",
       post_id: data?.post_id || null,
       purchase_user_id: token,
+      total_price: totalPrice,
     },
     user: {
       user_id: token,

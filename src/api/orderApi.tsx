@@ -5,6 +5,7 @@ export interface OrderData {
     order_status: string;
     post_id: number | null;
     purchase_user_id: string | null;
+    total_price: number;
   };
   user: {
     user_id: string | null;
