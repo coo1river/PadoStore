@@ -10,13 +10,13 @@ interface Params {
   order: string;
 }
 
-export default async function mySalesListApi(type: string, data: Params) {
+export default async function myPurchaseListApi(type: string, data: Params) {
   let url: string;
 
   if (type === "market") {
-    url = "/api/my-page/sale/market/list";
+    url = "/api/my-page/deal/market/list";
   } else if (type === "group") {
-    url = "/api/my-page/sale/group-order/list";
+    url = "/api/my-page/deal/group-order/list";
   } else {
     throw new Error("유효하지 않은 타입입니다.");
   }

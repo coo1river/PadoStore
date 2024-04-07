@@ -94,10 +94,10 @@ const MarketTab: React.FC<Props> = ({ api }) => {
           data = await homeTabApi("market", params);
           setTotalPosts(data?.totalCount);
           setData(data);
-        case "search":
-          data = await searchApi();
-          setTotalPosts(data?.totalCount);
-          setData(data);
+        // case "search":
+        //   data = await searchApi();
+        //   setTotalPosts(data?.totalCount);
+        //   setData(data);
       }
     };
     fetchData();

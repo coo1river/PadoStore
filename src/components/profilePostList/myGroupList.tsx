@@ -7,7 +7,7 @@ interface Props {
   groupList: GroupItem[];
 }
 
-const MyGroupSalesList: React.FC<Props> = ({ groupList }) => {
+const MyGroupList: React.FC<Props> = ({ groupList }) => {
   const router = useRouter();
   return (
     <ul className="myProfile_list">
@@ -17,9 +17,7 @@ const MyGroupSalesList: React.FC<Props> = ({ groupList }) => {
           <li
             key={item.groupOrder.post_id}
             onClick={() =>
-              router.push(
-                `/productDetail/${item.groupOrder.post_status}/${item.groupOrder.post_id}`
-              )
+              router.push(`/productDetail/${item.groupOrder.post_id}`)
             }
           >
             <p className="product_id">{item.groupOrder.post_id}</p>
@@ -35,4 +33,4 @@ const MyGroupSalesList: React.FC<Props> = ({ groupList }) => {
   );
 };
 
-export default MyGroupSalesList;
+export default MyGroupList;

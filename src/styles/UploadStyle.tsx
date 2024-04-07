@@ -22,6 +22,12 @@ export const UploadMain = styled.main`
     background-size: 20px;
     background-image: url(${iconClose.src});
   }
+
+  input,
+  textarea,
+  select {
+    box-shadow: 0px 0px 4px 0px #b4b4b44e;
+  }
 `;
 
 export const ImgWrap = styled.div`
@@ -95,7 +101,6 @@ export const UploadForm = styled.article`
     caret-color: var(--color-main);
     padding: 15px 25px;
     font-size: 16px;
-    box-shadow: 0px 0px 4px 0px #b4b4b42d;
 
     &:focus {
       outline: 2px solid var(--color-main);
@@ -111,7 +116,7 @@ export const UploadForm = styled.article`
   .textarea_contents {
     font-family: var(--font-main);
     border-radius: 15px;
-    font-size: 15px;
+    font-size: 16px;
   }
 
   .btn_upload {
@@ -150,7 +155,6 @@ export const UploadForm = styled.article`
   select {
     padding: 16px;
     margin-bottom: 25px;
-    box-shadow: 0px 0px 3px 0px #6d6d6d4e;
     border-radius: 15px;
     border: none;
     font-family: var(--font-main);
@@ -171,6 +175,7 @@ export const UploadForm = styled.article`
   }
 
   .tag_wrap {
+    margin-top: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -191,9 +196,23 @@ export const UploadForm = styled.article`
   }
 
   .tag_list {
+    display: flex;
     padding: 10px;
     font-weight: 700;
     margin-bottom: 10px;
+
+    li {
+      display: flex;
+      align-items: center;
+    }
+
+    button {
+      margin: 0 5px 0 3px;
+      width: 20px;
+      height: 20px;
+      background: url(${iconClose.src}) center/18px;
+      padding-bottom: 2px;
+    }
   }
 `;
 
@@ -202,11 +221,7 @@ export const GroupForm = styled(UploadForm)`
     margin-bottom: 20px;
     background-color: white;
     border-radius: 15px;
-    padding: 20px;
-  }
-
-  input {
-    box-shadow: 0px 0px 4px 0px#57575745;
+    padding: 20px 25px;
   }
 
   .btn_status {
@@ -235,7 +250,7 @@ export const GroupForm = styled(UploadForm)`
 
   .product_list {
     background-color: white;
-    margin: 20px 0;
+    margin: 10px 0;
   }
 
   .product_add_wrap {
@@ -265,7 +280,6 @@ export const GroupForm = styled(UploadForm)`
   select {
     padding: 16px;
     margin-bottom: 25px;
-    box-shadow: 0px 0px 3px 0px #6d6d6d4e;
     border-radius: 15px;
     border: none;
     font-family: var(--font-main);
@@ -357,16 +371,15 @@ export const AddProduct = styled.article`
 `;
 
 export const ProductList = styled.article`
-  padding: 10px 20px;
   margin-bottom: 30px;
   border-radius: 15px;
   background-color: white;
 
   .product_el {
     background-color: var(--color-trans-grey);
-    padding: 10px;
+    padding: 10px 20px;
     border-radius: 15px;
-    margin: 10px 0;
+    margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
 
@@ -401,6 +414,7 @@ export const AddInputList = styled.article`
   }
 
   p {
+    padding: 0 10px;
     color: #2e2e2e;
     font-size: 16px;
     font-weight: 600;

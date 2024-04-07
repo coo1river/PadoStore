@@ -4,7 +4,7 @@ export default async function statusUpdateApi(
   post_id: number,
   post_status: string
 ) {
-  const url = "/api/post/update";
+  const url = "/api/post/status/update";
 
   try {
     const res = await axios.put(url, { post_id, post_status });

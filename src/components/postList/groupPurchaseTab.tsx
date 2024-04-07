@@ -64,10 +64,10 @@ const GroupPurchaseTab: React.FC<Props> = ({ api }) => {
           data = await homeTabApi("group", params);
           setTotalPosts(data?.totalCount);
           setData(data);
-        case "search":
-          data = await searchApi();
-          setTotalPosts(data?.totalCount);
-          setData(data);
+        // case "search":
+        //   data = await searchApi();
+        //   setTotalPosts(data?.totalCount);
+        //   setData(data);
       }
     };
     fetchData();

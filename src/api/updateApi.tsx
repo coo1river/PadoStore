@@ -3,12 +3,12 @@ import { Res } from "./postDetailApi";
 import { GroupReq } from "./groupUploadApi";
 
 interface UpdateRes {
-  post_id: string;
+  post_id: string | undefined;
   user_id: string | null;
   board_type: string | undefined;
   title: string;
   content: string;
-  file_group_id: string;
+  file_group_id: string | undefined;
   post_status: string;
   product: {
     price: string;

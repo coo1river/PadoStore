@@ -11,6 +11,7 @@ export interface Res {
   insert_dt: string;
   update_dt: string;
   post_status: string;
+  tag: string;
   product: {
     price: string;
     product_id: number;

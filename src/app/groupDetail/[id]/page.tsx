@@ -22,10 +22,12 @@ const GroupDetail: React.FC = () => {
   // 이미지 파일 상태 관리
   const [imgFile, setImgFile] = useState<string | File | undefined>("");
 
+  // 프로필 이미지 가져오기
   useEffect(() => {
     setImgFile(data?.file[0].up_file);
   }, [data?.file]);
 
+  // 게시물 정보 가져오기
   useEffect(() => {
     const detail = async () => {
       const res = await postDetailApi(params.id);
@@ -35,8 +37,10 @@ const GroupDetail: React.FC = () => {
     detail();
   }, []);
 
+  // 게시물 메뉴 모달 상태 관리
   const [menuModal, setMenuModal] = useState<boolean>(false);
 
+  // 게시물 메뉴 열기 함수
   const handleClickMenu = () => {
     setMenuModal(!menuModal);
   };
@@ -59,7 +63,9 @@ const GroupDetail: React.FC = () => {
               <div className="title_update">
                 <h3 className="product_title">{data?.title}</h3>
                 <button className="btn_update" onClick={handleClickMenu} />
-                {menuModal ? <DetailModal data={data?.file_group_id} /> : null}
+                {menuModal ? (
+                  <DetailModal data={data} setMenuModal={handleClickMenu} />
+                ) : null}
               </div>
               <p>
                 <strong>• 판매 기간 : </strong>
@@ -102,6 +108,11 @@ const GroupDetail: React.FC = () => {
               </React.Fragment>
             ))}
           </p>
+          <ul className="tag_list">
+            {data?.tag.split(" ").map((item, index) => (
+              <li key={index}>{item}</li>
+            ))}
+          </ul>
           <GroupSubmit>
             {/* 입금자 정보 폼 */}
             <AccountFormInfo data={data} />

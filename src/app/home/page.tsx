@@ -36,7 +36,7 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     const homeData = async () => {
-      const data = await homeListApi();
+      const data = await homeListApi("InProgress");
       setData(data);
     };
 

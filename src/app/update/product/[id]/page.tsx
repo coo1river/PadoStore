@@ -3,6 +3,7 @@ import { Res } from "@/api/postDetailApi";
 import updateApi from "@/api/updateApi";
 import uploadApi from "@/api/uploadApi";
 import { DeliveryOptions, ProductStatus } from "@/components/selectOption";
+import TagInput from "@/components/tagInput";
 import useInput from "@/hooks/useInput";
 import useAuthStore from "@/store/useAuthStore";
 import {
@@ -23,7 +24,7 @@ import React, {
 
 export default function ProductUpdate() {
   const router = useRouter();
-  const params = useParams();
+  const { id } = useParams<{ id?: string }>();
 
   // 게시물 타입 관리
   const [boardType, setBoardType] = useState<string | undefined>("");
@@ -36,8 +37,7 @@ export default function ProductUpdate() {
   // 게시물 수정 데이터 불러 오기
   useEffect(() => {
     const update = async () => {
-      const res = await updateApi("get", params.id);
-      console.log(res);
+      const res = await updateApi("get", id);
       setData(res);
     };
     update();
@@ -64,6 +64,8 @@ export default function ProductUpdate() {
     post_method: useInput(""),
   };
 
+  const [tagList, setTagList] = useState<string>("");
+
   // data 값이 업데이트 되면 input value 업데이트
   useEffect(() => {
     title.setValue(data?.title || "");
@@ -71,6 +73,7 @@ export default function ProductUpdate() {
     productInfo.price.setValue(data?.product.price || "");
     productInfo.product_status.setValue(data?.product.product_status || "");
     productInfo.post_method.setValue(data?.product.post_method || "");
+    setTagList(data?.tag || "");
   }, [data]);
 
   // useRef 사용
@@ -90,13 +93,14 @@ export default function ProductUpdate() {
 
   // api에 보낼 수정 데이터 정보 담기
   const req = {
-    post_id: params.id,
+    post_id: id,
     board_type: boardType,
     user_id: token,
     title: title.value,
     content: content.value,
     post_status: "InProgress",
     file_group_id: "",
+    tag: tagList,
     product: {
       price: productInfo.price.value,
       product_status: productInfo.product_status.value,
@@ -118,21 +122,35 @@ export default function ProductUpdate() {
       alert("필수 항목을 입력해 주세요");
       return;
     }
-
-    uploadApi(imgFile)
-      .then(async (res) => {
-        return await updateApi("put", undefined, {
-          ...req,
-          file_group_id: res.file_group_id,
+    // 이미지 파일이 변경된 경우에만 uploadAPi 호출
+    if (typeof imgFile !== "string") {
+      uploadApi(imgFile)
+        .then(async (res) => {
+          return await updateApi("put", undefined, {
+            ...req,
+            file_group_id: res.file_group_id,
+          });
+        })
+        .then((data) => {
+          console.log("수정 성공", data);
+          router.push("/home");
+        })
+        .catch((error) => {
+          console.error("수정 실패", error);
         });
+    } else {
+      updateApi("put", undefined, {
+        ...req,
+        file_group_id: data?.file[0].file_group_id,
       })
-      .then((data) => {
-        console.log("수정 성공", data);
-        router.push("/home");
-      })
-      .catch((error) => {
-        console.error("수정 실패", error);
-      });
+        .then((data) => {
+          console.log("수정 성공", data);
+          router.push("/home");
+        })
+        .catch((error) => {
+          console.error("수정 실패", error);
+        });
+    }
   };
 
   return (
@@ -245,6 +263,9 @@ export default function ProductUpdate() {
             value={content.value}
             onChange={content.onChange}
           />
+
+          {/* 상품 태그 */}
+          <TagInput tagList={tagList || ""} setTagList={setTagList} />
 
           <button className="btn_upload" onClick={handleUpdate}>
             상품 업로드 하기

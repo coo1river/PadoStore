@@ -7,7 +7,7 @@ interface Props {
   marketList: MarketItem[];
 }
 
-const MySalesList: React.FC<Props> = ({ marketList }) => {
+const MyMarketList: React.FC<Props> = ({ marketList }) => {
   const router = useRouter();
   return (
     <ul className="myProfile_list">
@@ -16,11 +16,7 @@ const MySalesList: React.FC<Props> = ({ marketList }) => {
         return (
           <li
             key={item.market.post_id}
-            onClick={() =>
-              router.push(
-                `/productDetail/${item.market.post_status}/${item.market.post_id}`
-              )
-            }
+            onClick={() => router.push(`/productDetail/${item.market.post_id}`)}
           >
             <p className="product_id">{item.market.post_id}</p>
             <p className="product_title">{item.market.title}</p>
@@ -35,4 +31,4 @@ const MySalesList: React.FC<Props> = ({ marketList }) => {
   );
 };
 
-export default MySalesList;
+export default MyMarketList;

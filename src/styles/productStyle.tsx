@@ -134,12 +134,42 @@ export const ProductContent = styled.article`
 
   .product_contents {
     line-height: 1.5rem;
-    margin-top: 50px;
+    margin: 60px 0;
     font-size: 18px;
     font-weight: 500;
+  }
+
+  .tag_list {
+    display: flex;
+    gap: 10px;
+
+    li {
+      background-color: var(--color-trans-grey);
+      padding: 5px 10px;
+      border-radius: 30px;
+    }
   }
 `;
 
 export const GroupSubmit = styled(GroupForm)`
   width: 100%;
+`;
+
+export const SubmitComplted = styled.main`
+  height: calc(100% - 215px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .icon_check {
+    width: 80px;
+    height: 80px;
+  }
+
+  .complted_text {
+    margin: 20px;
+    font-size: 20px;
+    font-weight: bold;
+  }
 `;

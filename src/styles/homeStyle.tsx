@@ -76,7 +76,6 @@ export const ProductTab = styled.section`
 export const ProductArticle = styled.article`
   display: flex;
   flex-direction: column;
-  gap: 10px;
   width: 220px;
   box-shadow: 0px 0px 4px 0px #0000001f;
   border-radius: 15px;
@@ -95,7 +94,7 @@ export const ProductArticle = styled.article`
   }
 
   .product_info {
-    padding: 12px 15px;
+    padding: 20px 15px;
   }
 
   .product_type {
@@ -108,6 +107,7 @@ export const ProductArticle = styled.article`
     height: 30px;
     margin-bottom: 16px;
     font-size: 16px;
+    line-height: 1.1rem;
   }
 
   .user_name {

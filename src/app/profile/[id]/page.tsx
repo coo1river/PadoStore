@@ -6,11 +6,10 @@ import useAuthStore from "@/store/useAuthStore";
 import viewProfileApi, { ViewProfileRes } from "@/api/viewProfileApi";
 import { ImgProfile } from "@/styles/profileStyle";
 import mySalesListApi from "@/api/mySalesListApi";
-import MyPurchaseList from "@/components/profilePostList/myPurchaseList";
-import MySalesList from "@/components/profilePostList/mySalesList";
-import MyGroupPurchaseList from "@/components/profilePostList/myGroupPurchaseList";
-import MyGroupSalesList from "@/components/profilePostList/myGroupSalesList";
 import { Data } from "@/components/postList/marketTab";
+import myPurchaseListApi from "@/api/myPurchaseListApi";
+import MyGroupList from "@/components/profilePostList/myGroupList";
+import MyMarketList from "@/components/profilePostList/myMarketList";
 
 const Profile: React.FC = () => {
   const router = useRouter();
@@ -25,8 +24,12 @@ const Profile: React.FC = () => {
   // 현재 페이지 관리 기본 값 1페이지
   const [page, setPage] = useState<number>(1);
 
+  // 현재 리스트 타입(마켓/공구) 관리
   const [listType, setListType] = useState<string>("market");
 
+  const [listTab, setListTab] = useState<string>("Sales");
+
+  // 현재 리스트 상태(거래 중/거래 완료) 관리
   const [listState, setListState] = useState<string>("InProgress");
 
   const setActiveClass = (status: string) => {
@@ -62,43 +65,68 @@ const Profile: React.FC = () => {
     fetchData();
   }, []);
 
-  // listState(거래 중, 거래 완료) 탭 전환 시 api 요청
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await mySalesListApi(listType, params);
-      setList(data);
-    };
-    fetchData();
-  }, [listState]);
-
   const [listTap, setlistTap] = useState("mySales");
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await mySalesListApi(listType, params);
-      setList(data);
-    };
-    fetchData();
-  }, [listType]);
 
   let listRender;
 
   switch (listTap) {
     case "mySales":
-      listRender = <MySalesList marketList={list?.marketList || []} />;
+      listRender = <MyMarketList marketList={list?.marketList || []} />;
       break;
     case "myPurchase":
-      listRender = <MyPurchaseList />;
+      listRender = <MyMarketList marketList={list?.marketList || []} />;
       break;
     case "myGroupSales":
-      listRender = <MyGroupSalesList groupList={list?.groupOrderList || []} />;
+      listRender = <MyGroupList groupList={list?.groupOrderList || []} />;
       break;
     case "myGroupPurchase":
-      listRender = <MyGroupPurchaseList />;
+      listRender = <MyGroupList groupList={list?.groupOrderList || []} />;
       break;
     default:
       listRender = null;
   }
+
+  useEffect(() => {
+    switch (listTap) {
+      case "mySales":
+      case "myGroupSales":
+        setListTab("Sales");
+        break;
+      case "myPurchase":
+      case "myGroupPurchase":
+        setListTab("Purchase");
+        break;
+      default:
+        break;
+    }
+  }, [listTap]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let apiCall;
+        if (listTab === "Sales") {
+          apiCall = mySalesListApi;
+        } else if (listTab === "Purchase") {
+          apiCall = myPurchaseListApi;
+        }
+
+        if (apiCall) {
+          const listData = await apiCall(listType, params);
+          setList(listData);
+        }
+      } catch (error) {
+        console.error("error:", error);
+      }
+    };
+
+    fetchData();
+  }, [listTab, listType, listState, page]);
+
+  useEffect(() => {
+    console.log("listTab", listTab);
+    console.log("listType", listType);
+  }, [listType, listTab]);
 
   return (
     <ProfileMain>
@@ -130,6 +158,7 @@ const Profile: React.FC = () => {
           <ul className="nav_menu">
             <p>거래 내역</p>
             <li
+              className={listTap === "mySales" ? "active" : ""}
               onClick={() => {
                 setlistTap("mySales");
                 setListType("market");
@@ -138,6 +167,7 @@ const Profile: React.FC = () => {
               판매 내역
             </li>
             <li
+              className={listTap === "myPurchase" ? "active" : ""}
               onClick={() => {
                 setlistTap("myPurchase");
                 setListType("market");
@@ -148,6 +178,7 @@ const Profile: React.FC = () => {
 
             <p>공구 내역</p>
             <li
+              className={listTap === "myGroupSales" ? "active" : ""}
               onClick={() => {
                 setlistTap("myGroupSales");
                 setListType("group");
@@ -156,6 +187,7 @@ const Profile: React.FC = () => {
               판매 폼
             </li>
             <li
+              className={listTap === "myGroupPurchase" ? "active" : ""}
               onClick={() => {
                 setlistTap("myGroupPurchase");
                 setListType("group");
