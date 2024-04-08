@@ -2,7 +2,6 @@
 import manageDepositApi, { OrderRes } from "@/api/manageDepositApi";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ArticleList } from "@/styles/profileStyle";
 
 export default function GroupManage() {
   const params = useParams();
