@@ -1,9 +1,15 @@
 "use client";
 import manageDepositApi, { OrderRes } from "@/api/manageDepositApi";
+import manageStockApi from "@/api/manageStockApi";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function GroupManage() {
+interface GroupManageProps {
+  children: React.ReactNode;
+  listMenu: string;
+}
+
+export default function GroupManage({ children, listMenu }: GroupManageProps) {
   const params = useParams();
 
   // 현재 페이지 관리 기본 값 1페이지
@@ -18,24 +24,28 @@ export default function GroupManage() {
     order: "ASC",
   };
 
-  // 최초 렌더링 시 데이터 가져오기
+  // 최초 렌더링 시 데이터 가져오기(listMenu에 따라 api 호출 다르게)
   useEffect(() => {
     const fetchData = async () => {
-      const res = await manageDepositApi(param);
-      setData(res);
+      if (listMenu === "order") {
+        const res = await manageDepositApi(param);
+        setData(res);
+      } else if (listMenu === "stock") {
+        const res = await manageStockApi(param);
+        setData(res);
+      }
     };
-
     fetchData();
-  }, []);
+  }, [listMenu]);
 
   return (
     <ul>
-      {data?.orderManageList.map((orderItem, orderIndex) => {
-        return (
+      {listMenu === "order" &&
+        data?.orderManageList?.map((orderItem, orderIndex) => (
           <li key={orderIndex}>
             <p>{orderItem?.order_dt}</p>
             <div className="product_list">
-              {orderItem?.productList.map((productItem, productIndex) => (
+              {orderItem?.productList?.map((productItem, productIndex) => (
                 <p key={productIndex}>{productItem?.purchase_product_name}</p>
               ))}
             </div>
@@ -43,8 +53,7 @@ export default function GroupManage() {
             <p>{orderItem?.user.nickname}</p>
             <p>{`${orderItem?.user.addr} ${orderItem?.user.addr_detail}`}</p>
           </li>
-        );
-      })}
+        ))}
     </ul>
   );
 }

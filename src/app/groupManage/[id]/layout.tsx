@@ -10,6 +10,7 @@ import { useParams, usePathname, useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
 import viewProfileApi, { ViewProfileRes } from "@/api/viewProfileApi";
 import { Data } from "@/components/postList/marketTab";
+import GroupManage from "./page";
 
 function ManageLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -26,6 +27,10 @@ function ManageLayout({ children }: { children: React.ReactNode }) {
   const [page, setPage] = useState<number>(1);
 
   const [listMenu, setListMenu] = useState<string>("order");
+
+  useEffect(() => {
+    console.log(listMenu);
+  }, [listMenu]);
 
   return (
     <ManageMain>
@@ -55,7 +60,9 @@ function ManageLayout({ children }: { children: React.ReactNode }) {
         </nav>
 
         {/* 게시물 목록 */}
-        <ArticleList>{children}</ArticleList>
+        <ArticleList>
+          <GroupManage listMenu={listMenu}>{children}</GroupManage>
+        </ArticleList>
       </section>
     </ManageMain>
   );
