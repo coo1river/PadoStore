@@ -1,15 +1,10 @@
 "use client";
 import manageDepositApi, { OrderRes } from "@/api/manageDepositApi";
-import manageStockApi from "@/api/manageStockApi";
+import { ManageTable } from "@/styles/profileStyle";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-interface GroupManageProps {
-  children: React.ReactNode;
-  listMenu: string;
-}
-
-export default function DepositList({ children, listMenu }: GroupManageProps) {
+export default function DepositList() {
   const params = useParams();
 
   // 현재 페이지 관리 기본 값 1페이지
@@ -34,22 +29,48 @@ export default function DepositList({ children, listMenu }: GroupManageProps) {
     fetchData();
   }, []);
 
+  // date 문자열 파싱 후 포맷 변경
+  function formatDate(input: string) {
+    const [date, time] = input.split("T");
+    const [year, month, day] = date.split("-");
+    const [hours, minutes] = time.split(":");
+    return `${year.slice(2)}/${month}/${day} ${hours}:${minutes}`;
+  }
+
   return (
-    <ul>
-      {listMenu === "order" &&
-        data?.orderManageList?.map((orderItem, orderIndex) => (
-          <li key={orderIndex}>
-            <p>{orderItem?.order_dt}</p>
-            <div className="product_list">
+    <ManageTable>
+      <thead>
+        <tr>
+          <th>주문 시간</th>
+          <th>주문 상품 / 수량</th>
+          <th>입금 금액</th>
+          <th>입금명</th>
+          <th>배송지</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data?.orderManageList?.map((orderItem, orderIndex) => (
+          <tr key={orderIndex}>
+            <td>{formatDate(orderItem?.order_dt)}</td>
+            <td>
               {orderItem?.productList?.map((productItem, productIndex) => (
-                <p key={productIndex}>{productItem?.purchase_product_name}</p>
+                <div className="product_item_wrap">
+                  <p key={productIndex}>
+                    {`${productItem?.purchase_product_name} /
+                    ${productItem?.purchase_quantity}`}
+                  </p>
+                </div>
               ))}
-            </div>
-            <p>{orderItem?.total_price}</p>
-            <p>{orderItem?.user.nickname}</p>
-            <p>{`${orderItem?.user.addr} ${orderItem?.user.addr_detail}`}</p>
-          </li>
+            </td>
+            <td>{orderItem?.total_price}</td>
+            <td>{orderItem?.user.nickname}</td>
+            <td>
+              <p>{orderItem?.user.addr}</p>
+              <p>{orderItem?.user.addr_detail}</p>
+            </td>
+          </tr>
         ))}
-    </ul>
+      </tbody>
+    </ManageTable>
   );
 }

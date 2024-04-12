@@ -1,5 +1,6 @@
 "use client";
 import manageStockApi, { ProductData } from "@/api/manageStockApi";
+import { ManageTable } from "@/styles/profileStyle";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -29,22 +30,21 @@ export default function StockList() {
   }, []);
 
   return (
-    <ul>
-      {data?.product.map((item, index) => {
-        return (
-          <li key={index}>
-            <p>{item?.order_dt}</p>
-            <div className="product_list">
-              {item?.productList.map((productItem, productIndex) => (
-                <p key={productIndex}>{productItem?.purchase_product_name}</p>
-              ))}
-            </div>
-            <p>{item?.total_price}</p>
-            <p>{item?.user.nickname}</p>
-            <p>{`${item?.user.addr} ${orderItem?.user.addr_detail}`}</p>
-          </li>
-        );
-      })}
-    </ul>
+    <ManageTable>
+      <thead>
+        <tr>
+          <th>상품명</th>
+          <th>남은 수량</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data?.product.map((item, index) => (
+          <tr key={index}>
+            <td>{item?.product_name}</td>
+            <td>{item?.org_quantity}</td>
+          </tr>
+        ))}
+      </tbody>
+    </ManageTable>
   );
 }

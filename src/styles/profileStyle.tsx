@@ -166,6 +166,7 @@ export const OrderDetail = styled.main`
   h2 {
     font-size: 22px;
     font-weight: 600;
+    margin-bottom: 20px;
   }
 
   .progress_wrap {
@@ -205,6 +206,7 @@ export const OrderDetail = styled.main`
 
 export const OrderDetArticle = styled.article`
   display: flex;
+  gap: 20px;
 
   .product_info_wrap {
     display: flex;
@@ -214,17 +216,18 @@ export const OrderDetArticle = styled.article`
   }
 
   .product_title {
-    font-size: 24px;
+    font-size: 20px;
   }
 
   .product_nickname {
-    font-size: 16px;
+    font-size: 14px;
   }
 `;
 
 export const ProductImg = styled.img`
   width: 200px;
   height: 200px;
+  border-radius: 15px;
   object-fit: contain;
 `;
 
@@ -256,5 +259,22 @@ export const ManageMain = styled(ProfileMain)`
   .list_wrap {
     margin-top: 30px;
     height: calc(100vh - 370px);
+  }
+`;
+
+export const ManageTable = styled.table`
+  width: 100%;
+
+  th {
+    padding: 5px;
+    font-weight: bold;
+    background-color: var(--color-trans-grey);
+  }
+
+  td {
+    padding: 5px;
+    text-align: center;
+    vertical-align: middle;
+    border-bottom: 2px solid var(--color-trans-grey);
   }
 `;
