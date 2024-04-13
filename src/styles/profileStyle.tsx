@@ -179,6 +179,7 @@ export const OrderDetail = styled.main`
     gap: 10px;
     align-items: center;
     flex-direction: column;
+    z-index: 10;
   }
 
   div {
@@ -207,6 +208,7 @@ export const OrderDetail = styled.main`
 export const OrderDetArticle = styled.article`
   display: flex;
   gap: 20px;
+  z-index: 10;
 
   .product_info_wrap {
     display: flex;
@@ -231,17 +233,19 @@ export const ProductImg = styled.img`
   object-fit: contain;
 `;
 
-export const OrderProgress = styled.img`
-  width: 50px;
-  height: 50px;
-  z-index: 10;
+export const ProgressBarWrap = styled.div`
+  display: flex;
+  gap: 30px;
+  margin: 20px auto;
+  top: 21px;
+  position: absolute;
 `;
 
 export const OrderProgressBar = styled.div`
   margin-bottom: 30px;
-  width: 150px;
+  width: 110px;
   height: 5px;
-  background-color: var(--color-main);
+  background-color: #d8d7d7;
 `;
 
 // 공구 관리 상세

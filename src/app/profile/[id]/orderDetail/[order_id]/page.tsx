@@ -2,13 +2,14 @@
 import orderDetailApi, { OrderData } from "@/api/orderDetail";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import iconCheck from "@/../public/assets/images/check.png";
+import IconCheck from "@/../public/assets/svgs/check-circle.svg";
 import {
   OrderDetArticle,
   OrderDetail,
   OrderProgress,
   OrderProgressBar,
   ProductImg,
+  ProgressBarWrap,
 } from "@/styles/profileStyle";
 import postDetailApi, { Res } from "@/api/postDetailApi";
 
@@ -60,28 +61,48 @@ const GroupManage: React.FC = () => {
         <div className="progress_wrap">
           {/* 주문 상태 */}
           <div className="progress_and_text">
-            <OrderProgress src={iconCheck.src} alt="주문 진행 바" />
+            <IconCheck
+              width={50}
+              height={50}
+              fill="#d8d7d7"
+              alt="주문 진행 상태"
+            />
             <p>입금 대기</p>
           </div>
           <div className="progress_and_text">
-            <OrderProgress src={iconCheck.src} alt="주문 진행 바" />
+            <IconCheck
+              width={50}
+              height={50}
+              fill="#d8d7d7"
+              alt="주문 진행 상태"
+            />
             <p>입금 확인</p>
           </div>
           <div className="progress_and_text">
-            <OrderProgress src={iconCheck.src} alt="주문 진행 바" />
+            <IconCheck
+              width={50}
+              height={50}
+              fill="#d8d7d7"
+              alt="주문 진행 상태"
+            />
             <p>배송 시작</p>
           </div>
           <div className="progress_and_text">
-            <OrderProgress src={iconCheck.src} alt="주문 진행 바" />
+            <IconCheck
+              width={50}
+              height={50}
+              fill="#d8d7d7"
+              alt="주문 진행 상태"
+            />
             <p>거래 종료</p>
           </div>
         </div>
 
-        <div className="bar_wrap">
+        <ProgressBarWrap>
           <OrderProgressBar />
           <OrderProgressBar />
           <OrderProgressBar />
-        </div>
+        </ProgressBarWrap>
       </article>
     </OrderDetail>
   );
