@@ -6,7 +6,6 @@ import IconCheck from "@/../public/assets/svgs/check-circle.svg";
 import {
   OrderDetArticle,
   OrderDetail,
-  OrderProgress,
   OrderProgressBar,
   ProductImg,
   ProgressBarWrap,
