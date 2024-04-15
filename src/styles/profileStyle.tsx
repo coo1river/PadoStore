@@ -207,8 +207,16 @@ export const OrderDetail = styled.main`
 
 export const OrderDetArticle = styled.article`
   display: flex;
-  gap: 20px;
+  width: 100%;
+  padding: 10px;
+  align-items: center;
+  justify-content: space-around;
   z-index: 10;
+
+  .img_and_info {
+    display: flex;
+    gap: 30px;
+  }
 
   .product_info_wrap {
     display: flex;
@@ -223,6 +231,13 @@ export const OrderDetArticle = styled.article`
 
   .product_nickname {
     font-size: 14px;
+  }
+
+  button {
+    padding: 10px 20px;
+    background-color: var(--color-main);
+    color: white;
+    font-weight: 500;
   }
 `;
 
@@ -241,11 +256,32 @@ export const ProgressBarWrap = styled.div`
   position: absolute;
 `;
 
-export const OrderProgressBar = styled.div`
+interface OrderProgressBarProps {
+  status?: string;
+}
+
+export const OrderProgressBar = styled.div<OrderProgressBarProps>`
   margin-bottom: 30px;
-  width: 110px;
+  width: 105px;
   height: 5px;
   background-color: #d8d7d7;
+
+  &:first-child {
+    background-color: ${(props) =>
+      props.status === "입금 대기" ? "#d8d7d7" : "#3EABFA"};
+  }
+
+  &:nth-child(2) {
+    background-color: ${(props) =>
+      props.status === "배송 시작" || props.status === "거래 종료"
+        ? "#3EABFA"
+        : "#d8d7d7"};
+  }
+
+  &:nth-child(3) {
+    background-color: ${(props) =>
+      props.status === "거래 종료" ? "#3EABFA" : "#d8d7d7"};
+  }
 `;
 
 // 공구 관리 상세

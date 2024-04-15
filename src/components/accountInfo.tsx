@@ -115,7 +115,7 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
 
   const req: OrderData = {
     order: {
-      order_status: "입금전",
+      order_status: "입금 대기",
       post_id: data?.post_id || null,
       purchase_user_id: token,
       total_price: totalPrice,

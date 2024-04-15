@@ -42,65 +42,66 @@ const GroupManage: React.FC = () => {
       <h2>주문 상세</h2>
 
       <OrderDetArticle>
-        <ProductImg
-          src={
-            postData?.file && postData?.file[0]?.up_file
-              ? `/upload/${postData?.file[0]?.up_file}`
-              : undefined
-          }
-          alt="상품 이미지"
-        />
-        <div className="product_info_wrap">
-          <p className="product_title">{postData?.title}</p>
-          <p className="product_nickname">{postData?.user.nickname}</p>
+        <div className="img_and_info">
+          <ProductImg
+            src={
+              postData?.file && postData?.file[0]?.up_file
+                ? `/upload/${postData?.file[0]?.up_file}`
+                : undefined
+            }
+            alt="상품 이미지"
+          />
+          <div className="product_info_wrap">
+            <p className="product_title">{postData?.title}</p>
+            <p className="product_nickname">{postData?.user.nickname}</p>
+          </div>
+        </div>
+        <div>
+          <button>거래 종료</button>
         </div>
       </OrderDetArticle>
 
       <article className="progress_wrap_article">
         <div className="progress_wrap">
           {/* 주문 상태 */}
-          <div className="progress_and_text">
-            <IconCheck
-              width={50}
-              height={50}
-              fill="#d8d7d7"
-              alt="주문 진행 상태"
-            />
-            <p>입금 대기</p>
-          </div>
-          <div className="progress_and_text">
-            <IconCheck
-              width={50}
-              height={50}
-              fill="#d8d7d7"
-              alt="주문 진행 상태"
-            />
-            <p>입금 확인</p>
-          </div>
-          <div className="progress_and_text">
-            <IconCheck
-              width={50}
-              height={50}
-              fill="#d8d7d7"
-              alt="주문 진행 상태"
-            />
-            <p>배송 시작</p>
-          </div>
-          <div className="progress_and_text">
-            <IconCheck
-              width={50}
-              height={50}
-              fill="#d8d7d7"
-              alt="주문 진행 상태"
-            />
-            <p>거래 종료</p>
-          </div>
+          {[
+            { status: "입금 대기", color: "#3EABFA" },
+            {
+              status: "입금 확인",
+              color:
+                orderData?.order_status === "입금 대기" ? "#d8d7d7" : "#3EABFA",
+            },
+            {
+              status: "배송 시작",
+              color:
+                orderData?.order_status === "배송 시작" ||
+                orderData?.order_status === "거래 종료"
+                  ? "#3EABFA"
+                  : "#d8d7d7",
+            },
+            {
+              status: "거래 종료",
+              color:
+                orderData?.order_status === "거래 종료" ? "#3EABFA" : "#d8d7d7",
+            },
+          ].map((step, index) => (
+            <div className="progress_and_text" key={index}>
+              <IconCheck
+                width={50}
+                height={50}
+                fill={step.color}
+                alt="주문 진행 상태"
+              />
+              <p>{step.status}</p>
+            </div>
+          ))}
         </div>
 
+        {/* 주문 상태 바 */}
         <ProgressBarWrap>
-          <OrderProgressBar />
-          <OrderProgressBar />
-          <OrderProgressBar />
+          <OrderProgressBar status={orderData?.order_status} />
+          <OrderProgressBar status={orderData?.order_status} />
+          <OrderProgressBar status={orderData?.order_status} />
         </ProgressBarWrap>
       </article>
     </OrderDetail>
