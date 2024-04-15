@@ -9,8 +9,9 @@ import {
   OrderProgressBar,
   ProductImg,
   ProgressBarWrap,
-} from "@/styles/profileStyle";
+} from "@/styles/orderStyle";
 import postDetailApi, { Res } from "@/api/postDetailApi";
+import OrdetailInfo from "@/components/orderDetailInfo";
 
 const GroupManage: React.FC = () => {
   const params = useParams();
@@ -57,7 +58,7 @@ const GroupManage: React.FC = () => {
           </div>
         </div>
         <div>
-          <button>거래 종료</button>
+          <button className="btn_end">거래 종료</button>
         </div>
       </OrderDetArticle>
 
@@ -104,6 +105,9 @@ const GroupManage: React.FC = () => {
           <OrderProgressBar status={orderData?.order_status} />
         </ProgressBarWrap>
       </article>
+
+      {/* 주문 상세 데이터 */}
+      <OrdetailInfo data={orderData} />
     </OrderDetail>
   );
 };

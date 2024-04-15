@@ -4,13 +4,13 @@ import { LoginMain } from "./loginStyle";
 export const ProfileMain = styled(LoginMain)`
   justify-content: start;
   align-items: start;
-  height: calc(100% - 235px);
+  height: 100%;
+  min-height: calc(100vh - 215px);
 
   .list_wrap {
     background-color: white;
     border-radius: 15px;
     width: 100%;
-    height: calc(100vh - 410px);
     max-width: 1080px;
 
     display: flex;
@@ -21,8 +21,8 @@ export const ProfileMain = styled(LoginMain)`
 
   .nav_menu {
     width: 150px;
-    display: flex;
     height: 100%;
+    display: flex;
     flex-direction: column;
 
     font-size: 14px;
@@ -157,147 +157,17 @@ export const ArticleList = styled.article`
   }
 `;
 
-// 주문 상세
-export const OrderDetail = styled.main`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-
-  h2 {
-    font-size: 22px;
-    font-weight: 600;
-    margin-bottom: 20px;
-  }
-
-  .progress_wrap {
-    gap: 82px;
-    margin: 20px;
-  }
-
-  .progress_and_text {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    flex-direction: column;
-    z-index: 10;
-  }
-
-  div {
-    display: flex;
-    text-align: center;
-  }
-
-  .bar_wrap {
-    margin: 20px;
-    top: 21px;
-    position: absolute;
-  }
-
-  p {
-    font-weight: 600;
-    font-size: 15px;
-  }
-
-  .progress_wrap_article {
-    position: relative;
-    display: flex;
-    justify-content: center;
-  }
-`;
-
-export const OrderDetArticle = styled.article`
-  display: flex;
-  width: 100%;
-  padding: 10px;
-  align-items: center;
-  justify-content: space-around;
-  z-index: 10;
-
-  .img_and_info {
-    display: flex;
-    gap: 30px;
-  }
-
-  .product_info_wrap {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: start;
-  }
-
-  .product_title {
-    font-size: 20px;
-  }
-
-  .product_nickname {
-    font-size: 14px;
-  }
-
-  button {
-    padding: 10px 20px;
-    background-color: var(--color-main);
-    color: white;
-    font-weight: 500;
-  }
-`;
-
-export const ProductImg = styled.img`
-  width: 200px;
-  height: 200px;
-  border-radius: 15px;
-  object-fit: contain;
-`;
-
-export const ProgressBarWrap = styled.div`
-  display: flex;
-  gap: 30px;
-  margin: 20px auto;
-  top: 21px;
-  position: absolute;
-`;
-
-interface OrderProgressBarProps {
-  status?: string;
-}
-
-export const OrderProgressBar = styled.div<OrderProgressBarProps>`
-  margin-bottom: 30px;
-  width: 105px;
-  height: 5px;
-  background-color: #d8d7d7;
-
-  &:first-child {
-    background-color: ${(props) =>
-      props.status === "입금 대기" ? "#d8d7d7" : "#3EABFA"};
-  }
-
-  &:nth-child(2) {
-    background-color: ${(props) =>
-      props.status === "배송 시작" || props.status === "거래 종료"
-        ? "#3EABFA"
-        : "#d8d7d7"};
-  }
-
-  &:nth-child(3) {
-    background-color: ${(props) =>
-      props.status === "거래 종료" ? "#3EABFA" : "#d8d7d7"};
-  }
-`;
-
 // 공구 관리 상세
 export const ManageMain = styled(ProfileMain)`
-  padding: 30px 0;
-
   h2 {
     width: 1080px;
     font-size: 24px;
     font-weight: bold;
     padding-left: 30px;
-    margin: 0 auto;
+    margin: 30px auto;
   }
 
   .list_wrap {
-    margin-top: 30px;
     height: calc(100vh - 370px);
   }
 `;
