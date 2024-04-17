@@ -65,6 +65,7 @@ export default function DepositList() {
             <td>{orderItem?.total_price}</td>
             <td>{orderItem?.user.nickname}</td>
             <td>
+              <p>({orderItem?.user.addr_post})</p>
               <p>{orderItem?.user.addr}</p>
               <p>{orderItem?.user.addr_detail}</p>
             </td>

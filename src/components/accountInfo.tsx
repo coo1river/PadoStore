@@ -118,7 +118,8 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
       order_status: "입금 대기",
       post_id: data?.post_id || null,
       purchase_user_id: token,
-      total_price: totalPrice,
+      total_price: totalAmount,
+      deposit_dt: `${form.deposit_date.value} ${form.deposit_time.value}`,
     },
     user: {
       user_id: token,

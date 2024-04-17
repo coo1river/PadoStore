@@ -6,6 +6,7 @@ export interface OrderData {
     post_id: number | null;
     purchase_user_id: string | null;
     total_price: number;
+    deposit_dt: string;
   };
   user: {
     user_id: string | null;

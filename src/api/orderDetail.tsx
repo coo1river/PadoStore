@@ -38,6 +38,8 @@ export interface OrderData {
   purchase_user_id: string;
   post_number: string;
   order_dt: string;
+  deposit_dt: string;
+  total_price: string;
   user: User;
   answerList: Answer[];
   orderProductList: OrderProduct[];

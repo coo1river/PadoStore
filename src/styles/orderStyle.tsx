@@ -4,6 +4,7 @@ export const OrderDetail = styled.main`
   display: flex;
   align-items: center;
   flex-direction: column;
+  padding: 0 10px;
 
   h2 {
     font-size: 22px;
@@ -12,8 +13,8 @@ export const OrderDetail = styled.main`
   }
 
   .progress_wrap {
-    gap: 82px;
-    margin: 20px;
+    gap: 110px;
+    margin: 40px;
   }
 
   .progress_and_text {
@@ -43,10 +44,10 @@ export const OrderDetail = styled.main`
 
 export const OrderDetArticle = styled.article`
   display: flex;
-  width: 100%;
+  width: calc(100% - 40px);
   padding: 10px;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   z-index: 10;
   position: relative;
 
@@ -89,7 +90,7 @@ export const ProgressBarWrap = styled.div`
   display: flex;
   gap: 30px;
   margin: 20px auto;
-  top: 21px;
+  top: 41px;
   position: absolute;
 `;
 
@@ -99,7 +100,7 @@ interface OrderProgressBarProps {
 
 export const OrderProgressBar = styled.div<OrderProgressBarProps>`
   margin-bottom: 30px;
-  width: 105px;
+  width: 130px;
   height: 5px;
   background-color: #d8d7d7;
 
@@ -121,8 +122,64 @@ export const OrderProgressBar = styled.div<OrderProgressBarProps>`
   }
 `;
 
-// 주문 정보
-export const OrderInfo = styled.article`
+export const OrderInfoWrap = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
+`;
+
+// 주문 정보
+export const OrderInfo = styled.article`
+  text-align: start;
+  width: calc(100% - 40px);
+  margin: 20px;
+  border-radius: 15px;
+
+  h3 {
+    border-bottom: 2px solid var(--color-trans-grey);
+    font-size: 18px;
+    font-weight: 700;
+    padding: 10px 0;
+    color: var(--color-main);
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+  }
+
+  p {
+    text-align: start;
+    line-height: 2.3rem;
+
+    strong {
+      display: inline-block;
+      width: 105px;
+    }
+
+    span {
+      font-weight: 400;
+    }
+  }
+
+  .product_info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .product_name {
+      width: 200px;
+      font-weight: 500;
+    }
+
+    p {
+      font-weight: 400;
+    }
+  }
+
+  .total_price {
+    border-top: 2px solid var(--color-trans-grey);
+    display: flex;
+    justify-content: space-between;
+  }
 `;
