@@ -1,14 +1,9 @@
 "use client";
-import {
-  ArticleList,
-  ManageMain,
-  ProfileMain,
-  UserProfile,
-} from "@/styles/profileStyle";
+import { ArticleList, ManageMain } from "@/styles/profileStyle";
 import React, { useEffect, useState } from "react";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
-import viewProfileApi, { ViewProfileRes } from "@/api/viewProfileApi";
+import { ViewProfileRes } from "@/api/viewProfileApi";
 import { Data } from "@/components/postList/marketTab";
 import GroupManage from "./page";
 

@@ -77,6 +77,28 @@ const OrdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
           </p>
         </OrderInfo>
       </div>
+
+      <div>
+        <OrderInfo>
+          <h3>환불 정보</h3>
+          <p>
+            <strong>예금주</strong>
+            <span>{data?.user.account_name}</span>
+          </p>
+          <p>
+            <strong>은행</strong>
+            <span>{data?.user.bank}</span>
+          </p>
+          <p>
+            <strong>계좌 번호</strong>
+            <span>{data?.user.account_number}</span>
+          </p>
+        </OrderInfo>
+
+        <OrderInfo>
+          <h3>추가 질문</h3>
+        </OrderInfo>
+      </div>
     </OrderInfoWrap>
   );
 };

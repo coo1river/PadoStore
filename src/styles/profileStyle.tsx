@@ -186,5 +186,47 @@ export const ManageTable = styled.table`
     text-align: center;
     vertical-align: middle;
     border-bottom: 2px solid var(--color-trans-grey);
+
+    &.order_dt {
+      white-space: pre-wrap;
+    }
+
+    .product_item {
+      width: 120px;
+    }
+
+    .traking_number {
+      width: 80px;
+    }
+
+    input,
+    select {
+      &:focus,
+      &:active {
+        outline: 2px solid var(--color-main);
+      }
+    }
+
+    select {
+      padding: 5px 10px;
+      box-shadow: 0px 0px 4px 0px #6d6d6d4e;
+      border-radius: 8px;
+      border: none;
+      font-family: var(--font-main);
+      font-size: 15px;
+    }
+
+    input {
+      width: 120px;
+      box-shadow: 0px 0px 4px 0px #91919145;
+      padding: 5px 10px;
+      border-radius: 8px;
+    }
+  }
+
+  button {
+    margin-right: 0 auto;
+    background-color: var(--color-main);
+    color: white;
   }
 `;
