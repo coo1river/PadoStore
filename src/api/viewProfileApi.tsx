@@ -27,11 +27,15 @@ export interface ViewProfileRes {
 }
 
 const viewProfileApi = async (
-  user_id: string | null
+  token: string | null
 ): Promise<ViewProfileRes> => {
-  const url = `/api/my-page/${user_id}`;
+  const url = "/api/my-page/";
   try {
-    const res = await axios.get(url);
+    const res = await axios.get(url, {
+      headers: {
+        Authorization: token,
+      },
+    });
     console.log("API 성공", res.data);
     return res.data;
   } catch (error) {
@@ -39,5 +43,4 @@ const viewProfileApi = async (
     throw error;
   }
 };
-
 export default viewProfileApi;

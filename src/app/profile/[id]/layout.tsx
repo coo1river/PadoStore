@@ -1,13 +1,12 @@
 "use client";
 import { ArticleList, ProfileMain, UserProfile } from "@/styles/profileStyle";
 import React, { useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
 import viewProfileApi, { ViewProfileRes } from "@/api/viewProfileApi";
 import { ImgProfile } from "@/styles/profileStyle";
 import mySalesListApi from "@/api/mySalesListApi";
 import { Data } from "@/components/postList/marketTab";
-import myPurchaseListApi from "@/api/myPurchaseListApi";
 
 function ProfileLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();

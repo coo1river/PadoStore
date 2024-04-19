@@ -41,10 +41,12 @@ const Login: React.FC = () => {
           password: form.password.value,
         });
 
+        console.log(loginRes);
+
         // zustand로 토큰 전역 관리, 세션 스토리지에 관리
-        setToken(loginRes.user_id);
+        setToken(loginRes);
         setAuthState(true);
-        sessionStorage.setItem("userToken", loginRes.user_id);
+        sessionStorage.setItem("userToken", loginRes);
         router.push("/home");
       } catch {
         setError("아이디 또는 비밀번호가 일치하지 않습니다.");

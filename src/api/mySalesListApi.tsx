@@ -1,3 +1,4 @@
+import useAuthStore from "@/store/useAuthStore";
 import axios from "axios";
 
 interface Params {
@@ -22,7 +23,12 @@ export default async function mySalesListApi(type: string, data: Params) {
   }
 
   try {
-    const res = await axios.get(url, { params: data });
+    const res = await axios.get(url, {
+      headers: {
+        Authorization: sessionStorage.getItem("userToken"),
+      },
+      params: data,
+    });
     console.log("API 응답:", res.data);
     return res.data;
   } catch (error) {
