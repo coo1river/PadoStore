@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { GroupForm } from "./UploadStyle";
 import { HomeMain } from "./homeStyle";
-import iconMenu from "@/../public/assets/svgs/menu-dots.svg";
+import iconMenu from "@/../public/assets/svgs/menu-dots.svg?url";
 import iconSoldOut from "@/../public/assets/images/soldout.png";
 
 export const ProductMain = styled(HomeMain)`

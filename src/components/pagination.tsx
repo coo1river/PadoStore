@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import iconLeft from "@/../public/assets/svgs/angle-small-left.svg";
-import iconRight from "@/../public/assets/svgs/angle-small-right.svg";
-import iconDoubleLeft from "@/../public/assets/svgs/angle-double-small-left.svg";
-import iconDoubleRight from "@/../public/assets/svgs/angle-double-small-right.svg";
+import iconLeft from "@/../public/assets/svgs/angle-small-left.svg?url";
+import iconRight from "@/../public/assets/svgs/angle-small-right.svg?url";
+import iconDoubleLeft from "@/../public/assets/svgs/angle-double-small-left.svg?url";
+import iconDoubleRight from "@/../public/assets/svgs/angle-double-small-right.svg?url";
 
 interface PaginationProps {
   totalPosts: number;

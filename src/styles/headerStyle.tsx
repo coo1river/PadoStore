@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import searchIcon from "../../public/assets/svgs/search.svg";
+import searchIcon from "../../public/assets/svgs/search.svg?url";
 
 export const CommonHeader = styled.header`
   display: flex;
