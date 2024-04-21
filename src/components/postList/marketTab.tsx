@@ -63,18 +63,15 @@ export interface Data {
 }
 
 interface Props {
+  page: number;
   api: string;
+  keywords?: string;
+  setTotalPosts: (total: number) => void;
 }
 
-const MarketTab: React.FC<Props> = ({ api }) => {
+const MarketTab: React.FC<Props> = ({ page, api, keywords, setTotalPosts }) => {
   const router = useRouter();
   const [data, setData] = useState<Data | null>(null);
-
-  // 총 포스트 개수 관리
-  const [totalPosts, setTotalPosts] = useState<number>(0);
-
-  // 현재 페이지 관리
-  const [page, setPage] = useState<number>(1);
 
   // api 요청에 보낼 데이터 담기
   const params = {
@@ -85,6 +82,9 @@ const MarketTab: React.FC<Props> = ({ api }) => {
     order: "ASC",
   };
 
+  // 사용자에게 보일 메시지 설정
+  const [message, setMessage] = useState("");
+
   // api(home tab / search)를 통해 data 가져오기
   useEffect(() => {
     const fetchData = async () => {
@@ -94,64 +94,74 @@ const MarketTab: React.FC<Props> = ({ api }) => {
           data = await homeTabApi("market", params);
           setTotalPosts(data?.totalCount);
           setData(data);
-        // case "search":
-        //   data = await searchApi();
-        //   setTotalPosts(data?.totalCount);
-        //   setData(data);
+          data?.marketList === null ? setMessage("게시물이 없습니다") : null;
+          break;
+        case "search":
+          data = await searchApi("market", { ...params, searchItem: keywords });
+          setTotalPosts(data?.totalCount);
+          setData(data);
+          data?.marketList === null
+            ? setMessage("검색 결과가 없습니다.")
+            : null;
+          break;
       }
     };
     fetchData();
   }, []);
 
   return (
-    <ProductTab>
-      {/* 상품 리스트 */}
-      <div className="sell_list">
-        {data?.marketList &&
-          data.marketList.map((item) => {
-            const marketBoardType = item.market.board_type;
-            const boardType =
-              marketBoardType === "Sell"
-                ? "판매"
-                : marketBoardType === "Purchase"
-                ? "구매"
-                : marketBoardType === "Trade"
-                ? "교환"
-                : "";
+    <>
+      {message}
+      <ProductTab>
+        {/* 상품 리스트 */}
+        <div className="sell_list">
+          {data?.marketList &&
+            data.marketList.map((item) => {
+              const marketBoardType = item.market.board_type;
+              const boardType =
+                marketBoardType === "Sell"
+                  ? "판매"
+                  : marketBoardType === "Purchase"
+                  ? "구매"
+                  : marketBoardType === "Trade"
+                  ? "교환"
+                  : "";
 
-            return (
-              <ProductArticle
-                key={item.market.post_id}
-                onClick={() => {
-                  router.push(`/productDetail/:status/${item.market.post_id}`);
-                }}
-              >
-                <img
-                  src={
-                    item.fileList && item.fileList.length > 0
-                      ? `/upload/${item.fileList[0]?.up_file}`
-                      : undefined
-                  }
-                  alt="상품 이미지"
-                />
-                <div className="product_info">
-                  <h4 className="product_title">
-                    <strong className="product_type">[{boardType}]</strong>
-                    {item.market.title}
-                  </h4>
-                  <div className="price_nickname">
-                    <p className="product_price">
-                      {parseInt(item.product.price).toLocaleString()}원
-                    </p>
-                    <p className="user_name">{item.user?.nickname}</p>
+              return (
+                <ProductArticle
+                  key={item.market.post_id}
+                  onClick={() => {
+                    router.push(
+                      `/productDetail/:status/${item.market.post_id}`
+                    );
+                  }}
+                >
+                  <img
+                    src={
+                      item.fileList && item.fileList.length > 0
+                        ? `/upload/${item.fileList[0]?.up_file}`
+                        : undefined
+                    }
+                    alt="상품 이미지"
+                  />
+                  <div className="product_info">
+                    <h4 className="product_title">
+                      <strong className="product_type">[{boardType}]</strong>
+                      {item.market.title}
+                    </h4>
+                    <div className="price_nickname">
+                      <p className="product_price">
+                        {parseInt(item.product.price).toLocaleString()}원
+                      </p>
+                      <p className="user_name">{item.user?.nickname}</p>
+                    </div>
                   </div>
-                </div>
-              </ProductArticle>
-            );
-          })}
-      </div>
-      <Pagination totalPosts={totalPosts} page={page} setPage={setPage} />
-    </ProductTab>
+                </ProductArticle>
+              );
+            })}
+        </div>
+      </ProductTab>
+    </>
   );
 };
 

@@ -7,7 +7,6 @@ export const HomeMain = styled.main`
   flex-direction: column;
   justify-items: center;
   align-items: center;
-  padding-bottom: 30px;
 
   .title_tag {
     margin-bottom: 20px;
@@ -90,6 +89,8 @@ export const ProductArticle = styled.article`
   img {
     width: 100%;
     height: 100%;
+    object-fit: contain;
+    background-color: var(--color-trans-grey);
     border-radius: 15px 15px 0 0;
   }
 

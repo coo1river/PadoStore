@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { KeyboardEvent, useState } from "react";
 import {
   LogoImg,
   CommonHeader,
@@ -14,6 +14,7 @@ import {
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
 import ModalFilter from "./modal/modalFilter";
+import useInput from "@/hooks/useInput";
 
 interface PostUploadModalProps {
   setUploadModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -75,11 +76,22 @@ const Header: React.FC = () => {
   const { authState, setAuthState } = useAuthStore();
   const { token, setToken } = useAuthStore();
 
+  // 로그아웃 함수
   const handleLogout = () => {
     setAuthState(false);
     setToken(null);
     sessionStorage.removeItem("userToken");
     router.push("/home");
+  };
+
+  // 검색 키워드 저장
+  const keywords = useInput("");
+
+  // enter 키로 검색하기
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      router.push(`/search/${keywords.value}`);
+    }
   };
 
   return (
@@ -90,11 +102,23 @@ const Header: React.FC = () => {
           파도상점
         </LogoDiv>
       </LogoText>
+
+      {/* 검색 창 */}
       <SearchIptBox>
         <label htmlFor="search-input" />
-        <SearchInput id="search-input" />
-        <button onClick={() => router.push("/search")} className="search_btn" />
+        <SearchInput
+          id="search-input"
+          type="text"
+          value={keywords.value}
+          onChange={keywords.onChange}
+          onKeyDown={handleKeyDown}
+        />
+        <button
+          onClick={() => router.push(`/search/${keywords.value}`)}
+          className="search_btn"
+        />
       </SearchIptBox>
+
       <div>
         <UploadBtn onClick={handleClickModal}>글 등록▾</UploadBtn>
         {uploadModal ? (

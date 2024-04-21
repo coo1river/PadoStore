@@ -1,7 +1,6 @@
 "use client";
 import { ProductArticle, ProductTab } from "@/styles/homeStyle";
-import { useRouter, useSearchParams } from "next/navigation";
-import { HomeData, HomeList } from "@/app/home/page";
+import { useRouter } from "next/navigation";
 import { MarketItem, Product, User } from "../postList/marketTab";
 
 export interface GroupOrderList {
