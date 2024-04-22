@@ -12,6 +12,9 @@ export default async function deleteApi(
         post_id: post_id,
         file_group_id: file_group_id,
       },
+      headers: {
+        Authorization: sessionStorage.getItem("userToken"),
+      },
     });
     console.log("API 응답:", res.data);
     return res.data;

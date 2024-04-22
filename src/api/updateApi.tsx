@@ -29,10 +29,18 @@ const updateApi = async (
 
     if (method === "get") {
       // GET 요청
-      res = await axios.get(getUrl);
+      res = await axios.get(getUrl, {
+        headers: {
+          Authorization: sessionStorage.getItem("userToken"),
+        },
+      });
     } else if (method === "put") {
       // PUT 요청
-      res = await axios.put(putUrl, data);
+      res = await axios.put(putUrl, data, {
+        headers: {
+          Authorization: sessionStorage.getItem("userToken"),
+        },
+      });
     } else {
       throw new Error("지원되지 않는 HTTP 메서드입니다.");
     }

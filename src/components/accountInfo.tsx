@@ -122,7 +122,6 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
       deposit_dt: `${form.deposit_date.value} ${form.deposit_time.value}`,
     },
     user: {
-      user_id: token,
       addr_post: form.post_zipcode.value,
       addr: form.post_address.value,
       addr_detail: form.post_addr_detail.value,

@@ -88,7 +88,7 @@ const Product: React.FC = () => {
       return;
     }
 
-    uploadApi(imgFile)
+    uploadApi(imgFile, token)
       .then(async (res) => {
         console.log(res);
         return await productUploadApi({

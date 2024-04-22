@@ -11,6 +11,7 @@ export interface Res {
   insert_dt: string;
   update_dt: string;
   post_status: string;
+  favorite: boolean;
   tag: string;
   product: {
     price: string;
@@ -68,7 +69,11 @@ export interface Res {
 const postDetailApi = async (post_id: string | string[]): Promise<Res> => {
   const url = `/api/board/${post_id}`;
   try {
-    const res = await axios.get(url);
+    const res = await axios.get(url, {
+      headers: {
+        Authorization: sessionStorage.getItem("userToken"),
+      },
+    });
     console.log("API 성공", res.data);
     return res.data;
   } catch (error) {

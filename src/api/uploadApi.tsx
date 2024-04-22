@@ -1,6 +1,9 @@
 import axios from "axios";
 
-const uploadApi = async (file: File | null | undefined | string) => {
+const uploadApi = async (
+  file: File | null | undefined | string,
+  token: string | null
+) => {
   const url = "/api/upload";
 
   try {
@@ -12,6 +15,7 @@ const uploadApi = async (file: File | null | undefined | string) => {
     const res = await axios.post(url, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
+        Authorization: sessionStorage.getItem("userToken"),
       },
     });
 
