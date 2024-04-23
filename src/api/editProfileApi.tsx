@@ -45,7 +45,7 @@ export default async function editProfileApi(
   user_id?: string | null,
   data?: EditReq
 ) {
-  const getUrl = `/api/profile/${user_id}`;
+  const getUrl = "/api/profile/";
   const putUrl = "/api/profile/update";
 
   try {

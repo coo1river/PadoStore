@@ -22,7 +22,12 @@ export default async function myPurchaseListApi(type: string, data: Params) {
   }
 
   try {
-    const res = await axios.get(url, { params: data });
+    const res = await axios.get(url, {
+      params: data,
+      headers: {
+        Authorization: sessionStorage.getItem("userToken"),
+      },
+    });
     console.log("API 응답:", res.data);
     return res.data;
   } catch (error) {

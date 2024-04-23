@@ -92,7 +92,6 @@ const EditProfile: React.FC = () => {
     NicknameValid,
     UserNameValid,
     NumberValid,
-    joinableState,
   } = useValid({
     email: form.email.value,
     user_id: form.id.value,
@@ -106,7 +105,6 @@ const EditProfile: React.FC = () => {
   //  프로필 수정 api 통신
   const handleEditProfile = async (e: FormEvent) => {
     e.preventDefault();
-    console.log(imgProfile, token);
 
     try {
       // 이미지 업로드와 프로필 수정을 병렬로 실행
@@ -133,6 +131,8 @@ const EditProfile: React.FC = () => {
       console.log("이미지 업로드 결과:", uploadResult);
       console.log("프로필 수정 결과:", editResult);
       console.log("수정 성공");
+      router.push("/profile/)
+
     } catch (error) {
       console.error("수정 실패", error);
     }

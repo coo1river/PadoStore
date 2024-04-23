@@ -63,7 +63,12 @@ export default async function manageDepositApi(data: ManageReq) {
   const url = "/api/my-page/sale/manage/delivery";
 
   try {
-    const res = await axios.get(url, { params: data });
+    const res = await axios.get(url, {
+      params: data,
+      headers: {
+        Authorization: sessionStorage.getItem("userToken"),
+      },
+    });
     console.log("API 응답:", res.data);
     return res.data;
   } catch (error) {

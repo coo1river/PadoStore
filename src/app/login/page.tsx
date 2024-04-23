@@ -41,8 +41,6 @@ const Login: React.FC = () => {
           password: form.password.value,
         });
 
-        console.log(loginRes);
-
         // zustand로 토큰 전역 관리, 세션 스토리지에 관리
         setToken(loginRes);
         setAuthState(true);

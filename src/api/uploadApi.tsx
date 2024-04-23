@@ -1,9 +1,6 @@
 import axios from "axios";
 
-const uploadApi = async (
-  file: File | null | undefined | string,
-  token: string | null
-) => {
+const uploadApi = async (file: File | null | undefined | string) => {
   const url = "/api/upload";
 
   try {
