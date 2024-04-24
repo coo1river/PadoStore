@@ -97,7 +97,7 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
 
   // 오늘 날짜 가져오기
   const date = new Date();
-  date.setDate(date.getDate() + 1);
+  date.setDate(date.getDate());
   const today = date.toISOString().split("T")[0];
 
   // answerList 배열에 답변 추가하기

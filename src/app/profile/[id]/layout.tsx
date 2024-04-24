@@ -7,12 +7,16 @@ import viewProfileApi, { ViewProfileRes } from "@/api/viewProfileApi";
 import { ImgProfile } from "@/styles/profileStyle";
 import mySalesListApi from "@/api/mySalesListApi";
 import { Data } from "@/components/postList/marketTab";
+import useDecodedToken from "@/hooks/useDecodedToken";
 
 function ProfileLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   // zustand에서 token 가져오기
   const { token, setToken } = useAuthStore();
+
+  // 토큰 디코딩 커스텀 훅으로 user id 추출
+  const userId = useDecodedToken(token!);
 
   // api로 data와 list 정보 담기
   const [data, setData] = useState<ViewProfileRes | null>(null);
@@ -43,7 +47,7 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
     const fetchData = async () => {
       try {
         const [profileData, listData] = await Promise.all([
-          viewProfileApi(token),
+          viewProfileApi(),
           mySalesListApi(listType, params),
         ]);
 
@@ -64,16 +68,16 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
     let path;
     switch (listMenu) {
       case "mySales":
-        path = `/profile/${token}/mySalesList`;
+        path = `/profile/${userId}/mySalesList`;
         break;
       case "myPurchase":
-        path = `/profile/${token}/myPurchaseList`;
+        path = `/profile/${userId}/myPurchaseList`;
         break;
       case "myGroupSales":
-        path = `/profile/${token}/myGroupSalesList`;
+        path = `/profile/${userId}/myGroupSalesList`;
         break;
       case "myGroupPurchase":
-        path = `/profile/${token}/myGroupPurchaseList`;
+        path = `/profile/${userId}/myGroupPurchaseList`;
         break;
       default:
         return;
@@ -165,7 +169,7 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
               구매 폼
             </li>
             <p>개인정보 수정</p>
-            <li onClick={() => router.push(`/editProfile/${token}`)}>
+            <li onClick={() => router.push(`/editProfile/${userId}`)}>
               프로필 설정
             </li>
             <li>입금 폼 설정</li>

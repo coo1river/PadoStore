@@ -135,12 +135,30 @@ export const OrderInfo = styled.article`
   margin: 20px;
   border-radius: 15px;
 
-  h3 {
+  .title_btn_wrap {
     border-bottom: 2px solid var(--color-trans-grey);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    .btn_edit {
+      background-color: transparent;
+      margin: 0;
+      font-weight: 500;
+      font-size: 14px;
+    }
+  }
+
+  h3 {
     font-size: 18px;
     font-weight: 700;
     padding: 10px 0;
     color: var(--color-main);
+  }
+
+  h3:not(.title_btn_wrap h3) {
+    border-bottom: 2px solid var(--color-trans-grey);
   }
 
   div {

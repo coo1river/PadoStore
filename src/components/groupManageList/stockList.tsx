@@ -41,7 +41,7 @@ export default function StockList() {
         {data?.product.map((item, index) => (
           <tr key={index}>
             <td>{item?.product_name}</td>
-            <td>{item?.org_quantity}</td>
+            <td>{item?.current_quantity}</td>
           </tr>
         ))}
       </tbody>

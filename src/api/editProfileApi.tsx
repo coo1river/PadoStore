@@ -40,11 +40,7 @@ export interface EditReq {
   };
 }
 
-export default async function editProfileApi(
-  method: string,
-  user_id?: string | null,
-  data?: EditReq
-) {
+export default async function editProfileApi(method: string, data?: EditReq) {
   const getUrl = "/api/profile/";
   const putUrl = "/api/profile/update";
 

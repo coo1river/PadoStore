@@ -1,4 +1,3 @@
-import useAuthStore from "@/store/useAuthStore";
 import axios from "axios";
 
 interface Params {

@@ -2,7 +2,6 @@ import axios from "axios";
 
 export interface GroupReq {
   board_type: string;
-  user_id: string | null;
   title: string;
   content: string;
   post_status: string;

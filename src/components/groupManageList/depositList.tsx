@@ -42,58 +42,60 @@ export default function DepositList() {
   }
 
   return (
-    <ManageTable>
-      <thead>
-        <tr>
-          <th>주문 시간</th>
-          <th>주문 상품 / 수량</th>
-          <th>입금 금액</th>
-          <th>입금명</th>
-          <th>배송지</th>
-          <th>진행 상태</th>
-          <th>운송장 번호</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data?.orderManageList?.map((orderItem, orderIndex) => (
-          <tr key={orderIndex}>
-            <td className="order_dt">{formatDate(orderItem?.order_dt)}</td>
-            <td>
-              {orderItem?.productList?.map((productItem, productIndex) => (
-                <div className="product_item_wrap" key={productIndex}>
-                  <p className="product_item">
-                    {`${productItem?.purchase_product_name} [${productItem?.purchase_quantity}개]`}
-                  </p>
-                </div>
-              ))}
-            </td>
-            <td>{orderItem?.total_price}원</td>
-            <td>{orderItem?.user.nickname}</td>
-            <td>
-              <p>({orderItem?.user.addr_post})</p>
-              <p>{orderItem?.user.addr}</p>
-              <p>{orderItem?.user.addr_detail}</p>
-            </td>
-            <td>
-              <select value={status.value} onChange={status.onChange}>
-                <option value="입금 대기">입금 대기</option>
-                <option value="입금 대기">입금 확인</option>
-                <option value="입금 대기">배송 시작</option>
-              </select>
-            </td>
-            <td className="traking_num">
-              <label htmlFor="traking_num" />
-              <input
-                id="traking_num"
-                type="number"
-                value={traking_num.value}
-                onChange={traking_num.onChange}
-              />
-            </td>
+    <>
+      <ManageTable>
+        <thead>
+          <tr>
+            <th>주문 시간</th>
+            <th>주문 상품 / 수량</th>
+            <th>입금 금액</th>
+            <th>입금명</th>
+            <th>배송지</th>
+            <th>진행 상태</th>
+            <th>운송장 번호</th>
           </tr>
-        ))}
-      </tbody>
+        </thead>
+        <tbody>
+          {data?.orderManageList?.map((orderItem, orderIndex) => (
+            <tr key={orderIndex}>
+              <td className="order_dt">{formatDate(orderItem?.order_dt)}</td>
+              <td>
+                {orderItem?.productList?.map((productItem, productIndex) => (
+                  <div className="product_item_wrap" key={productIndex}>
+                    <p className="product_item">
+                      {`${productItem?.purchase_product_name} [${productItem?.purchase_quantity}개]`}
+                    </p>
+                  </div>
+                ))}
+              </td>
+              <td>{orderItem?.total_price}원</td>
+              <td>{orderItem?.user.nickname}</td>
+              <td>
+                <p>({orderItem?.user.addr_post})</p>
+                <p>{orderItem?.user.addr}</p>
+                <p>{orderItem?.user.addr_detail}</p>
+              </td>
+              <td>
+                <select value={status.value} onChange={status.onChange}>
+                  <option value="입금 대기">입금 대기</option>
+                  <option value="입금 대기">입금 확인</option>
+                  <option value="입금 대기">배송 시작</option>
+                </select>
+              </td>
+              <td className="traking_num">
+                <label htmlFor="traking_num" />
+                <input
+                  id="traking_num"
+                  type="number"
+                  value={traking_num.value}
+                  onChange={traking_num.onChange}
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </ManageTable>
       <button>저장</button>
-    </ManageTable>
+    </>
   );
 }

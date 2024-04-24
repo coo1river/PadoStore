@@ -96,7 +96,7 @@ const GroupPurchase: React.FC = () => {
 
   // 오늘 날짜 가져오기
   const date = new Date();
-  date.setDate(date.getDate() + 1);
+  date.setDate(date.getDate());
   const today = date.toISOString().split("T")[0];
 
   const handleAddProduct = () => {
@@ -154,7 +154,6 @@ const GroupPurchase: React.FC = () => {
 
   const dataReq: GroupReq = {
     board_type: "GroupPurchase",
-    user_id: token!,
     title: form.title.value,
     content: form.content.value,
     post_status: postStatus,

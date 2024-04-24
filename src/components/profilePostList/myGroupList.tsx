@@ -3,6 +3,7 @@ import React from "react";
 import { GroupItem } from "../postList/groupPurchaseTab";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
+import useDecodedToken from "@/hooks/useDecodedToken";
 
 interface Props {
   groupList: GroupOrder[] | GroupItem[];
@@ -59,6 +60,9 @@ const MyGroupList: React.FC<Props> = ({ groupList, routePath }) => {
   // zustand에서 token 가져오기
   const { token, setToken } = useAuthStore();
 
+  // 토큰 디코딩 커스텀 훅으로 user id 추출
+  const userId = useDecodedToken(token!);
+
   return (
     <ul className="myProfile_list">
       {groupList.map((item) => {
@@ -88,7 +92,7 @@ const MyGroupList: React.FC<Props> = ({ groupList, routePath }) => {
               const routeId = isGroupOrder ? item.order.order_id : postId;
               routePath === "groupManage"
                 ? router.push(`/${routePath}/${routeId}`)
-                : router.push(`/profile/${token}/${routePath}/${routeId}`);
+                : router.push(`/profile/${userId}/${routePath}/${routeId}`);
             }}
           >
             <p className="product_id">{postId}</p>

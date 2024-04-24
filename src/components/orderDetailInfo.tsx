@@ -1,29 +1,72 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { OrderData } from "@/api/orderDetail";
 import { OrderInfo, OrderInfoWrap } from "@/styles/orderStyle";
+import useInput from "@/hooks/useInput";
 
-const OrdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
+const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
+  const [isEditable, setIsEditable] = useState(false);
+
+  const handleEditToggle = () => {
+    setIsEditable(!isEditable);
+  };
+
+  const userName = useInput(data?.user.user_name!);
+  const userNumber = useInput(data?.user.phone_number!);
+
   console.log(data);
   return (
     <OrderInfoWrap>
       <div>
         <OrderInfo>
-          <h3>주문자 정보</h3>
-          <div>
-            <p>
-              <strong>이름</strong>
-              <span>{data?.user.user_name}</span>
-            </p>
-            <p>
-              <strong>전화번호</strong>
-              <span>{data?.user.phone_number}</span>
-            </p>
-            <p>
-              <strong>이메일</strong>
-              <span>{data?.user.email}</span>
-            </p>
+          <div className="title_btn_wrap">
+            <h3>주문자 정보</h3>
+            {data?.order_status === "입금 대기" && (
+              <button className="btn_edit" onClick={handleEditToggle}>
+                {isEditable ? "저장" : "수정"}
+              </button>
+            )}
           </div>
+
+          {!isEditable ? (
+            <div>
+              <p>
+                <strong>이름</strong>
+                <span>{data?.user.user_name}</span>
+              </p>
+              <p>
+                <strong>전화번호</strong>
+                <span>{data?.user.phone_number}</span>
+              </p>
+              <p>
+                <strong>이메일</strong>
+                <span>{data?.user.email}</span>
+              </p>
+            </div>
+          ) : (
+            <div>
+              <p>
+                <strong>이름</strong>
+                <input
+                  type="text"
+                  value={userName.value}
+                  onChange={userName.onChange}
+                />
+              </p>
+              <p>
+                <strong>전화번호</strong>
+                <input
+                  type="text"
+                  value={userNumber.value}
+                  onChange={userNumber.onChange}
+                />
+              </p>
+              <p>
+                <strong>이메일</strong>
+                <span>{data?.user.email}</span>
+              </p>
+            </div>
+          )}
         </OrderInfo>
 
         <OrderInfo>
@@ -62,7 +105,14 @@ const OrdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
         </OrderInfo>
 
         <OrderInfo>
-          <h3>배송 정보</h3>
+          <div className="title_btn_wrap">
+            <h3>배송 정보</h3>
+            {data?.order_status === "입금 대기" && (
+              <button className="btn_edit" onClick={handleEditToggle}>
+                {isEditable ? "저장" : "수정"}
+              </button>
+            )}
+          </div>
           <p>
             <strong>받는 사람</strong>
             <span>{data?.user.account_name}</span>
@@ -103,4 +153,4 @@ const OrdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
   );
 };
 
-export default OrdetailInfo;
+export default OrdederdetailInfo;

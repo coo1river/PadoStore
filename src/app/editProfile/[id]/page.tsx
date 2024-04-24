@@ -22,9 +22,10 @@ import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
 // 커스텀 훅, api import
 import useInput from "@/hooks/useInput";
 import useValid from "@/hooks/useValid";
-import editProfileApi, { EditReq, EditRes } from "@/api/editProfileApi";
+import editProfileApi, { EditRes } from "@/api/editProfileApi";
 import useAuthStore from "@/store/useAuthStore";
 import profileUploadApi from "@/api/profileUploadApi";
+import useDecodedToken from "@/hooks/useDecodedToken";
 
 const EditProfile: React.FC = () => {
   // 라우터 사용
@@ -33,12 +34,15 @@ const EditProfile: React.FC = () => {
   // zustand에서 token 가져오기
   const { token, setToken } = useAuthStore();
 
+  // 토큰 디코딩 커스텀 훅으로 user id 추출
+  const userId = useDecodedToken(token!);
+
   const [data, setData] = useState<EditRes | null>(null);
 
   // 최초 렌더링 시 프로필 데이터 가져오기
   useEffect(() => {
     const getData = async () => {
-      const res = await editProfileApi("get", token);
+      const res = await editProfileApi("get");
       setData(res);
     };
     getData();
@@ -109,8 +113,8 @@ const EditProfile: React.FC = () => {
     try {
       // 이미지 업로드와 프로필 수정을 병렬로 실행
       const [uploadResult, editResult] = await Promise.all([
-        profileUploadApi(imgProfile, token),
-        editProfileApi("put", undefined, {
+        profileUploadApi(imgProfile, userId),
+        editProfileApi("put", {
           user: {
             user_id: form.id.value,
             password: form.password.value,
@@ -131,8 +135,6 @@ const EditProfile: React.FC = () => {
       console.log("이미지 업로드 결과:", uploadResult);
       console.log("프로필 수정 결과:", editResult);
       console.log("수정 성공");
-      router.push("/profile/)
-
     } catch (error) {
       console.error("수정 실패", error);
     }

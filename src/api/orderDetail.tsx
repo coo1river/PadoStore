@@ -49,7 +49,11 @@ export default async function orderDetailApi(order_id: string | string[]) {
   const url = `/api/order/${order_id}`;
 
   try {
-    const res = await axios.get(url);
+    const res = await axios.get(url, {
+      headers: {
+        Authorization: sessionStorage.getItem("userToken"),
+      },
+    });
     console.log("API 응답:", res.data);
     return res.data;
   } catch (error) {

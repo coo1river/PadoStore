@@ -11,7 +11,7 @@ import {
   ProgressBarWrap,
 } from "@/styles/orderStyle";
 import postDetailApi, { Res } from "@/api/postDetailApi";
-import OrdetailInfo from "@/components/orderDetailInfo";
+import OrdederdetailInfo from "@/components/orderDetailInfo";
 
 const GroupManage: React.FC = () => {
   const params = useParams();
@@ -107,7 +107,7 @@ const GroupManage: React.FC = () => {
       </article>
 
       {/* 주문 상세 데이터 */}
-      <OrdetailInfo data={orderData} />
+      <OrdederdetailInfo data={orderData} />
     </OrderDetail>
   );
 };

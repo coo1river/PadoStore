@@ -7,13 +7,18 @@ export default async function statusUpdateApi(
   const url = "/api/post/status/update";
 
   try {
-    const res = await axios.put(url, {
-      post_id,
-      post_status,
-      headers: {
-        Authorization: sessionStorage.getItem("userToken"),
+    const res = await axios.put(
+      url,
+      {
+        post_id,
+        post_status,
       },
-    });
+      {
+        headers: {
+          Authorization: sessionStorage.getItem("userToken"),
+        },
+      }
+    );
     console.log("API 응답:", res.data);
     return res.data;
   } catch (error) {
