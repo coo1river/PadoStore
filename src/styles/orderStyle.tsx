@@ -170,13 +170,26 @@ export const OrderInfo = styled.article`
     text-align: start;
     line-height: 2.3rem;
 
-    strong {
+    strong,
+    label {
       display: inline-block;
       width: 105px;
     }
 
-    span {
+    span,
+    input {
+      font-size: 15px;
       font-weight: 400;
+    }
+
+    input {
+      width: calc(100% - 115px);
+      padding: 0;
+      border-bottom: 2px solid var(--color-trans-grey);
+
+      &:focus {
+        border-bottom: 2px solid #3eabfab8;
+      }
     }
   }
 

@@ -174,7 +174,6 @@ const GroupPurchaseUpdate: React.FC = () => {
 
   const dataReq: GroupReq = {
     board_type: "GroupPurchase",
-    user_id: token,
     title: form.title.value,
     content: form.content.value,
     post_status: postStatus,

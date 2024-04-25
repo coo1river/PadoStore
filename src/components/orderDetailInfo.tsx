@@ -1,20 +1,77 @@
 "use client";
-import React, { useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { OrderData } from "@/api/orderDetail";
 import { OrderInfo, OrderInfoWrap } from "@/styles/orderStyle";
 import useInput from "@/hooks/useInput";
+import editOrderApi from "@/api/editOrderApi";
+import DaumPostcode, { AddressData } from "./daumPostcode";
+import ModalFilter from "./modal/modalFilter";
 
 const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
-  const [isEditable, setIsEditable] = useState(false);
-
-  const handleEditToggle = () => {
-    setIsEditable(!isEditable);
+  // useInput으로 value, onChange 할당
+  const form = {
+    userName: useInput(""),
+    userNumber: useInput(""),
+    userEmail: useInput(""),
+    postName: useInput(""),
+    zipcode: useInput(""),
+    address: useInput(""),
   };
 
-  const userName = useInput(data?.user.user_name!);
-  const userNumber = useInput(data?.user.phone_number!);
+  // 주소 찾기 모달
+  const [modal, setModal] = useState<boolean>(false);
 
-  console.log(data);
+  const handleComplete = (data: AddressData) => {
+    form.zipcode.setValue(data.zonecode);
+    form.address.setValue(data.address);
+    console.log(data);
+    // 모달을 닫습니다.
+    setModal(false);
+  };
+
+  const [isOrderEditable, setIsOrderEditable] = useState(false);
+  const [isShippingEditable, setIsShippingEditable] = useState(false);
+  const [isQuestionEditable, setIsQuestionEditable] = useState(false);
+
+  const handleEditToggle = (section: string) => {
+    switch (section) {
+      case "order":
+        setIsOrderEditable(!isOrderEditable);
+        break;
+      case "shipping":
+        setIsShippingEditable(!isShippingEditable);
+        break;
+      case "question":
+        setIsQuestionEditable(!isQuestionEditable);
+        break;
+      default:
+        break;
+    }
+  };
+
+  useEffect(() => {
+    form.userName.setValue(data?.user.user_name!);
+    form.userNumber.setValue(data?.user.phone_number!);
+    form.userEmail.setValue(data?.user.email!);
+  }, [isOrderEditable]);
+
+  const req = {
+    order_id: data?.order_id,
+    user: {
+      user_id: data?.user.user_id,
+    },
+  };
+
+  // const handleEditOrder = async (e: FormEvent) => {
+  //   e.preventDefault();
+
+  //   try {
+  //     const res = await editOrderApi(req);
+  //   } catch {
+  //     console.error("Error:");
+  //   }
+  // };
+
   return (
     <OrderInfoWrap>
       <div>
@@ -22,13 +79,16 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
           <div className="title_btn_wrap">
             <h3>주문자 정보</h3>
             {data?.order_status === "입금 대기" && (
-              <button className="btn_edit" onClick={handleEditToggle}>
-                {isEditable ? "저장" : "수정"}
+              <button
+                className="btn_edit"
+                onClick={() => handleEditToggle("order")}
+              >
+                {isOrderEditable ? "저장" : "수정"}
               </button>
             )}
           </div>
 
-          {!isEditable ? (
+          {!isOrderEditable ? (
             <div>
               <p>
                 <strong>이름</strong>
@@ -46,24 +106,28 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
           ) : (
             <div>
               <p>
-                <strong>이름</strong>
+                <label>이름</label>
                 <input
                   type="text"
-                  value={userName.value}
-                  onChange={userName.onChange}
+                  value={form.userName.value}
+                  onChange={form.userName.onChange}
                 />
               </p>
               <p>
-                <strong>전화번호</strong>
+                <label>전화번호</label>
                 <input
                   type="text"
-                  value={userNumber.value}
-                  onChange={userNumber.onChange}
+                  value={form.userNumber.value}
+                  onChange={form.userNumber.onChange}
                 />
               </p>
               <p>
-                <strong>이메일</strong>
-                <span>{data?.user.email}</span>
+                <label>이메일</label>
+                <input
+                  type="text"
+                  value={form.userEmail.value}
+                  onChange={form.userEmail.onChange}
+                />
               </p>
             </div>
           )}
@@ -78,7 +142,7 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
             </p>
             <p>
               <strong>입금 금액</strong>
-              <span>{data?.total_price}</span>
+              <span>{data?.total_price}원</span>
             </p>
             <p>
               <strong>입금 날짜</strong>
@@ -108,23 +172,76 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
           <div className="title_btn_wrap">
             <h3>배송 정보</h3>
             {data?.order_status === "입금 대기" && (
-              <button className="btn_edit" onClick={handleEditToggle}>
-                {isEditable ? "저장" : "수정"}
+              <button
+                className="btn_edit"
+                onClick={() => handleEditToggle("shipping")}
+              >
+                {isShippingEditable ? "저장" : "수정"}
               </button>
             )}
           </div>
-          <p>
-            <strong>받는 사람</strong>
-            <span>{data?.user.account_name}</span>
-          </p>
-          <p>
-            <strong>우편번호</strong>
-            <span>{data?.user.addr_post}</span>
-          </p>
-          <p>
-            <strong>주소</strong>
-            <span>{`${data?.user.addr} ${data?.user.addr_detail}`}</span>
-          </p>
+
+          {!isShippingEditable ? (
+            <>
+              <p>
+                <strong>받는 사람</strong>
+                <span>{data?.user.account_name}</span>
+              </p>
+              <p>
+                <strong>우편번호</strong>
+                <span>{data?.user.addr_post}</span>
+              </p>
+              <p>
+                <strong>주소</strong>
+                <span>{`${data?.user.addr} ${data?.user.addr_detail}`}</span>
+              </p>
+            </>
+          ) : (
+            <>
+              {modal ? (
+                <ModalFilter onClose={() => setModal(false)}>
+                  <DaumPostcode onComplete={handleComplete} />
+                </ModalFilter>
+              ) : null}
+              <p>
+                <label>받는 사람</label>
+                <input
+                  type="text"
+                  value={form.postName.value}
+                  onChange={form.postName.onChange}
+                />
+              </p>
+              <p>
+                <label>우편번호</label>
+                <input
+                  type="text"
+                  value={form.zipcode.value}
+                  onChange={form.zipcode.onChange}
+                  onClick={(e: React.FormEvent) => {
+                    e.preventDefault();
+                    setModal(!modal);
+                  }}
+                />
+                {/* <button
+                  className="btn_search_zipcode"
+                  onClick={(e: React.FormEvent) => {
+                    e.preventDefault();
+                    setModal(!modal);
+                  }}
+                >
+                  우편번호 찾기
+                </button> */}
+              </p>
+              <p>
+                <label>주소</label>
+                <input
+                  type="text"
+                  value={form.address.value}
+                  onChange={form.address.onChange}
+                />
+              </p>
+            </>
+          )}
         </OrderInfo>
       </div>
 
