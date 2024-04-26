@@ -49,11 +49,19 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
     }
   };
 
+  // 주문 수정 상태 변경 시 setValue 설정
   useEffect(() => {
     form.userName.setValue(data?.user.user_name!);
     form.userNumber.setValue(data?.user.phone_number!);
     form.userEmail.setValue(data?.user.email!);
   }, [isOrderEditable]);
+
+  // 배송 수정 상태 변경 시 setValue 설정
+  useEffect(() => {
+    form.postName.setValue(data?.user.user_name!);
+    form.zipcode.setValue(data?.user.addr_post!);
+    form.address.setValue(`${data?.user.addr} ${data?.user.addr_detail}`);
+  }, [isShippingEditable]);
 
   const req = {
     order_id: data?.order_id,
