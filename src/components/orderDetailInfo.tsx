@@ -67,6 +67,13 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
     order_id: data?.order_id,
     user: {
       user_id: data?.user.user_id,
+      addr_post: form.zipcode.value,
+      addr: form.address.value,
+    },
+    order: {
+      post_id: data?.post_id,
+      purchase_user_id: data?.order_id,
+      post_number: data?.post_number,
     },
   };
 
