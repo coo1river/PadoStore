@@ -6,6 +6,7 @@ import useInput from "@/hooks/useInput";
 import editOrderApi from "@/api/editOrderApi";
 import DaumPostcode, { AddressData } from "./daumPostcode";
 import ModalFilter from "./modal/modalFilter";
+import { BankOptions } from "./selectOption";
 
 const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
   // useInput으로 value, onChange 할당
@@ -16,6 +17,8 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
     postName: useInput(""),
     zipcode: useInput(""),
     address: useInput(""),
+    bank: useInput(""),
+    accountNumber: useInput(""),
   };
 
   // 주소 찾기 모달
@@ -31,6 +34,7 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
 
   const [isOrderEditable, setIsOrderEditable] = useState(false);
   const [isShippingEditable, setIsShippingEditable] = useState(false);
+  const [isRefundEditable, setIsRefundEditable] = useState(false);
   const [isQuestionEditable, setIsQuestionEditable] = useState(false);
 
   const handleEditToggle = (section: string) => {
@@ -44,6 +48,9 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
       case "question":
         setIsQuestionEditable(!isQuestionEditable);
         break;
+      case "refund":
+        setIsRefundEditable(!isRefundEditable);
+        break;
       default:
         break;
     }
@@ -51,41 +58,56 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
 
   // 주문 수정 상태 변경 시 setValue 설정
   useEffect(() => {
-    form.userName.setValue(data?.user.user_name!);
-    form.userNumber.setValue(data?.user.phone_number!);
-    form.userEmail.setValue(data?.user.email!);
+    form.userName.setValue(data?.user.user_name || "");
+    form.userNumber.setValue(data?.user.phone_number || "");
+    form.userEmail.setValue(data?.user.email || "");
   }, [isOrderEditable]);
 
   // 배송 수정 상태 변경 시 setValue 설정
   useEffect(() => {
-    form.postName.setValue(data?.user.user_name!);
-    form.zipcode.setValue(data?.user.addr_post!);
+    form.postName.setValue(data?.user.user_name || "");
+    form.zipcode.setValue(data?.user.addr_post || "");
     form.address.setValue(`${data?.user.addr} ${data?.user.addr_detail}`);
   }, [isShippingEditable]);
+
+  useEffect(() => {
+    form.bank.setValue(data?.user.bank || "");
+    form.accountNumber.setValue(data?.user.account_number || "");
+  }, [isRefundEditable]);
 
   const req = {
     order_id: data?.order_id,
     user: {
       user_id: data?.user.user_id,
+      phone_number: data?.user.phone_number,
       addr_post: form.zipcode.value,
       addr: form.address.value,
+      account_name: form.userName.value,
+      account_number: form.accountNumber.value,
+      bank: form.bank.value,
     },
     order: {
       post_id: data?.post_id,
       purchase_user_id: data?.order_id,
       post_number: data?.post_number,
     },
+    answerList: data?.answerList,
+    orderProductList: data?.orderProductList,
   };
 
-  // const handleEditOrder = async (e: FormEvent) => {
-  //   e.preventDefault();
+  useEffect(() => {
+    console.log("req", req);
+  }, [req]);
 
-  //   try {
-  //     const res = await editOrderApi(req);
-  //   } catch {
-  //     console.error("Error:");
-  //   }
-  // };
+  const handleEditOrder = async (e: FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const res = await editOrderApi(req);
+    } catch {
+      console.error("Error:");
+    }
+  };
 
   return (
     <OrderInfoWrap>
@@ -237,15 +259,6 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
                     setModal(!modal);
                   }}
                 />
-                {/* <button
-                  className="btn_search_zipcode"
-                  onClick={(e: React.FormEvent) => {
-                    e.preventDefault();
-                    setModal(!modal);
-                  }}
-                >
-                  우편번호 찾기
-                </button> */}
               </p>
               <p>
                 <label>주소</label>
@@ -262,19 +275,59 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
 
       <div>
         <OrderInfo>
-          <h3>환불 정보</h3>
-          <p>
-            <strong>예금주</strong>
-            <span>{data?.user.account_name}</span>
-          </p>
-          <p>
-            <strong>은행</strong>
-            <span>{data?.user.bank}</span>
-          </p>
-          <p>
-            <strong>계좌 번호</strong>
-            <span>{data?.user.account_number}</span>
-          </p>
+          <div className="title_btn_wrap">
+            <h3>환불 정보</h3>
+            {data?.order_status === "입금 대기" && (
+              <button
+                className="btn_edit"
+                onClick={() => handleEditToggle("refund")}
+              >
+                {isRefundEditable ? "저장" : "수정"}
+              </button>
+            )}
+          </div>
+
+          {!isRefundEditable ? (
+            <>
+              <p>
+                <strong>예금주</strong>
+                <span>{data?.user.account_name}</span>
+              </p>
+              <p>
+                <strong>은행</strong>
+                <span>{data?.user.bank}</span>
+              </p>
+              <p>
+                <strong>계좌 번호</strong>
+                <span>{data?.user.account_number}</span>
+              </p>
+            </>
+          ) : (
+            <>
+              <p>
+                <strong>예금주</strong>
+                <input
+                  type="text"
+                  value={form.userName.value}
+                  onChange={form.userName.onChange}
+                />
+              </p>
+              <p>
+                <strong>은행</strong>
+                <select value={form.bank.value} onChange={form.bank.onChange}>
+                  <BankOptions />
+                </select>
+              </p>
+              <p>
+                <strong>계좌 번호</strong>
+                <input
+                  type="text"
+                  value={form.accountNumber.value}
+                  onChange={form.accountNumber.onChange}
+                />
+              </p>
+            </>
+          )}
         </OrderInfo>
 
         <OrderInfo>
