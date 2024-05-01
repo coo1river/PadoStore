@@ -1,24 +1,24 @@
 import axios from "axios";
 
 interface User {
-  user_id: string;
-  addr_post: string;
-  addr: string;
-  addr_detail: string;
-  bank: string;
-  account_name: string;
-  account_number: string;
+  user_id: string | undefined;
+  addr_post: string | undefined;
+  addr: string | undefined;
+  addr_detail: string | undefined;
+  bank: string | undefined;
+  account_name: string | undefined;
+  account_number: string | undefined;
 }
 
 interface Order {
-  post_id: number;
-  purchase_user_id: string;
-  post_number: string;
+  post_id: number | undefined;
+  purchase_user_id: number | undefined;
+  post_number: string | undefined;
 }
 
 interface Answer {
   answer: string;
-  product_question_id: string;
+  product_question_id: number;
 }
 
 interface OrderProduct {
@@ -32,12 +32,12 @@ export interface OrderData {
   order_id: number | undefined;
   user: User;
   order: Order;
-  answerList: Answer[];
-  orderProductList: OrderProduct[];
+  answerList: Answer[] | undefined;
+  orderProductList: OrderProduct[] | undefined;
 }
 
 export default async function editOrderApi(data: OrderData) {
-  const url = "api/order/update";
+  const url = "/api/order/update";
 
   try {
     const res = await axios.put(url, data, {

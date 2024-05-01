@@ -17,9 +17,10 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
     postName: useInput(""),
     zipcode: useInput(""),
     address: useInput(""),
-    addr_detail: useInput(""),
+    addrDetail: useInput(""),
     bank: useInput(""),
     accountNumber: useInput(""),
+    accountName: useInput(""),
   };
 
   // 주소 찾기 모달
@@ -68,7 +69,8 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
   useEffect(() => {
     form.postName.setValue(data?.user.user_name || "");
     form.zipcode.setValue(data?.user.addr_post || "");
-    form.address.setValue(`${data?.user.addr} ${data?.user.addr_detail}`);
+    form.address.setValue(data?.user.addr || "");
+    form.addrDetail.setValue(data?.user.addr_detail || "");
   }, [isShippingEditable]);
 
   useEffect(() => {
@@ -80,12 +82,14 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
     order_id: data?.order_id,
     user: {
       user_id: data?.user.user_id,
+      user_name: form.userName.value || data?.user.user_name,
       phone_number: data?.user.phone_number,
-      addr_post: form.zipcode.value,
-      addr: form.address.value,
-      account_name: form.userName.value,
-      account_number: form.accountNumber.value,
-      bank: form.bank.value,
+      addr_post: form.zipcode.value || data?.user.addr_post,
+      addr: form.address.value || data?.user.addr,
+      addr_detail: form.addrDetail.value || data?.user.addr_detail,
+      account_name: form.accountName.value || data?.user.account_name,
+      account_number: form.accountNumber.value || data?.user.account_number,
+      bank: form.bank.value || data?.user.bank,
     },
     order: {
       post_id: data?.post_id,
@@ -96,15 +100,12 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
     orderProductList: data?.orderProductList,
   };
 
-  useEffect(() => {
-    console.log("req", req);
-  }, [req]);
-
   const handleEditOrder = async (e: FormEvent) => {
     e.preventDefault();
 
     try {
-      const res = await editOrderApi(req);
+      await editOrderApi(req);
+      window.location.reload();
     } catch {
       console.error("Error:");
     }
@@ -119,7 +120,14 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
             {data?.order_status === "입금 대기" && (
               <button
                 className="btn_edit"
-                onClick={() => handleEditToggle("order")}
+                onClick={(e) => {
+                  if (isOrderEditable) {
+                    handleEditOrder(e);
+                    handleEditToggle("order");
+                  } else {
+                    handleEditToggle("order");
+                  }
+                }}
               >
                 {isOrderEditable ? "저장" : "수정"}
               </button>
@@ -176,7 +184,7 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
           <div>
             <p>
               <strong>입금자 명</strong>
-              <span>{data?.user.account_name}</span>
+              <span>{data?.user.user_name}</span>
             </p>
             <p>
               <strong>입금 금액</strong>
@@ -212,7 +220,14 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
             {data?.order_status === "입금 대기" && (
               <button
                 className="btn_edit"
-                onClick={() => handleEditToggle("shipping")}
+                onClick={(e) => {
+                  if (isShippingEditable) {
+                    handleEditOrder(e);
+                    handleEditToggle("shipping");
+                  } else {
+                    handleEditToggle("shipping");
+                  }
+                }}
               >
                 {isShippingEditable ? "저장" : "수정"}
               </button>
@@ -223,7 +238,7 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
             <>
               <p>
                 <strong>받는 사람</strong>
-                <span>{data?.user.account_name}</span>
+                <span>{data?.user.user_name}</span>
               </p>
               <p>
                 <strong>우편번호</strong>
@@ -231,7 +246,11 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
               </p>
               <p>
                 <strong>주소</strong>
-                <span>{`${data?.user.addr} ${data?.user.addr_detail}`}</span>
+                <span>{data?.user.addr}</span>
+              </p>
+              <p>
+                <strong>상세 주소</strong>
+                <span>{data?.user.addr_detail}</span>
               </p>
             </>
           ) : (
@@ -267,14 +286,18 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
                   type="text"
                   value={form.address.value}
                   onChange={form.address.onChange}
+                  onClick={(e: React.FormEvent) => {
+                    e.preventDefault();
+                    setModal(!modal);
+                  }}
                 />
               </p>
               <p>
                 <label htmlFor="">상세 주소</label>
                 <input
                   type="text"
-                  value={form.addr_detail.value}
-                  onChange={form.addr_detail.onChange}
+                  value={form.addrDetail.value}
+                  onChange={form.addrDetail.onChange}
                 />
               </p>
             </>
@@ -289,7 +312,14 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
             {data?.order_status === "입금 대기" && (
               <button
                 className="btn_edit"
-                onClick={() => handleEditToggle("refund")}
+                onClick={(e) => {
+                  if (isRefundEditable) {
+                    handleEditOrder(e);
+                    handleEditToggle("refund");
+                  } else {
+                    handleEditToggle("refund");
+                  }
+                }}
               >
                 {isRefundEditable ? "저장" : "수정"}
               </button>
@@ -317,8 +347,8 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
                 <strong>예금주</strong>
                 <input
                   type="text"
-                  value={form.userName.value}
-                  onChange={form.userName.onChange}
+                  value={form.accountName.value}
+                  onChange={form.accountName.onChange}
                 />
               </p>
               <p>

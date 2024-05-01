@@ -20,6 +20,7 @@ interface Answer {
   order_answer_id: number;
   order_id: number;
   answer: string;
+  product_question_id: number;
 }
 
 interface OrderProduct {
