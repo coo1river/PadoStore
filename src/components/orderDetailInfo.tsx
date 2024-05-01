@@ -17,6 +17,7 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
     postName: useInput(""),
     zipcode: useInput(""),
     address: useInput(""),
+    addr_detail: useInput(""),
     bank: useInput(""),
     accountNumber: useInput(""),
   };
@@ -266,6 +267,14 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
                   type="text"
                   value={form.address.value}
                   onChange={form.address.onChange}
+                />
+              </p>
+              <p>
+                <label htmlFor="">상세 주소</label>
+                <input
+                  type="text"
+                  value={form.addr_detail.value}
+                  onChange={form.addr_detail.onChange}
                 />
               </p>
             </>
