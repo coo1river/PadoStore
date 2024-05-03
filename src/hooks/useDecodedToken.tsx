@@ -2,6 +2,11 @@ import { useMemo } from "react";
 
 function useDecodedToken(token: string) {
   return useMemo(() => {
+    // token 값이 null인 경우 null 반환
+    if (!token) {
+      return null;
+    }
+
     try {
       const base64Payload = token.split(".")[1];
       const base64 = base64Payload.replace(/-/g, "+").replace(/_/g, "/");
