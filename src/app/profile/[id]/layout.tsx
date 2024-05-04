@@ -172,7 +172,9 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
             <li onClick={() => router.push(`/editProfile/${userId}`)}>
               프로필 설정
             </li>
-            <li>입금 폼 설정</li>
+            <li onClick={() => router.push(`/editAccountInfo/${userId}`)}>
+              입금 폼 설정
+            </li>
           </ul>
         </nav>
 

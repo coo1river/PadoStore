@@ -3,6 +3,7 @@ import GlobalStyle from "@/styles/globalStyle";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import ScrollToTop from "./scrollToTop";
+import StyledComponentsRegistry from "@/styles/registry";
 
 export const metadata: Metadata = {
   title: "파도상점",
@@ -20,11 +21,13 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <ScrollToTop />
-        <GlobalStyle />
-        <Header />
-        {children}
-        <Footer />
+        <StyledComponentsRegistry>
+          <GlobalStyle />
+          <ScrollToTop />
+          <Header />
+          {children}
+          <Footer />
+        </StyledComponentsRegistry>
       </body>
     </html>
   );

@@ -1,5 +1,10 @@
-module.exports = {
-  reactStrictMode: false,
+const nextConfig = {
+  compiler: {
+    styledComponents: true,
+  },
+};
+
+module.exports = Object.assign({}, nextConfig, {
   webpack: (config) => {
     const fileLoaderRule = config.module.rules.find((rule) =>
       rule.test?.test?.(".svg")
@@ -28,7 +33,4 @@ module.exports = {
       },
     ];
   },
-  compiler: {
-    styledComponents: true,
-  },
-};
+});
