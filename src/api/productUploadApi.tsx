@@ -19,7 +19,11 @@ const productUploadApi = async (data: ProductReq) => {
   const url = "/api/board/market/post";
 
   try {
-    const res = await axios.post<ProductReq>(url, data);
+    const res = await axios.post<ProductReq>(url, data, {
+      headers: {
+        Authorization: sessionStorage.getItem("userToken"),
+      },
+    });
     console.log("API 응답:", res.data);
     return res.data;
   } catch (error) {

@@ -4,6 +4,7 @@ import {
   DepositInfoWrap,
   InputWrap,
   ProductSelect,
+  SellerInfo,
   UserInfo,
 } from "@/styles/accountInfoStyle";
 import { BankOptions } from "./selectOption";
@@ -39,12 +40,6 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
     }
   }, [data?.productDetail]);
 
-  useEffect(() => {
-    form.email.setValue(data?.user.email || "");
-    form.name.setValue(data?.user.user_name || "");
-    form.number.setValue(data?.user.phone_number || "");
-  }, [data]);
-
   // 상품 카운트 함수
   const handleClick = (index: number, increment: number) => {
     setCountArray((prevCountArray) => {
@@ -72,8 +67,6 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
     account_number: useInput(""),
   };
 
-  console.log(form);
-
   // 질문 답변 리스트 배열로 저장
   const [answerList, setAnswerList] = useState<{ input: string }[]>([]);
 
@@ -98,12 +91,13 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
 
   // 총 상품 값
   const totalPrice = calculateTotalPrice();
+
   // 총 합계
   const totalAmount = (Number(data?.product.post_price) || 0) + totalPrice;
 
   // 오늘 날짜 가져오기
   const date = new Date();
-  date.setDate(date.getDate() + 1);
+  date.setDate(date.getDate());
   const today = date.toISOString().split("T")[0];
 
   // answerList 배열에 답변 추가하기
@@ -121,12 +115,13 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
 
   const req: OrderData = {
     order: {
-      order_status: "입금전",
+      order_status: "입금 대기",
       post_id: data?.post_id || null,
       purchase_user_id: token,
+      total_price: totalAmount,
+      deposit_dt: `${form.deposit_date.value} ${form.deposit_time.value}`,
     },
     user: {
-      user_id: token,
       addr_post: form.post_zipcode.value,
       addr: form.post_address.value,
       addr_detail: form.post_addr_detail.value,
@@ -137,8 +132,6 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
     answerList: answerList.map((item) => ({ answer: item.input })),
     orderProductList: orderProductList || [],
   };
-
-  console.log("req", req);
 
   const hadleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -164,7 +157,7 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
     try {
       const fetchData = await orderApi(req);
       console.log("주문 성공", fetchData);
-      router.push(`/groupDetail/${data?.post_id}/complted`);
+      router.push(`/groupDetail/${data?.post_id}/completed`);
     } catch (error) {
       console.error("주문 실패", error);
     }
@@ -173,7 +166,22 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
   return (
     <AccountInfoWrap>
       <h2 className="AccountInfo_title">입금 폼 작성</h2>
+
       <form className="account_info_form">
+        <SellerInfo>
+          <h3>판매자 계좌</h3>
+          <div>
+            <p>
+              <strong>예금주</strong>
+              {data?.user.account_name}
+            </p>
+            <p>
+              <strong>계좌 정보</strong>
+              {data?.user.bank} {data?.user.account_number}
+            </p>
+          </div>
+        </SellerInfo>
+
         <ProductSelect>
           <h3>상품 선택</h3>
           <ul>

@@ -2,7 +2,6 @@ import axios from "axios";
 
 export interface GroupReq {
   board_type: string;
-  user_id: string | null;
   title: string;
   content: string;
   post_status: string;
@@ -33,7 +32,11 @@ const groupUploadApi = async (data: GroupReq) => {
   const url = "/api/board/group-order/post";
 
   try {
-    const res = await axios.post<GroupReq>(url, data);
+    const res = await axios.post<GroupReq>(url, data, {
+      headers: {
+        Authorization: sessionStorage.getItem("userToken"),
+      },
+    });
     console.log("API 응답:", res.data);
     return res.data;
   } catch (error) {

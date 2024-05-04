@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { GroupForm } from "./UploadStyle";
 import { HomeMain } from "./homeStyle";
-import iconMenu from "@/../public/assets/svgs/menu-dots.svg";
+import iconMenu from "@/../public/assets/svgs/menu-dots.svg?url";
 import iconSoldOut from "@/../public/assets/images/soldout.png";
 
 export const ProductMain = styled(HomeMain)`
@@ -156,21 +156,21 @@ export const GroupSubmit = styled(GroupForm)`
   width: 100%;
 `;
 
-export const SubmitComplted = styled.main`
-  height: calc(100% - 215px);
+export const SubmitCompleted = styled.main`
+  height: calc(100vh - 215px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
   .icon_check {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
   }
 
-  .complted_text {
+  .completed_text {
     margin: 20px;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: bold;
   }
 `;

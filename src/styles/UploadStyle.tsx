@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import iconLandScape from "@/../public/assets/svgs/landscape.svg";
-import iconClose from "@/../public/assets/svgs/close.svg";
+import iconLandScape from "@/../public/assets/svgs/landscape.svg?url";
+import iconClose from "@/../public/assets/svgs/close.svg?url";
 
 export const UploadMain = styled.main`
   display: flex;
@@ -68,7 +68,8 @@ export const BasicImg = styled.div`
   margin: 0 auto;
   width: 300px;
   height: 300px;
-  background: white url(${iconLandScape.src}) center/70px no-repeat;
+  background-color: white;
+  background: white url(${iconLandScape.src}) center/80px no-repeat;
 `;
 
 export const UploadForm = styled.article`

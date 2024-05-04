@@ -95,7 +95,6 @@ export default function ProductUpdate() {
   const req = {
     post_id: id,
     board_type: boardType,
-    user_id: token,
     title: title.value,
     content: content.value,
     post_status: "InProgress",

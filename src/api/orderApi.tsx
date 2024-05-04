@@ -5,9 +5,10 @@ export interface OrderData {
     order_status: string;
     post_id: number | null;
     purchase_user_id: string | null;
+    total_price: number;
+    deposit_dt: string;
   };
   user: {
-    user_id: string | null;
     addr_post: string;
     addr: string;
     addr_detail: string;
@@ -31,7 +32,11 @@ export default async function orderApi(data: OrderData) {
   const url = "/api/order";
 
   try {
-    const res = await axios.post<OrderData>(url, data);
+    const res = await axios.post<OrderData>(url, data, {
+      headers: {
+        Authorization: sessionStorage.getItem("userToken"),
+      },
+    });
     console.log("API 응답:", res.data);
     console.log(res.status);
     return res.data;

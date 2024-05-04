@@ -26,12 +26,14 @@ export interface ViewProfileRes {
   reviewCount: number;
 }
 
-const viewProfileApi = async (
-  user_id: string | null
-): Promise<ViewProfileRes> => {
-  const url = `/api/my-page/${user_id}`;
+const viewProfileApi = async (): Promise<ViewProfileRes> => {
+  const url = "/api/my-page/";
   try {
-    const res = await axios.get(url);
+    const res = await axios.get(url, {
+      headers: {
+        Authorization: sessionStorage.getItem("userToken"),
+      },
+    });
     console.log("API 성공", res.data);
     return res.data;
   } catch (error) {
@@ -39,5 +41,4 @@ const viewProfileApi = async (
     throw error;
   }
 };
-
 export default viewProfileApi;

@@ -40,12 +40,8 @@ export interface EditReq {
   };
 }
 
-export default async function editProfileApi(
-  method: string,
-  user_id?: string | null,
-  data?: EditReq
-) {
-  const getUrl = `/api/profile/${user_id}`;
+export default async function editProfileApi(method: string, data?: EditReq) {
+  const getUrl = "/api/profile/";
   const putUrl = "/api/profile/update";
 
   try {
@@ -53,10 +49,18 @@ export default async function editProfileApi(
 
     if (method === "get") {
       // GET 요청
-      res = await axios.get(getUrl);
+      res = await axios.get(getUrl, {
+        headers: {
+          Authorization: sessionStorage.getItem("userToken"),
+        },
+      });
     } else if (method === "put") {
       // PUT 요청
-      res = await axios.put(putUrl, data);
+      res = await axios.put(putUrl, data, {
+        headers: {
+          Authorization: sessionStorage.getItem("userToken"),
+        },
+      });
     } else {
       throw new Error("지원되지 않는 HTTP 메서드입니다.");
     }

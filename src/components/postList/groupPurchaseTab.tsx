@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import homeTabApi from "@/api/homeTabApi";
 import { Product, User } from "./marketTab";
-import Pagination from "../pagination";
 import searchApi from "@/api/searchApi";
 
 export interface GroupItem {
@@ -98,9 +97,7 @@ const GroupPurchaseTab: React.FC<Props> = ({
                 <ProductArticle
                   key={item.groupOrder.post_id}
                   onClick={() => {
-                    router.push(
-                      `/productDetail/:status/${item.groupOrder.post_id}`
-                    );
+                    router.push(`/productDetail/${item.groupOrder.post_id}`);
                   }}
                 >
                   <img

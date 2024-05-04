@@ -13,7 +13,7 @@ export default async function searchApi(tab: string, data: SearchReq) {
   let url: string;
 
   if (tab === "market") {
-    url = "/api/search/group-order/list";
+    url = "/api/search/market/list";
   } else if (tab === "group") {
     url = "/api/search/group-order/list";
   } else if (tab === "total") {

@@ -16,6 +16,7 @@ export default async function profileUploadApi(
     const res = await axios.post(url, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
+        Authorization: sessionStorage.getItem("userToken"),
       },
     });
 

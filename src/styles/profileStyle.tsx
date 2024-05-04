@@ -4,7 +4,8 @@ import { LoginMain } from "./loginStyle";
 export const ProfileMain = styled(LoginMain)`
   justify-content: start;
   align-items: start;
-  height: calc(100% - 235px);
+  height: 100%;
+  min-height: calc(100vh - 215px);
 
   .list_wrap {
     background-color: white;
@@ -20,8 +21,8 @@ export const ProfileMain = styled(LoginMain)`
 
   .nav_menu {
     width: 150px;
-    display: flex;
     height: 100%;
+    display: flex;
     flex-direction: column;
 
     font-size: 14px;
@@ -153,5 +154,79 @@ export const ArticleList = styled.article`
 
   .product_date {
     font-size: 13px;
+  }
+`;
+
+// 공구 관리 상세
+export const ManageMain = styled(ProfileMain)`
+  h2 {
+    width: 1080px;
+    font-size: 24px;
+    font-weight: bold;
+    padding-left: 30px;
+    margin: 30px auto;
+  }
+
+  .list_wrap {
+    height: calc(100vh - 370px);
+  }
+`;
+
+export const ManageTable = styled.table`
+  width: 100%;
+
+  th {
+    padding: 5px;
+    font-weight: bold;
+    background-color: var(--color-trans-grey);
+  }
+
+  td {
+    padding: 5px;
+    text-align: center;
+    vertical-align: middle;
+    border-bottom: 2px solid var(--color-trans-grey);
+
+    &.order_dt {
+      white-space: pre-wrap;
+    }
+
+    .product_item {
+      width: 120px;
+    }
+
+    .traking_number {
+      width: 80px;
+    }
+
+    input,
+    select {
+      &:focus,
+      &:active {
+        outline: 2px solid var(--color-main);
+      }
+    }
+
+    select {
+      padding: 5px 10px;
+      box-shadow: 0px 0px 4px 0px #6d6d6d4e;
+      border-radius: 8px;
+      border: none;
+      font-family: var(--font-main);
+      font-size: 15px;
+    }
+
+    input {
+      width: 120px;
+      box-shadow: 0px 0px 4px 0px #91919145;
+      padding: 5px 10px;
+      border-radius: 8px;
+    }
+  }
+
+  button {
+    margin-right: 0 auto;
+    background-color: var(--color-main);
+    color: white;
   }
 `;

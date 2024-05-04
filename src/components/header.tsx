@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
 import ModalFilter from "./modal/modalFilter";
 import useInput from "@/hooks/useInput";
+import useDecodedToken from "@/hooks/useDecodedToken";
 
 interface PostUploadModalProps {
   setUploadModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -76,6 +77,9 @@ const Header: React.FC = () => {
   const { authState, setAuthState } = useAuthStore();
   const { token, setToken } = useAuthStore();
 
+  // 토큰 디코딩 커스텀 훅으로 user id 추출
+  const userId = useDecodedToken(token!);
+
   // 로그아웃 함수
   const handleLogout = () => {
     setAuthState(false);
@@ -129,7 +133,7 @@ const Header: React.FC = () => {
       </div>
       {authState ? (
         <LoginJoin>
-          <button onClick={() => router.push(`/profile/${token}`)}>
+          <button onClick={() => router.push(`/profile/${userId}/mySalesList`)}>
             프로필
           </button>
           <button onClick={handleLogout}>로그아웃</button>

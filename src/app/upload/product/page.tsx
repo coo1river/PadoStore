@@ -13,7 +13,7 @@ import {
   UploadMain,
 } from "@/styles/UploadStyle";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useRef, useState } from "react";
 
 const Product: React.FC = () => {
   // 라우터 사용
