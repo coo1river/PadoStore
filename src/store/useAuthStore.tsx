@@ -2,12 +2,23 @@ import { create } from "zustand";
 
 interface AuthStore {
   token: string | null;
-  setToken: (token: string | null) => void;
+  authState: boolean;
+  setToken: (newToken: string | null) => void;
+  setAuthState: (value: boolean) => void;
 }
 
-const useAuthStore = create<AuthStore>((set) => ({
-  token: null,
-  setToken: (token) => set({ token }),
-}));
+const useAuthStore = create<AuthStore>((set) => {
+  // sessionStorage에서 userToken 값 가져오기
 
+  const storedToken =
+    typeof window !== "undefined" ? sessionStorage.getItem("userToken") : null;
+
+  return {
+    token: storedToken,
+    // sessionStorage에 userToken 값이 있는 경우 true로 설정
+    authState: !!storedToken,
+    setToken: (newToken) => set({ token: newToken }),
+    setAuthState: (value) => set({ authState: value }),
+  };
+});
 export default useAuthStore;
