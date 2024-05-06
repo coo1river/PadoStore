@@ -19,6 +19,7 @@ const Login: React.FC = () => {
 
   const [error, setError] = useState<string>("");
 
+  const { authState, setAuthState } = useAuthStore();
   const { token, setToken } = useAuthStore();
 
   // 로그인 함수(로그인 유효성 검사, api 호출)
@@ -43,6 +44,7 @@ const Login: React.FC = () => {
         // zustand로 토큰 전역 관리, 세션 스토리지에 관리
         setToken(loginRes);
         useAuthStore.getState().setToken(loginRes);
+        setAuthState(true);
         sessionStorage.setItem("userToken", loginRes);
         router.push("/home");
       } catch {

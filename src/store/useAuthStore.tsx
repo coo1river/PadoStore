@@ -10,8 +10,7 @@ interface AuthStore {
 const useAuthStore = create<AuthStore>((set) => {
   // sessionStorage에서 userToken 값 가져오기
 
-  const storedToken =
-    typeof window !== "undefined" ? sessionStorage.getItem("userToken") : null;
+  const storedToken = sessionStorage.getItem("userToken");
 
   return {
     token: storedToken,
