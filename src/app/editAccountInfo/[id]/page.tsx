@@ -1,20 +1,43 @@
 "use client";
-import AddressForm from "@/components/addressForm";
+import editProfileApi, { EditRes } from "@/api/editProfileApi";
 import DaumPostcode, { AddressData } from "@/components/daumPostcode";
 import ModalFilter from "@/components/modal/modalFilter";
 import { BankOptions } from "@/components/selectOption";
 import useInput from "@/hooks/useInput";
-import { JoinMain } from "@/styles/joinStyle";
-import React, { useState } from "react";
+import { AccountInfoMain } from "@/styles/joinStyle";
+import React, { useEffect, useState } from "react";
 
 export default function EditAccountInfo() {
   // useInput 사용으로 정보 내용 담기
   const form = {
-    post_name: useInput(""),
+    account_name: useInput(""),
+    account_number: useInput(""),
+    bank: useInput(""),
     post_zipcode: useInput(""),
     post_address: useInput(""),
     post_addr_detail: useInput(""),
   };
+
+  const [data, setData] = useState<EditRes | null>(null);
+
+  // 최초 렌더링 시 데이터 가져오기
+  useEffect(() => {
+    const getData = async () => {
+      const res = await editProfileApi("get");
+      setData(res);
+    };
+    getData();
+  }, []);
+
+  // 데이터 값 input 기본 value로 불러오기
+  useEffect(() => {
+    form.account_name.setValue(data?.user.account_name || "");
+    form.account_number.setValue(data?.user.account_number || "");
+    form.bank.setValue(data?.user.bank || "");
+    form.post_zipcode.setValue(data?.user.addr_post || "");
+    form.post_address.setValue(data?.user.addr || "");
+    form.post_addr_detail.setValue(data?.user.addr_detail || "");
+  }, [data]);
 
   const [modal, setModal] = useState<boolean>(false);
 
@@ -27,28 +50,52 @@ export default function EditAccountInfo() {
   };
 
   return (
-    <JoinMain>
+    <AccountInfoMain>
       <h2 className="text_h2">입금 폼 수정</h2>
       <form>
-        <h3>계좌 정보</h3>
         <label htmlFor="select-bank">은행</label>
-        <select name="select-bank" id="select-bank">
+        <select
+          name="select-bank"
+          id="select-bank"
+          value={form.bank.value}
+          onChange={form.bank.onChange}
+        >
           <BankOptions />
         </select>
         <label htmlFor="input-account-name">예금주</label>
-        <input type="text" id="input-account-name" />
-        <label htmlFor="input-account-number">계좌번호</label>
-        <input type="text" id="input-account-number" />
-
-        <h3>주소 정보</h3>
-        <label htmlFor="input-zipcode">우편번호</label>
         <input
-          id="input-zipcode"
           type="text"
-          placeholder="우편번호"
-          value={form.post_zipcode.value}
-          onChange={form.post_zipcode.onChange}
+          id="input-account-name"
+          value={form.account_name.value}
+          onChange={form.account_name.onChange}
         />
+        <label htmlFor="input-account-number">계좌번호</label>
+        <input
+          type="text"
+          id="input-account-number"
+          value={form.account_number.value}
+          onChange={form.account_number.onChange}
+        />
+
+        <label htmlFor="input-zipcode">우편번호</label>
+        <div>
+          <input
+            id="input-zipcode"
+            type="text"
+            placeholder="우편번호"
+            value={form.post_zipcode.value}
+            onChange={form.post_zipcode.onChange}
+          />
+          <button
+            className="btn_search_zipcode"
+            onClick={(e: React.FormEvent) => {
+              e.preventDefault();
+              setModal(!modal);
+            }}
+          >
+            우편번호 찾기
+          </button>
+        </div>
 
         {/* 다음 주소 검색 모달 창 */}
         {modal ? (
@@ -56,15 +103,6 @@ export default function EditAccountInfo() {
             <DaumPostcode onComplete={handleComplete} />
           </ModalFilter>
         ) : null}
-        <button
-          className="btn_search_zipcode"
-          onClick={(e: React.FormEvent) => {
-            e.preventDefault();
-            setModal(!modal);
-          }}
-        >
-          우편번호 찾기
-        </button>
 
         <label htmlFor="input-addr">주소</label>
         <input
@@ -84,8 +122,8 @@ export default function EditAccountInfo() {
           onChange={form.post_addr_detail.onChange}
         />
 
-        <button>저장</button>
+        <button className="btn-save">저장</button>
       </form>
-    </JoinMain>
+    </AccountInfoMain>
   );
 }
