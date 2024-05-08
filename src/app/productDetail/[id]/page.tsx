@@ -7,6 +7,8 @@ import {
   ProfileImg,
   SoldOutFilter,
 } from "@/styles/productStyle";
+import IconBasicHeart from "@/../public/assets/svgs/basic-heart.svg";
+import IconFullHeart from "@/../public/assets/svgs/full-heart.svg";
 import React, { useEffect, useState } from "react";
 import postDetailApi, { Res } from "@/api/postDetailApi";
 import DetailModal from "@/components/modal/detailModal";
@@ -20,6 +22,9 @@ const ProductDetail: React.FC = () => {
 
   // 이미지 파일 상태 관리
   const [imgFile, setImgFile] = useState<string | File | undefined>("");
+
+  // 찜 상태 관리
+  const [like, setLike] = useState<boolean>(false);
 
   useEffect(() => {
     setImgFile(data?.file[0].up_file);
@@ -91,7 +96,22 @@ const ProductDetail: React.FC = () => {
               <p className="user_name">{data?.user.nickname}</p>
             </div>
             <div className="btns_wrap">
-              <button className="btn_like">찜하기</button>
+              <button
+                className="btn_like"
+                onClick={() => {
+                  setLike(!like);
+                  console.log(like);
+                }}
+              >
+                <div>
+                  찜하기
+                  {like ? (
+                    <IconBasicHeart width="20" height="20" fill="#3EABFA" />
+                  ) : (
+                    <IconFullHeart width="20" height="20" fill="#3EABFA" />
+                  )}
+                </div>
+              </button>
               <button className="btn_chat">구매 채팅하기</button>
             </div>
           </div>

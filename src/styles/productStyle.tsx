@@ -99,6 +99,16 @@ export const ProductInfo = styled.article`
     background-color: white;
     color: var(--color-main);
     border: 2px solid var(--color-main);
+
+    div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    svg {
+      margin-left: 5px;
+    }
   }
 `;
 

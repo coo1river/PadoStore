@@ -119,7 +119,7 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
           <button>
             찜 목록 <span>{data?.favoriteCount}</span>
           </button>
-          <button>
+          <button onClick={() => router.push(`/profile/${userId}/review`)}>
             후기 <span>{data?.reviewCount}</span>
           </button>
         </div>

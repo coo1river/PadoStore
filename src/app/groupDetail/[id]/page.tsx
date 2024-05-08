@@ -7,6 +7,8 @@ import {
   ProductMain,
   ProfileImg,
 } from "@/styles/productStyle";
+import IconBasicHeart from "@/../public/assets/svgs/basic-heart.svg";
+import IconFullHeart from "@/../public/assets/svgs/full-heart.svg";
 import AccountFormInfo from "@/components/accountInfo";
 import React, { useEffect, useState } from "react";
 import postDetailApi, { Res } from "@/api/postDetailApi";
@@ -21,6 +23,9 @@ const GroupDetail: React.FC = () => {
 
   // 이미지 파일 상태 관리
   const [imgFile, setImgFile] = useState<string | File | undefined>("");
+
+  // 찜 상태 관리
+  const [like, setLike] = useState<boolean>(false);
 
   // 프로필 이미지 가져오기
   useEffect(() => {
@@ -94,7 +99,22 @@ const GroupDetail: React.FC = () => {
               <p className="user_name">{data?.user.nickname}</p>
             </div>
             <div className="btns_wrap">
-              <button className="btn_like">찜하기</button>
+              <button
+                className="btn_like"
+                onClick={() => {
+                  setLike(!like);
+                  console.log(like);
+                }}
+              >
+                <div>
+                  찜하기
+                  {like ? (
+                    <IconBasicHeart width="20" height="20" fill="#3EABFA" />
+                  ) : (
+                    <IconFullHeart width="20" height="20" fill="#3EABFA" />
+                  )}
+                </div>
+              </button>
               <button className="btn_purchase">구매하기</button>
             </div>
           </div>
