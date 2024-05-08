@@ -5,7 +5,7 @@ import ModalFilter from "@/components/modal/modalFilter";
 import { BankOptions } from "@/components/selectOption";
 import useInput from "@/hooks/useInput";
 import { AccountInfoMain } from "@/styles/joinStyle";
-import React, { useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 
 export default function EditAccountInfo() {
   // useInput 사용으로 정보 내용 담기
@@ -47,6 +47,32 @@ export default function EditAccountInfo() {
     console.log(data);
     // 모달을 닫습니다.
     setModal(false);
+  };
+
+  const handleEditAccountInfo = async (e: FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const res = await editProfileApi("put", {
+        user: {
+          user_id: null,
+          password: null,
+          user_name: null,
+          nickname: null,
+          phone_number: null,
+          email: null,
+          addr_post: form.post_zipcode.value,
+          addr: form.post_address.value,
+          addr_detail: form.post_addr_detail.value,
+          bank: form.bank.value,
+          account_name: form.account_name.value,
+          account_number: form.account_number.value,
+        },
+      });
+      console.log("입금 폼 수정 성공", res);
+    } catch (error) {
+      console.error("수정 실패", error);
+    }
   };
 
   return (
@@ -122,7 +148,9 @@ export default function EditAccountInfo() {
           onChange={form.post_addr_detail.onChange}
         />
 
-        <button className="btn-save">저장</button>
+        <button className="btn-save" onClick={handleEditAccountInfo}>
+          저장
+        </button>
       </form>
     </AccountInfoMain>
   );
