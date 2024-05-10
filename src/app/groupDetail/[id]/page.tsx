@@ -46,11 +46,12 @@ const GroupDetail: React.FC = () => {
   // 찜하기(boolean) 값이 바뀔 때마다 업데이트
   useEffect(() => {
     setLike(data?.favorite);
-  }, [data?.favorite]);
+  }, [like]);
 
   // 게시물 메뉴 모달 상태 관리
   const [menuModal, setMenuModal] = useState<boolean>(false);
 
+  // 게시물 찜하기
   const handlePostLike = async () => {
     const res = await postListApi(data?.post_id);
     console.log(res);
