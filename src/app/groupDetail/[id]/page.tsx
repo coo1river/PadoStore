@@ -15,6 +15,7 @@ import postDetailApi, { Res } from "@/api/postDetailApi";
 import DetailModal from "@/components/modal/detailModal";
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
 import { useParams } from "next/navigation";
+import postListApi from "@/api/postLikeApi";
 
 const GroupDetail: React.FC = () => {
   const params = useParams();
@@ -25,7 +26,7 @@ const GroupDetail: React.FC = () => {
   const [imgFile, setImgFile] = useState<string | File | undefined>("");
 
   // 찜 상태 관리
-  const [like, setLike] = useState<boolean>(false);
+  const [like, setLike] = useState<boolean | undefined>(data?.favorite);
 
   // 프로필 이미지 가져오기
   useEffect(() => {
@@ -42,8 +43,18 @@ const GroupDetail: React.FC = () => {
     detail();
   }, []);
 
+  // 찜하기(boolean) 값이 바뀔 때마다 업데이트
+  useEffect(() => {
+    setLike(data?.favorite);
+  }, [data?.favorite]);
+
   // 게시물 메뉴 모달 상태 관리
   const [menuModal, setMenuModal] = useState<boolean>(false);
+
+  const handlePostLike = async () => {
+    const res = await postListApi(data?.post_id);
+    console.log(res);
+  };
 
   // 게시물 메뉴 열기 함수
   const handleClickMenu = () => {
@@ -102,8 +113,7 @@ const GroupDetail: React.FC = () => {
               <button
                 className="btn_like"
                 onClick={() => {
-                  setLike(!like);
-                  console.log(like);
+                  handlePostLike();
                 }}
               >
                 <div>

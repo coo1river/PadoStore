@@ -24,7 +24,7 @@ const ProductDetail: React.FC = () => {
   const [imgFile, setImgFile] = useState<string | File | undefined>("");
 
   // 찜 상태 관리
-  const [like, setLike] = useState<boolean>(false);
+  const [like, setLike] = useState<boolean | undefined>(data?.favorite);
 
   useEffect(() => {
     setImgFile(data?.file[0].up_file);
