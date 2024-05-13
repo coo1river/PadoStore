@@ -8,7 +8,7 @@ import loginApi from "@/api/loginApi";
 import { ErrorMessage } from "@/styles/joinStyle";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
-import kakaoLoginApi from "@/api/kakaoLoginApi";
+import { signIn } from "next-auth/react";
 
 const Login: React.FC = () => {
   const router = useRouter();
@@ -54,14 +54,11 @@ const Login: React.FC = () => {
     }
   };
 
-  const handleKakaoLogin = async (e: FormEvent) => {
-    e.preventDefault();
-    try {
-      const loginRes = await kakaoLoginApi();
-      console.log(loginRes);
-    } catch (error) {
-      console.error("오류");
-    }
+  const handleKakaoLogin = async () => {
+    await signIn("kakao", {
+      redirect: true,
+      callbackUrl: "/",
+    });
   };
 
   return (
