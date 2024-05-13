@@ -8,6 +8,7 @@ import loginApi from "@/api/loginApi";
 import { ErrorMessage } from "@/styles/joinStyle";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
+import kakaoLoginApi from "@/api/kakaoLoginApi";
 
 const Login: React.FC = () => {
   const router = useRouter();
@@ -50,6 +51,16 @@ const Login: React.FC = () => {
       } catch {
         setError("아이디 또는 비밀번호가 일치하지 않습니다.");
       }
+    }
+  };
+
+  const handleKakaoLogin = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      const loginRes = await kakaoLoginApi();
+      console.log(loginRes);
+    } catch (error) {
+      console.error("오류");
     }
   };
 
@@ -96,7 +107,7 @@ const Login: React.FC = () => {
       <SnsLogin>
         <h4>SNS 로그인</h4>
         <div className="btn_wrap">
-          <button className="icon_kakao">
+          <button className="icon_kakao" onClick={handleKakaoLogin}>
             카카오로 로그인
             <img src={iconKakao.src} alt="" />
           </button>
