@@ -61,6 +61,13 @@ const Login: React.FC = () => {
     });
   };
 
+  const handleNaverLogin = async () => {
+    await signIn("naver", {
+      redirect: true,
+      callbackUrl: "/",
+    });
+  };
+
   return (
     <LoginMain>
       <h2 className="a11y-hidden">로그인</h2>
@@ -108,7 +115,7 @@ const Login: React.FC = () => {
             카카오로 로그인
             <img src={iconKakao.src} alt="" />
           </button>
-          <button className="icon_naver">
+          <button className="icon_naver" onClick={handleNaverLogin}>
             네이버로 로그인
             <img src={iconNaver.src} alt="" />
           </button>
