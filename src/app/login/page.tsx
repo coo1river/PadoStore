@@ -8,7 +8,6 @@ import loginApi from "@/api/loginApi";
 import { ErrorMessage } from "@/styles/joinStyle";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
-import { signIn } from "next-auth/react";
 
 const Login: React.FC = () => {
   const router = useRouter();
@@ -54,18 +53,15 @@ const Login: React.FC = () => {
     }
   };
 
-  const handleKakaoLogin = async () => {
-    await signIn("kakao", {
-      redirect: true,
-      callbackUrl: "/",
-    });
-  };
+  // 카카오 로그인
+  const REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID;
+  const REDIRECT_URI = "http://localhost:3000/login";
 
-  const handleNaverLogin = async () => {
-    await signIn("naver", {
-      redirect: true,
-      callbackUrl: "/",
-    });
+  const url = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&
+  redirect_uri=${REDIRECT_URI}&response_type=code`;
+
+  const handleKakaoLogin = () => {
+    window.location.href = url;
   };
 
   return (
@@ -115,7 +111,7 @@ const Login: React.FC = () => {
             카카오로 로그인
             <img src={iconKakao.src} alt="" />
           </button>
-          <button className="icon_naver" onClick={handleNaverLogin}>
+          <button className="icon_naver">
             네이버로 로그인
             <img src={iconNaver.src} alt="" />
           </button>

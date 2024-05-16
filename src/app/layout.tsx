@@ -4,7 +4,6 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import ScrollToTop from "./scrollToTop";
 import StyledComponentsRegistry from "@/styles/registry";
-import AuthSession from "@/components/authSesssion";
 
 export const metadata: Metadata = {
   title: "파도상점",
@@ -26,7 +25,7 @@ export default function RootLayout({
           <GlobalStyle />
           <ScrollToTop />
           <Header />
-          <AuthSession>{children}</AuthSession>
+          {children}
           <Footer />
         </StyledComponentsRegistry>
       </body>
