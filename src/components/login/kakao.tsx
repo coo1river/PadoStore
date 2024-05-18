@@ -1,12 +1,18 @@
+import iconKakao from "../../../public/assets/images/icon-kakao.png";
+
 export default function KakaoLogin() {
-  const REST_API_KEY = process.env.KAKAO_CLIENT_ID;
-  const REDIRECT_URI = process.env.KAKAO_CLIENT_SECRET;
+  const REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID;
+  const REDIRECT_URI = "http://localhost:3000/login/kakao";
 
-  const url = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&
-  redirect_uri=${REDIRECT_URI}&response_type=code`;
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`;
 
-  const handleLogin = () => {
-    window.location.href = url;
+  const handleKakaoLogin = () => {
+    window.location.href = KAKAO_AUTH_URL;
   };
-  return handleLogin;
+  return (
+    <button className="icon_kakao" onClick={handleKakaoLogin}>
+      카카오로 로그인
+      <img src={iconKakao.src} alt="" />
+    </button>
+  );
 }

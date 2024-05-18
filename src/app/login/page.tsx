@@ -1,6 +1,6 @@
 "use client";
 import { LoginInput, LoginBtn, SnsLogin, LoginMain } from "@/styles/loginStyle";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import iconNaver from "../../../public/assets/images/icon-naver.png";
 import iconKakao from "../../../public/assets/images/icon-kakao.png";
 import useInput from "@/hooks/useInput";
@@ -8,6 +8,8 @@ import loginApi from "@/api/loginApi";
 import { ErrorMessage } from "@/styles/joinStyle";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
+import axios from "axios";
+import KakaoLogin from "@/components/login/kakao";
 
 const Login: React.FC = () => {
   const router = useRouter();
@@ -53,16 +55,17 @@ const Login: React.FC = () => {
     }
   };
 
-  // 카카오 로그인
-  const REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID;
-  const REDIRECT_URI = "http://localhost:3000/login";
+  // // 네이버 로그인
+  // const NAVER_CLIENT_ID = process.env.NEXT_PUBLIC_NAVER_CLIENT_ID;
+  // const STATE = "true";
 
-  const url = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&
-  redirect_uri=${REDIRECT_URI}&response_type=code`;
+  // const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&state=${STATE}`;
 
-  const handleKakaoLogin = () => {
-    window.location.href = url;
-  };
+  // console.log(NAVER_AUTH_URL);
+
+  // const handleNaverLogin = () => {
+  //   window.location.href = NAVER_AUTH_URL;
+  // };
 
   return (
     <LoginMain>
@@ -107,10 +110,7 @@ const Login: React.FC = () => {
       <SnsLogin>
         <h4>SNS 로그인</h4>
         <div className="btn_wrap">
-          <button className="icon_kakao" onClick={handleKakaoLogin}>
-            카카오로 로그인
-            <img src={iconKakao.src} alt="" />
-          </button>
+          <KakaoLogin />
           <button className="icon_naver">
             네이버로 로그인
             <img src={iconNaver.src} alt="" />
