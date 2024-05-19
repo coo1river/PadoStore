@@ -11,8 +11,8 @@ export default function KakaoLogin() {
   };
   return (
     <button className="icon_kakao" onClick={handleKakaoLogin}>
+      <img src={iconKakao.src} alt="카카오 로고" />
       카카오로 로그인
-      <img src={iconKakao.src} alt="" />
     </button>
   );
 }

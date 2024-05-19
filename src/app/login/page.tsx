@@ -1,15 +1,13 @@
 "use client";
 import { LoginInput, LoginBtn, SnsLogin, LoginMain } from "@/styles/loginStyle";
-import React, { FormEvent, useEffect, useState } from "react";
-import iconNaver from "../../../public/assets/images/icon-naver.png";
-import iconKakao from "../../../public/assets/images/icon-kakao.png";
+import React, { FormEvent, useState } from "react";
 import useInput from "@/hooks/useInput";
 import loginApi from "@/api/loginApi";
 import { ErrorMessage } from "@/styles/joinStyle";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
-import axios from "axios";
 import KakaoLogin from "@/components/login/kakao";
+import NaverLogin from "@/components/login/naver";
 
 const Login: React.FC = () => {
   const router = useRouter();
@@ -55,18 +53,6 @@ const Login: React.FC = () => {
     }
   };
 
-  // // 네이버 로그인
-  // const NAVER_CLIENT_ID = process.env.NEXT_PUBLIC_NAVER_CLIENT_ID;
-  // const STATE = "true";
-
-  // const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&state=${STATE}`;
-
-  // console.log(NAVER_AUTH_URL);
-
-  // const handleNaverLogin = () => {
-  //   window.location.href = NAVER_AUTH_URL;
-  // };
-
   return (
     <LoginMain>
       <h2 className="a11y-hidden">로그인</h2>
@@ -111,10 +97,7 @@ const Login: React.FC = () => {
         <h4>SNS 로그인</h4>
         <div className="btn_wrap">
           <KakaoLogin />
-          <button className="icon_naver">
-            네이버로 로그인
-            <img src={iconNaver.src} alt="" />
-          </button>
+          <NaverLogin />
         </div>
       </SnsLogin>
     </LoginMain>
