@@ -11,6 +11,7 @@ import {
   UploadBtn,
   ModalWrap,
 } from "@/styles/headerStyle";
+import IconChat from "@/../public/assets/svgs/messages.svg";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
 import ModalFilter from "./modal/modalFilter";
@@ -133,6 +134,14 @@ const Header: React.FC = () => {
       </div>
       {authState ? (
         <LoginJoin>
+          <button
+            className="btn-chat"
+            onClick={() => {
+              router.push(`/chat/${userId}`);
+            }}
+          >
+            <IconChat width="25" height="25" fill="#3EABFA" />
+          </button>
           <button onClick={() => router.push(`/profile/${userId}/mySalesList`)}>
             프로필
           </button>
@@ -140,6 +149,7 @@ const Header: React.FC = () => {
         </LoginJoin>
       ) : (
         <LoginJoin>
+          <div className="null"></div>
           <button onClick={() => router.push("/login")}>로그인</button>
           <button onClick={() => router.push("/join")}>회원가입</button>
         </LoginJoin>
