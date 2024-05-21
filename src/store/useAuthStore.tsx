@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface AuthStore {
   token: string | null;
@@ -7,17 +8,29 @@ interface AuthStore {
   setAuthState: (value: boolean) => void;
 }
 
-const useAuthStore = create<AuthStore>((set) => {
-  // sessionStorage에서 userToken 값 가져오기
+const useAuthStore = create(
+  persist<AuthStore>(
+    (set) => ({
+      token: null,
+      authState: false,
+      setToken: (newToken) => {
+        set({ token: newToken });
+        set({ authState: !!newToken });
+        if (newToken) {
+          sessionStorage.setItem("userToken", newToken);
+        } else {
+          sessionStorage.removeItem("userToken");
+        }
+      },
+      setAuthState: (value) => set({ authState: value }),
+    }),
+    {
+      name: "auth-storage",
+      getStorage: () => sessionStorage,
+      serialize: (state) => JSON.stringify(state),
+      deserialize: (str) => JSON.parse(str),
+    }
+  )
+);
 
-  const storedToken = sessionStorage.getItem("userToken");
-
-  return {
-    token: storedToken,
-    // sessionStorage에 userToken 값이 있는 경우 true로 설정
-    authState: !!storedToken,
-    setToken: (newToken) => set({ token: newToken }),
-    setAuthState: (value) => set({ authState: value }),
-  };
-});
 export default useAuthStore;

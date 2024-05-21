@@ -121,7 +121,8 @@ const Join: React.FC = () => {
           type="text"
           id="input-id"
           placeholder="아이디"
-          {...form.id}
+          onChange={form.id.onChange}
+          value={form.id.value}
           onBlur={IdValid}
         />
         <ErrorMessage>{error.idErr as string}</ErrorMessage>
@@ -135,7 +136,8 @@ const Join: React.FC = () => {
           type="password"
           id="input-pw"
           placeholder="비밀번호"
-          {...form.password}
+          onChange={form.password.onChange}
+          value={form.password.value}
           onBlur={PwValid}
         />
         <ErrorMessage>{error.pwErr as string}</ErrorMessage>
@@ -146,7 +148,8 @@ const Join: React.FC = () => {
           type="password"
           id="input-pwchk"
           placeholder="비밀번호 확인"
-          {...form.pwCheck}
+          onChange={form.pwCheck.onChange}
+          value={form.pwCheck.value}
           onBlur={PwCheckValid}
         />
         <ErrorMessage>{error.pwCheckErr as string}</ErrorMessage>
@@ -158,7 +161,8 @@ const Join: React.FC = () => {
           type="text"
           id="input-nic"
           placeholder="닉네임"
-          {...form.nickname}
+          onChange={form.nickname.onChange}
+          value={form.nickname.value}
           onBlur={NicknameValid}
         />
         <ErrorMessage>{error.nicknameErr as string}</ErrorMessage>
@@ -169,7 +173,8 @@ const Join: React.FC = () => {
           type="text"
           id="input-email"
           placeholder="이메일"
-          {...form.email}
+          onChange={form.email.onChange}
+          value={form.email.value}
           onBlur={EmailValid}
         />
         <ErrorMessage>{error.emailErr as string}</ErrorMessage>
@@ -180,7 +185,8 @@ const Join: React.FC = () => {
           type="text"
           id="input-name"
           placeholder="이름"
-          {...form.username}
+          onChange={form.username.onChange}
+          value={form.username.value}
           onBlur={UserNameValid}
         />
         <ErrorMessage>{error.userNameErr as string}</ErrorMessage>
@@ -191,7 +197,8 @@ const Join: React.FC = () => {
           type="text"
           id="input-num"
           placeholder="전화번호"
-          {...form.number}
+          onChange={form.number.onChange}
+          value={form.number.value}
           onBlur={NumberValid}
         />
         <ErrorMessage>{error.numberErr as string}</ErrorMessage>
