@@ -132,6 +132,7 @@ export const LoginJoin = styled.div`
   .null {
     width: 45px;
     height: 48px;
+    margin: 5px 10px 0 20px;
     display: hidden;
   }
 `;

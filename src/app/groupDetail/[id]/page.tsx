@@ -15,7 +15,7 @@ import postDetailApi, { Res } from "@/api/postDetailApi";
 import DetailModal from "@/components/modal/detailModal";
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
 import { useParams } from "next/navigation";
-import postListApi from "@/api/postLikeApi";
+import postLikeApi from "@/api/postLikeApi";
 
 const GroupDetail: React.FC = () => {
   const params = useParams();
@@ -26,12 +26,12 @@ const GroupDetail: React.FC = () => {
   const [imgFile, setImgFile] = useState<string | File | undefined>("");
 
   // 찜 상태 관리
-  const [like, setLike] = useState<boolean | undefined>(data?.favorite);
+  const [like, setLike] = useState<boolean | undefined>(undefined);
 
-  // 프로필 이미지 가져오기
+  // 프로필 이미지 가져오기, 찜한 상태 가져오기
   useEffect(() => {
     setImgFile(data?.file[0].up_file);
-  }, [data?.file]);
+  }, [data?.file, data?.favorite]);
 
   // 게시물 정보 가져오기
   useEffect(() => {
@@ -43,18 +43,15 @@ const GroupDetail: React.FC = () => {
     detail();
   }, []);
 
-  // 찜하기(boolean) 값이 바뀔 때마다 업데이트
-  useEffect(() => {
-    setLike(data?.favorite);
-  }, [like]);
-
   // 게시물 메뉴 모달 상태 관리
   const [menuModal, setMenuModal] = useState<boolean>(false);
 
   // 게시물 찜하기
   const handlePostLike = async () => {
-    const res = await postListApi(data?.post_id);
-    console.log(res);
+    if (data) {
+      await postLikeApi(data.post_id);
+      setLike((prevLike) => !prevLike);
+    }
   };
 
   // 게시물 메뉴 열기 함수
@@ -117,14 +114,12 @@ const GroupDetail: React.FC = () => {
                   handlePostLike();
                 }}
               >
-                <div>
-                  찜하기
-                  {like ? (
-                    <IconBasicHeart width="20" height="20" fill="#3EABFA" />
-                  ) : (
-                    <IconFullHeart width="20" height="20" fill="#3EABFA" />
-                  )}
-                </div>
+                찜하기
+                {like ? (
+                  <IconBasicHeart width="20" height="20" fill="#3EABFA" />
+                ) : (
+                  <IconFullHeart width="20" height="20" fill="#3EABFA" />
+                )}
               </button>
               <button className="btn_purchase">구매하기</button>
             </div>

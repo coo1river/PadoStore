@@ -95,7 +95,14 @@ export const ProductInfo = styled.article`
     margin-right: 10px;
   }
 
+  .btns_wrap {
+    display: flex;
+  }
+
   .btn_like {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: white;
     color: var(--color-main);
     border: 2px solid var(--color-main);

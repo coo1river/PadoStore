@@ -10,9 +10,9 @@ interface AuthStore {
 
 const useAuthStore = create(
   persist<AuthStore>(
-    (set) => ({
-      token: null,
-      authState: false,
+    (set, get) => ({
+      token: sessionStorage.getItem("userToken") || null,
+      authState: !!sessionStorage.getItem("userToken"),
       setToken: (newToken) => {
         set({ token: newToken });
         set({ authState: !!newToken });
