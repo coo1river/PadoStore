@@ -1,4 +1,6 @@
 "use client";
+import useDecodedToken from "@/hooks/useDecodedToken";
+import useAuthStore from "@/store/useAuthStore";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
@@ -8,6 +10,9 @@ export default function Kakao() {
 
   const code = new URL(window.location.href).searchParams.get("code");
 
+  const { token, setToken } = useAuthStore();
+  const userId = useDecodedToken(token!);
+
   useEffect(() => {
     if (code) {
       axios
@@ -15,7 +20,9 @@ export default function Kakao() {
         .then((res) => {
           console.log(res.data);
           if (res.status === 200) {
-            router.push("/home");
+            useAuthStore.getState().setToken(res.headers.authorization);
+            sessionStorage.setItem("userToken", res.headers.authorization);
+            router.push(`/editProfile/${userId}`);
           }
         })
         .catch((error) => {

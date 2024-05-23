@@ -47,7 +47,7 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
     const fetchData = async () => {
       try {
         const [profileData, listData] = await Promise.all([
-          viewProfileApi(),
+          viewProfileApi(userId),
           mySalesListApi(listType, params),
         ]);
 

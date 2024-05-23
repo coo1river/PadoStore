@@ -1,3 +1,5 @@
+import useDecodedToken from "@/hooks/useDecodedToken";
+import useAuthStore from "@/store/useAuthStore";
 import axios from "axios";
 
 export interface ViewProfileRes {
@@ -26,8 +28,8 @@ export interface ViewProfileRes {
   reviewCount: number;
 }
 
-const viewProfileApi = async (): Promise<ViewProfileRes> => {
-  const url = "/api/my-page/";
+const viewProfileApi = async (userId: string): Promise<ViewProfileRes> => {
+  const url = `/api/my-page/${userId}`;
   try {
     const res = await axios.get(url, {
       headers: {
