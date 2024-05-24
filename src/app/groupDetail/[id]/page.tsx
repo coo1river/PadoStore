@@ -58,10 +58,6 @@ const GroupDetail: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(like);
-  }, [like]);
-
   // 게시물 메뉴 열기 함수
   const handleClickMenu = () => {
     setMenuModal(!menuModal);

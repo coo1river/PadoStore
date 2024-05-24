@@ -14,21 +14,28 @@ import postDetailApi, { Res } from "@/api/postDetailApi";
 import DetailModal from "@/components/modal/detailModal";
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
 import { useParams } from "next/navigation";
+import postLikeApi from "@/api/postLikeApi";
+import useAuthStore from "@/store/useAuthStore";
 
 const ProductDetail: React.FC = () => {
   const params = useParams();
+  const router = useRouter();
 
   const [data, setData] = useState<Res | null>(null);
 
   // 이미지 파일 상태 관리
   const [imgFile, setImgFile] = useState<string | File | undefined>("");
 
-  // 찜 상태 관리
-  const [like, setLike] = useState<boolean | undefined>(data?.favorite);
+  const { authState } = useAuthStore();
 
+  // 찜 상태 관리
+  const [like, setLike] = useState<boolean | undefined>(false);
+
+  // 프로필 이미지 가져오기, 찜한 상태 가져오기
   useEffect(() => {
     setImgFile(data?.file[0].up_file);
-  }, [data?.file]);
+    setLike(data?.favorite);
+  }, [data?.file, data?.favorite]);
 
   useEffect(() => {
     const detail = async () => {
@@ -40,6 +47,14 @@ const ProductDetail: React.FC = () => {
   }, []);
 
   const [menuModal, setMenuModal] = useState<boolean>(false);
+
+  // 게시물 찜하기
+  const handlePostLike = async () => {
+    if (data) {
+      await postLikeApi(data.post_id);
+      setLike((prevLike) => !prevLike);
+    }
+  };
 
   const handleClickMenu = () => {
     setMenuModal(!menuModal);
@@ -99,18 +114,15 @@ const ProductDetail: React.FC = () => {
               <button
                 className="btn_like"
                 onClick={() => {
-                  setLike(!like);
-                  console.log(like);
+                  authState ? handlePostLike() : router.push("/login");
                 }}
               >
-                <div>
-                  찜하기
-                  {like ? (
-                    <IconBasicHeart width="20" height="20" fill="#3EABFA" />
-                  ) : (
-                    <IconFullHeart width="20" height="20" fill="#3EABFA" />
-                  )}
-                </div>
+                찜하기
+                {like && authState ? (
+                  <IconFullHeart width="20" height="20" fill="#3EABFA" />
+                ) : (
+                  <IconBasicHeart width="20" height="20" fill="#3EABFA" />
+                )}
               </button>
               <button className="btn_chat">구매 채팅하기</button>
             </div>
