@@ -1,5 +1,3 @@
-import useDecodedToken from "@/hooks/useDecodedToken";
-import useAuthStore from "@/store/useAuthStore";
 import axios from "axios";
 
 export interface ViewProfileRes {

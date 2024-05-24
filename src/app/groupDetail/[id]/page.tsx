@@ -10,7 +10,7 @@ import {
 import IconBasicHeart from "@/../public/assets/svgs/basic-heart.svg";
 import IconFullHeart from "@/../public/assets/svgs/full-heart.svg";
 import AccountFormInfo from "@/components/accountInfo";
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import postDetailApi, { Res } from "@/api/postDetailApi";
 import DetailModal from "@/components/modal/detailModal";
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
