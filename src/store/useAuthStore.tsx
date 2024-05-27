@@ -11,24 +11,17 @@ interface AuthStore {
 const useAuthStore = create(
   persist<AuthStore>(
     (set) => ({
-      token: sessionStorage.getItem("userToken") || null,
-      authState: !!sessionStorage.getItem("userToken"),
+      token: null,
+      authState: false,
       setToken: (newToken) => {
         set({ token: newToken });
         set({ authState: !!newToken });
-        if (newToken) {
-          sessionStorage.setItem("userToken", newToken);
-        } else {
-          sessionStorage.removeItem("userToken");
-        }
       },
       setAuthState: (value) => set({ authState: value }),
     }),
     {
       name: "auth-storage",
       storage: createJSONStorage(() => sessionStorage),
-      serialize: (state) => JSON.stringify(state),
-      deserialize: (str) => JSON.parse(str),
     }
   )
 );
