@@ -8,7 +8,7 @@
 ## 목차
 
 1. [프로젝트 소개](#intro)
-2. [프로젝트 멤버 소개 및 역할](#team)
+2. [프로젝트 멤버](#team)
 3. [기술 스택](#technology-stack)
 4. [기능 및 구조]
 5. [협업 방식]
@@ -24,7 +24,17 @@
 
 <br>
 
-## <span id="technology-stack">2. 기술 스택 및 이유
+## <span id="team">2. 프로젝트 멤버
+
+| **FRONTEND DEVELOPER** | **BACKEND DEVELOPER** |
+| :---------------------:| :-------------------: |
+| [coo1river](https://github.com/coo1river) | [essential14](https://github.com/essential14) |
+
+
+	
+<br>
+
+## <span id="technology-stack">3. 기술 스택 및 이유
 
 ### 기술 스택
 
