@@ -16,6 +16,7 @@ import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
 import { useParams, useRouter } from "next/navigation";
 import postLikeApi from "@/api/postLikeApi";
 import useAuthStore from "@/store/useAuthStore";
+import useDecodedToken from "@/hooks/useDecodedToken";
 
 const ProductDetail: React.FC = () => {
   const params = useParams();
@@ -27,6 +28,12 @@ const ProductDetail: React.FC = () => {
   const [imgFile, setImgFile] = useState<string | File | undefined>("");
 
   const { authState } = useAuthStore();
+
+  // 토큰 가져오기
+  const { token, setToken } = useAuthStore();
+
+  // 토큰 디코딩 커스텀 훅으로 user id 추출
+  const userId = useDecodedToken(token!);
 
   // 찜 상태 관리
   const [like, setLike] = useState<boolean | undefined>(false);
@@ -78,9 +85,13 @@ const ProductDetail: React.FC = () => {
             <div className="product_intro">
               <div className="title_update">
                 <h3 className="product_title">{data?.title}</h3>
-                <button className="btn_update" onClick={handleClickMenu} />
-                {menuModal ? (
-                  <DetailModal data={data} setMenuModal={handleClickMenu} />
+                {data?.user_id === userId ? (
+                  <>
+                    <button className="btn_update" onClick={handleClickMenu} />
+                    {menuModal ? (
+                      <DetailModal data={data} setMenuModal={handleClickMenu} />
+                    ) : null}
+                  </>
                 ) : null}
               </div>
               <p className="product_price"></p>
