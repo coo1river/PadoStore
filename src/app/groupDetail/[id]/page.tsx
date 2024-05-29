@@ -57,8 +57,13 @@ const GroupDetail: React.FC = () => {
   // 게시물 메뉴 모달 상태 관리
   const [menuModal, setMenuModal] = useState<boolean>(false);
 
-  // 게시물 찜하기
+  // 게시물 찜하기(본인 게시물인 경우 불가능)
   const handlePostLike = async () => {
+    if (authState && data?.user_id === userId) {
+      alert("본인 게시물에는 찜하기가 불가능합니다.");
+      return;
+    }
+
     if (data) {
       await postLikeApi(data.post_id);
       setLike((prevLike) => !prevLike);
