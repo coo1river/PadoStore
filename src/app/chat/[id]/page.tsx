@@ -2,11 +2,80 @@
 
 import { ChatList, ChatMain, ChatRoom } from "@/styles/chatStyle";
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
-import React from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
+import { Client, IMessage } from "@stomp/stompjs";
+import StompJs from "@stomp/stompjs";
+
+interface Message {
+  userId: number;
+  content: string;
+}
 
 export default function Chat() {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [currentMessage, setCurrentMessage] = useState<string>("");
+  const [isConnected, setIsConnected] = useState<boolean>(false);
+  const userId = useRef<number>(Date.now());
+  const client = useRef<Client | null>(null);
+
+  useEffect(() => {
+    // STOMP 클라이언트 설정
+    client.current = new Client({
+      brokerURL: "ws://localhost:8080/chat", // STOMP 웹소켓 서버 URL
+      connectHeaders: {
+        login: "user",
+        passcode: "password",
+      },
+      debug: (str) => {
+        console.log(str);
+      },
+      reconnectDelay: 5000,
+      heartbeatIncoming: 4000,
+      heartbeatOutgoing: 4000,
+      webSocketFactory: () => {
+        return new StompJs("http://localhost:8080/ws");
+      },
+      onConnect: () => {
+        setIsConnected(true);
+        client.current?.subscribe("/sub/chat/", (message: IMessage) => {
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            JSON.parse(message.body),
+          ]);
+        });
+      },
+      onDisconnect: () => {
+        setIsConnected(false);
+      },
+    });
+
+    client.current.activate();
+
+    return () => {
+      client.current?.deactivate();
+    };
+  }, []);
+
+  const sendMessage = (e: FormEvent) => {
+    e.preventDefault();
+    if (client.current?.connected) {
+      client.current.publish({
+        destination: "/pub/chat",
+        headers: {
+          Authorization: sessionStorage.getItem("userToken")!,
+        },
+        body: JSON.stringify({
+          userId: userId.current,
+          content: currentMessage,
+        }),
+      });
+      setCurrentMessage("");
+    }
+  };
+
   return (
     <ChatMain>
+      {/* 채팅방 목록 */}
       <ChatList>
         <div className="user_wrap">
           <img className="profile_img" src={ImgProfileBasic.src} />
@@ -23,6 +92,8 @@ export default function Chat() {
           </div>
         </div>
       </ChatList>
+
+      {/* 채팅방 */}
       <ChatRoom>
         <div className="message_other_wrap">
           <img className="profile_image" src={ImgProfileBasic.src} />

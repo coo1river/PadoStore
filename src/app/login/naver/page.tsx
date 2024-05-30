@@ -5,7 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
-export default function Kakao() {
+export default function Naver() {
   const router = useRouter();
 
   const code =
@@ -17,9 +17,10 @@ export default function Kakao() {
   const userId = useDecodedToken(token!);
 
   useEffect(() => {
+    const state = process.env.NEXT_PUBLIC_NAVER_STATE;
     if (code) {
       axios
-        .post("/api/sns/kakao", { code: code })
+        .post("/api/sns/naver", { code: code, state: state })
         .then((res) => {
           console.log(res.data);
           if (res.status === 200) {
@@ -29,7 +30,7 @@ export default function Kakao() {
           }
         })
         .catch((error) => {
-          console.error("카카오 로그인 실패:", error);
+          console.error("네이버 로그인 실패:", error);
         });
     }
   }, [code, router]);
