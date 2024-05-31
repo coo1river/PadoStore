@@ -2,9 +2,10 @@
 
 import { ChatList, ChatMain, ChatRoom } from "@/styles/chatStyle";
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
-import React, { FormEvent, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Client, IMessage } from "@stomp/stompjs";
-import StompJs from "@stomp/stompjs";
+import * as StompJs from "@stomp/stompjs";
+import { useParams } from "next/navigation";
 
 interface Message {
   userId: number;
@@ -12,65 +13,70 @@ interface Message {
 }
 
 export default function Chat() {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [currentMessage, setCurrentMessage] = useState<string>("");
-  const [isConnected, setIsConnected] = useState<boolean>(false);
-  const userId = useRef<number>(Date.now());
-  const client = useRef<Client | null>(null);
+  const [chatList, setChatList] = useState<
+    Array<{ applyId: string; chat: string }>
+  >([]);
+  const [chat, setChat] = useState("");
+
+  // useParams 사용하여 URL 매개변수 가져오기
+  const params = useParams();
+  const chat_room_id = params.id;
+
+  const client = useRef<StompJs.Client | null>(null);
 
   useEffect(() => {
-    // STOMP 클라이언트 설정
-    client.current = new Client({
-      brokerURL: "ws://localhost:8080/chat", // STOMP 웹소켓 서버 URL
-      connectHeaders: {
-        login: "user",
-        passcode: "password",
-      },
-      debug: (str) => {
-        console.log(str);
-      },
-      reconnectDelay: 5000,
-      heartbeatIncoming: 4000,
-      heartbeatOutgoing: 4000,
-      webSocketFactory: () => {
-        return new StompJs("http://localhost:8080/ws");
-      },
+    client.current = new StompJs.Client({
+      brokerURL: "ws://localhost:8080/chat",
       onConnect: () => {
-        setIsConnected(true);
-        client.current?.subscribe("/sub/chat/", (message: IMessage) => {
-          setMessages((prevMessages) => [
-            ...prevMessages,
-            JSON.parse(message.body),
-          ]);
-        });
+        console.log("Connected 성공");
+        if (client.current) {
+          client.current.subscribe(
+            `/sub/chat/${chat_room_id}`,
+            (message) => {
+              const json_body = JSON.parse(message.body);
+              setChatList((prevChatList) => [...prevChatList, json_body]);
+            },
+            {
+              Authorization: sessionStorage.getItem("userToken")!,
+            }
+          );
+        }
       },
-      onDisconnect: () => {
-        setIsConnected(false);
+      onStompError: (error) => {
+        console.error("STOMP error", error);
       },
     });
 
     client.current.activate();
 
     return () => {
-      client.current?.deactivate();
+      if (client.current) {
+        client.current.deactivate();
+      }
     };
-  }, []);
+  }, [chat_room_id]);
 
-  const sendMessage = (e: FormEvent) => {
-    e.preventDefault();
-    if (client.current?.connected) {
+  const publish = (chat: string) => {
+    if (client.current && client.current.connected) {
       client.current.publish({
         destination: "/pub/chat",
-        headers: {
-          Authorization: sessionStorage.getItem("userToken")!,
-        },
         body: JSON.stringify({
-          userId: userId.current,
-          content: currentMessage,
+          applyId: chat_room_id,
+          chat: chat,
         }),
       });
-      setCurrentMessage("");
+
+      setChat("");
     }
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChat(event.target.value);
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    publish(chat);
   };
 
   return (

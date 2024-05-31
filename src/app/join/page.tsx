@@ -156,7 +156,7 @@ const Join: React.FC = () => {
 
         {/* 닉네임 입력 */}
         <label htmlFor="input-nic">닉네임</label>
-        <InfoText>3자 - 10자</InfoText>
+        <InfoText>2자 - 10자</InfoText>
         <input
           type="text"
           id="input-nic"
