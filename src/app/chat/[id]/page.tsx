@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Client, IMessage } from "@stomp/stompjs";
 import * as StompJs from "@stomp/stompjs";
 import { useParams } from "next/navigation";
+import chatListApi from "@/api/chatListApi";
 
 interface Message {
   userId: number;
@@ -17,6 +18,7 @@ export default function Chat() {
     Array<{ applyId: string; chat: string }>
   >([]);
   const [chat, setChat] = useState("");
+  const [data, setData] = useState("");
 
   // useParams 사용하여 URL 매개변수 가져오기
   const params = useParams();
@@ -24,9 +26,18 @@ export default function Chat() {
 
   const client = useRef<StompJs.Client | null>(null);
 
+  // 채팅 목록 불러오기
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await chatListApi();
+      setData(data);
+    };
+    fetchData();
+  }, []);
+
   useEffect(() => {
     client.current = new StompJs.Client({
-      brokerURL: "ws://localhost:8080/chat",
+      brokerURL: "ws://localhost:8080/connect",
       onConnect: () => {
         console.log("Connected 성공");
         if (client.current) {
