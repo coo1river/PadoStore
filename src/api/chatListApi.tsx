@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default async function chatListApi() {
-  const url = "/chat/list";
+  const url = "/api/chat/list";
 
   try {
     const res = await axios.get(url, {

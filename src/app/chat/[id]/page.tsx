@@ -18,7 +18,7 @@ export default function Chat() {
     Array<{ applyId: string; chat: string }>
   >([]);
   const [chat, setChat] = useState("");
-  const [data, setData] = useState("");
+  const [data, setData] = useState(null);
 
   // useParams 사용하여 URL 매개변수 가져오기
   const params = useParams();
@@ -35,6 +35,7 @@ export default function Chat() {
     fetchData();
   }, []);
 
+  // 채팅 연결
   useEffect(() => {
     client.current = new StompJs.Client({
       brokerURL: "ws://localhost:8080/connect",
