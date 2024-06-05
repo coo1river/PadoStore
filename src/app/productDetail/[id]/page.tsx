@@ -140,7 +140,14 @@ const ProductDetail: React.FC = () => {
                   <IconBasicHeart width="20" height="20" fill="#3EABFA" />
                 )}
               </button>
-              <button className="btn_chat">구매 채팅하기</button>
+              <button
+                className="btn_chat"
+                onClick={() => {
+                  router.push(`/chat/${userId}/${data?.user_id}`);
+                }}
+              >
+                구매 채팅하기
+              </button>
             </div>
           </div>
         </ProductInfo>

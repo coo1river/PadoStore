@@ -35,6 +35,14 @@ export const ChatList = styled.article`
   }
 `;
 
+export const ChatRoomWrap = styled.article`
+  width: 100%;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
 export const ChatRoom = styled.article`
   width: 100%;
   box-sizing: border-box;
@@ -43,10 +51,14 @@ export const ChatRoom = styled.article`
   padding: 10px;
   color: #424242;
 
+  .info_text {
+    text-align: center;
+  }
+
   .chat {
     display: flex;
     flex-direction: column;
-    padding: 13px 20px;
+    padding: 13px 15px;
     width: fit-content;
     max-width: 60%;
     margin: 10px 5px;
@@ -85,5 +97,30 @@ export const ChatRoom = styled.article`
   .message_self {
     background-color: var(--color-main);
     color: white;
+  }
+`;
+
+export const ChatInputWrap = styled.div`
+  display: flex;
+  box-sizing: border-box;
+  position: relative;
+
+  .input_message {
+    width: 100%;
+    background-color: var(--color-trans-grey);
+    padding: 15px 25px;
+    border-radius: 30px;
+    font-size: 15px;
+  }
+
+  .btn_send {
+    margin: 0 10px;
+    right: 5px;
+    top: 4px;
+    position: absolute;
+    color: white;
+    padding: 8px;
+    font-weight: 600;
+    border-radius: 30px;
   }
 `;
