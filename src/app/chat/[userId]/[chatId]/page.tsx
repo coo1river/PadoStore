@@ -13,6 +13,7 @@ import * as StompJs from "@stomp/stompjs";
 import createChatApi, { ChatRes } from "@/api/chat/createChatApi";
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
 import useInput from "@/hooks/useInput";
+import chatDetailApi, { ChatDetail } from "@/api/chat/chatDetailApi";
 
 interface Message {
   chat_id: number;
@@ -29,23 +30,33 @@ export default function UserChat() {
 
   const [chatList, setChatList] = useState<Message[]>([]);
   const chat = useInput("");
-  const [data, setData] = useState<ChatRes | null>(null);
+
+  // 채팅 리스트 데이터 값 담는 useState
+  const [createData, setCreateData] = useState<ChatRes | null>(null);
+
+  // 채팅 상세 데이터 값 담는 useState
+  const [detailData, setDetailData] = useState<ChatDetail | null>(null);
 
   const client = useRef<StompJs.Client | null>(null);
-
-  // 채팅 상세에 보낼 쿼리 파라미터 값
-  const chatParam = {
-    chat_room_id: data?.chat_room_id,
-    limit: 13,
-    current_page: 1,
-  };
 
   // 채팅 연결 및 구독 설정
   useEffect(() => {
     // 채팅방 생성
     const fetchData = async () => {
-      const data = await createChatApi(receiver);
-      setData(data);
+      const createData = await createChatApi(receiver);
+      setCreateData(createData);
+
+      if (createData) {
+        // 채팅 상세에 보낼 쿼리 파라미터 값
+        const chatParam = {
+          chat_room_id: createData.chat_room_id,
+          limit: 13,
+          current_page: 1,
+        };
+        // 채팅방 상세
+        const chatDetails = await chatDetailApi(chatParam);
+        setDetailData(chatDetails);
+      }
     };
     fetchData();
 
@@ -74,9 +85,9 @@ export default function UserChat() {
 
   // 구독 설정
   const subscribe = () => {
-    if (client.current && data) {
+    if (client.current && createData) {
       client.current.subscribe(
-        `/sub/chat/${data.chat_room_id}`,
+        `/sub/chat/${createData.chat_room_id}`,
         (message) => {
           console.log("구독 성공", message.body);
           const json_body = JSON.parse(message.body);
@@ -97,7 +108,7 @@ export default function UserChat() {
           Authorization: sessionStorage.getItem("userToken")!,
         },
         body: JSON.stringify({
-          chat_room_id: data?.chat_room_id,
+          chat_room_id: createData?.chat_room_id,
           message: chats,
         }),
       });
