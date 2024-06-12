@@ -45,6 +45,7 @@ export const ChatRoomWrap = styled.article`
 
 export const ChatRoom = styled.article`
   width: 100%;
+  overflow-y: scroll;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;

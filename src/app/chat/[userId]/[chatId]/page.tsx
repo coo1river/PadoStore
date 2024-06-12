@@ -27,6 +27,7 @@ export default function UserChat() {
   // useParams 사용하여 URL 매개변수 가져오기
   const params = useParams();
   const receiver = params.chatId;
+  const userId = params.userId;
 
   const [chatList, setChatList] = useState<Message[]>([]);
   const chat = useInput("");
@@ -36,6 +37,10 @@ export default function UserChat() {
 
   // 채팅 상세 데이터 값 담는 useState
   const [detailData, setDetailData] = useState<ChatDetail | null>(null);
+
+  // 현재 페이지와 총 페이지 수를 추적하는 상태 변수
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
 
   const client = useRef<StompJs.Client | null>(null);
 
@@ -51,7 +56,7 @@ export default function UserChat() {
         const chatParam = {
           chat_room_id: createData.chat_room_id,
           limit: 13,
-          current_page: 1,
+          current_page: currentPage,
         };
         // 채팅방 상세
         const chatDetails = await chatDetailApi(chatParam);
@@ -66,8 +71,8 @@ export default function UserChat() {
         Authorization: sessionStorage.getItem("userToken")!,
       },
       onConnect: () => {
-        console.log("Connected 성공");
         subscribe();
+        console.log("Connected 성공");
       },
       onStompError: (error) => {
         console.error("STOMP error", error);
@@ -79,9 +84,10 @@ export default function UserChat() {
     return () => {
       if (client.current) {
         client.current.deactivate();
+        subscribe();
       }
     };
-  }, []);
+  }, [currentPage]);
 
   // 구독 설정
   const subscribe = () => {
@@ -135,6 +141,13 @@ export default function UserChat() {
     }
   };
 
+  // 다음 페이지 데이터 요청 함수
+  const fetchNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  };
+
   return (
     <ChatRoomWrap>
       <ChatRoom>
@@ -143,6 +156,41 @@ export default function UserChat() {
           <div className="chat message_other">안녕하세요! 구매 가능할까요?</div>
           <div className="time_stamp">12:33</div>
         </div>
+        {detailData?.chat?.map((message, index) => {
+          const date = new Date(message.insert_dt);
+          const timeString = date.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+
+          return (
+            <div
+              key={index}
+              className={
+                message.sender_id === userId
+                  ? "message_self_wrap"
+                  : "message_other_wrap"
+              }
+            >
+              {message.sender_id === userId && (
+                <div className="time_stamp">{timeString}</div>
+              )}
+              <div
+                className={
+                  message.sender_id === userId
+                    ? "chat message_self"
+                    : "chat message_other"
+                }
+              >
+                {message.message}
+              </div>
+              {message.sender_id !== userId && (
+                <div className="time_stamp">{timeString}</div>
+              )}
+            </div>
+          );
+        })}
+
         {chatList.map((chatItem, index) => (
           <div key={index} className="message_self_wrap">
             <div className="time_stamp">12:35</div>
