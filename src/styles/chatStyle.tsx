@@ -57,14 +57,15 @@ export const ChatRoom = styled.article`
   }
 
   .chat {
+    max-width: 350px;
     display: flex;
     flex-direction: column;
     padding: 13px 15px;
     width: fit-content;
-    max-width: 60%;
     margin: 10px 5px;
     border-radius: 20px;
     font-weight: 500;
+    box-sizing: border-box;
   }
 
   .message_other_wrap {
@@ -81,7 +82,7 @@ export const ChatRoom = styled.article`
 
   .time_stamp {
     align-self: end;
-    font-size: 14px;
+    font-size: 12px;
     margin-bottom: 15px;
   }
 

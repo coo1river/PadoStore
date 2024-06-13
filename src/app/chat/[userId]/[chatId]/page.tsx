@@ -19,7 +19,7 @@ interface Message {
   chat_id: number;
   sender_id: string;
   message: string;
-  insert_dt: string | null;
+  insert_dt: string;
   chat_room_id: number;
 }
 
@@ -44,6 +44,15 @@ export default function UserChat() {
 
   const client = useRef<StompJs.Client | null>(null);
 
+  // ChatRoom 스크롤을 맨 아래로 이동
+  const chatRoomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (chatRoomRef.current) {
+      chatRoomRef.current.scrollTop = chatRoomRef.current.scrollHeight;
+    }
+  }, [chatList]);
+
   // 채팅 연결 및 구독 설정
   useEffect(() => {
     // 채팅방 생성
@@ -55,12 +64,33 @@ export default function UserChat() {
         // 채팅 상세에 보낼 쿼리 파라미터 값
         const chatParam = {
           chat_room_id: createData.chat_room_id,
-          limit: 13,
+          limit: 10,
           current_page: currentPage,
         };
         // 채팅방 상세
         const chatDetails = await chatDetailApi(chatParam);
-        setDetailData(chatDetails);
+        if (chatDetails) {
+          const reversedChatDetails = {
+            ...chatDetails,
+            chat: chatDetails.chat.reverse(),
+          };
+          setDetailData(reversedChatDetails);
+
+          // 구독 설정
+          if (client.current) {
+            client.current.subscribe(
+              `/sub/chat/${createData.chat_room_id}`,
+              (message) => {
+                console.log("구독 성공", message.body);
+                const json_body = JSON.parse(message.body);
+                setChatList((prevChatList) => [...prevChatList, json_body]);
+              },
+              {
+                Authorization: sessionStorage.getItem("userToken")!,
+              }
+            );
+          }
+        }
       }
     };
     fetchData();
@@ -71,7 +101,6 @@ export default function UserChat() {
         Authorization: sessionStorage.getItem("userToken")!,
       },
       onConnect: () => {
-        subscribe();
         console.log("Connected 성공");
       },
       onStompError: (error) => {
@@ -84,27 +113,9 @@ export default function UserChat() {
     return () => {
       if (client.current) {
         client.current.deactivate();
-        subscribe();
       }
     };
-  }, [currentPage]);
-
-  // 구독 설정
-  const subscribe = () => {
-    if (client.current && createData) {
-      client.current.subscribe(
-        `/sub/chat/${createData.chat_room_id}`,
-        (message) => {
-          console.log("구독 성공", message.body);
-          const json_body = JSON.parse(message.body);
-          setChatList((prevChatList) => [...prevChatList, json_body]);
-        },
-        {
-          Authorization: sessionStorage.getItem("userToken")!,
-        }
-      );
-    }
-  };
+  }, []);
 
   const publish = (chats: string) => {
     if (client.current && client.current.connected) {
@@ -150,12 +161,7 @@ export default function UserChat() {
 
   return (
     <ChatRoomWrap>
-      <ChatRoom>
-        <div className="message_other_wrap">
-          <img className="profile_image" src={ImgProfileBasic.src} />
-          <div className="chat message_other">안녕하세요! 구매 가능할까요?</div>
-          <div className="time_stamp">12:33</div>
-        </div>
+      <ChatRoom ref={chatRoomRef}>
         {detailData?.chat?.map((message, index) => {
           const date = new Date(message.insert_dt);
           const timeString = date.toLocaleTimeString([], {
@@ -172,6 +178,9 @@ export default function UserChat() {
                   : "message_other_wrap"
               }
             >
+              {message.sender_id !== userId && (
+                <img className="profile_image" src={ImgProfileBasic.src} />
+              )}
               {message.sender_id === userId && (
                 <div className="time_stamp">{timeString}</div>
               )}
@@ -191,12 +200,20 @@ export default function UserChat() {
           );
         })}
 
-        {chatList.map((chatItem, index) => (
-          <div key={index} className="message_self_wrap">
-            <div className="time_stamp">12:35</div>
-            <div className="chat message_self">{chatItem.message}</div>
-          </div>
-        ))}
+        {chatList.map((chatItem, index) => {
+          const date = new Date(chatItem.insert_dt);
+          const timeString = date.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+
+          return (
+            <div key={index} className="message_self_wrap">
+              <div className="time_stamp">{timeString}</div>
+              <div className="chat message_self">{chatItem.message}</div>
+            </div>
+          );
+        })}
       </ChatRoom>
 
       {/* 채팅 input */}
