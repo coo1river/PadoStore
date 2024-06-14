@@ -19,6 +19,7 @@ export const ChatList = styled.article`
   }
 
   .user_wrap {
+    cursor: pointer;
     padding: 15px;
     display: flex;
     align-items: center;
