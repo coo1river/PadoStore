@@ -40,41 +40,25 @@ export default function UserChat() {
 
   // 현재 페이지와 총 페이지 수를 추적하는 상태 변수
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(1);
 
   const client = useRef<StompJs.Client | null>(null);
 
   // ChatRoom 스크롤을 맨 아래로 이동
   const chatRoomRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (chatRoomRef.current) {
-      chatRoomRef.current.scrollTop = chatRoomRef.current.scrollHeight;
-    }
-  }, [chatList]);
+  const [isInitialMount, setIsInitialMount] = useState(true);
+  const [isFetching, setIsFetching] = useState(false);
 
   // 채팅 연결 및 구독 설정
   useEffect(() => {
     // 채팅방 생성
     const fetchData = async () => {
-      const createData = await createChatApi(receiver);
-      setCreateData(createData);
+      if (receiver !== userId) {
+        const createData = await createChatApi(receiver);
+        setCreateData(createData);
 
-      if (createData) {
-        // 채팅 상세에 보낼 쿼리 파라미터 값
-        const chatParam = {
-          chat_room_id: createData.chat_room_id,
-          limit: 10,
-          current_page: currentPage,
-        };
-        // 채팅방 상세
-        const chatDetails = await chatDetailApi(chatParam);
-        if (chatDetails) {
-          const reversedChatDetails = {
-            ...chatDetails,
-            chat: chatDetails.chat.reverse(),
-          };
-          setDetailData(reversedChatDetails);
+        if (createData) {
+          fetchChatDetails();
 
           // 구독 설정
           if (client.current) {
@@ -91,6 +75,10 @@ export default function UserChat() {
             );
           }
         }
+      } else {
+        console.log(
+          "Receiver와 UserID가 동일합니다. 채팅방을 생성하지 않습니다."
+        );
       }
     };
     fetchData();
@@ -116,6 +104,56 @@ export default function UserChat() {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (chatRoomRef.current) {
+      chatRoomRef.current.scrollTop = chatRoomRef.current.scrollHeight;
+    }
+  }, []);
+
+  const handleScroll = async () => {
+    if (
+      chatRoomRef.current &&
+      chatRoomRef.current.scrollTop === 0 &&
+      !isFetching
+    ) {
+      setIsFetching(true);
+      setCurrentPage(currentPage + 1);
+      await fetchChatDetails();
+      setIsFetching(false);
+    }
+  };
+
+  const fetchChatDetails = async () => {
+    const chatParam = {
+      chat_room_id: createData?.chat_room_id,
+      limit: 10,
+      current_page: currentPage,
+    };
+    const chatDetails = await chatDetailApi(chatParam);
+    if (chatDetails) {
+      const reversedChatDetails = {
+        ...chatDetails,
+        chat: chatDetails.chat.reverse(),
+      };
+      setDetailData((prevDetailData) => ({
+        ...reversedChatDetails,
+        chat: [...reversedChatDetails.chat, ...(prevDetailData?.chat || [])],
+      }));
+    }
+  };
+
+  useEffect(() => {
+    const chatRoomCurrent = chatRoomRef.current;
+    if (chatRoomCurrent) {
+      chatRoomCurrent.addEventListener("scroll", handleScroll);
+    }
+    return () => {
+      if (chatRoomCurrent) {
+        chatRoomCurrent.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, [currentPage, isFetching]);
 
   const publish = (chats: string) => {
     if (client.current && client.current.connected) {
@@ -149,13 +187,6 @@ export default function UserChat() {
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleSubmit(e);
-    }
-  };
-
-  // 다음 페이지 데이터 요청 함수
-  const fetchNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage((prevPage) => prevPage + 1);
     }
   };
 

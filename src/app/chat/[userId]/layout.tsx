@@ -39,7 +39,7 @@ export default function ChatLayout({
           >
             <img className="profile_img" src={ImgProfileBasic.src} />
             <div className="nickname_chat_wrap">
-              <p className="nickname">{item.chat_user2}</p>
+              <p className="nickname">{item.chat_user1}</p>
               <p>{item.last_message}</p>
             </div>
           </div>
