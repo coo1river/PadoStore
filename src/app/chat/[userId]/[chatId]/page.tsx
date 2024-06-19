@@ -1,5 +1,4 @@
 "use client";
-import { ChatInputWrap, ChatRoom, ChatRoomWrap } from "@/styles/chatStyle";
 import React, {
   FormEvent,
   KeyboardEvent,
@@ -8,12 +7,13 @@ import React, {
   useState,
 } from "react";
 import { useParams } from "next/navigation";
-import IconSend from "@/../public/assets/svgs/free-icon-font-paper-plane.svg";
 import * as StompJs from "@stomp/stompjs";
 import createChatApi, { ChatRes } from "@/api/chat/createChatApi";
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
 import useInput from "@/hooks/useInput";
-import chatDetailApi, { ChatDetail } from "@/api/chat/chatDetailApi";
+import chatDetailApi, { ChatDetail, ChatReq } from "@/api/chat/chatDetailApi";
+import IconSend from "@/../public/assets/svgs/free-icon-font-paper-plane.svg";
+import { ChatInputWrap, ChatRoom, ChatRoomWrap } from "@/styles/chatStyle";
 
 interface Message {
   chat_id: number;
@@ -24,7 +24,7 @@ interface Message {
 }
 
 export default function UserChat() {
-  // useParams 사용하여 URL 매개변수 가져오기
+  //  useParams 사용하여 URL 매개변수 가져오기
   const params = useParams();
   const receiver = params.chatId;
   const userId = params.userId;
@@ -38,52 +38,36 @@ export default function UserChat() {
   // 채팅 상세 데이터 값 담는 useState
   const [detailData, setDetailData] = useState<ChatDetail | null>(null);
 
-  // 현재 페이지와 총 페이지 수를 추적하는 상태 변수
+  // 현재 페이지 설정
   const [currentPage, setCurrentPage] = useState<number>(1);
-
-  const client = useRef<StompJs.Client | null>(null);
-
-  // ChatRoom 스크롤을 맨 아래로 이동
-  const chatRoomRef = useRef<HTMLDivElement>(null);
-
-  const [isInitialMount, setIsInitialMount] = useState(true);
   const [isFetching, setIsFetching] = useState(false);
 
-  // 채팅 연결 및 구독 설정
+  const client = useRef<StompJs.Client | null>(null);
+  const chatRoomRef = useRef<HTMLDivElement>(null);
+
+  // 채팅방 생성
   useEffect(() => {
-    // 채팅방 생성
     const fetchData = async () => {
-      if (receiver !== userId) {
-        const createData = await createChatApi(receiver);
-        setCreateData(createData);
-
-        if (createData) {
-          fetchChatDetails();
-
-          // 구독 설정
-          if (client.current) {
-            client.current.subscribe(
-              `/sub/chat/${createData.chat_room_id}`,
-              (message) => {
-                console.log("구독 성공", message.body);
-                const json_body = JSON.parse(message.body);
-                setChatList((prevChatList) => [...prevChatList, json_body]);
-              },
-              {
-                Authorization: sessionStorage.getItem("userToken")!,
-              }
-            );
-          }
-        }
-      } else {
-        console.log(
-          "Receiver와 UserID가 동일합니다. 채팅방을 생성하지 않습니다."
-        );
+      try {
+        const res = await createChatApi(receiver);
+        setCreateData(res);
+      } catch (error) {
+        console.error("채팅방 생성에 실패했습니다.", error);
       }
     };
     fetchData();
+  }, [receiver]);
 
-    client.current = new StompJs.Client({
+  // 채팅방 생성 후 채팅 상세 데이터 가져오기 및 구독하기
+  useEffect(() => {
+    if (createData) {
+      chatDetails();
+      subscribe();
+    }
+  }, [createData]);
+
+  useEffect(() => {
+    const clientInstance = new StompJs.Client({
       brokerURL: "ws://localhost:8080/connect",
       connectHeaders: {
         Authorization: sessionStorage.getItem("userToken")!,
@@ -95,12 +79,12 @@ export default function UserChat() {
         console.error("STOMP error", error);
       },
     });
-
-    client.current.activate();
+    client.current = clientInstance;
+    clientInstance.activate();
 
     return () => {
-      if (client.current) {
-        client.current.deactivate();
+      if (clientInstance) {
+        clientInstance.deactivate();
       }
     };
   }, []);
@@ -109,7 +93,47 @@ export default function UserChat() {
     if (chatRoomRef.current) {
       chatRoomRef.current.scrollTop = chatRoomRef.current.scrollHeight;
     }
-  }, []);
+  }, [detailData]);
+
+  const chatDetails = async () => {
+    if (!createData) return;
+    const chatParam: ChatReq = {
+      chat_room_id: createData.chat_room_id,
+      limit: 10,
+      current_page: currentPage,
+    };
+    try {
+      const chatDetails = await chatDetailApi(chatParam);
+      if (chatDetails) {
+        const reversedChatDetails = {
+          ...chatDetails,
+          chat: chatDetails.chat.reverse(),
+        };
+        setDetailData((prevDetailData) => ({
+          ...reversedChatDetails,
+          chat: [...reversedChatDetails.chat, ...(prevDetailData?.chat || [])],
+        }));
+      }
+    } catch (error) {
+      console.error("채팅 상세 정보를 불러오는 중 오류가 발생했습니다.", error);
+    }
+  };
+
+  const subscribe = () => {
+    if (client.current && createData) {
+      client.current.subscribe(
+        `/sub/chat/${createData.chat_room_id}`,
+        (message) => {
+          console.log("구독 성공", message.body);
+          const json_body = JSON.parse(message.body);
+          setChatList((prevChatList) => [...prevChatList, json_body]);
+        },
+        {
+          Authorization: sessionStorage.getItem("userToken")!,
+        }
+      );
+    }
+  };
 
   const handleScroll = async () => {
     if (
@@ -119,27 +143,8 @@ export default function UserChat() {
     ) {
       setIsFetching(true);
       setCurrentPage(currentPage + 1);
-      await fetchChatDetails();
+      await chatDetails();
       setIsFetching(false);
-    }
-  };
-
-  const fetchChatDetails = async () => {
-    const chatParam = {
-      chat_room_id: createData?.chat_room_id,
-      limit: 10,
-      current_page: currentPage,
-    };
-    const chatDetails = await chatDetailApi(chatParam);
-    if (chatDetails) {
-      const reversedChatDetails = {
-        ...chatDetails,
-        chat: chatDetails.chat.reverse(),
-      };
-      setDetailData((prevDetailData) => ({
-        ...reversedChatDetails,
-        chat: [...reversedChatDetails.chat, ...(prevDetailData?.chat || [])],
-      }));
     }
   };
 
@@ -156,14 +161,14 @@ export default function UserChat() {
   }, [currentPage, isFetching]);
 
   const publish = (chats: string) => {
-    if (client.current && client.current.connected) {
+    if (client.current && client.current.connected && createData) {
       client.current.publish({
         destination: "/pub/chat",
         headers: {
           Authorization: sessionStorage.getItem("userToken")!,
         },
         body: JSON.stringify({
-          chat_room_id: createData?.chat_room_id,
+          chat_room_id: createData.chat_room_id,
           message: chats,
         }),
       });
@@ -180,7 +185,6 @@ export default function UserChat() {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-
     publish(chat.value);
   };
 
@@ -210,7 +214,11 @@ export default function UserChat() {
               }
             >
               {message.sender_id !== userId && (
-                <img className="profile_image" src={ImgProfileBasic.src} />
+                <img
+                  className="profile_image"
+                  src={ImgProfileBasic.src}
+                  alt="Profile"
+                />
               )}
               {message.sender_id === userId && (
                 <div className="time_stamp">{timeString}</div>
