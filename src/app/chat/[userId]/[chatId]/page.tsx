@@ -45,7 +45,13 @@ export default function UserChat() {
   const client = useRef<StompJs.Client | null>(null);
   const chatRoomRef = useRef<HTMLDivElement>(null);
 
-  // 채팅방 생성
+  // 채팅방 생성 후 채팅 상세 데이터 가져오기 및 구독하기
+  useEffect(() => {
+    if (createData) {
+      chatDetails();
+    }
+  }, [createData]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -58,15 +64,9 @@ export default function UserChat() {
     fetchData();
   }, [receiver]);
 
-  // 채팅방 생성 후 채팅 상세 데이터 가져오기 및 구독하기
   useEffect(() => {
-    if (createData) {
-      chatDetails();
-      subscribe();
-    }
-  }, [createData]);
+    if (!createData) return;
 
-  useEffect(() => {
     const clientInstance = new StompJs.Client({
       brokerURL: "ws://localhost:8080/connect",
       connectHeaders: {
@@ -74,11 +74,14 @@ export default function UserChat() {
       },
       onConnect: () => {
         console.log("Connected 성공");
+        chatDetails();
+        subscribe();
       },
       onStompError: (error) => {
         console.error("STOMP error", error);
       },
     });
+
     client.current = clientInstance;
     clientInstance.activate();
 
@@ -87,7 +90,7 @@ export default function UserChat() {
         clientInstance.deactivate();
       }
     };
-  }, []);
+  }, [createData]);
 
   useEffect(() => {
     if (chatRoomRef.current) {
