@@ -45,13 +45,6 @@ export default function UserChat() {
   const client = useRef<StompJs.Client | null>(null);
   const chatRoomRef = useRef<HTMLDivElement>(null);
 
-  // 채팅방 생성 후 채팅 상세 데이터 가져오기 및 구독하기
-  useEffect(() => {
-    if (createData) {
-      chatDetails();
-    }
-  }, [createData]);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
