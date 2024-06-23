@@ -86,10 +86,17 @@ export default function UserChat() {
   }, [createData]);
 
   useEffect(() => {
-    if (chatRoomRef.current) {
-      chatRoomRef.current.scrollTop = chatRoomRef.current.scrollHeight;
+    if (chatRoomRef.current && detailData) {
+      // 현재 스크롤 위치 저장
+      const { scrollTop, scrollHeight, clientHeight } = chatRoomRef.current;
+      const isScrolledToBottom = scrollHeight - scrollTop === clientHeight;
+
+      // 데이터 추가 후 하단으로 스크롤
+      if (isScrolledToBottom || currentPage === 1) {
+        chatRoomRef.current.scrollTop = chatRoomRef.current.scrollHeight;
+      }
     }
-  }, [detailData]);
+  }, [detailData, chatList]);
 
   const chatDetails = async () => {
     if (!createData) return;
