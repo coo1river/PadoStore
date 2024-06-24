@@ -102,7 +102,7 @@ export default function UserChat() {
     if (!createData) return;
     const chatParam: ChatReq = {
       chat_room_id: createData.chat_room_id,
-      limit: 10,
+      limit: 15,
       current_page: currentPage,
     };
     try {
