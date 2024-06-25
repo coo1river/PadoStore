@@ -45,6 +45,7 @@ export default function UserChat() {
   const client = useRef<StompJs.Client | null>(null);
   const chatRoomRef = useRef<HTMLDivElement>(null);
 
+  // 채팅방 생성
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -85,6 +86,7 @@ export default function UserChat() {
     };
   }, [createData]);
 
+  // 스크롤 관리
   useEffect(() => {
     if (chatRoomRef.current && detailData) {
       // 현재 스크롤 위치 저장
@@ -98,6 +100,7 @@ export default function UserChat() {
     }
   }, [detailData, chatList]);
 
+  // 채팅 상세
   const chatDetails = async () => {
     if (!createData) return;
     const chatParam: ChatReq = {
@@ -122,6 +125,7 @@ export default function UserChat() {
     }
   };
 
+  // STOMP 구독
   const subscribe = () => {
     if (client.current && createData) {
       client.current.subscribe(
@@ -138,6 +142,7 @@ export default function UserChat() {
     }
   };
 
+  // 스크롤 이벤트
   const handleScroll = async () => {
     if (
       chatRoomRef.current &&
@@ -151,6 +156,7 @@ export default function UserChat() {
     }
   };
 
+  // 스크롤 이벤트 발생 시 새로운 채팅 데이터 가져오기
   useEffect(() => {
     const chatRoomCurrent = chatRoomRef.current;
     if (chatRoomCurrent) {
@@ -191,6 +197,7 @@ export default function UserChat() {
     publish(chat.value);
   };
 
+  // 엔터 키 클릭 시 전송 기능
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleSubmit(e);
