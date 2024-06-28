@@ -230,3 +230,28 @@ export const ManageTable = styled.table`
     color: white;
   }
 `;
+
+// 후기 목록 스타일
+export const ReviewListMain = styled.main`
+  article {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+
+    .nickname_review_wrap {
+      display: flex;
+
+      .nickname {
+        margin-right: 10px;
+      }
+    }
+  }
+`;
+
+// 찜 목록 스타일
+export const PostLikeListMain = styled.main`
+  article {
+    display: flex;
+  }
+`;
