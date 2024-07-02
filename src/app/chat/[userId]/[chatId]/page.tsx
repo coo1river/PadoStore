@@ -10,6 +10,7 @@ import { useParams } from "next/navigation";
 import * as StompJs from "@stomp/stompjs";
 import createChatApi, { ChatRes } from "@/api/chat/createChatApi";
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
+import IconExit from "@/../public/assets/svgs/free-icon-font-exit-3917770.svg";
 import useInput from "@/hooks/useInput";
 import chatDetailApi, { ChatDetail, ChatReq } from "@/api/chat/chatDetailApi";
 import IconSend from "@/../public/assets/svgs/free-icon-font-paper-plane.svg";
@@ -209,6 +210,9 @@ export default function UserChat() {
   return (
     <ChatRoomWrap>
       <ChatRoom ref={chatRoomRef}>
+        <div className="chat_header">
+          <IconExit width="100" height="100" fill="#3EABFA" />
+        </div>
         {detailData?.chat?.map((message, index) => {
           const date = new Date(message.insert_dt);
           const timeString = date.toLocaleTimeString([], {

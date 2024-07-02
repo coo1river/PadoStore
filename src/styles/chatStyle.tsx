@@ -53,6 +53,15 @@ export const ChatRoom = styled.article`
   padding: 10px;
   color: #424242;
 
+  .chat_header {
+    width: 100%;
+    height: fit-content;
+
+    svg {
+      width: fit-content;
+    }
+  }
+
   .info_text {
     text-align: center;
   }
