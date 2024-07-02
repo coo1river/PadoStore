@@ -6,7 +6,7 @@ export interface chatRoomRes {
   user_status: string;
 }
 
-export default async function chatEnterApi(chat_room_id: string) {
+export default async function chatEnterApi(chat_room_id: number) {
   const url = "/api/chat/enter";
 
   try {

@@ -14,6 +14,7 @@ import useInput from "@/hooks/useInput";
 import chatDetailApi, { ChatDetail, ChatReq } from "@/api/chat/chatDetailApi";
 import IconSend from "@/../public/assets/svgs/free-icon-font-paper-plane.svg";
 import { ChatInputWrap, ChatRoom, ChatRoomWrap } from "@/styles/chatStyle";
+import chatEnterApi from "@/api/chat/chatEnterApi";
 
 interface Message {
   chat_id: number;
@@ -130,7 +131,8 @@ export default function UserChat() {
     if (client.current && createData) {
       client.current.subscribe(
         `/sub/chat/${createData.chat_room_id}`,
-        (message) => {
+        async (message) => {
+          await chatEnterApi(createData.chat_room_id);
           console.log("구독 성공", message.body);
           const json_body = JSON.parse(message.body);
           setChatList((prevChatList) => [...prevChatList, json_body]);
