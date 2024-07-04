@@ -209,10 +209,11 @@ export default function UserChat() {
 
   return (
     <ChatRoomWrap>
+      <div className="chat_header">
+        <p className="chat_receiver">{receiver}</p>
+        <IconExit width="30" height="30" fill="#3EABFA" />
+      </div>
       <ChatRoom ref={chatRoomRef}>
-        <div className="chat_header">
-          <IconExit width="100" height="100" fill="#3EABFA" />
-        </div>
         {detailData?.chat?.map((message, index) => {
           const date = new Date(message.insert_dt);
           const timeString = date.toLocaleTimeString([], {
@@ -265,6 +266,7 @@ export default function UserChat() {
           return (
             <div key={index} className="message_self_wrap">
               <div className="time_stamp">{timeString}</div>
+
               <div className="chat message_self">{chatItem.message}</div>
             </div>
           );

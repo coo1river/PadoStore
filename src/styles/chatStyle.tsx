@@ -38,10 +38,22 @@ export const ChatList = styled.article`
 
 export const ChatRoomWrap = styled.article`
   width: 100%;
-  margin: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  .chat_header {
+    display: flex;
+    align-items: center;
+    border-radius: 0 10px 0 0;
+    width: 100%;
+    height: 90px;
+    background-color: var(--color-trans-grey);
+  }
+
+  .chat_receiver {
+    font-weight: 600;
+  }
 `;
 
 export const ChatRoom = styled.article`
@@ -52,15 +64,6 @@ export const ChatRoom = styled.article`
   flex-direction: column;
   padding: 10px;
   color: #424242;
-
-  .chat_header {
-    width: 100%;
-    height: fit-content;
-
-    svg {
-      width: fit-content;
-    }
-  }
 
   .info_text {
     text-align: center;
@@ -116,6 +119,7 @@ export const ChatInputWrap = styled.div`
   display: flex;
   box-sizing: border-box;
   position: relative;
+  margin: 0 20px 10px 20px;
 
   .input_message {
     width: 100%;
