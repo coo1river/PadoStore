@@ -10,12 +10,13 @@ import { useParams } from "next/navigation";
 import * as StompJs from "@stomp/stompjs";
 import createChatApi, { ChatRes } from "@/api/chat/createChatApi";
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
-import IconExit from "@/../public/assets/svgs/free-icon-font-exit-3917770.svg";
+import IconExit from "@/../public/assets/svgs/free-icon-font-exit-3917349.svg";
 import useInput from "@/hooks/useInput";
 import chatDetailApi, { ChatDetail, ChatReq } from "@/api/chat/chatDetailApi";
 import IconSend from "@/../public/assets/svgs/free-icon-font-paper-plane.svg";
 import { ChatInputWrap, ChatRoom, ChatRoomWrap } from "@/styles/chatStyle";
 import chatEnterApi from "@/api/chat/chatEnterApi";
+import chatDelete from "@/api/chat/chatDeleteApi";
 
 interface Message {
   chat_id: number;
@@ -207,11 +208,21 @@ export default function UserChat() {
     }
   };
 
+  const handleExit = async () => {
+    await chatDelete(createData?.chat_room_id);
+  };
+
   return (
     <ChatRoomWrap>
       <div className="chat_header">
         <p className="chat_receiver">{receiver}</p>
-        <IconExit width="30" height="30" fill="#3EABFA" />
+        <IconExit
+          width="20"
+          height="20"
+          fill="white"
+          onClick={handleExit}
+          className="icon_exit"
+        />
       </div>
       <ChatRoom ref={chatRoomRef}>
         {detailData?.chat?.map((message, index) => {

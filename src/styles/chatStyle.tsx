@@ -44,11 +44,18 @@ export const ChatRoomWrap = styled.article`
 
   .chat_header {
     display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    box-sizing: border-box;
     align-items: center;
     border-radius: 0 10px 0 0;
     width: 100%;
-    height: 90px;
-    background-color: var(--color-trans-grey);
+    background-color: var(--color-main);
+    color: white;
+
+    .icon_exit {
+      cursor: pointer;
+    }
   }
 
   .chat_receiver {
