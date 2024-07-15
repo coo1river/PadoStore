@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import * as StompJs from "@stomp/stompjs";
 import createChatApi, { ChatRes } from "@/api/chat/createChatApi";
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
@@ -17,6 +17,7 @@ import IconSend from "@/../public/assets/svgs/free-icon-font-paper-plane.svg";
 import { ChatInputWrap, ChatRoom, ChatRoomWrap } from "@/styles/chatStyle";
 import chatEnterApi from "@/api/chat/chatEnterApi";
 import chatDelete from "@/api/chat/chatDeleteApi";
+import chatExitApi from "@/api/chat/chatExitApi";
 
 interface Message {
   chat_id: number;
@@ -29,6 +30,7 @@ interface Message {
 export default function UserChat() {
   //  useParams 사용하여 URL 매개변수 가져오기
   const params = useParams();
+  const pathname = usePathname();
   const receiver = params.chatId;
   const userId = params.userId;
 
@@ -208,9 +210,31 @@ export default function UserChat() {
     }
   };
 
+  // 채팅방 나가기
   const handleExit = async () => {
     await chatDelete(createData?.chat_room_id);
   };
+
+  useEffect(() => {
+    let initialMount = true;
+
+    // 경로 변경 감지하여 chatExitApi 호출
+    const handleRouteChange = async () => {
+      if (!initialMount && createData) {
+        await chatExitApi(createData.chat_room_id);
+      }
+    };
+
+    // 초기 마운트 시 실행 방지
+    if (!initialMount) {
+      handleRouteChange();
+    }
+    initialMount = false;
+
+    return () => {
+      handleRouteChange();
+    };
+  }, [pathname, createData]);
 
   return (
     <ChatRoomWrap>

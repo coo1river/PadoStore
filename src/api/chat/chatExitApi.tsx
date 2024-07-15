@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export default async function chatExitApi(chat_room_id: string) {
+export default async function chatExitApi(chat_room_id: number | undefined) {
   const url = "/api/chat/exit";
 
   try {
