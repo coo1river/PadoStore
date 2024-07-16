@@ -4,12 +4,15 @@ export default async function chatExitApi(chat_room_id: number | undefined) {
   const url = "/api/chat/exit";
 
   try {
-    const res = await axios.post(url, {
-      headers: {
-        Authorization: sessionStorage.getItem("userToken"),
-      },
-      chat_room_id,
-    });
+    const res = await axios.post(
+      url,
+      { chat_room_id },
+      {
+        headers: {
+          Authorization: sessionStorage.getItem("userToken"),
+        },
+      }
+    );
     console.log("API 응답:", res.data);
     return res.data;
   } catch (error) {

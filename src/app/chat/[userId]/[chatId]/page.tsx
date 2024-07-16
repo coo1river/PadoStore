@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { useParams, usePathname } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import * as StompJs from "@stomp/stompjs";
 import createChatApi, { ChatRes } from "@/api/chat/createChatApi";
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
@@ -33,6 +33,7 @@ export default function UserChat() {
   const pathname = usePathname();
   const receiver = params.chatId;
   const userId = params.userId;
+  const router = useRouter();
 
   const [chatList, setChatList] = useState<Message[]>([]);
   const chat = useInput("");
@@ -213,6 +214,7 @@ export default function UserChat() {
   // 채팅방 나가기
   const handleExit = async () => {
     await chatDelete(createData?.chat_room_id);
+    router.push(`/chat/${userId}`);
   };
 
   useEffect(() => {

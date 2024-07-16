@@ -11,7 +11,7 @@ export interface UserInfo {
   account_number: string;
 }
 
-export default async function chatDetailApi() {
+export default async function userInfoApi() {
   const url = "/api/chat/info";
   try {
     const res = await axios.get(url, {
