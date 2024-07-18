@@ -17,18 +17,23 @@ const Pagination: React.FC<PaginationProps> = ({
   setPage,
 }) => {
   const numPages = Math.ceil(totalPosts / 10);
+  console.log(numPages);
 
   return (
     <PageSection>
       <div>
-        <button
-          className="btn_arrow double_left"
-          onClick={() => setPage(Math.max(1, page - 10))}
-        />
-        <button
-          className="btn_arrow left"
-          onClick={() => setPage(Math.max(1, page - 1))}
-        />
+        {numPages > 1 && (
+          <>
+            <button
+              className="btn_arrow double_left"
+              onClick={() => setPage(Math.max(1, page - 10))}
+            />
+            <button
+              className="btn_arrow left"
+              onClick={() => setPage(Math.max(1, page - 1))}
+            />
+          </>
+        )}
         {Array(numPages)
           .fill(0)
           .map((_, i) => (
@@ -40,14 +45,18 @@ const Pagination: React.FC<PaginationProps> = ({
               {i + 1}
             </PageButton>
           ))}
-        <button
-          className="btn_arrow right"
-          onClick={() => setPage(Math.max(1, page + 1))}
-        />
-        <button
-          className="btn_arrow double_right"
-          onClick={() => setPage(Math.max(1, page + 10))}
-        />
+        {numPages > 1 && (
+          <>
+            <button
+              className="btn_arrow right"
+              onClick={() => setPage(Math.max(1, page + 1))}
+            />
+            <button
+              className="btn_arrow double_right"
+              onClick={() => setPage(Math.max(1, page + 10))}
+            />
+          </>
+        )}
       </div>
     </PageSection>
   );
@@ -66,8 +75,9 @@ const PageSection = styled.section`
   }
 
   button {
-    width: 40px;
-    height: 40px;
+    margin: 10px;
+    width: 30px;
+    height: 30px;
   }
 
   .btn_arrow {
@@ -97,9 +107,8 @@ const PageSection = styled.section`
 const PageButton = styled.button`
   &.active {
     font-weight: 800;
-    background-color: var(--color-main);
     border-radius: 5px;
-    color: white;
+    color: var(--color-main);
   }
 `;
 

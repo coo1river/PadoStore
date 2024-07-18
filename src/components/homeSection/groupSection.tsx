@@ -14,10 +14,10 @@ const GroupSection: React.FC<GroupSectionProps> = ({ groupOrderList }) => {
       <h3 className="title_tag">공구 진행 중!</h3>
 
       {/* 상품 리스트 */}
-      <div className="sell_list">
-        {groupOrderList &&
-          groupOrderList.map((item) => {
-            return (
+      {groupOrderList && groupOrderList.length > 0 ? (
+        groupOrderList.map((item) => {
+          return (
+            <div className="sell_list">
               <ProductArticle
                 key={item.groupOrder.post_id}
                 onClick={() => {
@@ -40,9 +40,12 @@ const GroupSection: React.FC<GroupSectionProps> = ({ groupOrderList }) => {
                   </div>
                 </div>
               </ProductArticle>
-            );
-          })}
-      </div>
+            </div>
+          );
+        })
+      ) : (
+        <p className="no_products">등록된 상품이 없습니다.</p>
+      )}
     </ProductTab>
   );
 };

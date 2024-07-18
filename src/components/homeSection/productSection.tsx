@@ -39,7 +39,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({ marketList }) => {
 
       {/* 상품 리스트 */}
       <div className="sell_list">
-        {marketList &&
+        {marketList && marketList.length > 0 ? (
           marketList.map((item) => {
             const marketBoardType = item.market.board_type;
             const boardType =
@@ -80,7 +80,10 @@ const ProductSection: React.FC<ProductSectionProps> = ({ marketList }) => {
                 </div>
               </ProductArticle>
             );
-          })}
+          })
+        ) : (
+          <p className="no_products">등록된 상품이 없습니다.</p>
+        )}
       </div>
     </ProductTab>
   );
