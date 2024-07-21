@@ -147,8 +147,8 @@ const useValid = (
   const NicknameValid = async () => {
     if (!form.nickname) {
       setError({ ...error, nicknameErr: "필수 입력 항목입니다." });
-    } else if (form.nickname.length < 3) {
-      setError({ ...error, nicknameErr: "3자 이상 입력해 주세요." });
+    } else if (form.nickname.length < 2) {
+      setError({ ...error, nicknameErr: "2자 이상 입력해 주세요." });
     } else if (form.nickname.length > 10) {
       setError({ ...error, nicknameErr: "10자까지 입력 가능합니다." });
     } else {

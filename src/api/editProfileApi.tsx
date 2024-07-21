@@ -30,7 +30,7 @@ export interface EditReq {
     user_name: string;
     nickname: string;
     phone_number: string;
-    email: string;
+    email: string | null;
     addr_post: string | null;
     addr: string | null;
     addr_detail: string | null;
@@ -40,7 +40,7 @@ export interface EditReq {
   };
 }
 
-export default async function editProfileApi(method: string, data?: EditReq) {
+export default async function editProfileApi<T>(method: string, data?: T) {
   const getUrl = "/api/profile/";
   const putUrl = "/api/profile/update";
 

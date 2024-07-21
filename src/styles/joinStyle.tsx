@@ -112,3 +112,51 @@ export const ErrorMessage = styled.p`
   margin: 10px 0 15px 0;
   font-size: 14px;
 `;
+
+// 입금 폼 설정 스타일
+export const AccountInfoMain = styled(JoinMain)`
+  height: calc(100vh - 215px);
+  justify-content: flex-start;
+
+  h2 {
+    font-weight: 700;
+    font-size: 20px;
+  }
+
+  label {
+    margin-bottom: 5px;
+    font-weight: 700;
+  }
+
+  input,
+  select {
+    margin: 10px 0 15px 0;
+  }
+
+  select {
+    padding: 10px 15px;
+    box-shadow: 0px 0px 3px 0px #6d6d6d4e;
+    border-radius: 15px;
+    border: none;
+    font-family: var(--font-main);
+    font-size: 15px;
+  }
+
+  .btn_search_zipcode {
+    margin-left: 10px;
+    padding: 10px 20px;
+    color: white;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    background-color: var(--color-main);
+  }
+
+  .btn-save {
+    padding: 10px;
+    border-radius: 10px;
+    width: 100%;
+    color: white;
+    background-color: var(--color-main);
+  }
+`;

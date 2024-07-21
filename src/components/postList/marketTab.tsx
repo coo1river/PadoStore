@@ -2,7 +2,6 @@
 import { ProductArticle, ProductTab } from "@/styles/homeStyle";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import Pagination from "../pagination";
 import homeTabApi from "@/api/homeTabApi";
 import searchApi from "@/api/searchApi";
 import { GroupItem } from "./groupPurchaseTab";
@@ -79,7 +78,7 @@ const MarketTab: React.FC<Props> = ({ page, api, keywords, setTotalPosts }) => {
     limit: 10,
     current_page: page,
     sort_by: "post_id",
-    order: "ASC",
+    order: "DESC",
   };
 
   // 사용자에게 보일 메시지 설정
@@ -94,15 +93,13 @@ const MarketTab: React.FC<Props> = ({ page, api, keywords, setTotalPosts }) => {
           data = await homeTabApi("market", params);
           setTotalPosts(data?.totalCount);
           setData(data);
-          data?.marketList === null ? setMessage("게시물이 없습니다") : null;
+          data?.totalCount === 0 ? setMessage("등록된 상품이 없습니다") : null;
           break;
         case "search":
           data = await searchApi("market", { ...params, searchItem: keywords });
           setTotalPosts(data?.totalCount);
           setData(data);
-          data?.marketList === null
-            ? setMessage("검색 결과가 없습니다.")
-            : null;
+          data?.totalCount === 0 ? setMessage("검색 결과가 없습니다.") : null;
           break;
       }
     };
@@ -111,8 +108,8 @@ const MarketTab: React.FC<Props> = ({ page, api, keywords, setTotalPosts }) => {
 
   return (
     <>
-      {message}
       <ProductTab>
+        <p className={`${message ? "no_products" : ""}`}>{message}</p>
         {/* 상품 리스트 */}
         <div className="sell_list">
           {data?.marketList &&

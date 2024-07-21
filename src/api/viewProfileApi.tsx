@@ -26,8 +26,8 @@ export interface ViewProfileRes {
   reviewCount: number;
 }
 
-const viewProfileApi = async (): Promise<ViewProfileRes> => {
-  const url = "/api/my-page/";
+const viewProfileApi = async (userId: string): Promise<ViewProfileRes> => {
+  const url = `/api/my-page/${userId}`;
   try {
     const res = await axios.get(url, {
       headers: {

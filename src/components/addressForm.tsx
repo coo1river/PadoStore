@@ -23,6 +23,7 @@ interface Props {
 export default function AddressForm({ form }: Props) {
   const [modal, setModal] = useState<boolean>(false);
 
+  // 모달 창 닫기 함수
   const handleComplete = (data: AddressData) => {
     form.post_zipcode.setValue(data.zonecode);
     form.post_address.setValue(data.address);

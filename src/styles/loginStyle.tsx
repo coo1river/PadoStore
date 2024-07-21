@@ -118,7 +118,6 @@ export const SnsLogin = styled.div`
     border-radius: 10px;
     color: white;
     font-weight: 600;
-    padding-left: 25px;
   }
 
   .icon_kakao {
@@ -127,17 +126,17 @@ export const SnsLogin = styled.div`
     background-color: #ffeb3b;
 
     img {
-      width: 30px;
-      height: 30px;
+      width: 32px;
+      height: 32px;
     }
   }
 
   .icon_naver {
-    background-color: #00c73c;
+    background-color: #03c75a;
 
     img {
-      width: 40px;
-      height: 40px;
+      width: 30px;
+      height: 30px;
     }
   }
 `;

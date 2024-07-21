@@ -122,12 +122,6 @@ const EditProfile: React.FC = () => {
             nickname: form.nickname.value,
             phone_number: form.number.value,
             email: form.email.value,
-            addr_post: null,
-            addr: null,
-            addr_detail: null,
-            bank: null,
-            account_name: null,
-            account_number: null,
           },
         }),
       ]);

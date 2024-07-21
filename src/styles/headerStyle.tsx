@@ -4,16 +4,15 @@ import searchIcon from "../../public/assets/svgs/search.svg?url";
 export const CommonHeader = styled.header`
   display: flex;
   margin: 0 auto;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  width: 1084px;
   height: 145px;
 `;
 
 export const LogoDiv = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 80px;
+  margin-left: 125px;
   cursor: pointer;
 `;
 
@@ -41,14 +40,13 @@ export const SearchIptBox = styled.div`
 
     position: absolute;
     top: 12px;
-    left: 97%;
+    left: 81%;
   }
 `;
 
 export const SearchInput = styled.input`
-  width: 100%;
-  margin-left: 25px;
-  padding: 10px 40px 10px 20px;
+  margin: 0 30px;
+  padding: 10px 50px 10px 30px;
   box-sizing: border-box;
   border: 3px solid var(--color-main);
   border-radius: 15px;
@@ -114,12 +112,27 @@ export const ModalWrap = styled.div`
 `;
 
 export const LoginJoin = styled.div`
+  display: flex;
+  align-items: center;
   margin-right: 60px;
+
   button {
     font-size: 14px;
   }
 
+  .btn-chat {
+    margin: 5px 10px 0 20px;
+    padding: 10px;
+  }
+
   & span:first-child {
     margin-right: 10px;
+  }
+
+  .null {
+    width: 45px;
+    height: 48px;
+    margin: 5px 10px 0 20px;
+    display: hidden;
   }
 `;

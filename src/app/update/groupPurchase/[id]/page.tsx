@@ -121,25 +121,32 @@ const GroupPurchaseUpdate: React.FC = () => {
 
   const handleAddProduct = () => {
     if (productInfo) {
-      const newProduct: Product = {
-        product_name: productInfo.product_name.value,
-        product_price: productInfo.product_price.value,
-        org_quantity: productInfo.org_quantity.value,
-      };
+      const productName = productInfo.product_name.value;
+      const productPrice = productInfo.product_price.value;
+      const orgQuantity = productInfo.org_quantity.value;
 
-      setProductList((prevList) => [...prevList, newProduct]);
+      // 모든 필드가 공백이 아닐 때만 실행
+      if (productName && productPrice && orgQuantity) {
+        const newProduct: Product = {
+          product_name: productName,
+          product_price: productPrice,
+          org_quantity: orgQuantity,
+        };
+
+        setProductList((prevList) => [...prevList, newProduct]);
+      }
+
+      // input value 초기화
+      productInfo.product_name.onChange({
+        target: { value: "" },
+      } as React.ChangeEvent<HTMLInputElement>);
+      productInfo.product_price.onChange({
+        target: { value: "" },
+      } as React.ChangeEvent<HTMLInputElement>);
+      productInfo.org_quantity.onChange({
+        target: { value: "" },
+      } as React.ChangeEvent<HTMLInputElement>);
     }
-
-    // input value 초기화
-    productInfo.product_name.onChange({
-      target: { value: "" },
-    } as React.ChangeEvent<HTMLInputElement>);
-    productInfo.product_price.onChange({
-      target: { value: "" },
-    } as React.ChangeEvent<HTMLInputElement>);
-    productInfo.org_quantity.onChange({
-      target: { value: "" },
-    } as React.ChangeEvent<HTMLInputElement>);
   };
 
   // 추가 질문 유무 상태

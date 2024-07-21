@@ -63,12 +63,18 @@ export const ProductTab = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: start;
-  margin-bottom: 40px;
 
   .sell_list {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 14px;
+  }
+
+  .no_products {
+    width: 100%;
+    text-align: center;
+    margin: 50px 0;
+    font-weight: 600;
   }
 `;
 

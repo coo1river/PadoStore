@@ -1,13 +1,13 @@
 "use client";
 import { LoginInput, LoginBtn, SnsLogin, LoginMain } from "@/styles/loginStyle";
 import React, { FormEvent, useState } from "react";
-import iconNaver from "../../../public/assets/images/icon-naver.png";
-import iconKakao from "../../../public/assets/images/icon-kakao.png";
 import useInput from "@/hooks/useInput";
 import loginApi from "@/api/loginApi";
 import { ErrorMessage } from "@/styles/joinStyle";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
+import KakaoLogin from "@/components/login/kakao";
+import NaverLogin from "@/components/login/naver";
 
 const Login: React.FC = () => {
   const router = useRouter();
@@ -19,6 +19,7 @@ const Login: React.FC = () => {
 
   const [error, setError] = useState<string>("");
 
+  const { authState, setAuthState } = useAuthStore();
   const { token, setToken } = useAuthStore();
 
   // 로그인 함수(로그인 유효성 검사, api 호출)
@@ -43,6 +44,7 @@ const Login: React.FC = () => {
         // zustand로 토큰 전역 관리, 세션 스토리지에 관리
         setToken(loginRes);
         useAuthStore.getState().setToken(loginRes);
+        setAuthState(true);
         sessionStorage.setItem("userToken", loginRes);
         router.push("/home");
       } catch {
@@ -94,14 +96,8 @@ const Login: React.FC = () => {
       <SnsLogin>
         <h4>SNS 로그인</h4>
         <div className="btn_wrap">
-          <button className="icon_kakao">
-            카카오로 로그인
-            <img src={iconKakao.src} alt="" />
-          </button>
-          <button className="icon_naver">
-            네이버로 로그인
-            <img src={iconNaver.src} alt="" />
-          </button>
+          <KakaoLogin />
+          <NaverLogin />
         </div>
       </SnsLogin>
     </LoginMain>

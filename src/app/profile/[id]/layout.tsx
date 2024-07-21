@@ -47,7 +47,7 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
     const fetchData = async () => {
       try {
         const [profileData, listData] = await Promise.all([
-          viewProfileApi(),
+          viewProfileApi(userId),
           mySalesListApi(listType, params),
         ]);
 
@@ -116,10 +116,12 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
           <p className="rating">⭐5.0</p>
         </div>
         <div className="btns_wrap">
-          <button>
+          <button
+            onClick={() => router.push(`/profile/${userId}/postLikeList`)}
+          >
             찜 목록 <span>{data?.favoriteCount}</span>
           </button>
-          <button>
+          <button onClick={() => router.push(`/profile/${userId}/reviewList`)}>
             후기 <span>{data?.reviewCount}</span>
           </button>
         </div>

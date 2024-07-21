@@ -42,6 +42,7 @@ export interface OrderData {
   deposit_dt: string;
   total_price: string;
   user: User;
+  questionList: [];
   answerList: Answer[];
   orderProductList: OrderProduct[];
 }
