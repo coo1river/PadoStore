@@ -27,6 +27,10 @@ export const ChatList = styled.article`
     border-bottom: 2px solid var(--color-lightgrey);
   }
 
+  .none {
+    display: none;
+  }
+
   .nickname_chat_wrap {
     line-height: 1.2rem;
   }
@@ -65,6 +69,7 @@ export const ChatRoomWrap = styled.article`
 
 export const ChatRoom = styled.article`
   width: 100%;
+  height: 100%;
   overflow-y: scroll;
   box-sizing: border-box;
   display: flex;

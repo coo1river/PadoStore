@@ -1,10 +1,11 @@
 "use client";
-import postLikeListApi from "@/api/postLikeListApi";
+import postLikeListApi, { FavoriteList } from "@/api/postLikeListApi";
 import { PostLikeListMain } from "@/styles/profileStyle";
 import React, { useEffect, useState } from "react";
 
 export default function PostLikeList() {
-  const [data, setData] = useState(null);
+  // 찜 목록 리스트 데이터 저장
+  const [data, setData] = useState<FavoriteList | null>(null);
   // 찜 목록에 보낼 파라미터
   const params = {
     limit: 10,
@@ -16,7 +17,6 @@ export default function PostLikeList() {
     const fetchList = async () => {
       const res = await postLikeListApi(params.limit, params.current_page);
       setData(res);
-      console.log(res);
     };
     fetchList();
   }, []);
@@ -24,7 +24,10 @@ export default function PostLikeList() {
   return (
     <PostLikeListMain>
       <article>
-        <p>찜 목록</p>
+        찜 목록
+        {/* {data?.favoriteList.map((item, index) => (
+          <div key={index}></div>
+        ))} */}
       </article>
     </PostLikeListMain>
   );

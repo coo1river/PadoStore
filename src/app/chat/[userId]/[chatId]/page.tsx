@@ -250,6 +250,7 @@ export default function UserChat() {
           className="icon_exit"
         />
       </div>
+
       <ChatRoom ref={chatRoomRef}>
         {detailData?.chat?.map((message, index) => {
           const date = new Date(message.insert_dt);
