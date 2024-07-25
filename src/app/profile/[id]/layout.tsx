@@ -42,8 +42,10 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
     order: "ASC",
   };
 
-  // 최초 렌더링 시 user 데이터 가져오기
+  // profile data 가져오기
   useEffect(() => {
+    if (!userId) return;
+
     const fetchData = async () => {
       try {
         const [profileData, listData] = await Promise.all([
@@ -59,7 +61,7 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
     };
 
     fetchData();
-  }, []);
+  }, [userId, listType, listState, page]);
 
   const [listMenu, setListMenu] = useState("mySales");
 

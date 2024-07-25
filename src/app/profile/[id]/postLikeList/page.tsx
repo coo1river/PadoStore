@@ -24,10 +24,9 @@ export default function PostLikeList() {
   return (
     <PostLikeListMain>
       <article>
-        찜 목록
-        {/* {data?.favoriteList.map((item, index) => (
-          <div key={index}></div>
-        ))} */}
+        {data?.favoriteList.map((item, index) => (
+          <div key={item.post_id}>{item.title}</div>
+        ))}
       </article>
     </PostLikeListMain>
   );

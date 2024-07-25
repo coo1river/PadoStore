@@ -1,18 +1,10 @@
 import axios from "axios";
 
 interface Favorite {
-  user_id: string | null;
-  board_type: string | null;
-  post_status: string | null;
-  current_page: number;
-  limit: number;
-  offset: number;
-  sort_by: string | null;
-  order: string | null;
-  searchItem: string | null;
-  favorite_id: number;
+  insert_dt: string;
+  nickname: string;
   post_id: number;
-  favorite_user_id: string;
+  title: string;
 }
 
 export interface FavoriteList {
