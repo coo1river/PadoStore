@@ -8,12 +8,14 @@ import { ImgProfile } from "@/styles/profileStyle";
 import mySalesListApi from "@/api/mySalesListApi";
 import { Data } from "@/components/postList/marketTab";
 import useDecodedToken from "@/hooks/useDecodedToken";
+import useProfileStore from "@/store/useProfileStore";
 
 function ProfileLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
-  // zustand에서 token 가져오기
+  // zustand에서 저장된 값 가져오기
   const { token, setToken } = useAuthStore();
+  const { listMenu, setListMenu } = useProfileStore();
 
   // 토큰 디코딩 커스텀 훅으로 user id 추출
   const userId = useDecodedToken(token!);
@@ -62,8 +64,6 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
 
     fetchData();
   }, [userId, listType, listState, page]);
-
-  const [listMenu, setListMenu] = useState("mySales");
 
   // 각 탭에 따른 컴포넌트 렌더
   useEffect(() => {
