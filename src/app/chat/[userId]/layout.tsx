@@ -50,12 +50,16 @@ export default function ChatLayout({
           const userStatus =
             userId === item.chat_user1 ? item.user1_status : item.user2_status;
 
-          console.log(userStatus);
+          console.log("userStatus:", userStatus);
+
+          // 상대방 닉네임 결정
+          const nickname =
+            userId === item.chat_user1 ? item.chat_user2 : item.chat_user1;
 
           return (
             <div
               key={index}
-              className={`user_wrap ${userStatus ? "none" : ""}`}
+              className={`user_wrap ${userStatus ? "" : "none"}`}
               onClick={() => {
                 if (!isSelfChat) {
                   router.push(routePath);
@@ -64,7 +68,7 @@ export default function ChatLayout({
             >
               <img className="profile_img" src={ImgProfileBasic.src} />
               <div className="nickname_chat_wrap">
-                <p className="nickname">{item.chat_user1}</p>
+                <p className="nickname">{nickname}</p>
                 <p>{item.last_message}</p>
               </div>
             </div>

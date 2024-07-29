@@ -10,7 +10,7 @@ export default async function chatEnterApi(chat_room_id: number) {
   const url = "/api/chat/enter";
 
   try {
-    const res = await axios.post(
+    const res = await axios.put(
       url,
       { chat_room_id },
       {

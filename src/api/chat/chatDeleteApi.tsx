@@ -17,7 +17,6 @@ export default async function chatDelete(chat_room_id: number | undefined) {
     return res.data;
   } catch (error) {
     console.error("API 오류:", error);
-    console.log(chat_room_id);
     throw error;
   }
 }
