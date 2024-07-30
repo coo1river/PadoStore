@@ -27,6 +27,7 @@ export default function ChatLayout({
     const fetchData = async () => {
       const data = await chatListApi();
       setList(data);
+      console.log("my data:", data);
     };
     fetchData();
   }, []);
@@ -44,22 +45,25 @@ export default function ChatLayout({
 
           // 접속 유저와 채팅 리시버가 같을 경우 방지
           const isSelfChat =
-            userId === item.chat_user1 && userId === item.chat_user2;
+            userId === item?.chat_user1 && userId === item?.chat_user2;
 
           // userId가 item.chat_user1 또는 item.chat_user2와 일치하는 경우 상태 확인
           const userStatus =
-            userId === item.chat_user1 ? item.user1_status : item.user2_status;
+            userId === item?.chat_user1
+              ? item?.user1_status
+              : item?.user2_status;
 
+          console.log("userId2:", userId);
           console.log("userStatus:", userStatus);
 
           // 상대방 닉네임 결정
           const nickname =
-            userId === item.chat_user1 ? item.chat_user2 : item.chat_user1;
+            userId === item?.chat_user1 ? item?.chat_user2 : item?.chat_user1;
 
           return (
             <div
               key={index}
-              className={`user_wrap ${userStatus ? "" : "none"}`}
+              className={`user_wrap ${userStatus === "true" ? "" : "none"}`}
               onClick={() => {
                 if (!isSelfChat) {
                   router.push(routePath);
