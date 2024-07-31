@@ -1,5 +1,4 @@
 "use client";
-
 import { ChatList, ChatMain } from "@/styles/chatStyle";
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
 import React, { useEffect, useState } from "react";
@@ -53,7 +52,6 @@ export default function ChatLayout({
               ? item?.user1_status
               : item?.user2_status;
 
-          console.log("userId2:", userId);
           console.log("userStatus:", userStatus);
 
           // 상대방 닉네임 결정
