@@ -6,6 +6,7 @@ import chatListApi, { ListRes } from "@/api/chat/chatListApi";
 import { useRouter } from "next/navigation";
 import useDecodedToken from "@/hooks/useDecodedToken";
 import useAuthStore from "@/store/useAuthStore";
+import useChatStore from "@/store/useChatStore";
 
 export default function ChatLayout({
   children,
@@ -19,6 +20,9 @@ export default function ChatLayout({
   const { token, setToken } = useAuthStore();
   const userId = useDecodedToken(token!);
 
+  // zustand에서 채팅 목록 refresh 값 가져오기
+  const { refresh } = useChatStore();
+
   const [list, setList] = useState<ListRes | null>(null);
 
   // 채팅 목록 불러오기
@@ -26,10 +30,9 @@ export default function ChatLayout({
     const fetchData = async () => {
       const data = await chatListApi();
       setList(data);
-      console.log("my data:", data);
     };
     fetchData();
-  }, []);
+  }, [refresh]);
 
   return (
     <ChatMain>
@@ -46,14 +49,6 @@ export default function ChatLayout({
           const isSelfChat =
             userId === item?.chat_user1 && userId === item?.chat_user2;
 
-          // userId가 item.chat_user1 또는 item.chat_user2와 일치하는 경우 상태 확인
-          const userStatus =
-            userId === item?.chat_user1
-              ? item?.user1_status
-              : item?.user2_status;
-
-          console.log("userStatus:", userStatus);
-
           // 상대방 닉네임 결정
           const nickname =
             userId === item?.chat_user1 ? item?.chat_user2 : item?.chat_user1;
@@ -61,7 +56,7 @@ export default function ChatLayout({
           return (
             <div
               key={index}
-              className={`user_wrap ${userStatus === "true" ? "" : "none"}`}
+              className="user_wrap"
               onClick={() => {
                 if (!isSelfChat) {
                   router.push(routePath);

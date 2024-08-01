@@ -18,6 +18,7 @@ import { ChatInputWrap, ChatRoom, ChatRoomWrap } from "@/styles/chatStyle";
 import chatEnterApi from "@/api/chat/chatEnterApi";
 import chatDelete from "@/api/chat/chatDeleteApi";
 import chatExitApi from "@/api/chat/chatExitApi";
+import useChatStore from "@/store/useChatStore";
 
 interface Message {
   chat_id: number;
@@ -37,6 +38,9 @@ export default function UserChat() {
 
   const [chatList, setChatList] = useState<Message[]>([]);
   const chat = useInput("");
+
+  // zustand에서 refresh 함수 가져오기
+  const { refreshChatList } = useChatStore();
 
   // 채팅 리스트 데이터 값 담는 useState
   const [createData, setCreateData] = useState<ChatRes | null>(null);
@@ -214,6 +218,7 @@ export default function UserChat() {
   // 채팅방 나가기
   const handleExit = async () => {
     await chatDelete(createData?.chat_room_id);
+    refreshChatList();
     router.push(`/chat/${userId}`);
   };
 
