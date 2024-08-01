@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export interface chatRoomRes {
+export interface ChatRoomRes {
   chat_room_id: number;
   user_id: string;
   user_status: string;

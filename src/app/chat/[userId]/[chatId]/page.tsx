@@ -15,7 +15,7 @@ import useInput from "@/hooks/useInput";
 import chatDetailApi, { ChatDetail, ChatReq } from "@/api/chat/chatDetailApi";
 import IconSend from "@/../public/assets/svgs/free-icon-font-paper-plane.svg";
 import { ChatInputWrap, ChatRoom, ChatRoomWrap } from "@/styles/chatStyle";
-import chatEnterApi from "@/api/chat/chatEnterApi";
+import chatEnterApi, { ChatRoomRes } from "@/api/chat/chatEnterApi";
 import chatDelete from "@/api/chat/chatDeleteApi";
 import chatExitApi from "@/api/chat/chatExitApi";
 import useChatStore from "@/store/useChatStore";
@@ -42,11 +42,10 @@ export default function UserChat() {
   // zustand에서 refresh 함수 가져오기
   const { refreshChatList } = useChatStore();
 
-  // 채팅 리스트 데이터 값 담는 useState
+  // 채팅 리스트, 상세, 입장 데이터 값 담는 useState
   const [createData, setCreateData] = useState<ChatRes | null>(null);
-
-  // 채팅 상세 데이터 값 담는 useState
   const [detailData, setDetailData] = useState<ChatDetail | null>(null);
+  const [enterData, setEnterData] = useState<ChatRoomRes | null>(null);
 
   // 현재 페이지 설정
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -141,7 +140,8 @@ export default function UserChat() {
       client.current.subscribe(
         `/sub/chat/${createData.chat_room_id}`,
         async (message) => {
-          await chatEnterApi(createData.chat_room_id);
+          setEnterData(await chatEnterApi(createData.chat_room_id));
+
           console.log("구독 성공", message.body);
           const json_body = JSON.parse(message.body);
           setChatList((prevChatList) => [...prevChatList, json_body]);
@@ -309,7 +309,6 @@ export default function UserChat() {
           return (
             <div key={index} className="message_self_wrap">
               <div className="time_stamp">{timeString}</div>
-
               <div className="chat message_self">{chatItem.message}</div>
             </div>
           );
