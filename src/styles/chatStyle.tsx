@@ -105,7 +105,12 @@ export const ChatRoom = styled.article`
     margin-left: 10px;
   }
 
-  .time_stamp {
+  .read_status {
+    margin: 0 5px;
+  }
+
+  .time_stamp,
+  .read_status {
     align-self: end;
     font-size: 12px;
     margin-bottom: 15px;

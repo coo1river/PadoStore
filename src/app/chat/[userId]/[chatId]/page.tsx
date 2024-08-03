@@ -280,8 +280,12 @@ export default function UserChat() {
                   alt="Profile"
                 />
               )}
+
               {message.sender_id === userId && (
-                <div className="time_stamp">{timeString}</div>
+                <>
+                  <div className="read_status">읽음</div>
+                  <div className="time_stamp">{timeString}</div>
+                </>
               )}
               <div
                 className={
@@ -293,7 +297,10 @@ export default function UserChat() {
                 {message.message}
               </div>
               {message.sender_id !== userId && (
-                <div className="time_stamp">{timeString}</div>
+                <>
+                  <div className="time_stamp">{timeString}</div>
+                  <div className="read_status">읽음</div>
+                </>
               )}
             </div>
           );

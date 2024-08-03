@@ -16,7 +16,7 @@ import {
   SalePeriod,
   ImgFile,
   BasicImg,
-} from "@/styles/UploadStyle";
+} from "@/styles/uploadStyle";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
 

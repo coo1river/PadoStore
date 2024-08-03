@@ -12,7 +12,7 @@ import {
   ImgWrap,
   UploadForm,
   UploadMain,
-} from "@/styles/UploadStyle";
+} from "@/styles/uploadStyle";
 import { useParams, useRouter } from "next/navigation";
 import React, {
   ChangeEvent,
