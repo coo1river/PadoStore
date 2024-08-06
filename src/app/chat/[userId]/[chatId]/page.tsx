@@ -315,6 +315,7 @@ export default function UserChat() {
 
           return (
             <div key={index} className="message_self_wrap">
+              <div className="read_status">읽음</div>
               <div className="time_stamp">{timeString}</div>
               <div className="chat message_self">{chatItem.message}</div>
             </div>
