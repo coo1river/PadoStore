@@ -449,7 +449,7 @@ export const AddInputList = styled.article`
   .switch_label:hover {
     background: #efefef;
   }
-  .onf_btn {
+  .btn_onf {
     position: absolute;
     top: 4px;
     left: 3px;

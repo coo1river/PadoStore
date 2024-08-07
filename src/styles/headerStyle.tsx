@@ -30,7 +30,7 @@ export const LogoImg = styled.img`
 export const SearchIptBox = styled.div`
   position: relative;
 
-  .search_btn {
+  .btn_search {
     width: 30px;
     height: 30px;
 
@@ -120,7 +120,7 @@ export const LoginJoin = styled.div`
     font-size: 14px;
   }
 
-  .btn-chat {
+  .btn_chat {
     margin: 5px 10px 0 20px;
     padding: 10px;
   }

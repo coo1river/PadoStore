@@ -19,8 +19,8 @@ const Login: React.FC = () => {
 
   const [error, setError] = useState<string>("");
 
-  const { authState, setAuthState } = useAuthStore();
-  const { token, setToken } = useAuthStore();
+  const { setAuthState } = useAuthStore();
+  const { setToken } = useAuthStore();
 
   // 로그인 함수(로그인 유효성 검사, api 호출)
   const handleLogin = async (e: FormEvent) => {
@@ -43,9 +43,7 @@ const Login: React.FC = () => {
 
         // zustand로 토큰 전역 관리, 세션 스토리지에 관리
         setToken(loginRes);
-        useAuthStore.getState().setToken(loginRes);
         setAuthState(true);
-        sessionStorage.setItem("userToken", loginRes);
         router.push("/home");
       } catch {
         setError("아이디 또는 비밀번호가 일치하지 않습니다.");

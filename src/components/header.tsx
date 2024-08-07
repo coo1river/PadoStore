@@ -35,7 +35,7 @@ const PostUploadModal: React.FC<PostUploadModalProps> = ({
   };
 
   // zustand에서 token 가져오기
-  const { token, setToken } = useAuthStore();
+  const { token } = useAuthStore();
 
   return (
     <ModalWrap>
@@ -120,7 +120,8 @@ const Header: React.FC = () => {
         />
         <button
           onClick={() => router.push(`/search/${keywords.value}`)}
-          className="search_btn"
+          className="btn_search"
+          aria-label="검색"
         />
       </SearchIptBox>
 
@@ -135,7 +136,8 @@ const Header: React.FC = () => {
       {authState ? (
         <LoginJoin>
           <button
-            className="btn-chat"
+            className="btn_chat"
+            aria-label="채팅"
             onClick={() => {
               router.push(`/chat/${userId}`);
             }}

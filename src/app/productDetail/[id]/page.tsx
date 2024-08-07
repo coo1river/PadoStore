@@ -92,7 +92,11 @@ const ProductDetail: React.FC = () => {
                 <h3 className="product_title">{data?.title}</h3>
                 {data?.user_id === userId ? (
                   <>
-                    <button className="btn_update" onClick={handleClickMenu} />
+                    <button
+                      className="btn_update"
+                      aria-label="수정"
+                      onClick={handleClickMenu}
+                    />
                     {menuModal ? (
                       <DetailModal data={data} setMenuModal={handleClickMenu} />
                     ) : null}
@@ -129,6 +133,7 @@ const ProductDetail: React.FC = () => {
             <div className="btns_wrap">
               <button
                 className="btn_like"
+                aria-label="찜하기"
                 onClick={() => {
                   authState ? handlePostLike() : router.push("/login");
                 }}
@@ -142,6 +147,7 @@ const ProductDetail: React.FC = () => {
               </button>
               <button
                 className="btn_chat"
+                aria-label="채팅"
                 onClick={() => {
                   router.push(`/chat/${userId}/${data?.user_id}`);
                 }}

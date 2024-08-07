@@ -8,14 +8,11 @@ interface AuthStore {
   setAuthState: (value: boolean) => void;
 }
 
-// 세션 스토리지에서 초기 상태를 가져와 로컬 변수에 저장
-const initialState = JSON.parse(sessionStorage.getItem("auth-storage") || "{}");
-
 const useAuthStore = create(
   persist<AuthStore>(
     (set) => ({
-      token: initialState.token ?? null,
-      authState: !!initialState.token,
+      token: null,
+      authState: false,
       setToken: (newToken) => {
         set({ token: newToken });
         set({ authState: !!newToken });

@@ -94,7 +94,11 @@ const GroupDetail: React.FC = () => {
                 <h3 className="product_title">{data?.title}</h3>
                 {data?.user_id === userId ? (
                   <>
-                    <button className="btn_update" onClick={handleClickMenu} />
+                    <button
+                      className="btn_update"
+                      aria-label="수정"
+                      onClick={handleClickMenu}
+                    />
                     {menuModal ? (
                       <DetailModal data={data} setMenuModal={handleClickMenu} />
                     ) : null}
