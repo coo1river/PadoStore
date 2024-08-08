@@ -12,6 +12,8 @@ import MarketTab, { MarketItem } from "@/components/postList/marketTab";
 import GroupPurchaseTab from "@/components/postList/groupPurchaseTab";
 import { useRouter } from "next/navigation";
 import Pagination from "@/components/pagination";
+import useAuthStore from "@/store/useAuthStore";
+import useDecodedToken from "@/hooks/useDecodedToken";
 
 export interface HomeList {
   post_id: number;

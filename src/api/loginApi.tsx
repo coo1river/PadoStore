@@ -10,7 +10,7 @@ const loginApi = async (data: Login) => {
   try {
     const res = await axios.post<Login>(url, data);
     console.log("API 응답:", res.data);
-    return res.data;
+    return res.data, res.headers.authorization;
   } catch (error) {
     console.error("API 오류:", error);
     throw error;
