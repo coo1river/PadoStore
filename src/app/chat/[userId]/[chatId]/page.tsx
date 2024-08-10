@@ -193,7 +193,13 @@ export default function UserChat() {
         }),
       });
 
+      // input value 초기화
       chat.setValue("");
+
+      // 스크롤을 맨 아래로 이동
+      if (chatRoomRef.current) {
+        chatRoomRef.current.scrollTop = chatRoomRef.current.scrollHeight;
+      }
     } else {
       console.error("STOMP connection not established.");
     }
@@ -208,13 +214,6 @@ export default function UserChat() {
     publish(chat.value);
   };
 
-  // 엔터 키 클릭 시 전송 기능
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleSubmit(e);
-    }
-  };
-
   // 채팅방 나가기
   const handleExit = async () => {
     await chatDelete(createData?.chat_room_id);
@@ -222,10 +221,10 @@ export default function UserChat() {
     router.push(`/chat/${userId}`);
   };
 
+  //  경로 변경 시 채팅방 나가기 호출
   useEffect(() => {
     let initialMount = true;
 
-    // 경로 변경 감지하여 chatExitApi 호출
     const handleRouteChange = async () => {
       if (!initialMount && createData) {
         await chatExitApi(createData.chat_room_id);
@@ -243,6 +242,46 @@ export default function UserChat() {
     };
   }, [pathname, createData]);
 
+  // 렌더링 되는 메시지(본인 메시지/상대 메시지)
+  const renderMessage = (
+    message: Message,
+    isSelf: boolean,
+    timeString: string,
+    otherUserStatus: string,
+    chat_id: string
+  ) => {
+    const isRead = otherUserStatus === "online";
+    return (
+      <div
+        className={isSelf ? "message_self_wrap" : "message_other_wrap"}
+        key={chat_id}
+      >
+        {!isSelf && (
+          <img
+            className="profile_image"
+            src={ImgProfileBasic.src}
+            alt="Profile"
+          />
+        )}
+        {isSelf && (
+          <>
+            <div className="read_status">{isRead ? "" : "안 읽음"}</div>
+            <div className="time_stamp">{timeString}</div>
+          </>
+        )}
+        <div className={isSelf ? "chat message_self" : "chat message_other"}>
+          {message.message}
+        </div>
+        {!isSelf && (
+          <>
+            <div className="time_stamp">{timeString}</div>
+            <div className="read_status" />
+          </>
+        )}
+      </div>
+    );
+  };
+
   return (
     <ChatRoomWrap>
       <div className="chat_header">
@@ -257,55 +296,26 @@ export default function UserChat() {
       </div>
 
       <ChatRoom ref={chatRoomRef}>
-        {detailData?.chat?.map((message, index) => {
+        {detailData?.chat.map((message, index) => {
           const date = new Date(message.insert_dt);
           const timeString = date.toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit",
           });
 
-          return (
-            <div
-              key={index}
-              className={
-                message.sender_id === userId
-                  ? "message_self_wrap"
-                  : "message_other_wrap"
-              }
-            >
-              {message.sender_id !== userId && (
-                <img
-                  className="profile_image"
-                  src={ImgProfileBasic.src}
-                  alt="Profile"
-                />
-              )}
+          const otherUserStatus =
+            message.sender_id === userId
+              ? enterData?.user2_status || "offline"
+              : enterData?.user1_status || "offline";
 
-              {message.sender_id === userId && (
-                <>
-                  <div className="read_status">읽음</div>
-                  <div className="time_stamp">{timeString}</div>
-                </>
-              )}
-              <div
-                className={
-                  message.sender_id === userId
-                    ? "chat message_self"
-                    : "chat message_other"
-                }
-              >
-                {message.message}
-              </div>
-              {message.sender_id !== userId && (
-                <>
-                  <div className="time_stamp">{timeString}</div>
-                  <div className="read_status">읽음</div>
-                </>
-              )}
-            </div>
+          return renderMessage(
+            message,
+            message.sender_id === userId,
+            timeString,
+            otherUserStatus,
+            `detail_${message.chat_id}_${index}`
           );
         })}
-
         {chatList.map((chatItem, index) => {
           const date = new Date(chatItem.insert_dt);
           const timeString = date.toLocaleTimeString([], {
@@ -313,24 +323,28 @@ export default function UserChat() {
             minute: "2-digit",
           });
 
-          return (
-            <div key={index} className="message_self_wrap">
-              <div className="read_status">읽음</div>
-              <div className="time_stamp">{timeString}</div>
-              <div className="chat message_self">{chatItem.message}</div>
-            </div>
+          const otherUserStatus =
+            chatItem.sender_id === userId
+              ? enterData?.user2_status || "offline"
+              : enterData?.user1_status || "offline";
+
+          return renderMessage(
+            chatItem,
+            chatItem.sender_id === userId,
+            timeString,
+            otherUserStatus,
+            `chat_${chatItem.chat_id}_${index}`
           );
         })}
       </ChatRoom>
 
-      {/* 채팅 input */}
       <ChatInputWrap>
         <input
           type="text"
           className="input_message"
           onChange={handleChange}
           value={chat.value}
-          onKeyDown={handleKeyDown}
+          onKeyDown={(e) => e.key === "Enter" && handleSubmit(e)}
         />
         <button className="btn_send" onClick={handleSubmit}>
           <IconSend width="25" height="25" fill="#3EABFA" />
