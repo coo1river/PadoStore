@@ -1,11 +1,5 @@
 "use client";
-import React, {
-  FormEvent,
-  KeyboardEvent,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import * as StompJs from "@stomp/stompjs";
 import createChatApi, { ChatRes } from "@/api/chat/createChatApi";
@@ -247,10 +241,9 @@ export default function UserChat() {
     message: Message,
     isSelf: boolean,
     timeString: string,
-    otherUserStatus: string,
+    isRead: string,
     chat_id: string
   ) => {
-    const isRead = otherUserStatus === "online";
     return (
       <div
         className={isSelf ? "message_self_wrap" : "message_other_wrap"}
@@ -265,7 +258,9 @@ export default function UserChat() {
         )}
         {isSelf && (
           <>
-            <div className="read_status">{isRead ? "" : "안 읽음"}</div>
+            <div className="read_status">
+              {isRead === "online" ? "" : "안 읽음"}
+            </div>
             <div className="time_stamp">{timeString}</div>
           </>
         )}
@@ -303,8 +298,8 @@ export default function UserChat() {
             minute: "2-digit",
           });
 
-          const otherUserStatus =
-            message.sender_id === userId
+          const isRead =
+            message.sender_id === enterData?.user1_id
               ? enterData?.user2_status || "offline"
               : enterData?.user1_status || "offline";
 
@@ -312,19 +307,19 @@ export default function UserChat() {
             message,
             message.sender_id === userId,
             timeString,
-            otherUserStatus,
+            isRead,
             `detail_${message.chat_id}_${index}`
           );
         })}
-        {chatList.map((chatItem, index) => {
+        {chatList.map((chatItem: Message, index) => {
           const date = new Date(chatItem.insert_dt);
           const timeString = date.toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit",
           });
 
-          const otherUserStatus =
-            chatItem.sender_id === userId
+          const isRead =
+            chatItem.sender_id === enterData?.user1_id
               ? enterData?.user2_status || "offline"
               : enterData?.user1_status || "offline";
 
@@ -332,7 +327,7 @@ export default function UserChat() {
             chatItem,
             chatItem.sender_id === userId,
             timeString,
-            otherUserStatus,
+            isRead,
             `chat_${chatItem.chat_id}_${index}`
           );
         })}
