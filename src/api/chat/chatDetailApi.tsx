@@ -12,6 +12,7 @@ interface Chat {
   message: string;
   insert_dt: string;
   chat_room_id: number;
+  read_status: "true" | "false";
 }
 
 interface User {

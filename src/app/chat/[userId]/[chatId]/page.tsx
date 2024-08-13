@@ -1,5 +1,5 @@
 "use client";
-import React, { FormEvent, useEffect, useRef, useState } from "react";
+import React, { FormEvent, use, useEffect, useRef, useState } from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import * as StompJs from "@stomp/stompjs";
 import createChatApi, { ChatRes } from "@/api/chat/createChatApi";
@@ -20,6 +20,7 @@ interface Message {
   message: string;
   insert_dt: string;
   chat_room_id: number;
+  read_status: string;
 }
 
 export default function UserChat() {
@@ -58,6 +59,7 @@ export default function UserChat() {
         console.error("채팅방 생성에 실패했습니다.", error);
       }
     };
+
     fetchData();
   }, [receiver]);
 
@@ -69,8 +71,11 @@ export default function UserChat() {
       connectHeaders: {
         Authorization: sessionStorage.getItem("userToken")!,
       },
-      onConnect: () => {
+      onConnect: async () => {
         console.log("Connected 성공");
+
+        const enterRes = await chatEnterApi(createData.chat_room_id);
+        setEnterData(enterRes);
         chatDetails();
         subscribe();
       },
@@ -135,10 +140,34 @@ export default function UserChat() {
         `/sub/chat/${createData.chat_room_id}`,
         async (message) => {
           setEnterData(await chatEnterApi(createData.chat_room_id));
-
+          const receivedMessage = JSON.parse(message.body);
           console.log("구독 성공", message.body);
-          const json_body = JSON.parse(message.body);
-          setChatList((prevChatList) => [...prevChatList, json_body]);
+
+          // 최신 enterData 가져오기
+          const enterStatus = await chatEnterApi(createData.chat_room_id);
+          setEnterData(enterStatus);
+
+          // 메시지의 read_status를 기반으로 isRead 설정
+          const isReceiverOffline =
+            enterStatus.user1_status === "offline" ||
+            enterStatus.user2_status === "offline";
+
+          // 읽음 상태 처리
+          const isRead =
+            receivedMessage.read_status === "true" ||
+            (receivedMessage.sender_id === enterStatus.user1_id
+              ? enterStatus.user2_status
+              : enterStatus.user1_status) === "online";
+
+          // 상대방이 offline일 경우 상세 정보를 다시 조회
+          if (isReceiverOffline) {
+            await chatDetails(); // 채팅 상세 조회
+          }
+
+          setChatList((prevChatList) => [
+            ...prevChatList,
+            { ...receivedMessage, read_status: isRead ? "online" : "offline" },
+          ]);
         },
         {
           Authorization: sessionStorage.getItem("userToken")!,
@@ -299,7 +328,9 @@ export default function UserChat() {
           });
 
           const isRead =
-            message.sender_id === enterData?.user1_id
+            message.read_status === "true"
+              ? "online"
+              : message.sender_id === enterData?.user1_id
               ? enterData?.user2_status || "offline"
               : enterData?.user1_status || "offline";
 
@@ -318,16 +349,11 @@ export default function UserChat() {
             minute: "2-digit",
           });
 
-          const isRead =
-            chatItem.sender_id === enterData?.user1_id
-              ? enterData?.user2_status || "offline"
-              : enterData?.user1_status || "offline";
-
           return renderMessage(
             chatItem,
             chatItem.sender_id === userId,
             timeString,
-            isRead,
+            chatItem.read_status,
             `chat_${chatItem.chat_id}_${index}`
           );
         })}
