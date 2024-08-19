@@ -42,6 +42,8 @@ export default function UserChat() {
   const [detailData, setDetailData] = useState<ChatDetail | null>(null);
   const [enterData, setEnterData] = useState<ChatRoomRes | null>(null);
 
+  const enterDataRef = useRef<ChatRoomRes | null>(null);
+
   // 현재 페이지 설정
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isFetching, setIsFetching] = useState(false);
@@ -75,6 +77,7 @@ export default function UserChat() {
         console.log("Connected 성공");
 
         const enterRes = await chatEnterApi(createData.chat_room_id);
+        enterDataRef.current = enterRes;
         setEnterData(enterRes);
         chatDetails();
         subscribe();
@@ -139,34 +142,10 @@ export default function UserChat() {
       client.current.subscribe(
         `/sub/chat/${createData.chat_room_id}`,
         async (message) => {
-          setEnterData(await chatEnterApi(createData.chat_room_id));
           const receivedMessage = JSON.parse(message.body);
-          console.log("구독 성공", message.body);
-
-          // 최신 enterData 가져오기
-          const enterStatus = await chatEnterApi(createData.chat_room_id);
-          setEnterData(enterStatus);
-
-          // 메시지의 read_status를 기반으로 isRead 설정
-          const isReceiverOffline =
-            enterStatus.user1_status === "offline" ||
-            enterStatus.user2_status === "offline";
-
-          // 읽음 상태 처리
-          const isRead =
-            receivedMessage.read_status === "true" ||
-            (receivedMessage.sender_id === enterStatus.user1_id
-              ? enterStatus.user2_status
-              : enterStatus.user1_status) === "online";
-
-          // 상대방이 offline일 경우 상세 정보를 다시 조회
-          if (isReceiverOffline) {
-            await chatDetails(); // 채팅 상세 조회
-          }
-
           setChatList((prevChatList) => [
             ...prevChatList,
-            { ...receivedMessage, read_status: isRead ? "online" : "offline" },
+            { ...receivedMessage },
           ]);
         },
         {
@@ -175,6 +154,30 @@ export default function UserChat() {
       );
     }
   };
+
+  useEffect(() => {
+    if (!enterData || !chatList) return;
+
+    const updateReadStatus = () => {
+      const updatedChatList = chatList.map((message) => {
+        const isRead =
+          message.sender_id === enterDataRef.current?.user1_id
+            ? enterDataRef.current?.user2_status === "online"
+            : enterDataRef.current?.user1_status === "online";
+
+        console.log(enterDataRef);
+        return {
+          ...message,
+          read_status: isRead ? "online" : "offline",
+        };
+      });
+
+      if (JSON.stringify(updatedChatList) !== JSON.stringify(chatList)) {
+        setChatList(updatedChatList);
+      }
+    };
+    updateReadStatus();
+  }, [enterData, chatList]);
 
   // 스크롤 이벤트
   const handleScroll = async () => {
@@ -218,6 +221,9 @@ export default function UserChat() {
 
       // input value 초기화
       chat.setValue("");
+
+      // 채팅 목록 갱신
+      refreshChatList();
 
       // 스크롤을 맨 아래로 이동
       if (chatRoomRef.current) {
