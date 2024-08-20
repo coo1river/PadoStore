@@ -13,6 +13,7 @@ import chatEnterApi, { ChatRoomRes } from "@/api/chat/chatEnterApi";
 import chatDelete from "@/api/chat/chatDeleteApi";
 import chatExitApi from "@/api/chat/chatExitApi";
 import useChatStore from "@/store/useChatStore";
+import useChatEnterStore from "@/store/useEnterStore";
 
 interface Message {
   chat_id: number;
@@ -40,9 +41,10 @@ export default function UserChat() {
   // 채팅 리스트, 상세, 입장 데이터 값 담는 useState
   const [createData, setCreateData] = useState<ChatRes | null>(null);
   const [detailData, setDetailData] = useState<ChatDetail | null>(null);
-  const [enterData, setEnterData] = useState<ChatRoomRes | null>(null);
+  // const [enterData, setEnterData] = useState<ChatRoomRes | null>(null);
 
-  const enterDataRef = useRef<ChatRoomRes | null>(null);
+  // const enterDataRef = useRef<ChatRoomRes | null>(null);
+  const { enterData, setEnterData } = useChatEnterStore();
 
   // 현재 페이지 설정
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -77,7 +79,7 @@ export default function UserChat() {
         console.log("Connected 성공");
 
         const enterRes = await chatEnterApi(createData.chat_room_id);
-        enterDataRef.current = enterRes;
+        // enterDataRef.current = enterRes;
         setEnterData(enterRes);
         chatDetails();
         subscribe();
@@ -142,6 +144,8 @@ export default function UserChat() {
       client.current.subscribe(
         `/sub/chat/${createData.chat_room_id}`,
         async (message) => {
+          const enterRes = await chatEnterApi(createData.chat_room_id);
+          setEnterData(enterRes);
           const receivedMessage = JSON.parse(message.body);
           setChatList((prevChatList) => [
             ...prevChatList,
@@ -161,11 +165,9 @@ export default function UserChat() {
     const updateReadStatus = () => {
       const updatedChatList = chatList.map((message) => {
         const isRead =
-          message.sender_id === enterDataRef.current?.user1_id
-            ? enterDataRef.current?.user2_status === "online"
-            : enterDataRef.current?.user1_status === "online";
-
-        console.log(enterDataRef);
+          message.sender_id === enterData.user1_id
+            ? enterData.user2_status === "online"
+            : enterData.user1_status === "online";
         return {
           ...message,
           read_status: isRead ? "online" : "offline",
