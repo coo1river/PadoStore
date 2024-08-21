@@ -418,7 +418,7 @@ const GroupPurchase: React.FC = () => {
               }}
             />
             <label htmlFor="input_switch" className="switch_label">
-              <span className="onf_btn" />
+              <span className="btn_onf" />
             </label>
           </div>
 

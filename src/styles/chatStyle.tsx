@@ -141,19 +141,25 @@ export const ChatInputWrap = styled.div`
   .input_message {
     width: 100%;
     background-color: var(--color-trans-grey);
-    padding: 15px 25px;
+    padding: 15px 55px;
     border-radius: 30px;
     font-size: 15px;
   }
 
-  .btn_send {
+  button {
     margin: 0 10px;
     right: 5px;
     top: 4px;
     position: absolute;
     color: white;
-    padding: 8px;
+    padding: 8px 10px;
     font-weight: 600;
     border-radius: 30px;
+  }
+
+  .btn_menu {
+    left: 0;
+    top: 6px;
+    width: fit-content;
   }
 `;

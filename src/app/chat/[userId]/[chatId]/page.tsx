@@ -1,10 +1,11 @@
 "use client";
-import React, { FormEvent, use, useEffect, useRef, useState } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import * as StompJs from "@stomp/stompjs";
 import createChatApi, { ChatRes } from "@/api/chat/createChatApi";
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
 import IconExit from "@/../public/assets/svgs/free-icon-font-exit-3917349.svg";
+import IconMenu from "@/../public/assets/svgs/free-icon-font-plus-3917043.svg";
 import useInput from "@/hooks/useInput";
 import chatDetailApi, { ChatDetail, ChatReq } from "@/api/chat/chatDetailApi";
 import IconSend from "@/../public/assets/svgs/free-icon-font-paper-plane.svg";
@@ -13,7 +14,7 @@ import chatEnterApi, { ChatRoomRes } from "@/api/chat/chatEnterApi";
 import chatDelete from "@/api/chat/chatDeleteApi";
 import chatExitApi from "@/api/chat/chatExitApi";
 import useChatStore from "@/store/useChatStore";
-import useChatEnterStore from "@/store/useEnterStore";
+import chatUserInfoApi from "@/api/chat/chatUserInfoApi";
 
 interface Message {
   chat_id: number;
@@ -41,10 +42,10 @@ export default function UserChat() {
   // 채팅 리스트, 상세, 입장 데이터 값 담는 useState
   const [createData, setCreateData] = useState<ChatRes | null>(null);
   const [detailData, setDetailData] = useState<ChatDetail | null>(null);
-  // const [enterData, setEnterData] = useState<ChatRoomRes | null>(null);
+  const [enterData, setEnterData] = useState<ChatRoomRes | null>(null);
 
-  // const enterDataRef = useRef<ChatRoomRes | null>(null);
-  const { enterData, setEnterData } = useChatEnterStore();
+  // enter data 값 참조를 위한 ref
+  const enterDataRef = useRef<ChatRoomRes | null>(null);
 
   // 현재 페이지 설정
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -79,7 +80,7 @@ export default function UserChat() {
         console.log("Connected 성공");
 
         const enterRes = await chatEnterApi(createData.chat_room_id);
-        // enterDataRef.current = enterRes;
+        enterDataRef.current = enterRes;
         setEnterData(enterRes);
         chatDetails();
         subscribe();
@@ -144,9 +145,12 @@ export default function UserChat() {
       client.current.subscribe(
         `/sub/chat/${createData.chat_room_id}`,
         async (message) => {
-          const enterRes = await chatEnterApi(createData.chat_room_id);
-          setEnterData(enterRes);
           const receivedMessage = JSON.parse(message.body);
+
+          const enterInfo = await chatUserInfoApi(createData.chat_room_id);
+          setEnterData(enterInfo);
+          enterDataRef.current = enterInfo;
+
           setChatList((prevChatList) => [
             ...prevChatList,
             { ...receivedMessage },
@@ -160,26 +164,34 @@ export default function UserChat() {
   };
 
   useEffect(() => {
-    if (!enterData || !chatList) return;
+    if (!enterData) return;
 
-    const updateReadStatus = () => {
+    const updateMessages = () => {
       const updatedChatList = chatList.map((message) => {
-        const isRead =
-          message.sender_id === enterData.user1_id
-            ? enterData.user2_status === "online"
-            : enterData.user1_status === "online";
-        return {
-          ...message,
-          read_status: isRead ? "online" : "offline",
-        };
+        const isCurrentUserMessage =
+          message.sender_id === enterDataRef.current?.user1_id;
+
+        const isOnline = isCurrentUserMessage
+          ? enterDataRef.current?.user2_status === "online"
+          : enterDataRef.current?.user1_status === "online";
+
+        const newStatus = isOnline ? "online" : "offline";
+
+        if (message.read_status === "offline" && newStatus === "online") {
+          return {
+            ...message,
+            read_status: newStatus,
+          };
+        }
+
+        return message;
       });
 
-      if (JSON.stringify(updatedChatList) !== JSON.stringify(chatList)) {
-        setChatList(updatedChatList);
-      }
+      setChatList(updatedChatList);
     };
-    updateReadStatus();
-  }, [enterData, chatList]);
+
+    updateMessages();
+  }, [enterData]);
 
   // 스크롤 이벤트
   const handleScroll = async () => {
@@ -368,6 +380,9 @@ export default function UserChat() {
       </ChatRoom>
 
       <ChatInputWrap>
+        <button className="btn_menu">
+          <IconMenu width="20" height="20" fill="#3EABFA" />
+        </button>
         <input
           type="text"
           className="input_message"

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export interface ChatRoomRes {
+export interface ChatRoomInfo {
   chat_room_id: number;
   user1_id: string;
   user2_id: string;
@@ -8,16 +8,19 @@ export interface ChatRoomRes {
   user2_status: "online" | "offline";
 }
 
-export default async function chatUsersInfoApi(chat_room_id: number) {
-  const url = "/api/chat/users/info";
+export default async function chatUserInfoApi(chat_room_id: number) {
+  const url = "/api/chat/enter";
 
   try {
-    const res = await axios.get(url, {
-      params: { chat_room_id },
-      headers: {
-        Authorization: sessionStorage.getItem("userToken"),
-      },
-    });
+    const res = await axios.put(
+      url,
+      { chat_room_id },
+      {
+        headers: {
+          Authorization: sessionStorage.getItem("userToken"),
+        },
+      }
+    );
     console.log("채팅방 입장:", res.data);
     return res.data;
   } catch (error) {

@@ -472,7 +472,7 @@ export const AddInputList = styled.article`
   }
 
   /* move */
-  #input_switch:checked + .switch_label .onf_btn {
+  #input_switch:checked + .switch_label .btn_onf {
     left: 34px;
     background: #fff;
     box-shadow: 1px 2px 3px #00000020;
