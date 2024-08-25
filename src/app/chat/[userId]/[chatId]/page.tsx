@@ -301,7 +301,11 @@ export default function UserChat() {
         {!isSelf && (
           <img
             className="profile_image"
-            src={ImgProfileBasic.src}
+            src={
+              detailData?.user1.user_id === receiver
+                ? `upload/${detailData?.user1.org_file}`
+                : `upload/${detailData?.user2.org_file}`
+            }
             alt="Profile"
           />
         )}
