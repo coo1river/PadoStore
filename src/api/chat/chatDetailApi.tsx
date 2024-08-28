@@ -19,7 +19,7 @@ interface User {
   user_id: string;
   nickname: string;
   file_group_id: string | null;
-  org_file: string | null;
+  up_file: string | null;
 }
 
 export interface ChatDetail {

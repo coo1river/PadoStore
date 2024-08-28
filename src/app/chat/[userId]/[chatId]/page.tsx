@@ -303,8 +303,8 @@ export default function UserChat() {
             className="profile_image"
             src={
               detailData?.user1.user_id === receiver
-                ? `upload/${detailData?.user1.org_file}`
-                : `upload/${detailData?.user2.org_file}`
+                ? `/upload/${detailData?.user1.up_file}`
+                : `/upload/${detailData?.user2.up_file}`
             }
             alt="Profile"
           />

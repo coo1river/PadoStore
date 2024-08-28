@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import useDecodedToken from "@/hooks/useDecodedToken";
 import useAuthStore from "@/store/useAuthStore";
 import useChatStore from "@/store/useChatStore";
+import { BasicImg } from "@/styles/uploadStyle";
 
 export default function ChatLayout({
   children,
@@ -63,7 +64,12 @@ export default function ChatLayout({
                 }
               }}
             >
-              <img className="profile_img" src={ImgProfileBasic.src} />
+              <img
+                className="profile_img"
+                src={
+                  item.up_file ? `/upload/${item.up_file}` : ImgProfileBasic.src
+                }
+              />
               <div className="nickname_chat_wrap">
                 <p className="nickname">{nickname}</p>
                 <p>{item.last_message}</p>
