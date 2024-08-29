@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import useDecodedToken from "@/hooks/useDecodedToken";
 import useAuthStore from "@/store/useAuthStore";
 import useChatStore from "@/store/useChatStore";
-import { BasicImg } from "@/styles/uploadStyle";
 
 export default function ChatLayout({
   children,

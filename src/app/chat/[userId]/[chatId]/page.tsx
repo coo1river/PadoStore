@@ -15,6 +15,7 @@ import chatDelete from "@/api/chat/chatDeleteApi";
 import chatExitApi from "@/api/chat/chatExitApi";
 import useChatStore from "@/store/useChatStore";
 import chatUserInfoApi from "@/api/chat/chatUserInfoApi";
+import ChatModal from "@/components/modal/chatModal";
 
 interface Message {
   chat_id: number;
@@ -43,6 +44,8 @@ export default function UserChat() {
   const [createData, setCreateData] = useState<ChatRes | null>(null);
   const [detailData, setDetailData] = useState<ChatDetail | null>(null);
   const [enterData, setEnterData] = useState<ChatRoomRes | null>(null);
+
+  const [modalState, setModalState] = useState<boolean>(false);
 
   // enter data 값 참조를 위한 ref
   const enterDataRef = useRef<ChatRoomRes | null>(null);
@@ -303,8 +306,12 @@ export default function UserChat() {
             className="profile_image"
             src={
               detailData?.user1.user_id === receiver
-                ? `/upload/${detailData?.user1.up_file}`
-                : `/upload/${detailData?.user2.up_file}`
+                ? detailData?.user1.up_file
+                  ? `/upload/${detailData?.user1.up_file}`
+                  : ImgProfileBasic.src
+                : detailData?.user2.up_file
+                ? `/upload/${detailData?.user2.up_file}`
+                : ImgProfileBasic.src
             }
             alt="Profile"
           />
@@ -384,7 +391,13 @@ export default function UserChat() {
       </ChatRoom>
 
       <ChatInputWrap>
-        <button className="btn_menu">
+        <button
+          className="btn_menu"
+          onClick={() => {
+            setModalState(!modalState);
+            console.log(modalState);
+          }}
+        >
           <IconMenu width="20" height="20" fill="#3EABFA" />
         </button>
         <input
@@ -394,6 +407,7 @@ export default function UserChat() {
           value={chat.value}
           onKeyDown={(e) => e.key === "Enter" && handleSubmit(e)}
         />
+        {modalState ? <ChatModal /> : null}
         <button className="btn_send" onClick={handleSubmit}>
           <IconSend width="25" height="25" fill="#3EABFA" />
         </button>

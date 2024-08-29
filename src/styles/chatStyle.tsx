@@ -163,3 +163,34 @@ export const ChatInputWrap = styled.div`
     width: fit-content;
   }
 `;
+
+// chat modal style
+export const ChatModalDiv = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  position: absolute;
+  background-color: var(--color-trans-grey);
+  border-radius: 20px;
+  bottom: 0;
+  padding: 20px 30px;
+  z-index: 100;
+  height: 100px;
+  box-sizing: border-box;
+  .btn_exit {
+    position: absolute;
+    padding: 5px 3px;
+  }
+  div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    p {
+      font-weight: 800;
+      color: var(--color-main);
+      font-size: 14px;
+    }
+  }
+`;
