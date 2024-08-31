@@ -5,9 +5,11 @@ import IconWallet from "@/../../public/assets/svgs/free-icon-font-wallet-7653271
 import IconAddress from "@/../../public/assets/svgs/free-icon-font-home-3917033.svg";
 import IconExit from "@/../../public/assets/svgs/close.svg";
 
-interface Props {}
+interface Props {
+  onClose: () => void;
+}
 
-const ChatModal: React.FC<Props> = () => {
+const ChatModal: React.FC<Props> = ({ onClose }) => {
   return (
     <ChatModalDiv>
       <div>
@@ -22,7 +24,7 @@ const ChatModal: React.FC<Props> = () => {
         <IconAddress width="30" height="30" fill="#3EABFA" />
         <p>주소 전송</p>
       </div>
-      <button className="btn_exit">
+      <button className="btn_exit" onClick={onClose}>
         <IconExit width="30" height="30" fill="#3EABFA" />
       </button>
     </ChatModalDiv>

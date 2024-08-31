@@ -288,6 +288,11 @@ export default function UserChat() {
     };
   }, [pathname, createData]);
 
+  // 메뉴 모달 닫기 함수
+  const closeModal = () => {
+    setModalState(false);
+  };
+
   // 렌더링 되는 메시지(본인 메시지/상대 메시지)
   const renderMessage = (
     message: Message,
@@ -407,7 +412,7 @@ export default function UserChat() {
           value={chat.value}
           onKeyDown={(e) => e.key === "Enter" && handleSubmit(e)}
         />
-        {modalState ? <ChatModal /> : null}
+        {modalState ? <ChatModal onClose={closeModal} /> : null}
         <button className="btn_send" onClick={handleSubmit}>
           <IconSend width="25" height="25" fill="#3EABFA" />
         </button>
