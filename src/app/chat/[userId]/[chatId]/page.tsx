@@ -16,6 +16,7 @@ import chatExitApi from "@/api/chat/chatExitApi";
 import useChatStore from "@/store/useChatStore";
 import chatUserInfoApi from "@/api/chat/chatUserInfoApi";
 import ChatModal from "@/components/modal/chatModal";
+import userInfoApi, { UserInfo } from "@/api/chat/userInfoApi";
 
 interface Message {
   chat_id: number;
@@ -44,6 +45,7 @@ export default function UserChat() {
   const [createData, setCreateData] = useState<ChatRes | null>(null);
   const [detailData, setDetailData] = useState<ChatDetail | null>(null);
   const [enterData, setEnterData] = useState<ChatRoomRes | null>(null);
+  const [userData, setUserData] = useState<UserInfo | null>(null);
 
   const [modalState, setModalState] = useState<boolean>(false);
 
@@ -293,6 +295,26 @@ export default function UserChat() {
     setModalState(false);
   };
 
+  // 계좌 정보 전송 함수
+  const sendAccountNumber = async () => {
+    if (!userData) setUserData(await userInfoApi());
+
+    const accountMessage = `은행: ${userData?.bank}\n계좌명: ${userData?.account_name}\n계좌번호: ${userData?.account_number}`;
+
+    publish(accountMessage);
+    closeModal();
+  };
+
+  // 주소 정보 전송 함수
+  const sendAddress = async () => {
+    if (!userData) setUserData(await userInfoApi());
+
+    const addressMessage = `받는 사람: ${userData?.user_name}\n전화 번호: ${userData?.phone_number}\n주소: ${userData?.addr_post}\n${userData?.addr_detail}`;
+
+    publish(addressMessage);
+    closeModal();
+  };
+
   // 렌더링 되는 메시지(본인 메시지/상대 메시지)
   const renderMessage = (
     message: Message,
@@ -397,7 +419,7 @@ export default function UserChat() {
 
       <ChatInputWrap>
         <button
-          className="btn_menu"
+          className="btn_input btn_menu"
           onClick={() => {
             setModalState(!modalState);
             console.log(modalState);
@@ -412,8 +434,14 @@ export default function UserChat() {
           value={chat.value}
           onKeyDown={(e) => e.key === "Enter" && handleSubmit(e)}
         />
-        {modalState ? <ChatModal onClose={closeModal} /> : null}
-        <button className="btn_send" onClick={handleSubmit}>
+        {modalState ? (
+          <ChatModal
+            onClose={closeModal}
+            sendAccount={sendAccountNumber}
+            sendAddress={sendAddress}
+          />
+        ) : null}
+        <button className="btn_input btn_send" onClick={handleSubmit}>
           <IconSend width="25" height="25" fill="#3EABFA" />
         </button>
       </ChatInputWrap>

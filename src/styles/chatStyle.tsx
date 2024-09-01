@@ -146,12 +146,11 @@ export const ChatInputWrap = styled.div`
     font-size: 15px;
   }
 
-  button {
+  .btn_input {
     margin: 0 10px;
     right: 5px;
     top: 4px;
     position: absolute;
-    color: white;
     padding: 8px 10px;
     font-weight: 600;
     border-radius: 30px;
@@ -178,15 +177,20 @@ export const ChatModalDiv = styled.div`
   z-index: 100;
   height: 100px;
   box-sizing: border-box;
+
   .btn_exit {
     position: absolute;
+    right: 5px;
+    top: 0;
     padding: 5px 3px;
   }
-  div {
+
+  .btn_modal {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 5px;
+
     p {
       font-weight: 800;
       color: var(--color-main);

@@ -7,23 +7,25 @@ import IconExit from "@/../../public/assets/svgs/close.svg";
 
 interface Props {
   onClose: () => void;
+  sendAccount: () => void;
+  sendAddress: () => void;
 }
 
-const ChatModal: React.FC<Props> = ({ onClose }) => {
+const ChatModal: React.FC<Props> = ({ onClose, sendAccount, sendAddress }) => {
   return (
     <ChatModalDiv>
-      <div>
+      <button className="btn_modal">
         <IconPhoto width="30" height="30" fill="#3EABFA" />
         <p>사진</p>
-      </div>
-      <div>
+      </button>
+      <button className="btn_modal" onClick={sendAccount}>
         <IconWallet width="30" height="30" fill="#3EABFA" />
         <p>계좌 전송</p>
-      </div>
-      <div>
+      </button>
+      <button className="btn_modal" onClick={sendAddress}>
         <IconAddress width="30" height="30" fill="#3EABFA" />
         <p>주소 전송</p>
-      </div>
+      </button>
       <button className="btn_exit" onClick={onClose}>
         <IconExit width="30" height="30" fill="#3EABFA" />
       </button>
