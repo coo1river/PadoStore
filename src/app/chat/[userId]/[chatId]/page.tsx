@@ -297,22 +297,30 @@ export default function UserChat() {
 
   // 계좌 정보 전송 함수
   const sendAccountNumber = async () => {
-    if (!userData) setUserData(await userInfoApi());
+    if (!userData) {
+      const fetchedUserData = await userInfoApi();
+      setUserData(fetchedUserData);
 
-    const accountMessage = `은행: ${userData?.bank}\n계좌명: ${userData?.account_name}\n계좌번호: ${userData?.account_number}`;
+      const accountMessage = `은행: ${fetchedUserData.bank}\n계좌명: ${fetchedUserData.account_name}\n계좌번호: ${fetchedUserData.account_number}`;
 
-    publish(accountMessage);
-    closeModal();
+      publish(accountMessage);
+
+      closeModal();
+    }
   };
 
   // 주소 정보 전송 함수
   const sendAddress = async () => {
-    if (!userData) setUserData(await userInfoApi());
+    if (!userData) {
+      const fetchedUserData = await userInfoApi();
+      setUserData(fetchedUserData);
 
-    const addressMessage = `받는 사람: ${userData?.user_name}\n전화 번호: ${userData?.phone_number}\n주소: ${userData?.addr_post}\n${userData?.addr_detail}`;
+      const addressMessage = `받는 사람: ${fetchedUserData.user_name}\n전화 번호: ${fetchedUserData.phone_number}\n주소: ${fetchedUserData.addr_post}\n${fetchedUserData.addr_detail}`;
 
-    publish(addressMessage);
-    closeModal();
+      publish(addressMessage);
+
+      closeModal();
+    }
   };
 
   // 렌더링 되는 메시지(본인 메시지/상대 메시지)
@@ -422,7 +430,6 @@ export default function UserChat() {
           className="btn_input btn_menu"
           onClick={() => {
             setModalState(!modalState);
-            console.log(modalState);
           }}
         >
           <IconMenu width="20" height="20" fill="#3EABFA" />

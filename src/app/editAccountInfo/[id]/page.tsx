@@ -3,11 +3,21 @@ import editProfileApi, { EditRes } from "@/api/editProfileApi";
 import DaumPostcode, { AddressData } from "@/components/daumPostcode";
 import ModalFilter from "@/components/modal/modalFilter";
 import { BankOptions } from "@/components/selectOption";
+import useDecodedToken from "@/hooks/useDecodedToken";
 import useInput from "@/hooks/useInput";
+import useAuthStore from "@/store/useAuthStore";
 import { AccountInfoMain } from "@/styles/joinStyle";
+import { useRouter } from "next/navigation";
 import React, { FormEvent, useEffect, useState } from "react";
 
 export default function EditAccountInfo() {
+  // 라우터 사용
+  const router = useRouter();
+
+  // 토큰 디코딩 커스텀 훅으로 user id 추출
+  const { token, setToken } = useAuthStore();
+  const userId = useDecodedToken(token!);
+
   // useInput 사용으로 정보 내용 담기
   const form = {
     account_name: useInput(""),
@@ -70,6 +80,7 @@ export default function EditAccountInfo() {
         },
       });
       console.log("입금 폼 수정 성공", res);
+      router.push(`/profile/${userId}/mySalesList`);
     } catch (error) {
       console.error("수정 실패", error);
     }
