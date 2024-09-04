@@ -199,18 +199,18 @@ export default function UserChat() {
   }, [enterData]);
 
   // 스크롤 이벤트
-  const handleScroll = async () => {
+  const handleScroll = debounce(async () => {
     if (
       chatRoomRef.current &&
       chatRoomRef.current.scrollTop === 0 &&
       !isFetching
     ) {
       setIsFetching(true);
-      setCurrentPage(currentPage + 1);
+      setCurrentPage((prevPage) => prevPage + 1);
       await chatDetails();
       setIsFetching(false);
     }
-  };
+  }, 300);
 
   // 스크롤 이벤트 발생 시 새로운 채팅 데이터 가져오기
   useEffect(() => {
