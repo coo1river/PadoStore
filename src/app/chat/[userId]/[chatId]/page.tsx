@@ -17,6 +17,7 @@ import useChatStore from "@/store/useChatStore";
 import chatUserInfoApi from "@/api/chat/chatUserInfoApi";
 import ChatModal from "@/components/modal/chatModal";
 import userInfoApi, { UserInfo } from "@/api/chat/userInfoApi";
+import useDebounce from "@/hooks/useDebounce";
 
 interface Message {
   chat_id: number;
@@ -58,6 +59,8 @@ export default function UserChat() {
 
   const client = useRef<StompJs.Client | null>(null);
   const chatRoomRef = useRef<HTMLDivElement>(null);
+  const observerRef = useRef<HTMLDivElement>(null);
+  const debouncedPage = useDebounce(currentPage, 1000);
 
   // 채팅방 생성
   useEffect(() => {
@@ -198,32 +201,61 @@ export default function UserChat() {
     updateMessages();
   }, [enterData]);
 
-  // 스크롤 이벤트
-  const handleScroll = debounce(async () => {
-    if (
-      chatRoomRef.current &&
-      chatRoomRef.current.scrollTop === 0 &&
-      !isFetching
-    ) {
+  // // 스크롤 이벤트
+  // const handleScroll = async () => {
+  //   if (
+  //     chatRoomRef.current &&
+  //     chatRoomRef.current.scrollTop === 0 &&
+  //     !isFetching
+  //   ) {
+  //     setIsFetching(true);
+  //     setCurrentPage((prevPage) => prevPage + 1);
+  //     await chatDetails();
+  //     setIsFetching(false);
+  //   }
+  // };
+
+  // // 스크롤 이벤트 발생 시 새로운 채팅 데이터 가져오기
+  // useEffect(() => {
+  //   const chatRoomCurrent = chatRoomRef.current;
+  //   if (chatRoomCurrent) {
+  //     chatRoomCurrent.addEventListener("scroll", handleScroll);
+  //   }
+  //   return () => {
+  //     if (chatRoomCurrent) {
+  //       chatRoomCurrent.removeEventListener("scroll", handleScroll);
+  //     }
+  //   };
+  // }, [currentPage, isFetching]);
+
+  // Intersection Observer 콜백
+  const handleIntersect = async ([entry]: IntersectionObserverEntry[]) => {
+    if (entry.isIntersecting && !isFetching) {
       setIsFetching(true);
       setCurrentPage((prevPage) => prevPage + 1);
       await chatDetails();
       setIsFetching(false);
     }
-  }, 300);
+  };
 
-  // 스크롤 이벤트 발생 시 새로운 채팅 데이터 가져오기
+  // Intersection Observer 설정
   useEffect(() => {
-    const chatRoomCurrent = chatRoomRef.current;
-    if (chatRoomCurrent) {
-      chatRoomCurrent.addEventListener("scroll", handleScroll);
+    const observer = new IntersectionObserver(handleIntersect, {
+      root: chatRoomRef.current, // 채팅 룸 내에서만 관찰하도록 설정
+      rootMargin: "0px",
+      threshold: 1.0,
+    });
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
     }
+
     return () => {
-      if (chatRoomCurrent) {
-        chatRoomCurrent.removeEventListener("scroll", handleScroll);
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current);
       }
     };
-  }, [currentPage, isFetching]);
+  }, [debouncedPage, isFetching]);
 
   const publish = (chats: string) => {
     if (client.current && client.current.connected && createData) {
@@ -386,6 +418,7 @@ export default function UserChat() {
       </div>
 
       <ChatRoom ref={chatRoomRef}>
+        <div ref={observerRef} />
         {detailData?.chat.map((message, index) => {
           const date = new Date(message.insert_dt);
           const timeString = date.toLocaleTimeString([], {
