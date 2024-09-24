@@ -60,7 +60,7 @@ export default function UserChat() {
   const client = useRef<StompJs.Client | null>(null);
   const chatRoomRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<HTMLDivElement>(null);
-  const debouncedPage = useDebounce(currentPage, 1000);
+  const [prevScrollHeight, setPrevScrollHeight] = useState(0);
 
   // 채팅방 생성
   useEffect(() => {
@@ -107,20 +107,6 @@ export default function UserChat() {
       }
     };
   }, [createData]);
-
-  // 스크롤 관리
-  useEffect(() => {
-    if (chatRoomRef.current && detailData) {
-      // 현재 스크롤 위치 저장
-      const { scrollTop, scrollHeight, clientHeight } = chatRoomRef.current;
-      const isScrolledToBottom = scrollHeight - scrollTop === clientHeight;
-
-      // 데이터 추가 후 하단으로 스크롤
-      if (isScrolledToBottom || currentPage === 1) {
-        chatRoomRef.current.scrollTop = chatRoomRef.current.scrollHeight;
-      }
-    }
-  }, [detailData, chatList]);
 
   // 채팅 상세
   const chatDetails = async () => {
@@ -201,61 +187,62 @@ export default function UserChat() {
     updateMessages();
   }, [enterData]);
 
-  // // 스크롤 이벤트
-  // const handleScroll = async () => {
-  //   if (
-  //     chatRoomRef.current &&
-  //     chatRoomRef.current.scrollTop === 0 &&
-  //     !isFetching
-  //   ) {
-  //     setIsFetching(true);
-  //     setCurrentPage((prevPage) => prevPage + 1);
-  //     await chatDetails();
-  //     setIsFetching(false);
-  //   }
-  // };
+  const handleScroll = async () => {
+    if (chatRoomRef.current) {
+      const chatRoom = chatRoomRef.current;
+      const { scrollTop } = chatRoom;
 
-  // // 스크롤 이벤트 발생 시 새로운 채팅 데이터 가져오기
-  // useEffect(() => {
-  //   const chatRoomCurrent = chatRoomRef.current;
-  //   if (chatRoomCurrent) {
-  //     chatRoomCurrent.addEventListener("scroll", handleScroll);
-  //   }
-  //   return () => {
-  //     if (chatRoomCurrent) {
-  //       chatRoomCurrent.removeEventListener("scroll", handleScroll);
-  //     }
-  //   };
-  // }, [currentPage, isFetching]);
-
-  // Intersection Observer 콜백
-  const handleIntersect = async ([entry]: IntersectionObserverEntry[]) => {
-    if (entry.isIntersecting && !isFetching) {
-      setIsFetching(true);
-      setCurrentPage((prevPage) => prevPage + 1);
-      await chatDetails();
-      setIsFetching(false);
+      if (scrollTop < 10 && !isFetching) {
+        console.log("top", scrollTop);
+        setIsFetching(true);
+        try {
+          // 페이지 증가 및 데이터 패칭
+          setCurrentPage((prevPage) => prevPage + 1);
+          await chatDetails();
+        } catch (error) {
+          console.error("Error fetching chat details:", error);
+        } finally {
+          setIsFetching(false);
+          console.log("top2", scrollTop);
+        }
+      }
     }
   };
 
-  // Intersection Observer 설정
+  // 스크롤 관리
   useEffect(() => {
-    const observer = new IntersectionObserver(handleIntersect, {
-      root: chatRoomRef.current, // 채팅 룸 내에서만 관찰하도록 설정
-      rootMargin: "0px",
-      threshold: 1.0,
-    });
+    if (chatRoomRef.current && detailData) {
+      const chatRoom = chatRoomRef.current;
+      const { scrollTop } = chatRoom;
 
-    if (observerRef.current) {
-      observer.observe(observerRef.current);
-    }
-
-    return () => {
-      if (observerRef.current) {
-        observer.unobserve(observerRef.current);
+      if (currentPage === 1) {
+        // 새 데이터 추가 시 하단으로 스크롤
+        chatRoom.scrollTop = chatRoom.scrollHeight;
       }
-    };
-  }, [debouncedPage, isFetching]);
+
+      // 현재 페이지에서 새 데이터가 추가된 경우 스크롤 조정
+      if (currentPage > 1) {
+        const newScrollHeight = chatRoom.scrollHeight;
+        const deltaHeight = newScrollHeight - prevScrollHeight;
+        chatRoom.scrollTop = scrollTop + deltaHeight;
+      }
+
+      // 스크롤 높이 저장
+      setPrevScrollHeight(chatRoom.scrollHeight);
+    }
+  }, [detailData, chatList]);
+
+  // 스크롤 이벤트 등록
+  useEffect(() => {
+    const chatRoomCurrent = chatRoomRef.current;
+    if (chatRoomCurrent) {
+      chatRoomCurrent.addEventListener("scroll", handleScroll);
+
+      return () => {
+        chatRoomCurrent.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, [currentPage, isFetching]);
 
   const publish = (chats: string) => {
     if (client.current && client.current.connected && createData) {
