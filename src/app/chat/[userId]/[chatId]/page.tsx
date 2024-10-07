@@ -193,17 +193,15 @@ export default function UserChat() {
       const { scrollTop } = chatRoom;
 
       if (scrollTop < 10 && !isFetching) {
-        console.log("top", scrollTop);
         setIsFetching(true);
         try {
           // 페이지 증가 및 데이터 패칭
           setCurrentPage((prevPage) => prevPage + 1);
           await chatDetails();
         } catch (error) {
-          console.error("Error fetching chat details:", error);
+          console.error("데이터 패칭 에러", error);
         } finally {
           setIsFetching(false);
-          console.log("top2", scrollTop);
         }
       }
     }
@@ -222,8 +220,7 @@ export default function UserChat() {
 
       // 현재 페이지에서 새 데이터가 추가된 경우 스크롤 조정
       if (currentPage > 1) {
-        const newScrollHeight = chatRoom.scrollHeight;
-        const deltaHeight = newScrollHeight - prevScrollHeight;
+        const deltaHeight = chatRoom.scrollHeight - prevScrollHeight;
         chatRoom.scrollTop = scrollTop + deltaHeight;
       }
 
@@ -320,7 +317,7 @@ export default function UserChat() {
       const fetchedUserData = await userInfoApi();
       setUserData(fetchedUserData);
 
-      const accountMessage = `은행: ${fetchedUserData.bank}\n계좌명: ${fetchedUserData.account_name}\n계좌번호: ${fetchedUserData.account_number}`;
+      const accountMessage = `은행: ${fetchedUserData.bank}\n예금주: ${fetchedUserData.account_name}\n계좌번호: ${fetchedUserData.account_number}`;
 
       publish(accountMessage);
 
