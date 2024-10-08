@@ -10,6 +10,12 @@ export const LoginMain = styled.main`
   color: #2c2c2c;
   height: calc(100vh - 215px);
 
+  .heading {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 30px 0;
+  }
+
   .login_text {
     margin: 25px;
     font-size: 18px;

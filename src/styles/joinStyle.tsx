@@ -3,9 +3,9 @@ import styled from "styled-components";
 import { LoginMain } from "./loginStyle";
 
 export const JoinMain = styled(LoginMain)`
-  height: unset;
+  height: auto;
 
-  .text_h2 {
+  .heading {
     font-size: 20px;
     font-weight: 600;
     margin: 30px 0;
@@ -158,5 +158,52 @@ export const AccountInfoMain = styled(JoinMain)`
     width: 100%;
     color: white;
     background-color: var(--color-main);
+  }
+`;
+
+export const FindMain = styled(LoginMain)`
+  justify-content: unset;
+
+  .heading {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 30px 0;
+  }
+
+  .find_form {
+    width: auto;
+  }
+
+  .find_wrap {
+    margin-bottom: 20px;
+
+    label {
+      margin-bottom: 5px;
+      font-weight: 700;
+    }
+
+    .infor_text {
+      font-size: 14px;
+      margin-bottom: 10px;
+      color: #808080;
+    }
+
+    input {
+      width: 250px;
+      padding: 10px;
+      border-radius: 5px;
+      outline: 2px solid #e4e4e4;
+      margin-right: 10px;
+    }
+
+    button {
+      background-color: var(--color-main);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      position: relative;
+    }
   }
 `;

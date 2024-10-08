@@ -38,7 +38,6 @@ export default async function orderApi(data: OrderData) {
       },
     });
     console.log("API 응답:", res.data);
-    console.log(res.status);
     return res.data;
   } catch (error) {
     console.error("API 오류:", error);

@@ -140,6 +140,7 @@ export default function UserChat() {
         `/sub/chat/${createData.chat_room_id}`,
         async (message) => {
           const receivedMessage = JSON.parse(message.body);
+          console.log("구독 성공", message.body);
 
           const enterInfo = await chatUserInfoApi(createData.chat_room_id);
           setEnterData(enterInfo);

@@ -95,7 +95,7 @@ const Join: React.FC = () => {
 
   return (
     <JoinMain>
-      <h2 className="text_h2">회원가입</h2>
+      <h2 className="heading">회원가입</h2>
       <form className="join_form">
         {/* 프로필 이미지 업로드 */}
         <ImgWrap>

@@ -85,6 +85,12 @@ const Login: React.FC = () => {
         <LoginBtn onClick={handleLogin}>로그인</LoginBtn>
       </form>
 
+      <div>
+        <button onClick={() => router.push("/find/id")}>아이디 찾기</button>
+        <span>|</span>
+        <button>비밀번호 찾기</button>
+      </div>
+
       <div className="text_join">
         <p>아직 회원이 아니신가요?</p>
         <button className="btn_join" onClick={() => router.push("/join")}>
