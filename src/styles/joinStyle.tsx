@@ -207,3 +207,17 @@ export const FindMain = styled(LoginMain)`
     }
   }
 `;
+
+export const AuthWrap = styled.div`
+  button {
+    width: 100%;
+  }
+`;
+
+export const FindMessage = styled.p`
+  color: black;
+
+  span {
+    color: var(--color-main);
+  }
+`;
