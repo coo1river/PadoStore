@@ -1,15 +1,11 @@
 "use client";
-import idFindApi from "@/api/idFindApi";
 import useInput from "@/hooks/useInput";
-import {
-  AuthWrap,
-  ErrorMessage,
-  FindMain,
-  FindMessage,
-} from "@/styles/joinStyle";
+import { FindMain } from "@/styles/joinStyle";
 import { useRouter } from "next/navigation";
-import { LoginBtn } from "@/styles/loginStyle";
 import { FormEvent, useState } from "react";
+import accountFindApi from "@/api/accountFindApi";
+import EmailForm from "@/components/form/emailForm";
+import AuthMessage from "@/components/authMessage";
 
 const IdFind: React.FC = () => {
   // 인증하기 상태
@@ -36,7 +32,7 @@ const IdFind: React.FC = () => {
     }
 
     try {
-      const fetch = await idFindApi(email.value);
+      const fetch = await accountFindApi("id", email.value);
       console.log("인증 성공", fetch);
       setAuthState(!authState);
       setFindId(fetch.user_id);
@@ -48,36 +44,22 @@ const IdFind: React.FC = () => {
 
   return (
     <FindMain>
-      <h2 className="heading">아이디 찾기</h2>
-      <form className="find_form">
-        {!authState ? (
-          // 인증 전
-          <div className="find_wrap">
-            <label htmlFor="email-input">이메일</label>
-            <p className="infor_text">
-              가입 시 입력하신 이메일을 입력해 주세요.
-            </p>
-            <input
-              type="text"
-              id="email-input"
-              placeholder="이메일"
-              onChange={email.onChange}
-              value={email.value}
-            />
-            <button onClick={handleAuth}>인증</button>
-            <ErrorMessage>{errorMessage || findId}</ErrorMessage>
-          </div>
-        ) : (
-          // 인증 후 아이디 메시지 출력
-          <AuthWrap>
-            <FindMessage>
-              가입하신 아이디는 <span>{findId}</span>입니다.
-            </FindMessage>
-            <LoginBtn onClick={() => router.push("/login")}>로그인</LoginBtn>
-          </AuthWrap>
-        )}
-      </form>
+      <h2>아이디 찾기</h2>
+      {!authState ? (
+        <EmailForm
+          email={email}
+          errorMessage={errorMessage}
+          onSubmit={handleAuth}
+        />
+      ) : (
+        <AuthMessage
+          message={`가입하신 아이디는 ${findId}입니다.`}
+          buttonText="로그인"
+          onButtonClick={() => router.push("/login")}
+        />
+      )}
     </FindMain>
   );
 };
+
 export default IdFind;

@@ -88,7 +88,9 @@ const Login: React.FC = () => {
       <div>
         <button onClick={() => router.push("/find/id")}>아이디 찾기</button>
         <span>|</span>
-        <button>비밀번호 찾기</button>
+        <button onClick={() => router.push("/find/password")}>
+          비밀번호 찾기
+        </button>
       </div>
 
       <div className="text_join">

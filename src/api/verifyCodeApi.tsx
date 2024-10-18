@@ -1,10 +1,10 @@
 import axios from "axios";
 
-export default async function idFindApi(email: string) {
-  const url = "/api/id-find";
+export default async function accountFindApi(email: string, code: number) {
+  const url = "api/code/verify";
 
   try {
-    const res = await axios.post(url, { email });
+    const res = await axios.post(url, { email, code });
     console.log("API 응답:", res.data);
     return res.data;
   } catch (error) {
