@@ -36,9 +36,16 @@ const IdFind: React.FC = () => {
       console.log("인증 성공", fetch);
       setAuthState(!authState);
       setFindId(fetch.user_id);
-    } catch (error) {
-      setErrorMessage("존재하지 않는 이메일입니다.");
-      console.log("인증 실패", error);
+    } catch (error: any) {
+      if (error.response.status === 400) {
+        setErrorMessage("존재하지 않는 이메일입니다.");
+        console.log("인증 실패", error);
+      } else {
+        setErrorMessage(
+          "서버에서 문제가 발생했습니다. 잠시 후 다시 시도해 주세요."
+        );
+        console.log("인증 실패", error);
+      }
     }
   };
 

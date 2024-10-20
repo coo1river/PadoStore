@@ -9,9 +9,10 @@ export const HomeMain = styled.main`
   align-items: center;
 
   .title_tag {
+    font-weight: 600;
     margin-bottom: 20px;
     width: fit-content;
-    font-size: 18px;
+    font-size: 16px;
     background-color: var(--color-main);
     color: white;
     padding: 7px 12px;
