@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export default async function accountFindApi(email: string, code: number) {
+export default async function verifyCodeApi(email: string, code: string) {
   const url = "api/code/verify";
 
   try {

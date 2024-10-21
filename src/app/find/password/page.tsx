@@ -1,5 +1,6 @@
 "use client";
 import accountFindApi from "@/api/accountFindApi";
+import verifyCodeApi from "@/api/verifyCodeApi";
 import EmailForm from "@/components/form/emailForm";
 import useInput from "@/hooks/useInput";
 import { FindMain } from "@/styles/joinStyle";
@@ -9,12 +10,18 @@ const PasswordFind: React.FC = () => {
   // 인증하기 상태
   const [authState, setAuthState] = useState<boolean>(false);
 
-  // email input 값
+  // 인증 번호 확인 상태
+  const [verifyState, setVerifyState] = useState<boolean>(false);
+
+  // 이메일, 인증 번호, 비밀번호 input 값
   const email = useInput("");
+  const code = useInput("");
+  const resetPw = useInput("");
 
   // 에러 메시지
   const [errorMessage, setErrorMessage] = useState<string>("");
 
+  // 이메일 인증 함수
   const handleAuth = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -23,9 +30,8 @@ const PasswordFind: React.FC = () => {
       setErrorMessage("이메일을 입력해 주세요.");
       return;
     }
-
     try {
-      const fetch = await accountFindApi("id", email.value);
+      const fetch = await accountFindApi("pw", email.value);
       console.log("인증 성공", fetch);
       setAuthState(!authState);
     } catch (error: any) {
@@ -41,6 +47,19 @@ const PasswordFind: React.FC = () => {
     }
   };
 
+  // 인증 번호 확인 함수
+  const handleVerifyCode = async (e: FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const fetch = await verifyCodeApi(email.value, code.value);
+      setVerifyState(!verifyState);
+      console.log("인증 확인", fetch);
+    } catch (error) {
+      console.log("인증 실패", error);
+    }
+  };
+
   return (
     <FindMain>
       <h2 className="heading">비밀번호 찾기</h2>
@@ -49,16 +68,36 @@ const PasswordFind: React.FC = () => {
         errorMessage={errorMessage}
         onSubmit={handleAuth}
       />
-      {!authState && (
-        <div>
-          <div className="find_wrap">
-            <label htmlFor="auth-num">인증 번호</label>
-            <p className="infor_text">
-              이메일에 발송된 인증 번호를 입력해 주세요.
-            </p>
-            <input type="text" id="auth-num" placeholder="인증 번호" />
-            <button>확인</button>
-          </div>
+      {authState && (
+        <div className="find_wrap">
+          <label htmlFor="auth-num">인증 번호</label>
+          <p className="infor_text">
+            이메일에 발송된 인증 번호를 입력해 주세요.
+          </p>
+          <input
+            type="number"
+            id="auth-num"
+            placeholder="인증 번호"
+            onChange={code.onChange}
+            value={code.value}
+          />
+          <button onClick={handleVerifyCode}>확인</button>
+        </div>
+      )}
+
+      {verifyState && (
+        <div className="find_wrap">
+          <label htmlFor="reset-pw">비밀번호 재설정</label>
+          <p className="infor_text">
+            영소문자, 숫자, 특수문자(@, !, #, $)를 포함한 6자 - 16자
+          </p>
+          <input
+            type="text"
+            id="reset-pw"
+            placeholder="비밀번호"
+            onChange={resetPw.onChange}
+            value={resetPw.value}
+          />
         </div>
       )}
     </FindMain>
