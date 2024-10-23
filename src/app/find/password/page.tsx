@@ -1,5 +1,6 @@
 "use client";
 import accountFindApi from "@/api/accountFindApi";
+import resetPasswordApi from "@/api/resetPasswordApi";
 import verifyCodeApi from "@/api/verifyCodeApi";
 import EmailForm from "@/components/form/emailForm";
 import useInput from "@/hooks/useInput";
@@ -57,6 +58,17 @@ const PasswordFind: React.FC = () => {
       console.log("인증 확인", fetch);
     } catch (error) {
       console.log("인증 실패", error);
+    }
+  };
+
+  const handleResetPw = async (e: FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const fetch = await resetPasswordApi();
+      console.log("비밀번호 재설정 완료", fetch);
+    } catch (error) {
+      console.log("비밀번호 재설정 실패", error);
     }
   };
 
