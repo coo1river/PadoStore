@@ -4,7 +4,7 @@ import resetPasswordApi from "@/api/resetPasswordApi";
 import verifyCodeApi from "@/api/verifyCodeApi";
 import EmailForm from "@/components/form/emailForm";
 import useInput from "@/hooks/useInput";
-import { FindMain } from "@/styles/joinStyle";
+import { ErrorMessage, FindMain } from "@/styles/joinStyle";
 import { FormEvent, useState } from "react";
 
 const PasswordFind: React.FC = () => {
@@ -52,6 +52,10 @@ const PasswordFind: React.FC = () => {
   const handleVerifyCode = async (e: FormEvent) => {
     e.preventDefault();
 
+    if (!code.value) {
+      setErrorMessage("인증번호를 입력해 주세요.");
+    }
+
     try {
       const fetch = await verifyCodeApi(email.value, code.value);
       setVerifyState(!verifyState);
@@ -64,8 +68,13 @@ const PasswordFind: React.FC = () => {
   const handleResetPw = async (e: FormEvent) => {
     e.preventDefault();
 
+    if (!resetPw.value) {
+      setErrorMessage("새로운 비밀번호를 입력해 주세요.");
+      return;
+    }
+
     try {
-      const fetch = await resetPasswordApi();
+      const fetch = await resetPasswordApi(token, resetPw.value);
       console.log("비밀번호 재설정 완료", fetch);
     } catch (error) {
       console.log("비밀번호 재설정 실패", error);
@@ -94,6 +103,7 @@ const PasswordFind: React.FC = () => {
             value={code.value}
           />
           <button onClick={handleVerifyCode}>확인</button>
+          <ErrorMessage>{errorMessage}</ErrorMessage>
         </div>
       )}
 
@@ -110,6 +120,8 @@ const PasswordFind: React.FC = () => {
             onChange={resetPw.onChange}
             value={resetPw.value}
           />
+          <button onClick={handleResetPw}>확인</button>
+          <ErrorMessage>{errorMessage}</ErrorMessage>
         </div>
       )}
     </FindMain>

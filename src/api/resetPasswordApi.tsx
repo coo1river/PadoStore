@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default async function resetPasswordApi(
-  user_id: string,
+  token: string,
   password: string
 ) {
   const url = "/api/pw-reset";
