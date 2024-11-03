@@ -15,7 +15,7 @@ export default function EditAccountInfo() {
   const router = useRouter();
 
   // 토큰 디코딩 커스텀 훅으로 user id 추출
-  const { token, setToken } = useAuthStore();
+  const { token } = useAuthStore();
   const userId = useDecodedToken(token!);
 
   // useInput 사용으로 정보 내용 담기
@@ -88,7 +88,7 @@ export default function EditAccountInfo() {
 
   return (
     <AccountInfoMain>
-      <h2 className="text_h2">입금 폼 수정</h2>
+      <h2 className="heading">입금 폼 수정</h2>
       <form>
         <label htmlFor="select-bank">은행</label>
         <select

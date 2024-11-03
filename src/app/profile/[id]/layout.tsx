@@ -9,6 +9,7 @@ import mySalesListApi from "@/api/mySalesListApi";
 import { Data } from "@/components/postList/marketTab";
 import useDecodedToken from "@/hooks/useDecodedToken";
 import useProfileStore from "@/store/useProfileStore";
+import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
 
 function ProfileLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -110,7 +111,9 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
         {/* 유저 프로필 */}
         <ImgProfile
           src={
-            data?.userFile ? `/upload/${data?.userFile?.up_file}` : undefined
+            data?.userFile
+              ? `/upload/${data?.userFile?.up_file}`
+              : ImgProfileBasic.src
           }
         />
         <div>

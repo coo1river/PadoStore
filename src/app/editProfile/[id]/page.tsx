@@ -32,7 +32,7 @@ const EditProfile: React.FC = () => {
   const router = useRouter();
 
   // zustand에서 token 가져오기
-  const { token, setToken } = useAuthStore();
+  const { token } = useAuthStore();
 
   // 토큰 디코딩 커스텀 훅으로 user id 추출
   const userId = useDecodedToken(token!);
@@ -129,6 +129,7 @@ const EditProfile: React.FC = () => {
       console.log("이미지 업로드 결과:", uploadResult);
       console.log("프로필 수정 결과:", editResult);
       console.log("수정 성공");
+      router.push(`/profile/${userId}`);
     } catch (error) {
       console.error("수정 실패", error);
     }
@@ -136,23 +137,17 @@ const EditProfile: React.FC = () => {
 
   return (
     <JoinMain>
-      <h2 className="text_h2">프로필 수정</h2>
+      <h2 className="heading">프로필 수정</h2>
       <form className="join_form">
         {/* 프로필 이미지 업로드 */}
         <ImgWrap>
-          {imgProfile ? (
-            <ImgProfile
-              src={
-                typeof imgProfile === "string"
-                  ? `/upload/${imgProfile}`
-                  : imgProfile
-                  ? URL.createObjectURL(imgProfile)
-                  : undefined
-              }
-            />
-          ) : (
-            <ImgProfile src={ImgProfileBasic.src} />
-          )}
+          <ImgProfile
+            src={
+              imgProfile instanceof File
+                ? URL.createObjectURL(imgProfile)
+                : imgProfile
+            }
+          />
           <ImgLabel htmlFor="img-profile" />
           <ImgInput
             type="file"
@@ -171,7 +166,7 @@ const EditProfile: React.FC = () => {
           id="input-id"
           placeholder="아이디"
           value={form.id.value}
-          onChange={() => {}}
+          disabled
           onBlur={IdValid}
         />
         <ErrorMessage>{error.idErr as string}</ErrorMessage>

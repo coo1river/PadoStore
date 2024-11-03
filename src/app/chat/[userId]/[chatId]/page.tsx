@@ -17,7 +17,8 @@ import useChatStore from "@/store/useChatStore";
 import chatUserInfoApi from "@/api/chat/chatUserInfoApi";
 import ChatModal from "@/components/modal/chatModal";
 import userInfoApi, { UserInfo } from "@/api/chat/userInfoApi";
-import useDebounce from "@/hooks/useDebounce";
+import useAuthStore from "@/store/useAuthStore";
+import useDecodedToken from "@/hooks/useDecodedToken";
 
 interface Message {
   chat_id: number;
@@ -33,7 +34,12 @@ export default function UserChat() {
   const params = useParams();
   const pathname = usePathname();
   const receiver = params.chatId;
-  const userId = params.userId;
+
+  // 토큰 디코딩 커스텀 훅으로 user id 추출
+  const { token } = useAuthStore();
+  const userId = useDecodedToken(token!);
+
+  // 라우터 사용
   const router = useRouter();
 
   const [chatList, setChatList] = useState<Message[]>([]);
@@ -389,10 +395,18 @@ export default function UserChat() {
     );
   };
 
+  // 상대 닉네임
+  const receiverNickname =
+    detailData?.user1.user_id === receiver
+      ? detailData.user1.nickname
+      : detailData?.user2.user_id === receiver
+      ? detailData.user2.nickname
+      : receiver;
+
   return (
     <ChatRoomWrap>
       <div className="chat_header">
-        <p className="chat_receiver">{receiver}</p>
+        <p className="chat_receiver">{receiverNickname}</p>
         <IconExit
           width="20"
           height="20"

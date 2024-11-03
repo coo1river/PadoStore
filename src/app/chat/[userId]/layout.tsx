@@ -49,10 +49,6 @@ export default function ChatLayout({
           const isSelfChat =
             userId === item?.chat_user1 && userId === item?.chat_user2;
 
-          // 상대방 닉네임 결정
-          const nickname =
-            userId === item?.chat_user1 ? item?.chat_user2 : item?.chat_user1;
-
           return (
             <div
               key={index}
@@ -70,7 +66,7 @@ export default function ChatLayout({
                 }
               />
               <div className="nickname_chat_wrap">
-                <p className="nickname">{nickname}</p>
+                <p className="nickname">{item.nickname}</p>
                 <p>{item.last_message}</p>
               </div>
             </div>

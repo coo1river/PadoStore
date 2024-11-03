@@ -1,6 +1,7 @@
 "use client";
 import useDecodedToken from "@/hooks/useDecodedToken";
 import useAuthStore from "@/store/useAuthStore";
+import { LoginMain } from "@/styles/loginStyle";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
@@ -13,7 +14,7 @@ export default function Kakao() {
       ? new URL(window.location.href).searchParams.get("code")
       : null;
 
-  const { token, setToken } = useAuthStore();
+  const { token } = useAuthStore();
   const userId = useDecodedToken(token!);
 
   useEffect(() => {
@@ -25,7 +26,6 @@ export default function Kakao() {
           if (res.status === 200) {
             useAuthStore.getState().setToken(res.headers.authorization);
             sessionStorage.setItem("userToken", res.headers.authorization);
-            router.push(`/editProfile/${userId}`);
           }
         })
         .catch((error) => {
@@ -34,5 +34,5 @@ export default function Kakao() {
     }
   }, [code, router]);
 
-  return <div>로딩중</div>;
+  return <LoginMain />;
 }

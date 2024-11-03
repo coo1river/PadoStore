@@ -6,7 +6,7 @@ export default async function resetPasswordApi(
 ) {
   const url = "/api/pw-reset";
   try {
-    const res = await axios.post(url, { user_id, password });
+    const res = await axios.post(url, { token, password });
     console.log("API 응답:", res.data);
     return res.data;
   } catch (error) {
