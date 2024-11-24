@@ -74,6 +74,7 @@ export default function UserChat() {
       try {
         const res = await createChatApi(receiver);
         setCreateData(res);
+        useChatStore.getState().setChatRoomId(res.chat_room_id);
       } catch (error) {
         console.error("채팅방 생성에 실패했습니다.", error);
       }
@@ -297,7 +298,7 @@ export default function UserChat() {
     let initialMount = true;
 
     const handleRouteChange = async () => {
-      if (!initialMount && createData) {
+      if (!initialMount && createData && sessionStorage.getItem("token")) {
         await chatExitApi(createData.chat_room_id);
       }
     };

@@ -17,6 +17,8 @@ import useAuthStore from "@/store/useAuthStore";
 import ModalFilter from "./modal/modalFilter";
 import useInput from "@/hooks/useInput";
 import useDecodedToken from "@/hooks/useDecodedToken";
+import useChatStore from "@/store/useChatStore";
+import chatExitApi from "@/api/chat/chatExitApi";
 
 interface PostUploadModalProps {
   setUploadModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -77,16 +79,33 @@ const Header: React.FC = () => {
   // zustand에서 관리하는 authState로 로그인 상태 확인
   const { authState, setAuthState } = useAuthStore();
   const { token, setToken } = useAuthStore();
+  const { chatRoomId } = useChatStore();
 
   // 토큰 디코딩 커스텀 훅으로 user id 추출
   const userId = useDecodedToken(token!);
 
   // 로그아웃 함수
   const handleLogout = () => {
-    setAuthState(false);
-    setToken(null);
-    sessionStorage.removeItem("userToken");
-    router.push("/home");
+    if (chatRoomId) {
+      chatExitApi(chatRoomId)
+        .then(() => {
+          // 채팅 나가기 성공 후 로그아웃 상태 처리
+          setAuthState(false);
+          setToken(null);
+          console.log(token);
+          sessionStorage.removeItem("userToken");
+          router.push("/home");
+        })
+        .catch((error) => {
+          console.error("chatExitApi error:", error);
+        });
+    } else {
+      // 채팅방이 없으면 바로 로그아웃 처리
+      setAuthState(false);
+      setToken(null);
+      sessionStorage.removeItem("userToken");
+      router.push("/home");
+    }
   };
 
   // 검색 키워드 저장
