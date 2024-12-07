@@ -1,5 +1,11 @@
 "use client";
-import React, { FormEvent, useEffect, useRef, useState } from "react";
+import React, {
+  FormEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import * as StompJs from "@stomp/stompjs";
 import createChatApi, { ChatRes } from "@/api/chat/createChatApi";
@@ -348,53 +354,56 @@ export default function UserChat() {
   };
 
   // 렌더링 되는 메시지(본인 메시지/상대 메시지)
-  const renderMessage = (
-    message: Message,
-    isSelf: boolean,
-    timeString: string,
-    isRead: string,
-    chat_id: string
-  ) => {
-    return (
-      <div
-        className={isSelf ? "message_self_wrap" : "message_other_wrap"}
-        key={chat_id}
-      >
-        {!isSelf && (
-          <img
-            className="profile_image"
-            src={
-              detailData?.user1.user_id === receiver
-                ? detailData?.user1.up_file
-                  ? `/upload/${detailData?.user1.up_file}`
+  const renderMessage = useCallback(
+    (
+      message: Message,
+      isSelf: boolean,
+      timeString: string,
+      isRead: string,
+      chat_id: string
+    ) => {
+      return (
+        <div
+          className={isSelf ? "message_self_wrap" : "message_other_wrap"}
+          key={chat_id}
+        >
+          {!isSelf && (
+            <img
+              className="profile_image"
+              src={
+                detailData?.user1.user_id === receiver
+                  ? detailData?.user1.up_file
+                    ? `/upload/${detailData?.user1.up_file}`
+                    : ImgProfileBasic.src
+                  : detailData?.user2.up_file
+                  ? `/upload/${detailData?.user2.up_file}`
                   : ImgProfileBasic.src
-                : detailData?.user2.up_file
-                ? `/upload/${detailData?.user2.up_file}`
-                : ImgProfileBasic.src
-            }
-            alt="Profile"
-          />
-        )}
-        {isSelf && (
-          <>
-            <div className="read_status">
-              {isRead === "online" ? "" : "안 읽음"}
-            </div>
-            <div className="time_stamp">{timeString}</div>
-          </>
-        )}
-        <div className={isSelf ? "chat message_self" : "chat message_other"}>
-          {message.message}
+              }
+              alt="Profile"
+            />
+          )}
+          {isSelf && (
+            <>
+              <div className="read_status">
+                {isRead === "online" ? "" : "안 읽음"}
+              </div>
+              <div className="time_stamp">{timeString}</div>
+            </>
+          )}
+          <div className={isSelf ? "chat message_self" : "chat message_other"}>
+            {message.message}
+          </div>
+          {!isSelf && (
+            <>
+              <div className="time_stamp">{timeString}</div>
+              <div className="read_status" />
+            </>
+          )}
         </div>
-        {!isSelf && (
-          <>
-            <div className="time_stamp">{timeString}</div>
-            <div className="read_status" />
-          </>
-        )}
-      </div>
-    );
-  };
+      );
+    },
+    [detailData, receiver]
+  );
 
   // 상대 닉네임
   const receiverNickname =

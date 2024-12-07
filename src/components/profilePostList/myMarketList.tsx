@@ -9,6 +9,11 @@ interface Props {
 
 const MyMarketList: React.FC<Props> = ({ marketList }) => {
   const router = useRouter();
+
+  if (marketList.length === 0) {
+    return <p>작성한 글이 없습니다.</p>;
+  }
+
   return (
     <ul className="myProfile_list">
       {marketList.map((item) => {

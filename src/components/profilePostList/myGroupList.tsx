@@ -58,10 +58,14 @@ const MyGroupList: React.FC<Props> = ({ groupList, routePath }) => {
   const router = useRouter();
 
   // zustand에서 token 가져오기
-  const { token, setToken } = useAuthStore();
+  const { token } = useAuthStore();
 
   // 토큰 디코딩 커스텀 훅으로 user id 추출
   const userId = useDecodedToken(token!);
+
+  if (groupList.length === 0) {
+    return <p>작성한 글이 없습니다.</p>;
+  }
 
   return (
     <ul className="myProfile_list">
