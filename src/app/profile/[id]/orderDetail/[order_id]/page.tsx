@@ -47,7 +47,7 @@ const GroupManage: React.FC = () => {
           <ProductImg
             src={
               postData?.file && postData?.file[0]?.up_file
-                ? `/upload/${postData?.file[0]?.up_file}`
+                ? `/api/file/${postData?.file[0]?.up_file}`
                 : undefined
             }
             alt="상품 이미지"

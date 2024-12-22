@@ -83,7 +83,7 @@ const GroupDetail: React.FC = () => {
           <ProductImg
             src={
               data?.file && data?.file[0]?.up_file
-                ? `/upload/${data?.file[0]?.up_file}`
+                ? `/api/file/${data?.file[0]?.up_file}`
                 : undefined
             }
             alt="상품 이미지"
@@ -120,7 +120,7 @@ const GroupDetail: React.FC = () => {
                   className="img_profile"
                   src={
                     data?.userFile && data?.userFile.up_file
-                      ? `/upload/${data?.userFile.up_file}`
+                      ? `/api/file/${data?.userFile.up_file}`
                       : undefined
                   }
                   alt="프로필 이미지"
@@ -163,10 +163,14 @@ const GroupDetail: React.FC = () => {
               <li key={index}>{item}</li>
             ))}
           </ul>
-          <GroupSubmit>
-            {/* 입금자 정보 폼 */}
-            <AccountFormInfo data={data} />
-          </GroupSubmit>
+
+          {/* 작성자가 아닌 경우에만 폼 표시 */}
+          {userId !== data?.user_id && (
+            <GroupSubmit>
+              {/* 입금자 정보 폼 */}
+              <AccountFormInfo data={data} />
+            </GroupSubmit>
+          )}
         </ProductContent>
       </section>
     </ProductMain>

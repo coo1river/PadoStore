@@ -81,7 +81,7 @@ const ProductDetail: React.FC = () => {
           <ProductImg
             src={
               data?.file && data?.file[0]?.up_file
-                ? `/upload/${data?.file[0]?.up_file}`
+                ? `/api/file/${data?.file[0]?.up_file}`
                 : undefined
             }
             alt="상품 이미지"
@@ -119,7 +119,7 @@ const ProductDetail: React.FC = () => {
                   className="img_profile"
                   src={
                     data?.userFile && data?.userFile.up_file
-                      ? `/upload/${data?.userFile.up_file}`
+                      ? `/api/file/${data?.userFile.up_file}`
                       : undefined
                   }
                   alt="프로필 이미지"

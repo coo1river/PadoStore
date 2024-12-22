@@ -62,7 +62,9 @@ export default function ChatLayout({
               <img
                 className="profile_img"
                 src={
-                  item.up_file ? `/upload/${item.up_file}` : ImgProfileBasic.src
+                  item.up_file
+                    ? `/api/file/${item.up_file}`
+                    : ImgProfileBasic.src
                 }
               />
               <div className="nickname_chat_wrap">

@@ -112,7 +112,7 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
         <ImgProfile
           src={
             data?.userFile
-              ? `/upload/${data?.userFile?.up_file}`
+              ? `/api/file/${data?.userFile?.up_file}`
               : ImgProfileBasic.src
           }
         />

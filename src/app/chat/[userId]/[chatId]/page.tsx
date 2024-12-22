@@ -373,10 +373,10 @@ export default function UserChat() {
               src={
                 detailData?.user1.user_id === receiver
                   ? detailData?.user1.up_file
-                    ? `/upload/${detailData?.user1.up_file}`
+                    ? `/api/file/${detailData?.user1.up_file}`
                     : ImgProfileBasic.src
                   : detailData?.user2.up_file
-                  ? `/upload/${detailData?.user2.up_file}`
+                  ? `/api/file/${detailData?.user2.up_file}`
                   : ImgProfileBasic.src
               }
               alt="Profile"

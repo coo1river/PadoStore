@@ -27,7 +27,7 @@ const GroupSection: React.FC<GroupSectionProps> = ({ groupOrderList }) => {
                 <img
                   src={
                     item.fileList && item.fileList.length > 0
-                      ? `/upload/${item.fileList[0]?.up_file}`
+                      ? `/api/file/${item.fileList[0]?.up_file}`
                       : undefined
                   }
                   alt="상품 이미지"

@@ -282,7 +282,7 @@ const GroupPurchaseUpdate: React.FC = () => {
             <ImgFile
               src={
                 typeof imgFile === "string"
-                  ? `/upload/${imgFile}`
+                  ? `/api/file/${imgFile}`
                   : imgFile
                   ? URL.createObjectURL(imgFile)
                   : undefined
