@@ -37,9 +37,14 @@ export const ProductInfo = styled.article`
   .product_intro {
     display: flex;
     flex-direction: column;
-    gap: 30px;
-    padding-bottom: 60px;
+    gap: 25px;
+    padding-bottom: 30px;
     border-bottom: 2px solid var(--color-trans-grey);
+    .product_condition_ship {
+      p {
+        margin-bottom: 10px;
+      }
+    }
   }
 
   .title_update {

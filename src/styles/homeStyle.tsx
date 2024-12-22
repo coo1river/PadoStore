@@ -110,7 +110,7 @@ export const ProductArticle = styled.article`
   box-shadow: 0px 0px 4px 0px #0000001f;
   border-radius: 15px;
   cursor: pointer;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 
   &:hover > * {
     transform: scale(1.03);

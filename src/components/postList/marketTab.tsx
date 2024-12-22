@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import homeTabApi from "@/api/homeTabApi";
 import searchApi from "@/api/searchApi";
 import { GroupItem } from "./groupPurchaseTab";
+import Pagination from "../pagination";
 
 export interface Product {
   end_dt: string | null;
@@ -62,15 +63,17 @@ export interface Data {
 }
 
 interface Props {
-  page: number;
   api: string;
   keywords?: string;
-  setTotalPosts: (total: number) => void;
 }
 
-const MarketTab: React.FC<Props> = ({ page, api, keywords, setTotalPosts }) => {
+const MarketTab: React.FC<Props> = ({ api, keywords }) => {
   const router = useRouter();
   const [data, setData] = useState<Data | null>(null);
+
+  // 현재 페이지, 총 포스트 개수 관리
+  const [totalPosts, setTotalPosts] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
 
   // api 요청에 보낼 데이터 담기
   const params = {
@@ -104,7 +107,7 @@ const MarketTab: React.FC<Props> = ({ page, api, keywords, setTotalPosts }) => {
       }
     };
     fetchData();
-  }, []);
+  }, [page]);
 
   return (
     <>
@@ -155,6 +158,7 @@ const MarketTab: React.FC<Props> = ({ page, api, keywords, setTotalPosts }) => {
               );
             })}
         </div>
+        <Pagination totalPosts={totalPosts} page={page} setPage={setPage} />
       </ProductTab>
     </>
   );

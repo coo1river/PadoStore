@@ -17,7 +17,6 @@ const Pagination: React.FC<PaginationProps> = ({
   setPage,
 }) => {
   const numPages = Math.ceil(totalPosts / 10);
-  console.log(numPages);
 
   return (
     <PageSection>
@@ -30,7 +29,7 @@ const Pagination: React.FC<PaginationProps> = ({
             />
             <button
               className="btn_arrow left"
-              onClick={() => setPage(Math.max(1, page - 1))}
+              onClick={() => setPage(Math.min(1, page - 1))}
             />
           </>
         )}
@@ -53,7 +52,7 @@ const Pagination: React.FC<PaginationProps> = ({
             />
             <button
               className="btn_arrow double_right"
-              onClick={() => setPage(Math.max(1, page + 10))}
+              onClick={() => setPage(Math.min(numPages, page + 10))}
             />
           </>
         )}
@@ -67,6 +66,7 @@ const PageSection = styled.section`
   justify-content: center;
   align-items: center;
   border-radius: 10px;
+  margin-bottom: 20px;
 
   div {
     display: flex;
@@ -105,6 +105,8 @@ const PageSection = styled.section`
 `;
 
 const PageButton = styled.button`
+  color: var(--color-blackgrey);
+
   &.active {
     font-weight: 800;
     border-radius: 5px;

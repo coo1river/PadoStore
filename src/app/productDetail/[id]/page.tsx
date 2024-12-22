@@ -103,15 +103,17 @@ const ProductDetail: React.FC = () => {
                   </>
                 ) : null}
               </div>
-              <p className="product_price"></p>
-              <p>
-                <strong>• 상품 상태 : </strong>
-                {data?.product.product_status}
-              </p>
-              <p>
-                <strong>• 배송 방법 : </strong>
-                {data?.product.post_method}
-              </p>
+              <p className="product_price">{data?.product.price}원</p>
+              <div className="product_condition_ship">
+                <p>
+                  <strong>상품 상태 : </strong>
+                  {data?.product.product_status}
+                </p>
+                <p>
+                  <strong>배송 방법 : </strong>
+                  {data?.product.post_method}
+                </p>
+              </div>
             </div>
             <div className="profile_wrap">
               {data?.userFile && data?.userFile.up_file ? (

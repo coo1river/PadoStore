@@ -379,7 +379,7 @@ export default function UserChat() {
                   ? `/api/file/${detailData?.user2.up_file}`
                   : ImgProfileBasic.src
               }
-              alt="Profile"
+              alt="프로필 사진"
             />
           )}
           {isSelf && (

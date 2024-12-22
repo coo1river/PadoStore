@@ -20,14 +20,14 @@ const ChatModal: React.FC<Props> = ({ onClose, sendAccount, sendAddress }) => {
       </button>
       <button className="btn_modal" onClick={sendAccount}>
         <IconWallet width="30" height="30" fill="#3EABFA" />
-        <p>계좌 전송</p>
+        <p>계좌</p>
       </button>
       <button className="btn_modal" onClick={sendAddress}>
         <IconAddress width="30" height="30" fill="#3EABFA" />
-        <p>주소 전송</p>
+        <p>주소</p>
       </button>
       <button className="btn_exit" onClick={onClose}>
-        <IconExit width="30" height="30" fill="#3EABFA" />
+        <IconExit width="25" height="25" fill="#3EABFA" />
       </button>
     </ChatModalDiv>
   );
