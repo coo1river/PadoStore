@@ -106,11 +106,11 @@ const GroupDetail: React.FC = () => {
                 ) : null}
               </div>
               <p>
-                <strong>• 판매 기간 : </strong>
+                <strong>판매 기간 : </strong>
                 {data?.product.start_dt} ~ {data?.product.end_dt}
               </p>
               <p>
-                <strong>• 배송 방법 : </strong>
+                <strong>배송 방법 : </strong>
                 {data?.product.post_method}
               </p>
             </div>
@@ -145,7 +145,14 @@ const GroupDetail: React.FC = () => {
                   <IconBasicHeart width="20" height="20" fill="#3EABFA" />
                 )}
               </button>
-              <button className="btn_purchase">구매하기</button>
+              <button
+                className="btn_purchase"
+                onClick={() => {
+                  router.push(`/chat/${userId}/${data?.user_id}`);
+                }}
+              >
+                구매 문의하기
+              </button>
             </div>
           </div>
         </ProductInfo>

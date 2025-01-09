@@ -98,7 +98,9 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
   // 오늘 날짜 가져오기
   const date = new Date();
   date.setDate(date.getDate());
-  const today = date.toISOString().split("T")[0];
+  const today = new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+    .toISOString()
+    .split("T")[0];
 
   // answerList 배열에 답변 추가하기
   const handleInputChange = (
@@ -233,7 +235,7 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
         <DepositInfoWrap>
           <h3>입금 정보</h3>
           <div>
-            <label htmlFor="deposit-date">입금한 날짜</label>
+            <label htmlFor="deposit-date">입금 날짜</label>
             <input
               id="deposit-date"
               type="date"
@@ -241,7 +243,7 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
               value={form.deposit_date.value}
               onChange={form.deposit_date.onChange}
             />
-            <label htmlFor="deposit-time">입금한 시간</label>
+            <label htmlFor="deposit-time">입금 시간</label>
             <input
               id="deposit-time"
               type="time"

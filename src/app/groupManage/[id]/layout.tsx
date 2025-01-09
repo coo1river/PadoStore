@@ -1,5 +1,9 @@
 "use client";
-import { ArticleList, ManageMain } from "@/styles/profileStyle";
+import {
+  ArticleList,
+  GroupPurchaseList,
+  ManageMain,
+} from "@/styles/profileStyle";
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
@@ -54,10 +58,10 @@ function ManageLayout({ children }: { children: React.ReactNode }) {
           </ul>
         </nav>
 
-        {/* 게시물 목록 */}
-        <ArticleList>
+        {/* 주문, 재고 목록 */}
+        <GroupPurchaseList>
           <GroupManage listMenu={listMenu}>{children}</GroupManage>
-        </ArticleList>
+        </GroupPurchaseList>
       </section>
     </ManageMain>
   );

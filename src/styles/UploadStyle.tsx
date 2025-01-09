@@ -220,7 +220,6 @@ export const UploadForm = styled.article`
 export const GroupForm = styled(UploadForm)`
   article {
     margin-bottom: 20px;
-    background-color: white;
     border-radius: 15px;
     padding: 20px 25px;
   }
@@ -383,6 +382,11 @@ export const ProductList = styled.article`
     margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
+
+    .count_price_wrap {
+      width: 200px;
+      justify-content: space-between;
+    }
 
     div {
       display: flex;

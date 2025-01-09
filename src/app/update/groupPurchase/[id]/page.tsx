@@ -40,9 +40,6 @@ const GroupPurchaseUpdate: React.FC = () => {
   // 수정할 데이터 저장하기
   const [data, setData] = useState<Res | null>(null);
 
-  // zustand에서 token 가져오기
-  const { token, setToken } = useAuthStore();
-
   const [imgFile, setImgFile] = useState<string | File | undefined>("");
 
   // 게시물 상태(진행 중, 완료) 관리
@@ -310,12 +307,6 @@ const GroupPurchaseUpdate: React.FC = () => {
           value={form.title.value}
           onChange={form.title.onChange}
         />
-        <label htmlFor="product-type">상품 종류</label>
-        <input
-          id="product-type"
-          type="text"
-          placeholder="상품의 종류를 입력해 주세요"
-        />
 
         {/* 판매 기간 */}
         <h3 className="product_title">판매 기간</h3>
@@ -455,15 +446,17 @@ const GroupPurchaseUpdate: React.FC = () => {
                     <div>
                       <p className="product_name"> {product.product_name}</p>
                     </div>
-                    <div>
+                    <div className="count_price_wrap">
                       <p className="product_count">{product.org_quantity}개</p>
-                      <p className="product_price">
-                        {Number(product.product_price).toLocaleString()}원
-                      </p>
-                      <button
-                        className="btn_del"
-                        onClick={() => handleRemoveProduct(index)}
-                      />
+                      <div>
+                        <p className="product_price">
+                          {Number(product.product_price).toLocaleString()}원
+                        </p>
+                        <button
+                          className="btn_del"
+                          onClick={() => handleRemoveProduct(index)}
+                        />
+                      </div>
                     </div>
                   </li>
                 ))}

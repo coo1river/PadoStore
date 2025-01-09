@@ -34,9 +34,6 @@ const GroupPurchase: React.FC = () => {
   // 라우터 사용
   const router = useRouter();
 
-  // zustand에서 token 가져오기
-  const { token, setToken } = useAuthStore();
-
   const [imgFile, setImgFile] = useState<File | null>(null);
 
   // 게시물 상태(진행 중, 완료) 관리
@@ -97,7 +94,9 @@ const GroupPurchase: React.FC = () => {
   // 오늘 날짜 가져오기
   const date = new Date();
   date.setDate(date.getDate());
-  const today = date.toISOString().split("T")[0];
+  const today = new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+    .toISOString()
+    .split("T")[0];
 
   const handleAddProduct = () => {
     if (productInfo) {
@@ -243,13 +242,8 @@ const GroupPurchase: React.FC = () => {
           id="product-title"
           type="text"
           placeholder="폼 제목을 입력해 주세요"
-          {...form.title}
-        />
-        <label htmlFor="product-type">상품 종류</label>
-        <input
-          id="product-type"
-          type="text"
-          placeholder="상품의 종류를 입력해 주세요"
+          value={form.title.value}
+          onChange={form.title.onChange}
         />
 
         {/* 판매 기간 */}
@@ -258,9 +252,21 @@ const GroupPurchase: React.FC = () => {
           <label htmlFor="sale-period" />
           <div className="sale_period_wrap">
             <span>시작 날짜</span>
-            <input type="date" id="start-date" min={today} {...form.start_dt} />
+            <input
+              type="date"
+              id="start-date"
+              min={today}
+              value={form.start_dt.value}
+              onChange={form.start_dt.onChange}
+            />
             <span>종료 날짜</span>
-            <input type="date" id="end-date" min={today} {...form.end_dt} />
+            <input
+              type="date"
+              id="end-date"
+              min={today}
+              value={form.end_dt.value}
+              onChange={form.end_dt.onChange}
+            />
           </div>
         </SalePeriod>
 
@@ -273,7 +279,8 @@ const GroupPurchase: React.FC = () => {
               type="text"
               id="account-name"
               placeholder="예금주를 입력해 주세요"
-              {...form.account_name}
+              value={form.account_name.value}
+              onChange={form.account_name.onChange}
             />
             <label htmlFor="back-name">은행명</label>
             <select
@@ -290,7 +297,8 @@ const GroupPurchase: React.FC = () => {
             type="number"
             id="account-number"
             placeholder="계좌 번호를 입력해 주세요"
-            {...form.account_number}
+            value={form.account_number.value}
+            onChange={form.account_number.onChange}
           />
         </UserAccount>
 
@@ -328,7 +336,8 @@ const GroupPurchase: React.FC = () => {
             <input
               type="text"
               placeholder="상품명을 입력해 주세요"
-              {...productInfo.product_name}
+              value={productInfo.product_name.value}
+              onChange={productInfo.product_name.onChange}
             />
           </div>
 
@@ -354,7 +363,8 @@ const GroupPurchase: React.FC = () => {
               id="product-price"
               type="number"
               placeholder="상품의 수량을 입력해 주세요"
-              {...productInfo.org_quantity}
+              value={productInfo.org_quantity.value}
+              onChange={productInfo.org_quantity.onChange}
             />
           </div>
           <button className="btn_product_add" onClick={handleAddProduct}>
@@ -373,15 +383,17 @@ const GroupPurchase: React.FC = () => {
                     <div>
                       <p className="product_name"> {product.product_name}</p>
                     </div>
-                    <div>
+                    <div className="count_price_wrap">
                       <p className="product_count">{product.org_quantity}개</p>
-                      <p className="product_price">
-                        {Number(product.product_price).toLocaleString()}원
-                      </p>
-                      <button
-                        className="btn_del"
-                        onClick={() => handleRemoveProduct(index)}
-                      />
+                      <div>
+                        <p className="product_price">
+                          {Number(product.product_price).toLocaleString()}원
+                        </p>
+                        <button
+                          className="btn_del"
+                          onClick={() => handleRemoveProduct(index)}
+                        />
+                      </div>
                     </div>
                   </li>
                 ))}
@@ -399,7 +411,8 @@ const GroupPurchase: React.FC = () => {
           placeholder="상품 설명을 입력해 주세요"
           cols={50}
           rows={10}
-          {...form.content}
+          value={form.content.value}
+          onChange={form.content.onChange}
         />
 
         {/* 추가 질문 */}
@@ -442,7 +455,8 @@ const GroupPurchase: React.FC = () => {
                 type="text"
                 id="add_input"
                 placeholder="추가 질문을 작성해 주세요"
-                {...addInput.input}
+                value={addInput.input.value}
+                onChange={addInput.input.onChange}
               />
               <button className="btn_add_input" onClick={handleAddInput}>
                 질문 추가하기

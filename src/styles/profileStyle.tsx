@@ -157,6 +157,17 @@ export const ArticleList = styled.article`
   }
 `;
 
+export const GroupPurchaseList = styled(ArticleList)`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  button {
+    align-self: end;
+    width: 80px;
+  }
+`;
+
 // 공구 관리 상세
 export const ManageMain = styled(ProfileMain)`
   h2 {

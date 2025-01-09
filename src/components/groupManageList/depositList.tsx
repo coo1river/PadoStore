@@ -78,8 +78,8 @@ export default function DepositList() {
               <td>
                 <select value={status.value} onChange={status.onChange}>
                   <option value="입금 대기">입금 대기</option>
-                  <option value="입금 대기">입금 확인</option>
-                  <option value="입금 대기">배송 시작</option>
+                  <option value="입금 확인">입금 확인</option>
+                  <option value="배송 시작">배송 시작</option>
                 </select>
               </td>
               <td className="traking_num">

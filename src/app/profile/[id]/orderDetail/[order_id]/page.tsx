@@ -45,7 +45,7 @@ const GroupManage: React.FC = () => {
       <OrderDetArticle>
         <div className="img_and_info">
           <ProductImg
-            src={
+            src={ 
               postData?.file && postData?.file[0]?.up_file
                 ? `/api/file/${postData?.file[0]?.up_file}`
                 : undefined

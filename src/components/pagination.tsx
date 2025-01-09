@@ -29,7 +29,7 @@ const Pagination: React.FC<PaginationProps> = ({
             />
             <button
               className="btn_arrow left"
-              onClick={() => setPage(Math.min(1, page - 1))}
+              onClick={() => setPage(Math.max(1, page - 1))}
             />
           </>
         )}
@@ -48,7 +48,7 @@ const Pagination: React.FC<PaginationProps> = ({
           <>
             <button
               className="btn_arrow right"
-              onClick={() => setPage(Math.max(1, page + 1))}
+              onClick={() => setPage(Math.min(numPages, page + 1))} //
             />
             <button
               className="btn_arrow double_right"
