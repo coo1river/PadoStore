@@ -7,6 +7,26 @@ export const ProfileMain = styled(LoginMain)`
   height: 100%;
   min-height: calc(100vh - 215px);
 
+  .like_review_wrap {
+    display: flex;
+
+    .active {
+      background-color: var(--color-lightgrey);
+    }
+
+    li {
+      border-radius: 10px;
+      cursor: pointer;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: 600;
+
+      strong {
+        font-weight: 700;
+      }
+    }
+  }
+
   .list_wrap {
     background-color: white;
     border-radius: 15px;

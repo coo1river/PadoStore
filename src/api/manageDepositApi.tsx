@@ -40,7 +40,7 @@ interface User {
   file_group_id: number | null;
 }
 
-interface Order {
+export interface Order {
   order_id: number;
   post_id: number;
   order_status: string;

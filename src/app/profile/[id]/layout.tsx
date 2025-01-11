@@ -15,7 +15,7 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   // zustand에서 저장된 값 가져오기
-  const { token, setToken } = useAuthStore();
+  const { token } = useAuthStore();
   const { listMenu, setListMenu } = useProfileStore();
 
   // 토큰 디코딩 커스텀 훅으로 user id 추출
@@ -42,7 +42,7 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
     post_status: listState,
     current_page: page,
     sort_by: "post_id",
-    order: "ASC",
+    order: "D",
   };
 
   // profile data 가져오기
@@ -82,6 +82,12 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
       case "myGroupPurchase":
         path = `/profile/${userId}/myGroupPurchaseList`;
         break;
+      case "postLike":
+        path = `/profile/${userId}/postLikeList`;
+        break;
+      case "review":
+        path = `/profile/${userId}/reviewList`;
+        break;
       default:
         return;
     }
@@ -120,16 +126,20 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
           <p className="nickname">{data?.user.nickname}</p>
           <p className="rating">⭐5.0</p>
         </div>
-        <div className="btns_wrap">
-          <button
-            onClick={() => router.push(`/profile/${userId}/postLikeList`)}
+        <ul className="like_review_wrap">
+          <li
+            className={listMenu === "postLike" ? "active" : ""}
+            onClick={() => setListMenu("postLike")}
           >
-            찜 목록 <span>{data?.favoriteCount}</span>
-          </button>
-          <button onClick={() => router.push(`/profile/${userId}/reviewList`)}>
-            후기 <span>{data?.reviewCount}</span>
-          </button>
-        </div>
+            찜 목록 <strong>{data?.favoriteCount}</strong>
+          </li>
+          <li
+            className={listMenu === "review" ? "active" : ""}
+            onClick={() => setListMenu("review")}
+          >
+            후기 <strong>{data?.reviewCount}</strong>
+          </li>
+        </ul>
       </UserProfile>
 
       {/* 사이드 메뉴 바 */}

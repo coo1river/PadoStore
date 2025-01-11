@@ -218,7 +218,6 @@ const GroupPurchaseUpdate: React.FC = () => {
 
   const handleUpload = (e: FormEvent) => {
     e.preventDefault();
-    console.log(dataReq);
 
     // 각 input에 값이 비었을 경우 alert 창 띄우기
     if (

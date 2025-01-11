@@ -1,9 +1,9 @@
 "use client";
-import manageDepositApi, { OrderRes } from "@/api/manageDepositApi";
-import useInput from "@/hooks/useInput";
+import manageDepositApi, { Order, OrderRes } from "@/api/manageDepositApi";
+import trackingNumApi from "@/api/trackingNumApi";
 import { ManageTable } from "@/styles/profileStyle";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 export default function DepositList() {
   const params = useParams();
@@ -20,19 +20,72 @@ export default function DepositList() {
     order: "ASC",
   };
 
-  const status = useInput("");
-  const traking_num = useInput("");
+  // 각 주문 항목에 대한 상태 관리
+  const [statusValues, setStatusValues] = useState<{ [key: number]: string }>(
+    {}
+  );
+  const [trackingNumValues, setTrackingNumValues] = useState<{
+    [key: number]: string;
+  }>({});
+
+  // 상태 변경 핸들러
+  const handleStatusChange = (orderId: number, value: string) => {
+    setStatusValues((prev) => ({ ...prev, [orderId]: value }));
+  };
+
+  const handleTrackingNumChange = (orderId: number, value: string) => {
+    setTrackingNumValues((prev) => ({ ...prev, [orderId]: value }));
+  };
 
   // 최초 렌더링 시 데이터 가져오기
   useEffect(() => {
     const fetchData = async () => {
-      const res = await manageDepositApi(param);
-      setData(res);
-    };
+      try {
+        const res = await manageDepositApi(param);
+        setData(res);
+        console.log(res);
 
+        // 각 게시물마다 송장 번호 및 배송 상태 값 넣기
+        const initialStatusValues: { [key: number]: string } = {};
+        const initialTrackingNumValues: { [key: number]: string } = {};
+
+        res.orderManageList.forEach((order: Order) => {
+          initialStatusValues[order.order_id] =
+            order.order_status || "입금 대기"; // 기본 값 설정
+          initialTrackingNumValues[order.order_id] = order.post_number || "";
+        });
+
+        setStatusValues(initialStatusValues);
+        setTrackingNumValues(initialTrackingNumValues);
+      } catch (error) {
+        console.error("데이터를 가져오는 중 오류가 발생했습니다:", error);
+      }
+    };
     fetchData();
   }, []);
 
+  const handleSave = (e: FormEvent) => {
+    e.preventDefault();
+
+    const fetchData = async () => {
+      try {
+        if (!data) {
+          console.error("데이터가 없습니다.");
+          return;
+        }
+
+        for (const order of data.orderManageList) {
+          const trackingNum = trackingNumValues[order.order_id] || "";
+          const res = await trackingNumApi(order.order_id, trackingNum);
+          console.log(res);
+        }
+      } catch (error) {
+        console.error("API 호출 중 오류 발생:", error);
+      }
+    };
+
+    fetchData(); // 비동기 함수 실행
+  };
   // date 문자열 파싱 후 포맷 변경
   function formatDate(input: string) {
     const [date, time] = input.split("T");
@@ -76,7 +129,12 @@ export default function DepositList() {
                 <p>{orderItem?.user.addr_detail}</p>
               </td>
               <td>
-                <select value={status.value} onChange={status.onChange}>
+                <select
+                  value={statusValues[orderItem.order_id] || "입금 대기"}
+                  onChange={(e) =>
+                    handleStatusChange(orderItem.order_id, e.target.value)
+                  }
+                >
                   <option value="입금 대기">입금 대기</option>
                   <option value="입금 확인">입금 확인</option>
                   <option value="배송 시작">배송 시작</option>
@@ -87,15 +145,17 @@ export default function DepositList() {
                 <input
                   id="traking_num"
                   type="number"
-                  value={traking_num.value}
-                  onChange={traking_num.onChange}
+                  value={trackingNumValues[orderItem.order_id] || ""}
+                  onChange={(e) =>
+                    handleTrackingNumChange(orderItem.order_id, e.target.value)
+                  }
                 />
               </td>
             </tr>
           ))}
         </tbody>
       </ManageTable>
-      <button>저장</button>
+      <button onClick={handleSave}>저장</button>
     </>
   );
 }

@@ -13,7 +13,7 @@ export default function Naver() {
       ? new URL(window.location.href).searchParams.get("code")
       : null;
 
-  const { token, setToken } = useAuthStore();
+  const { token } = useAuthStore();
   const userId = useDecodedToken(token!);
 
   useEffect(() => {

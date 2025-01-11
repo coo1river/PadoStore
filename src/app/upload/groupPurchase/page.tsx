@@ -4,7 +4,6 @@ import uploadApi from "@/api/uploadApi";
 import { BankOptions, DeliveryOptions } from "@/components/selectOption";
 import TagInput from "@/components/tagInput";
 import useInput from "@/hooks/useInput";
-import useAuthStore from "@/store/useAuthStore";
 import {
   GroupForm,
   UploadMain,
