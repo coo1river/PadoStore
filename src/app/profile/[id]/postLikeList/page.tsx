@@ -1,9 +1,12 @@
 "use client";
 import postLikeListApi, { FavoriteList } from "@/api/postLikeListApi";
 import { PostLikeListMain } from "@/styles/profileStyle";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 export default function PostLikeList() {
+  const router = useRouter();
+
   // 찜 목록 리스트 데이터 저장
   const [data, setData] = useState<FavoriteList | null>(null);
   // 찜 목록에 보낼 파라미터
@@ -37,9 +40,13 @@ export default function PostLikeList() {
           return (
             <li
               key={postId}
-              // onClick={() => {
-              //   router.push(`/profile/${userId}/favorites/${postId}`);
-              // }}
+              onClick={() => {
+                router.push(
+                  item.board_type === "GroupPurchase"
+                    ? `/groupDetail/${postId}`
+                    : `/productDetail/${postId}`
+                );
+              }}
             >
               <p className="product_id">{postId}</p>
               <p className="product_title">{title}</p>

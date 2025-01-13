@@ -2,7 +2,7 @@
 import accountFindApi from "@/api/accountFindApi";
 import resetPasswordApi from "@/api/resetPasswordApi";
 import verifyCodeApi from "@/api/verifyCodeApi";
-import EmailForm from "@/components/form/emailForm";
+import PwFindForm from "@/components/form/emailForm";
 import useInput from "@/hooks/useInput";
 import { ErrorMessage, FindMain } from "@/styles/joinStyle";
 import { FormEvent, useState } from "react";
@@ -15,24 +15,28 @@ const PasswordFind: React.FC = () => {
   const [verifyState, setVerifyState] = useState<boolean>(false);
 
   // 이메일, 인증 번호, 비밀번호 input 값
-  const email = useInput("");
+  const userId = useInput("");
   const code = useInput("");
   const resetPw = useInput("");
 
   // 에러 메시지
   const [errorMessage, setErrorMessage] = useState<string>("");
 
+  const [authToken, setAuthToken] = useState(null);
+
   // 이메일 인증 함수
   const handleAuth = async (e: FormEvent) => {
     e.preventDefault();
 
-    // 이메일 값이 비었는지 확인
-    if (!email.value) {
+    // 아이디 값이 비었는지 확인
+    if (!userId.value) {
       setErrorMessage("이메일을 입력해 주세요.");
       return;
     }
+
     try {
-      const fetch = await accountFindApi("pw", email.value);
+      const fetch = await accountFindApi("pw", userId.value);
+      setErrorMessage("");
       console.log("인증 성공", fetch);
       setAuthState(!authState);
     } catch (error: any) {
@@ -57,9 +61,11 @@ const PasswordFind: React.FC = () => {
     }
 
     try {
-      const fetch = await verifyCodeApi(email.value, code.value);
+      const fetch = await verifyCodeApi(userId.value, code.value);
+
+      setAuthToken(fetch);
       setVerifyState(!verifyState);
-      console.log("인증 확인", fetch);
+      console.log("인증 확인");
     } catch (error) {
       console.log("인증 실패", error);
     }
@@ -74,7 +80,7 @@ const PasswordFind: React.FC = () => {
     }
 
     try {
-      const fetch = await resetPasswordApi(token, resetPw.value);
+      const fetch = await resetPasswordApi(authToken, resetPw.value);
       console.log("비밀번호 재설정 완료", fetch);
     } catch (error) {
       console.log("비밀번호 재설정 실패", error);
@@ -84,8 +90,8 @@ const PasswordFind: React.FC = () => {
   return (
     <FindMain>
       <h2 className="heading">비밀번호 찾기</h2>
-      <EmailForm
-        email={email}
+      <PwFindForm
+        userId={userId}
         errorMessage={errorMessage}
         onSubmit={handleAuth}
       />
@@ -114,7 +120,7 @@ const PasswordFind: React.FC = () => {
             영소문자, 숫자, 특수문자(@, !, #, $)를 포함한 6자 - 16자
           </p>
           <input
-            type="text"
+            type="password"
             id="reset-pw"
             placeholder="비밀번호"
             onChange={resetPw.onChange}

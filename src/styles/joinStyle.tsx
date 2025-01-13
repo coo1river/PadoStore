@@ -162,6 +162,7 @@ export const AccountInfoMain = styled(JoinMain)`
 `;
 
 export const FindMain = styled(LoginMain)`
+  box-sizing: border-box;
   justify-content: unset;
 
   .heading {
@@ -209,8 +210,20 @@ export const FindMain = styled(LoginMain)`
 `;
 
 export const AuthWrap = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+
+  strong {
+    font-weight: 700;
+  }
+
   button {
-    width: 100%;
+    width: 300px;
+    padding: 10px;
   }
 `;
 

@@ -1,3 +1,4 @@
+import { AuthWrap } from "@/styles/joinStyle";
 import { LoginBtn } from "@/styles/loginStyle";
 
 interface AuthMessageProps {
@@ -11,10 +12,12 @@ const AuthMessage: React.FC<AuthMessageProps> = ({
   buttonText,
   onButtonClick,
 }) => (
-  <div className="auth_wrap">
-    <p>{message}</p>
+  <AuthWrap>
+    <p>
+      회원님의 아이디는 <strong>{message}</strong>입니다.
+    </p>
     <LoginBtn onClick={onButtonClick}>{buttonText}</LoginBtn>
-  </div>
+  </AuthWrap>
 );
 
 export default AuthMessage;

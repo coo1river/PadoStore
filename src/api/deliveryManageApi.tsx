@@ -1,8 +1,9 @@
 import axios from "axios";
 
-export default async function trackingNumApi(
+export default async function deliveryManageApi(
   order_id: number | undefined,
-  post_id: string | undefined
+  order_status?: string | undefined,
+  post_number?: string | undefined
 ) {
   const url = "/api/my-page/sale/manage/update";
 
@@ -11,7 +12,8 @@ export default async function trackingNumApi(
       url,
       {
         order_id,
-        post_id,
+        order_status,
+        post_number,
       },
       {
         headers: {

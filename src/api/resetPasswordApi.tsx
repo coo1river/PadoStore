@@ -1,12 +1,22 @@
 import axios from "axios";
 
 export default async function resetPasswordApi(
-  token: string,
+  token: string | null,
   password: string
 ) {
   const url = "/api/pw-reset";
   try {
-    const res = await axios.post(url, { token, password });
+    const res = await axios.post(
+      url,
+      {
+        password,
+      },
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
     console.log("API 응답:", res.data);
     return res.data;
   } catch (error) {

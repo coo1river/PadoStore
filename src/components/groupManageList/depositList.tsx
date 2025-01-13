@@ -1,6 +1,6 @@
 "use client";
+import deliveryManageApi from "@/api/deliveryManageApi";
 import manageDepositApi, { Order, OrderRes } from "@/api/manageDepositApi";
-import trackingNumApi from "@/api/trackingNumApi";
 import { ManageTable } from "@/styles/profileStyle";
 import { useParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
@@ -76,8 +76,13 @@ export default function DepositList() {
 
         for (const order of data.orderManageList) {
           const trackingNum = trackingNumValues[order.order_id] || "";
-          const res = await trackingNumApi(order.order_id, trackingNum);
-          console.log(res);
+          const status = statusValues[order.order_id] || "";
+          const res = await deliveryManageApi(
+            order.order_id,
+            status,
+            trackingNum
+          );
+          console.log("수정 성공", res);
         }
       } catch (error) {
         console.error("API 호출 중 오류 발생:", error);

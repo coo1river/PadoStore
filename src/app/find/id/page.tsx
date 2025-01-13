@@ -35,7 +35,10 @@ const IdFind: React.FC = () => {
       const fetch = await accountFindApi("id", email.value);
       console.log("인증 성공", fetch);
       setAuthState(!authState);
-      setFindId(fetch.user_id);
+
+      const maskedId = `${fetch.user_id.slice(0, -2)}**`;
+      setAuthState(!authState);
+      setFindId(maskedId);
     } catch (error: any) {
       if (error.response.status === 400) {
         setErrorMessage("존재하지 않는 이메일입니다.");
@@ -51,7 +54,7 @@ const IdFind: React.FC = () => {
 
   return (
     <FindMain>
-      <h2>아이디 찾기</h2>
+      <h2 className="heading">아이디 찾기</h2>
       {!authState ? (
         <EmailForm
           email={email}
@@ -60,7 +63,7 @@ const IdFind: React.FC = () => {
         />
       ) : (
         <AuthMessage
-          message={`가입하신 아이디는 ${findId}입니다.`}
+          message={findId}
           buttonText="로그인"
           onButtonClick={() => router.push("/login")}
         />
