@@ -6,9 +6,12 @@ import verifyCodeApi from "@/api/verifyCodeApi";
 import FindForm from "@/components/form/findlForm";
 import useInput from "@/hooks/useInput";
 import { ErrorMessage, FindMain } from "@/styles/joinStyle";
+import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
 const PasswordFind: React.FC = () => {
+  const router = useRouter();
+
   // 인증하기 상태
   const [authState, setAuthState] = useState<boolean>(false);
 
@@ -81,8 +84,13 @@ const PasswordFind: React.FC = () => {
     }
 
     try {
-      const fetch = await resetPasswordApi(authToken, resetPw.value);
+      const fetch = await resetPasswordApi(
+        authToken,
+        userId.value,
+        resetPw.value
+      );
       console.log("비밀번호 재설정 완료", fetch);
+      router.push("/login");
     } catch (error) {
       console.log("비밀번호 재설정 실패", error);
     }

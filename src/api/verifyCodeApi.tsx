@@ -1,10 +1,10 @@
 import axios from "axios";
 
-export default async function verifyCodeApi(email: string, code: string) {
+export default async function verifyCodeApi(userId: string, code: string) {
   const url = "/api/code/verify";
 
   try {
-    const res = await axios.post(url, { email, code });
+    const res = await axios.post(url, { user_id: userId, code });
     console.log("API 응답:", res.data);
     return res.data, res.headers.authorization;
   } catch (error) {
