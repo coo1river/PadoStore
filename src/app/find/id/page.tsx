@@ -3,9 +3,9 @@ import useInput from "@/hooks/useInput";
 import { FindMain } from "@/styles/joinStyle";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
-import accountFindApi from "@/api/accountFindApi";
-import EmailForm from "@/components/form/emailForm";
+import accountFindApi from "@/api/idFindApi";
 import AuthMessage from "@/components/authMessage";
+import FindForm from "@/components/form/findlForm";
 
 const IdFind: React.FC = () => {
   // 인증하기 상태
@@ -32,7 +32,7 @@ const IdFind: React.FC = () => {
     }
 
     try {
-      const fetch = await accountFindApi("id", email.value);
+      const fetch = await accountFindApi(email.value);
       console.log("인증 성공", fetch);
       setAuthState(!authState);
 
@@ -56,8 +56,11 @@ const IdFind: React.FC = () => {
     <FindMain>
       <h2 className="heading">아이디 찾기</h2>
       {!authState ? (
-        <EmailForm
-          email={email}
+        <FindForm
+          label="이메일"
+          placeholder="이메일"
+          inputProps={email}
+          infoText="이메일"
           errorMessage={errorMessage}
           onSubmit={handleAuth}
         />

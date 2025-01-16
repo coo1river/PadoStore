@@ -1,10 +1,10 @@
 import axios from "axios";
 
-export default async function idFindApi(email: string) {
+export default async function pwFindApi(userId: string) {
   const url = "/api/pw-find";
 
   try {
-    const res = await axios.post(url, { email });
+    const res = await axios.post(url, { userId });
     console.log("API 응답:", res.data);
     return res.data;
   } catch (error) {

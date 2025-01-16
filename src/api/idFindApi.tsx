@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export default async function accountFindApi(type: "id" | "pw", email: string) {
-  const url = type === "id" ? "/api/id-find" : "/api/pw-find";
+export default async function idFindApi(email: string) {
+  const url = "/api/id-find";
 
   try {
     const res = await axios.post(url, { email });

@@ -1,8 +1,9 @@
 "use client";
-import accountFindApi from "@/api/accountFindApi";
+import accountFindApi from "@/api/idFindApi";
+import pwFindApi from "@/api/passwordFindApi";
 import resetPasswordApi from "@/api/resetPasswordApi";
 import verifyCodeApi from "@/api/verifyCodeApi";
-import PwFindForm from "@/components/form/emailForm";
+import FindForm from "@/components/form/findlForm";
 import useInput from "@/hooks/useInput";
 import { ErrorMessage, FindMain } from "@/styles/joinStyle";
 import { FormEvent, useState } from "react";
@@ -35,13 +36,13 @@ const PasswordFind: React.FC = () => {
     }
 
     try {
-      const fetch = await accountFindApi("pw", userId.value);
+      const fetch = await pwFindApi(userId.value);
       setErrorMessage("");
       console.log("인증 성공", fetch);
       setAuthState(!authState);
     } catch (error: any) {
       if (error.response.status === 400) {
-        setErrorMessage("존재하지 않는 이메일입니다.");
+        setErrorMessage("존재하지 않는 아이디입니다.");
         console.log("인증 실패", error);
       } else {
         setErrorMessage(
@@ -90,8 +91,11 @@ const PasswordFind: React.FC = () => {
   return (
     <FindMain>
       <h2 className="heading">비밀번호 찾기</h2>
-      <PwFindForm
-        userId={userId}
+      <FindForm
+        label="아이디"
+        placeholder="아이디"
+        inputProps={userId}
+        infoText="아이디"
         errorMessage={errorMessage}
         onSubmit={handleAuth}
       />
