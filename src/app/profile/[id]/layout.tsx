@@ -8,7 +8,6 @@ import { ImgProfile } from "@/styles/profileStyle";
 import mySalesListApi from "@/api/mySalesListApi";
 import { Data } from "@/components/postList/marketTab";
 import useDecodedToken from "@/hooks/useDecodedToken";
-import useProfileStore from "@/store/useProfileStore";
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
 
 function ProfileLayout({ children }: { children: React.ReactNode }) {
@@ -16,7 +15,6 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
 
   // zustand에서 저장된 값 가져오기
   const { token } = useAuthStore();
-  const { listMenu, setListMenu } = useProfileStore();
 
   // 토큰 디코딩 커스텀 훅으로 user id 추출
   const userId = useDecodedToken(token!);
@@ -29,10 +27,8 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
   const [page, setPage] = useState<number>(1);
 
   // 현재 리스트 타입(마켓/공구) 관리
+  const [listMenu, setListMenu] = useState("mySales");
   const [listType, setListType] = useState<string>("market");
-
-  const [listTab, setListTab] = useState<string>("Sales");
-
   const [listState, setListState] = useState<string>("InProgress");
 
   const params = {
@@ -93,21 +89,6 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
     }
 
     router.push(path);
-  }, [listMenu]);
-
-  useEffect(() => {
-    switch (listMenu) {
-      case "mySales":
-      case "myGroupSales":
-        setListTab("Sales");
-        break;
-      case "myPurchase":
-      case "myGroupPurchase":
-        setListTab("Purchase");
-        break;
-      default:
-        break;
-    }
   }, [listMenu]);
 
   return (

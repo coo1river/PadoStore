@@ -159,6 +159,15 @@ export const ArticleList = styled.article`
     text-align: center;
   }
 
+  .no_post {
+    border-bottom: none;
+
+    p {
+      width: 100%;
+      font-weight: 600;
+    }
+  }
+
   .product_id {
     visibility: hidden;
   }

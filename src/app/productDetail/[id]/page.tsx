@@ -30,7 +30,7 @@ const ProductDetail: React.FC = () => {
   const { authState } = useAuthStore();
 
   // 토큰 가져오기
-  const { token, setToken } = useAuthStore();
+  const { token } = useAuthStore();
 
   // 토큰 디코딩 커스텀 훅으로 user id 추출
   const userId = useDecodedToken(token!);

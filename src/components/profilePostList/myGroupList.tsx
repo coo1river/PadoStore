@@ -64,11 +64,17 @@ const MyGroupList: React.FC<Props> = ({ groupList, routePath }) => {
   const userId = useDecodedToken(token!);
 
   if (groupList.length === 0) {
-    return <p>작성한 글이 없습니다.</p>;
+    return (
+      <ul>
+        <li className="no_post">
+          <p>거래 내역이 없습니다.</p>
+        </li>
+      </ul>
+    );
   }
 
   return (
-    <ul className="myProfile_list">
+    <ul>
       {groupList.map((item) => {
         // GroupOrder와 GroupItem 구분하기
         const isGroupOrder = "post" in item;

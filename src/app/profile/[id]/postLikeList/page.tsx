@@ -26,7 +26,7 @@ export default function PostLikeList() {
 
   return (
     <PostLikeListMain>
-      <ul className="myProfile_list">
+      <ul>
         {data?.favoriteList.map((item) => {
           // 필요한 데이터 추출
           const postId = item.post_id;

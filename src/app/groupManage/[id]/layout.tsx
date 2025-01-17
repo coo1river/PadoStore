@@ -1,14 +1,11 @@
 "use client";
 import { GroupPurchaseList, ManageMain } from "@/styles/profileStyle";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import GroupManage from "./page";
 
 function ManageLayout({ children }: { children: React.ReactNode }) {
+  // 공구 or 주문 상태 관리
   const [listMenu, setListMenu] = useState<string>("order");
-
-  useEffect(() => {
-    console.log(listMenu);
-  }, [listMenu]);
 
   return (
     <ManageMain>

@@ -1,5 +1,4 @@
 "use client";
-import accountFindApi from "@/api/idFindApi";
 import pwFindApi from "@/api/passwordFindApi";
 import resetPasswordApi from "@/api/resetPasswordApi";
 import verifyCodeApi from "@/api/verifyCodeApi";
