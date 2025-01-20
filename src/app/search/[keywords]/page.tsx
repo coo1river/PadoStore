@@ -40,7 +40,6 @@ export default function Search() {
               page={page}
               setTotalPosts={setTotalPosts}
             />
-            <Pagination totalPosts={totalPosts} page={page} setPage={setPage} />
           </>
         );
 

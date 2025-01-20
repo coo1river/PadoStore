@@ -150,17 +150,15 @@ export const ArticleList = styled.article`
   li {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 5px 0;
     border-bottom: 2px solid var(--color-trans-grey);
     cursor: pointer;
   }
 
-  p {
-    text-align: center;
-  }
-
   .no_post {
     border-bottom: none;
+    text-align: center;
 
     p {
       width: 100%;
@@ -177,8 +175,13 @@ export const ArticleList = styled.article`
   }
 
   .nickname_dt_wrap {
+    align-items: center;
     display: flex;
     gap: 10px;
+
+    button {
+      margin: 0 10px 0 0;
+    }
   }
 
   .product_date {

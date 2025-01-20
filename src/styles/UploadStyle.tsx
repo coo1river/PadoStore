@@ -219,6 +219,7 @@ export const UploadForm = styled.article`
 
 export const GroupForm = styled(UploadForm)`
   article {
+    background-color: white;
     margin-bottom: 20px;
     border-radius: 15px;
     padding: 20px 25px;

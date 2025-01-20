@@ -63,10 +63,10 @@ export interface Data {
 }
 
 interface Props {
-  page: number;
+  page?: number;
   api: string;
   keywords?: string;
-  setTotalPosts: React.Dispatch<React.SetStateAction<number>>;
+  setTotalPosts?: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const MarketTab: React.FC<Props> = ({ api, keywords }) => {

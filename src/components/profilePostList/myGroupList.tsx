@@ -98,16 +98,30 @@ const MyGroupList: React.FC<Props> = ({ groupList, routePath }) => {
         return (
           <li
             key={postId}
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               const routeId = isGroupOrder ? item.order.order_id : postId;
-              routePath === "groupManage"
-                ? router.push(`/${routePath}/${routeId}`)
+              routePath === "groupMangage"
+                ? router.push(`/groupDetail/${routeId}`)
                 : router.push(`/profile/${userId}/${routePath}/${routeId}`);
             }}
           >
             <p className="product_id">{postId}</p>
             <p className="product_title">{title}</p>
             <div className="nickname_dt_wrap">
+              {!isGroupOrder && (
+                <button
+                  className="manage_btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+
+                    const routeId = item.groupOrder.post_id;
+                    router.push(`/${routePath}/${routeId}`);
+                  }}
+                >
+                  관리
+                </button>
+              )}
               <p className="product_nickname">{nickname}</p>
               <p className="product_date">{date}</p>
             </div>

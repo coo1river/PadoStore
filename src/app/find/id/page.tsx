@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import accountFindApi from "@/api/idFindApi";
 import AuthMessage from "@/components/authMessage";
-import FindForm from "@/components/form/findlForm";
+import FindForm from "@/components/form/findForm";
 
 const IdFind: React.FC = () => {
   // 인증하기 상태

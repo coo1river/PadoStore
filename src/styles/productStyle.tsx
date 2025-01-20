@@ -195,4 +195,20 @@ export const SubmitCompleted = styled.main`
     font-size: 22px;
     font-weight: bold;
   }
+
+  .btn_wrap {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+  }
+
+  button {
+    background-color: var(--color-main);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    position: relative;
+  }
 `;

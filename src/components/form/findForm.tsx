@@ -29,7 +29,7 @@ const FindForm: React.FC<FindFormProps> = ({
       onChange={inputProps.onChange}
       value={inputProps.value}
     />
-    <button onClick={onSubmit}>인증</button>
+    <button onClick={onSubmit}>확인</button>
     {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
   </div>
 );

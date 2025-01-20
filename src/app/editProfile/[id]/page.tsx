@@ -1,8 +1,5 @@
 "use client";
-
-// 리액트 훅 import
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
-
 import { useRouter } from "next/navigation";
 
 // 스타일 import
@@ -112,7 +109,7 @@ const EditProfile: React.FC = () => {
 
     try {
       // 이미지 업로드와 프로필 수정을 병렬로 실행
-      const [uploadResult, editResult] = await Promise.all([
+      await Promise.all([
         profileUploadApi(imgProfile, userId),
         editProfileApi("put", {
           user: {
@@ -126,8 +123,6 @@ const EditProfile: React.FC = () => {
         }),
       ]);
 
-      console.log("이미지 업로드 결과:", uploadResult);
-      console.log("프로필 수정 결과:", editResult);
       console.log("수정 성공");
       router.push(`/profile/${userId}`);
     } catch (error) {
@@ -143,9 +138,9 @@ const EditProfile: React.FC = () => {
         <ImgWrap>
           <ImgProfile
             src={
-              imgProfile instanceof File
-                ? URL.createObjectURL(imgProfile)
-                : imgProfile
+              data?.user && data?.userFile.up_file
+                ? `/api/file/${data?.userFile.up_file}`
+                : ImgProfileBasic.src
             }
           />
           <ImgLabel htmlFor="img-profile" />

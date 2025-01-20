@@ -2,8 +2,9 @@
 import pwFindApi from "@/api/passwordFindApi";
 import resetPasswordApi from "@/api/resetPasswordApi";
 import verifyCodeApi from "@/api/verifyCodeApi";
-import FindForm from "@/components/form/findlForm";
+import FindForm from "@/components/form/findForm";
 import useInput from "@/hooks/useInput";
+import useValid from "@/hooks/useValid";
 import { ErrorMessage, FindMain } from "@/styles/joinStyle";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
@@ -21,9 +22,17 @@ const PasswordFind: React.FC = () => {
   const userId = useInput("");
   const code = useInput("");
   const resetPw = useInput("");
+  const pwCheck = useInput("");
 
   // 에러 메시지
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [idErr, setIdErr] = useState<string>("");
+  const [authErr, setAuthErr] = useState<string>("");
+
+  // 유효성 검사 훅 사용
+  const { error, PwValid, PwCheckValid } = useValid({
+    password: resetPw.value,
+    pwCheck: pwCheck.value,
+  });
 
   const [authToken, setAuthToken] = useState(null);
 
@@ -33,23 +42,21 @@ const PasswordFind: React.FC = () => {
 
     // 아이디 값이 비었는지 확인
     if (!userId.value) {
-      setErrorMessage("이메일을 입력해 주세요.");
+      setIdErr("아이디를 입력해 주세요.");
       return;
     }
 
     try {
       const fetch = await pwFindApi(userId.value);
-      setErrorMessage("");
-      console.log("인증 성공", fetch);
+      setIdErr("");
+      console.log("메일 발송 성공", fetch);
       setAuthState(!authState);
     } catch (error: any) {
       if (error.response.status === 400) {
-        setErrorMessage("존재하지 않는 아이디입니다.");
+        setIdErr("존재하지 않는 아이디입니다.");
         console.log("인증 실패", error);
       } else {
-        setErrorMessage(
-          "서버에서 문제가 발생했습니다. 잠시 후 다시 시도해 주세요."
-        );
+        setIdErr("서버에서 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.");
         console.log("인증 실패", error);
       }
     }
@@ -60,7 +67,7 @@ const PasswordFind: React.FC = () => {
     e.preventDefault();
 
     if (!code.value) {
-      setErrorMessage("인증번호를 입력해 주세요.");
+      setAuthErr("인증번호를 입력해 주세요.");
     }
 
     try {
@@ -70,17 +77,13 @@ const PasswordFind: React.FC = () => {
       setVerifyState(!verifyState);
       console.log("인증 확인");
     } catch (error) {
+      setAuthErr("인증 번호가 일치하지 않습니다.");
       console.log("인증 실패", error);
     }
   };
 
   const handleResetPw = async (e: FormEvent) => {
     e.preventDefault();
-
-    if (!resetPw.value) {
-      setErrorMessage("새로운 비밀번호를 입력해 주세요.");
-      return;
-    }
 
     try {
       const fetch = await resetPasswordApi(
@@ -103,7 +106,7 @@ const PasswordFind: React.FC = () => {
         placeholder="아이디"
         inputProps={userId}
         infoText="아이디"
-        errorMessage={errorMessage}
+        errorMessage={idErr}
         onSubmit={handleAuth}
       />
       {authState && (
@@ -119,14 +122,14 @@ const PasswordFind: React.FC = () => {
             onChange={code.onChange}
             value={code.value}
           />
-          <button onClick={handleVerifyCode}>확인</button>
-          <ErrorMessage>{errorMessage}</ErrorMessage>
+          <button onClick={handleVerifyCode}>인증</button>
+          <ErrorMessage>{authErr}</ErrorMessage>
         </div>
       )}
 
       {verifyState && (
         <div className="find_wrap">
-          <label htmlFor="reset-pw">비밀번호 재설정</label>
+          <label htmlFor="reset-pw">새 비밀번호</label>
           <p className="infor_text">
             영소문자, 숫자, 특수문자(@, !, #, $)를 포함한 6자 - 16자
           </p>
@@ -135,10 +138,25 @@ const PasswordFind: React.FC = () => {
             id="reset-pw"
             placeholder="비밀번호"
             onChange={resetPw.onChange}
+            onBlur={PwValid}
             value={resetPw.value}
           />
-          <button onClick={handleResetPw}>확인</button>
-          <ErrorMessage>{errorMessage}</ErrorMessage>
+          <ErrorMessage>{error.pwErr as string}</ErrorMessage>
+
+          <div className="find_wrap">
+            <label htmlFor="reset-pw">비밀번호 확인</label>
+            <p className="infor_text">동일한 비밀번호를 입력해 주세요</p>
+            <input
+              type="password"
+              id="reset-pw"
+              placeholder="비밀번호"
+              onChange={pwCheck.onChange}
+              onBlur={PwCheckValid}
+              value={pwCheck.value}
+            />
+            <button onClick={handleResetPw}>확인</button>
+            <ErrorMessage>{error.pwCheckErr as string}</ErrorMessage>
+          </div>
         </div>
       )}
     </FindMain>

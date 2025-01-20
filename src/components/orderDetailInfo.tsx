@@ -372,12 +372,9 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
         <OrderInfo>
           <h3>추가 질문</h3>
           <p>
-            <strong>질문</strong>
-            <span>
-              {data?.questionList.map((item, index) => (
-                <p key={index}>{item}</p>
-              ))}
-            </span>
+            {data?.questionList.map((item, index) => (
+              <strong key={index}>{item.input}</strong>
+            ))}
           </p>
         </OrderInfo>
       </div>
