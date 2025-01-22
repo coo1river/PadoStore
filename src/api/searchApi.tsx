@@ -1,11 +1,12 @@
 import axios from "axios";
 
 export interface SearchReq {
-  board_type: string | null;
+  post_status?: string | null;
+  board_type?: string | null;
   limit: number;
   current_page: number;
-  sort_by: string | null;
-  order: string | null;
+  sort_by?: string | null;
+  order?: string | null;
   searchItem: string | undefined;
 }
 

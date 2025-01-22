@@ -1,23 +1,40 @@
 "use client";
+import searchApi from "@/api/searchApi";
 import Pagination from "@/components/pagination";
 import GroupPurchaseTab from "@/components/postList/groupPurchaseTab";
 import MarketTab from "@/components/postList/marketTab";
 import { HomeMain } from "@/styles/homeStyle";
 import { useParams } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Search() {
   const [tabStatus, setTabStatus] = useState<string>("Total");
 
   const { keywords } = useParams<{ keywords?: string }>();
 
+  // 검색어 관리
   const decodedKeywords = keywords ? decodeURIComponent(keywords) : "";
 
-  // 총 포스트 개수 관리
-  const [totalPosts, setTotalPosts] = useState<number>(0);
+  // 포스트 개수 관리
+  const [marketPosts, setMarketPosts] = useState<number>(0);
+  const [groupPosts, setGroupPosts] = useState<number>(0);
 
   // 현재 페이지 관리
   const [page, setPage] = useState<number>(1);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (tabStatus === "Total") {
+        const res = await searchApi("market", {
+          limit: 5,
+          current_page: page,
+          searchItem: decodedKeywords,
+        });
+        setGroupPosts(res.totalCount);
+      }
+    };
+    fetchData();
+  }, [page, tabStatus, decodedKeywords]);
 
   const setActiveClass = (status: string) => {
     return tabStatus === status ? "active" : "";
@@ -28,17 +45,16 @@ export default function Search() {
       case "Total":
         return (
           <>
-            <MarketTab
-              api={"search"}
-              keywords={decodedKeywords}
-              page={page}
-              setTotalPosts={setTotalPosts}
-            />
+            <MarketTab api={"search"} keywords={decodedKeywords} page={page} />
             <GroupPurchaseTab
               api={"search"}
               keywords={decodedKeywords}
               page={page}
-              setTotalPosts={setTotalPosts}
+            />
+            <Pagination
+              totalPosts={marketPosts + groupPosts}
+              page={page}
+              setPage={setPage}
             />
           </>
         );
@@ -50,9 +66,13 @@ export default function Search() {
               api={"search"}
               keywords={decodedKeywords}
               page={page}
-              setTotalPosts={setTotalPosts}
+              setTotalPosts={setMarketPosts}
             />
-            <Pagination totalPosts={totalPosts} page={page} setPage={setPage} />
+            <Pagination
+              totalPosts={marketPosts}
+              page={page}
+              setPage={setPage}
+            />
           </>
         );
       case "GroupPurchase":
@@ -62,9 +82,9 @@ export default function Search() {
               api={"search"}
               keywords={decodedKeywords}
               page={page}
-              setTotalPosts={setTotalPosts}
+              setTotalPosts={setGroupPosts}
             />
-            <Pagination totalPosts={totalPosts} page={page} setPage={setPage} />
+            <Pagination totalPosts={groupPosts} page={page} setPage={setPage} />
           </>
         );
     }

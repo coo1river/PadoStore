@@ -160,7 +160,9 @@ const MarketTab: React.FC<Props> = ({ api, keywords }) => {
               );
             })}
         </div>
-        <Pagination totalPosts={totalPosts} page={page} setPage={setPage} />
+        {api !== "search" ? (
+          <Pagination totalPosts={totalPosts} page={page} setPage={setPage} />
+        ) : null}
       </ProductTab>
     </>
   );

@@ -301,8 +301,6 @@ export const GroupForm = styled(UploadForm)`
   }
 `;
 
-export const SalePeriod = styled.article``;
-
 export const UserAccount = styled.article`
   display: flex;
   flex-direction: column;
