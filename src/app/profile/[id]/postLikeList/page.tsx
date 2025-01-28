@@ -27,36 +27,40 @@ export default function PostLikeList() {
   return (
     <PostLikeListMain>
       <ul>
-        {data?.favoriteList.map((item) => {
-          // 필요한 데이터 추출
-          const postId = item.post_id;
-          const title = item.title;
-          const nickname = item.nickname;
-          const insertDt = item.insert_dt;
+        {data?.favoriteList && data.favoriteList.length > 0 ? (
+          data.favoriteList.map((item) => {
+            // 필요한 데이터 추출
+            const postId = item.post_id;
+            const title = item.title;
+            const nickname = item.nickname;
+            const insertDt = item.insert_dt;
 
-          // 날짜 형식 변환
-          const date = insertDt.split("-").slice(1).join("-");
+            // 날짜 형식 변환
+            const date = insertDt.split("-").slice(1).join("-");
 
-          return (
-            <li
-              key={postId}
-              onClick={() => {
-                router.push(
-                  item.board_type === "GroupPurchase"
-                    ? `/groupDetail/${postId}`
-                    : `/productDetail/${postId}`
-                );
-              }}
-            >
-              <p className="product_id">{postId}</p>
-              <p className="product_title">{title}</p>
-              <div className="nickname_dt_wrap">
-                <p className="product_nickname">{nickname}</p>
-                <p className="product_date">{date}</p>
-              </div>
-            </li>
-          );
-        })}
+            return (
+              <li
+                key={postId}
+                onClick={() => {
+                  router.push(
+                    item.board_type === "GroupPurchase"
+                      ? `/groupDetail/${postId}`
+                      : `/productDetail/${postId}`
+                  );
+                }}
+              >
+                <p className="product_id">{postId}</p>
+                <p className="product_title">{title}</p>
+                <div className="nickname_dt_wrap">
+                  <p className="product_nickname">{nickname}</p>
+                  <p className="product_date">{date}</p>
+                </div>
+              </li>
+            );
+          })
+        ) : (
+          <p className="no_favorites">찜한 게시물이 없습니다.</p>
+        )}
       </ul>
     </PostLikeListMain>
   );

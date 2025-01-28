@@ -8,7 +8,7 @@ import DaumPostcode, { AddressData } from "./daumPostcode";
 import ModalFilter from "./modal/modalFilter";
 import { BankOptions } from "./selectOption";
 
-const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
+const OrderdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
   // useInput으로 value, onChange 할당
   const form = {
     userName: useInput(""),
@@ -375,6 +375,9 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
             {data?.questionList.map((item, index) => (
               <strong key={index}>{item.input}</strong>
             ))}
+            {data?.answerList.map((item, index) => (
+              <span key={index}>{item.answer}</span>
+            ))}
           </p>
         </OrderInfo>
       </div>
@@ -382,4 +385,4 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
   );
 };
 
-export default OrdederdetailInfo;
+export default OrderdetailInfo;

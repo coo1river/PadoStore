@@ -3,6 +3,7 @@ import searchIcon from "../../public/assets/svgs/search.svg?url";
 
 export const CommonHeader = styled.header`
   display: flex;
+  flex: 0 0 auto;
   margin: 0 auto;
   justify-content: center;
   align-items: center;

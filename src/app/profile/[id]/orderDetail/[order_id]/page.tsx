@@ -11,7 +11,7 @@ import {
   ProgressBarWrap,
 } from "@/styles/orderStyle";
 import postDetailApi, { Res } from "@/api/postDetailApi";
-import OrdederdetailInfo from "@/components/orderDetailInfo";
+import OrderdetailInfo from "@/components/orderDetailInfo";
 
 const GroupManage: React.FC = () => {
   const params = useParams();
@@ -45,7 +45,7 @@ const GroupManage: React.FC = () => {
       <OrderDetArticle>
         <div className="img_and_info">
           <ProductImg
-            src={ 
+            src={
               postData?.file && postData?.file[0]?.up_file
                 ? `/api/file/${postData?.file[0]?.up_file}`
                 : undefined
@@ -107,7 +107,7 @@ const GroupManage: React.FC = () => {
       </article>
 
       {/* 주문 상세 데이터 */}
-      <OrdederdetailInfo data={orderData} />
+      <OrderdetailInfo data={orderData} />
     </OrderDetail>
   );
 };

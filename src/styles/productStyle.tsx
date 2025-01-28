@@ -5,8 +5,13 @@ import iconMenu from "@/../public/assets/svgs/menu-dots.svg?url";
 import iconSoldOut from "@/../public/assets/images/soldout.png";
 
 export const ProductMain = styled(HomeMain)`
+  flex: 1 1 auto;
+
   .product_detail {
     width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 `;
 
@@ -151,13 +156,15 @@ export const ProductImg = styled.img`
 
 export const ProductContent = styled.article`
   display: flex;
+  flex: 1;
+  height: auto;
+  justify-content: space-between;
   flex-direction: column;
-  justify-content: center;
-  margin-bottom: 30px;
+  padding: 40px 0;
 
   .product_contents {
     line-height: 1.5rem;
-    margin: 60px 0;
+    margin-bottom: 40px;
     font-size: 18px;
     font-weight: 500;
   }

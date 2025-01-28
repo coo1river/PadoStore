@@ -101,7 +101,7 @@ const MyGroupList: React.FC<Props> = ({ groupList, routePath }) => {
             onClick={(e) => {
               e.stopPropagation();
               const routeId = isGroupOrder ? item.order.order_id : postId;
-              routePath === "groupMangage"
+              routePath === "groupManage"
                 ? router.push(`/groupDetail/${routeId}`)
                 : router.push(`/profile/${userId}/${routePath}/${routeId}`);
             }}
