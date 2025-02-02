@@ -5,8 +5,6 @@ import iconMenu from "@/../public/assets/svgs/menu-dots.svg?url";
 import iconSoldOut from "@/../public/assets/images/soldout.png";
 
 export const ProductMain = styled(HomeMain)`
-  flex: 1 1 auto;
-
   .product_detail {
     width: 100%;
     height: 100%;

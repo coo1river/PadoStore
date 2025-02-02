@@ -92,6 +92,7 @@ export default function Search() {
 
   return (
     <HomeMain>
+      <h2 className="a11y-hidden">검색</h2>
       <ul className="menu_tab">
         <li
           className={`btn_tab ${setActiveClass("Total")}`}
@@ -112,7 +113,6 @@ export default function Search() {
           공동구매
         </li>
       </ul>
-
       {renderTabContent()}
     </HomeMain>
   );

@@ -4,8 +4,8 @@ import { LoginMain } from "./loginStyle";
 export const ProfileMain = styled(LoginMain)`
   justify-content: start;
   align-items: start;
-  height: 100%;
-  min-height: calc(100vh - 215px);
+  flex: 1 1 auto;
+  height: auto;
 
   .like_review_wrap {
     display: flex;

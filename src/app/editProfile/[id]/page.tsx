@@ -46,7 +46,8 @@ const EditProfile: React.FC = () => {
   }, []);
 
   // 프로필 이미지 useState 값으로 저장
-  const [imgProfile, setImgProfile] = useState<string | File | undefined>("");
+  const [imgProfile, setImgProfile] = useState<string>(ImgProfileBasic.src);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null); // File 상태 추가
 
   // useRef 사용
   const InputRef = useRef<HTMLInputElement>(null);
@@ -54,8 +55,9 @@ const EditProfile: React.FC = () => {
   // 이미지 변경 함수
   const onChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
-      const selectedFile = e.target.files[0];
-      setImgProfile(selectedFile);
+      const file = e.target.files[0];
+      setSelectedFile(file);
+      setImgProfile(URL.createObjectURL(file)); // 미리보기용 Blob URL 설정
     }
   };
 
@@ -78,10 +80,13 @@ const EditProfile: React.FC = () => {
     form.number.setValue(data?.user.phone_number || "");
   }, [data]);
 
+  // 기존 프로필 이미지 설정
   useEffect(() => {
-    data?.userFile && data?.userFile.up_file
-      ? setImgProfile(data?.userFile.up_file)
-      : setImgProfile(ImgProfileBasic.src);
+    if (data?.userFile && data?.userFile.up_file) {
+      setImgProfile(`/api/file/${data.userFile.up_file}`);
+    } else {
+      setImgProfile(ImgProfileBasic.src);
+    }
   }, [data?.userFile]);
 
   const {
@@ -106,11 +111,15 @@ const EditProfile: React.FC = () => {
   //  프로필 수정 api 통신
   const handleEditProfile = async (e: FormEvent) => {
     e.preventDefault();
+    console.log("왜안됨");
 
     try {
-      // 이미지 업로드와 프로필 수정을 병렬로 실행
+      const uploadPromise = selectedFile
+        ? profileUploadApi(selectedFile, userId)
+        : Promise.resolve();
+
       await Promise.all([
-        profileUploadApi(imgProfile, userId),
+        uploadPromise,
         editProfileApi("put", {
           user: {
             user_id: form.id.value,
@@ -124,7 +133,7 @@ const EditProfile: React.FC = () => {
       ]);
 
       console.log("수정 성공");
-      router.push(`/profile/${userId}`);
+      router.push(`/profile/${userId}/mySalesList`);
     } catch (error) {
       console.error("수정 실패", error);
     }
@@ -136,13 +145,7 @@ const EditProfile: React.FC = () => {
       <form className="join_form">
         {/* 프로필 이미지 업로드 */}
         <ImgWrap>
-          <ImgProfile
-            src={
-              data?.user && data?.userFile.up_file
-                ? `/api/file/${data?.userFile.up_file}`
-                : ImgProfileBasic.src
-            }
-          />
+          <ImgProfile src={imgProfile} />
           <ImgLabel htmlFor="img-profile" />
           <ImgInput
             type="file"

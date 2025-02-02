@@ -1,11 +1,6 @@
 "use client";
-
-// 리액트 훅 import
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
-
 import { useRouter } from "next/navigation";
-
-// 스타일 import
 import {
   ErrorMessage,
   ImgInput,
@@ -15,11 +10,7 @@ import {
   InfoText,
   JoinMain,
 } from "@/styles/joinStyle";
-
-// 기본 프로필 이미지 import
 import ImgProfileBasic from "../../../public/assets/images/img-user-basic.png";
-
-// 커스텀 훅, api import
 import useInput from "@/hooks/useInput";
 import joinApi from "@/api/joinApi";
 import useValid from "@/hooks/useValid";

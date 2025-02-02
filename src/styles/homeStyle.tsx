@@ -10,6 +10,7 @@ const slideRight = keyframes`
 `;
 
 export const HomeMain = styled.main`
+  flex: 1 1 auto;
   width: 1200px;
   margin: 0 auto;
   display: flex;
@@ -85,6 +86,7 @@ export const MainBanner = styled.article`
 
 export const ProductTab = styled.section`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: start;

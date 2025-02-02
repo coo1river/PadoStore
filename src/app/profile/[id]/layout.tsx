@@ -168,10 +168,10 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
             </li>
             <p>개인정보 수정</p>
             <li onClick={() => router.push(`/editProfile/${userId}`)}>
-              프로필 설정
+              프로필 수정
             </li>
             <li onClick={() => router.push(`/editAccountInfo/${userId}`)}>
-              입금 폼 설정
+              입금 정보 수정
             </li>
           </ul>
         </nav>

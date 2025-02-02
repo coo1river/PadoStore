@@ -327,30 +327,32 @@ export default function UserChat() {
 
   // 계좌 정보 전송 함수
   const sendAccountNumber = async () => {
-    if (!userData) {
-      const fetchedUserData = await userInfoApi();
+    let fetchedUserData = userData;
+
+    if (!fetchedUserData) {
+      fetchedUserData = await userInfoApi();
       setUserData(fetchedUserData);
-
-      const accountMessage = `은행: ${fetchedUserData.bank}\n예금주: ${fetchedUserData.account_name}\n계좌번호: ${fetchedUserData.account_number}`;
-
-      publish(accountMessage);
-
-      closeModal();
     }
+
+    const accountMessage = `은행: ${fetchedUserData?.bank}\n예금주: ${fetchedUserData?.account_name}\n계좌번호: ${fetchedUserData?.account_number}`;
+
+    publish(accountMessage);
+    closeModal();
   };
 
   // 주소 정보 전송 함수
   const sendAddress = async () => {
-    if (!userData) {
-      const fetchedUserData = await userInfoApi();
+    let fetchedUserData = userData;
+
+    if (!fetchedUserData) {
+      fetchedUserData = await userInfoApi();
       setUserData(fetchedUserData);
-
-      const addressMessage = `받는 사람: ${fetchedUserData.user_name}\n전화 번호: ${fetchedUserData.phone_number}\n주소: ${fetchedUserData.addr_post}\n${fetchedUserData.addr_detail}`;
-
-      publish(addressMessage);
-
-      closeModal();
     }
+
+    const addressMessage = `받는 사람: ${fetchedUserData?.user_name}\n전화 번호: ${fetchedUserData?.phone_number}\n주소: ${fetchedUserData?.addr_post}\n${fetchedUserData?.addr_detail}`;
+
+    publish(addressMessage);
+    closeModal();
   };
 
   // 렌더링 되는 메시지(본인 메시지/상대 메시지)

@@ -83,6 +83,7 @@ export const ChatRoom = styled.article`
 
   .chat {
     max-width: 350px;
+    line-height: 25px;
     white-space: pre-wrap;
     display: flex;
     flex-direction: column;

@@ -72,6 +72,15 @@ const ProductDetail: React.FC = () => {
     setMenuModal(!menuModal);
   };
 
+  // 채팅으로 라우팅
+  const handleClickChat = () => {
+    if (userId === data?.user_id) {
+      alert("본인과는 채팅이 불가능합니다.");
+      return;
+    }
+    router.push(`/chat/${userId}/${data?.user_id}`);
+  };
+
   return (
     <ProductMain>
       <h2 className="a11y-hidden">상품 페이지</h2>
@@ -150,9 +159,7 @@ const ProductDetail: React.FC = () => {
               <button
                 className="btn_chat"
                 aria-label="채팅"
-                onClick={() => {
-                  router.push(`/chat/${userId}/${data?.user_id}`);
-                }}
+                onClick={handleClickChat}
               >
                 구매 채팅하기
               </button>

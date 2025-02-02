@@ -28,10 +28,7 @@ const TagInput: React.FC<TagInputProps> = ({ tagList, setTagList }) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
 
-    // 공백 제거
-    const noSpaceValue = value.replace(/\s/g, "");
-
-    if (!noSpaceValue.startsWith("#")) {
+    if (!value.startsWith("#")) {
       setTagValue("#" + value);
     } else {
       setTagValue(value);
@@ -49,6 +46,11 @@ const TagInput: React.FC<TagInputProps> = ({ tagList, setTagList }) => {
 
   // enter 키로 태그 추가하기
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === " ") {
+      event.preventDefault();
+      return;
+    }
+
     if (event.key === "Enter") {
       event.preventDefault();
       handleAddTag();

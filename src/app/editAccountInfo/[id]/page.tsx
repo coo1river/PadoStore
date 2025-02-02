@@ -88,7 +88,7 @@ export default function EditAccountInfo() {
 
   return (
     <AccountInfoMain>
-      <h2 className="heading">입금 폼 수정</h2>
+      <h2 className="heading">입금 정보 수정</h2>
       <form>
         <label htmlFor="select-bank">은행</label>
         <select
