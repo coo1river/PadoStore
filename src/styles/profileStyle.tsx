@@ -175,9 +175,10 @@ export const ArticleList = styled.article`
   }
 
   .nickname_dt_wrap {
+    min-width: 190px;
     align-items: center;
+    justify-content: space-around;
     display: flex;
-    gap: 10px;
 
     button {
       margin: 0 10px 0 0;

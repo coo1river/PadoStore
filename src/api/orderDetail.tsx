@@ -39,7 +39,7 @@ interface Question {
 }
 
 export interface OrderData {
-  order_id: number;
+  order_id: number | undefined;
   post_id: number;
   order_status: string;
   purchase_user_id: string;
