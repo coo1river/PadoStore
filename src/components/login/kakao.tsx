@@ -1,3 +1,4 @@
+import Image from "next/image";
 import iconKakao from "../../../public/assets/images/icon-kakao.png";
 
 export default function KakaoLogin() {
@@ -11,7 +12,7 @@ export default function KakaoLogin() {
   };
   return (
     <button className="icon_kakao" onClick={handleKakaoLogin}>
-      <img width={40} height={40} src={iconKakao.src} alt="카카오 로고" />
+      <Image width={40} height={40} src={iconKakao.src} alt="카카오 로고" />
       카카오로 로그인
     </button>
   );

@@ -1,7 +1,7 @@
 "use client";
 import { ProductArticle, ProductTab } from "@/styles/homeStyle";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import homeTabApi from "@/api/homeTabApi";
 import { Product, User } from "./marketTab";
 import searchApi from "@/api/searchApi";
@@ -50,13 +50,16 @@ const GroupPurchaseTab: React.FC<Props> = ({ api, keywords }) => {
   const [totalPosts, setTotalPosts] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
 
-  const params = {
-    board_type: "GroupPurchase",
-    limit: 10,
-    current_page: page,
-    sort_by: "",
-    order: "DESC",
-  };
+  const params = useMemo(
+    () => ({
+      board_type: "GroupPurchase",
+      limit: 10,
+      current_page: page,
+      sort_by: "",
+      order: "DESC",
+    }),
+    [page]
+  );
 
   // 사용자에게 보일 메시지 설정
   const [message, setMessage] = useState("");
@@ -80,7 +83,7 @@ const GroupPurchaseTab: React.FC<Props> = ({ api, keywords }) => {
       }
     };
     fetchData();
-  }, []);
+  }, [api, keywords, params]);
 
   return (
     <>

@@ -5,7 +5,7 @@ import GroupManage from "./page";
 
 function ManageLayout({ children }: { children: React.ReactNode }) {
   // 공구 or 주문 상태 관리
-  const [listMenu, setListMenu] = useState<string>("order");
+  const [listMenu, setListMenu] = useState<"order" | "stock">("order");
 
   return (
     <ManageMain>
@@ -36,7 +36,7 @@ function ManageLayout({ children }: { children: React.ReactNode }) {
 
         {/* 주문, 재고 목록 */}
         <GroupPurchaseList>
-          <GroupManage listMenu={listMenu}>{children}</GroupManage>
+          <GroupManage listMenu={listMenu} />
         </GroupPurchaseList>
       </section>
     </ManageMain>

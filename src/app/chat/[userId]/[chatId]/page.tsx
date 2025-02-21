@@ -90,6 +90,56 @@ export default function UserChat() {
     fetchData();
   }, [receiver]);
 
+  // 채팅 상세
+  const chatDetails = useCallback(async () => {
+    if (!createData) return;
+    const chatParam: ChatReq = {
+      chat_room_id: createData.chat_room_id,
+      limit: 15,
+      current_page: currentPage,
+    };
+    try {
+      const chatDetails = await chatDetailApi(chatParam);
+      if (chatDetails) {
+        const reversedChatDetails = {
+          ...chatDetails,
+          chat: chatDetails.chat.reverse(),
+        };
+        setDetailData((prevDetailData) => ({
+          ...reversedChatDetails,
+          chat: [...reversedChatDetails.chat, ...(prevDetailData?.chat || [])],
+        }));
+      }
+    } catch (error) {
+      console.error("채팅 상세 정보를 불러오는 중 오류가 발생했습니다.", error);
+    }
+  }, [createData, currentPage]);
+
+  // STOMP 구독
+  const subscribe = useCallback(() => {
+    if (client.current && createData) {
+      client.current.subscribe(
+        `/sub/chat/${createData.chat_room_id}`,
+        async (message) => {
+          const receivedMessage = JSON.parse(message.body);
+          console.log("구독 성공", message.body);
+
+          const enterInfo = await chatUserInfoApi(createData.chat_room_id);
+          setEnterData(enterInfo);
+          enterDataRef.current = enterInfo;
+
+          setChatList((prevChatList) => [
+            ...prevChatList,
+            { ...receivedMessage },
+          ]);
+        },
+        {
+          Authorization: sessionStorage.getItem("userToken")!,
+        }
+      );
+    }
+  }, [createData]);
+
   useEffect(() => {
     if (!createData) return;
 
@@ -120,57 +170,7 @@ export default function UserChat() {
         clientInstance.deactivate();
       }
     };
-  }, [createData]);
-
-  // 채팅 상세
-  const chatDetails = async () => {
-    if (!createData) return;
-    const chatParam: ChatReq = {
-      chat_room_id: createData.chat_room_id,
-      limit: 15,
-      current_page: currentPage,
-    };
-    try {
-      const chatDetails = await chatDetailApi(chatParam);
-      if (chatDetails) {
-        const reversedChatDetails = {
-          ...chatDetails,
-          chat: chatDetails.chat.reverse(),
-        };
-        setDetailData((prevDetailData) => ({
-          ...reversedChatDetails,
-          chat: [...reversedChatDetails.chat, ...(prevDetailData?.chat || [])],
-        }));
-      }
-    } catch (error) {
-      console.error("채팅 상세 정보를 불러오는 중 오류가 발생했습니다.", error);
-    }
-  };
-
-  // STOMP 구독
-  const subscribe = () => {
-    if (client.current && createData) {
-      client.current.subscribe(
-        `/sub/chat/${createData.chat_room_id}`,
-        async (message) => {
-          const receivedMessage = JSON.parse(message.body);
-          console.log("구독 성공", message.body);
-
-          const enterInfo = await chatUserInfoApi(createData.chat_room_id);
-          setEnterData(enterInfo);
-          enterDataRef.current = enterInfo;
-
-          setChatList((prevChatList) => [
-            ...prevChatList,
-            { ...receivedMessage },
-          ]);
-        },
-        {
-          Authorization: sessionStorage.getItem("userToken")!,
-        }
-      );
-    }
-  };
+  }, [createData, chatDetails, subscribe]);
 
   useEffect(() => {
     if (!enterData) return;
@@ -200,9 +200,9 @@ export default function UserChat() {
     };
 
     updateMessages();
-  }, [enterData]);
+  }, [enterData, chatList]);
 
-  const handleScroll = async () => {
+  const handleScroll = useCallback(async () => {
     if (chatRoomRef.current) {
       const chatRoom = chatRoomRef.current;
       const { scrollTop } = chatRoom;
@@ -220,7 +220,7 @@ export default function UserChat() {
         }
       }
     }
-  };
+  }, [isFetching, chatDetails]);
 
   // 스크롤 관리
   useEffect(() => {
@@ -242,7 +242,7 @@ export default function UserChat() {
       // 스크롤 높이 저장
       setPrevScrollHeight(chatRoom.scrollHeight);
     }
-  }, [detailData, chatList]);
+  }, [detailData, chatList, currentPage, prevScrollHeight]);
 
   // 스크롤 이벤트 등록
   useEffect(() => {
@@ -254,7 +254,7 @@ export default function UserChat() {
         chatRoomCurrent.removeEventListener("scroll", handleScroll);
       };
     }
-  }, [currentPage, isFetching]);
+  }, [currentPage, isFetching, handleScroll]);
 
   const publish = (chats: string) => {
     if (client.current && client.current.connected && createData) {

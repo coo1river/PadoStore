@@ -52,7 +52,7 @@ const GroupManage: React.FC = () => {
         });
     };
     fetchData();
-  }, []);
+  }, [params.order_id]);
 
   return (
     <OrderDetail>

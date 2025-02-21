@@ -39,6 +39,7 @@ const OrderdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
   const [isRefundEditable, setIsRefundEditable] = useState(false);
   const [isQuestionEditable, setIsQuestionEditable] = useState(false);
 
+  // 수정 항목 토글 함수
   const handleEditToggle = (section: string) => {
     switch (section) {
       case "order":
@@ -58,25 +59,33 @@ const OrderdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
     }
   };
 
-  // 주문 수정 상태 변경 시 setValue 설정
+  // 이름, 번호, 이메일 수정 시 setValue 설정
   useEffect(() => {
     form.userName.setValue(data?.user.user_name || "");
     form.userNumber.setValue(data?.user.phone_number || "");
     form.userEmail.setValue(data?.user.email || "");
-  }, [data, isOrderEditable]);
+  }, [data, isOrderEditable, form.userName, form.userNumber, form.userEmail]);
 
-  // 배송 수정 상태 변경 시 setValue 설정
+  // 배송 수정 시 setValue 설정
   useEffect(() => {
     form.postName.setValue(data?.user.user_name || "");
     form.zipcode.setValue(data?.user.addr_post || "");
     form.address.setValue(data?.user.addr || "");
     form.addrDetail.setValue(data?.user.addr_detail || "");
-  }, [data, isShippingEditable]);
+  }, [
+    data,
+    isShippingEditable,
+    form.postName,
+    form.zipcode,
+    form.address,
+    form.addrDetail,
+  ]);
 
+  // 은행 및 계좌 수정 시 setValue 설정
   useEffect(() => {
     form.bank.setValue(data?.user.bank || "");
     form.accountNumber.setValue(data?.user.account_number || "");
-  }, [data, isRefundEditable]);
+  }, [data, isRefundEditable, form.bank, form.accountNumber]);
 
   const req = {
     order_id: data?.order_id,

@@ -65,7 +65,7 @@ const GroupPurchaseUpdate: React.FC = () => {
       setData(res);
     };
     update();
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     setImgFile(data?.file[0].up_file);
@@ -212,7 +212,18 @@ const GroupPurchaseUpdate: React.FC = () => {
       setAddInputState(true);
       setAddInputList(data?.questionList || []);
     }
-  }, [data]);
+  }, [
+    data,
+    form.account_name,
+    form.account_number,
+    form.bank,
+    form.content,
+    form.end_dt,
+    form.post_method,
+    form.post_price,
+    form.start_dt,
+    form.title,
+  ]);
 
   const handleUpload = (e: FormEvent) => {
     e.preventDefault();

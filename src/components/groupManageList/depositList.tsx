@@ -3,7 +3,7 @@ import deliveryManageApi from "@/api/deliveryManageApi";
 import manageDepositApi, { Order, OrderRes } from "@/api/manageDepositApi";
 import { ManageTable } from "@/styles/profileStyle";
 import { useParams } from "next/navigation";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 
 export default function DepositList() {
   const params = useParams();
@@ -12,13 +12,16 @@ export default function DepositList() {
   const [page, setPage] = useState<number>(1);
   const [data, setData] = useState<OrderRes | null>(null);
 
-  const param = {
-    post_id: params.id,
-    limit: 10,
-    current_page: page,
-    sort_by: "post_id",
-    order: "ASC",
-  };
+  const param = useMemo(
+    () => ({
+      post_id: params.id,
+      limit: 10,
+      current_page: page,
+      sort_by: "post_id",
+      order: "ASC",
+    }),
+    [params.id, page]
+  );
 
   // 각 주문 항목에 대한 상태 관리
   const [statusValues, setStatusValues] = useState<{ [key: number]: string }>(
@@ -62,7 +65,7 @@ export default function DepositList() {
       }
     };
     fetchData();
-  }, []);
+  }, [param]);
 
   const handleSave = (e: FormEvent) => {
     e.preventDefault();

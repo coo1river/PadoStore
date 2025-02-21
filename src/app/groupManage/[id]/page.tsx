@@ -3,8 +3,7 @@ import DepositList from "@/components/groupManageList/depositList";
 import StockList from "@/components/groupManageList/stockList";
 
 interface GroupManageProps {
-  children: React.ReactNode;
-  listMenu: string;
+  listMenu: "order" | "stock";
 }
 
 export default function GroupManage({ listMenu }: GroupManageProps) {

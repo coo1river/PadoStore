@@ -69,7 +69,14 @@ export default function ProductUpdate() {
     productInfo.product_status.setValue(data?.product.product_status || "");
     productInfo.post_method.setValue(data?.product.post_method || "");
     setTagList(data?.tag || "");
-  }, [data]);
+  }, [
+    data,
+    content,
+    title,
+    productInfo.price,
+    productInfo.product_status,
+    productInfo.post_method,
+  ]);
 
   // useRef 사용
   const InputRef = useRef<HTMLInputElement>(null);

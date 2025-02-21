@@ -2,7 +2,7 @@
 import manageStockApi, { ProductData } from "@/api/manageStockApi";
 import { ManageTable } from "@/styles/profileStyle";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function StockList() {
   const params = useParams();
@@ -11,13 +11,16 @@ export default function StockList() {
   const [page, setPage] = useState<number>(1);
   const [data, setData] = useState<ProductData | null>(null);
 
-  const param = {
-    post_id: params.id,
-    limit: 10,
-    current_page: page,
-    sort_by: "post_id",
-    order: "ASC",
-  };
+  const param = useMemo(
+    () => ({
+      post_id: params.id,
+      limit: 10,
+      current_page: page,
+      sort_by: "post_id",
+      order: "ASC",
+    }),
+    [params.id, page]
+  );
 
   // 최초 렌더링 시 데이터 가져오기
   useEffect(() => {
@@ -27,7 +30,7 @@ export default function StockList() {
     };
 
     fetchData();
-  }, []);
+  }, [param]);
 
   return (
     <ManageTable>

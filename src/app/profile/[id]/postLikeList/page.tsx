@@ -2,18 +2,22 @@
 import postLikeListApi, { FavoriteList } from "@/api/postLikeListApi";
 import { PostLikeListMain } from "@/styles/profileStyle";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 export default function PostLikeList() {
   const router = useRouter();
 
   // 찜 목록 리스트 데이터 저장
   const [data, setData] = useState<FavoriteList | null>(null);
+
   // 찜 목록에 보낼 파라미터
-  const params = {
-    limit: 10,
-    current_page: 1,
-  };
+  const params = useMemo(
+    () => ({
+      limit: 10,
+      current_page: 1,
+    }),
+    []
+  );
 
   // 최초 렌더링 시 리스트 가져오기
   useEffect(() => {

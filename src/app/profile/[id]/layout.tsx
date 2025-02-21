@@ -1,6 +1,6 @@
 "use client";
 import { ArticleList, ProfileMain, UserProfile } from "@/styles/profileStyle";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
 import viewProfileApi, { ViewProfileRes } from "@/api/viewProfileApi";
@@ -27,19 +27,29 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
   const [page] = useState<number>(1);
 
   // 현재 리스트 타입(마켓/공구) 관리
-  const [listMenu, setListMenu] = useState("mySales");
+  const [listMenu, setListMenu] = useState<
+    | "mySales"
+    | "myPurchase"
+    | "myGroupSales"
+    | "myGroupPurchase"
+    | "postLike"
+    | "review"
+  >("mySales");
   const [listType, setListType] = useState<string>("market");
   const [listState, setListState] = useState<string>("InProgress");
 
-  const params = {
-    user_id: token,
-    board_type: "GroupPurchase",
-    limit: 10,
-    post_status: listState,
-    current_page: page,
-    sort_by: "post_id",
-    order: "D",
-  };
+  const params = useMemo(
+    () => ({
+      user_id: token,
+      board_type: "GroupPurchase",
+      limit: 10,
+      post_status: listState,
+      current_page: page,
+      sort_by: "post_id",
+      order: "D",
+    }),
+    [token, listState, page]
+  );
 
   // profile data 가져오기
   useEffect(() => {
@@ -60,7 +70,7 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
     };
 
     fetchData();
-  }, [userId, listType, listState, page]);
+  }, [userId, listType, listState, page, params]);
 
   // 각 탭에 따른 컴포넌트 렌더
   useEffect(() => {
@@ -89,7 +99,7 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
     }
 
     router.push(path);
-  }, [listMenu, userId]);
+  }, [listMenu, userId, router]);
 
   return (
     <ProfileMain>
