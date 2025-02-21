@@ -3,11 +3,21 @@ import editProfileApi, { EditRes } from "@/api/editProfileApi";
 import DaumPostcode, { AddressData } from "@/components/daumPostcode";
 import ModalFilter from "@/components/modal/modalFilter";
 import { BankOptions } from "@/components/selectOption";
+import useDecodedToken from "@/hooks/useDecodedToken";
 import useInput from "@/hooks/useInput";
+import useAuthStore from "@/store/useAuthStore";
 import { AccountInfoMain } from "@/styles/joinStyle";
+import { useRouter } from "next/navigation";
 import React, { FormEvent, useEffect, useState } from "react";
 
 export default function EditAccountInfo() {
+  // 라우터 사용
+  const router = useRouter();
+
+  // 토큰 디코딩 커스텀 훅으로 user id 추출
+  const { token } = useAuthStore();
+  const userId = useDecodedToken(token!);
+
   // useInput 사용으로 정보 내용 담기
   const form = {
     account_name: useInput(""),
@@ -37,7 +47,15 @@ export default function EditAccountInfo() {
     form.post_zipcode.setValue(data?.user.addr_post || "");
     form.post_address.setValue(data?.user.addr || "");
     form.post_addr_detail.setValue(data?.user.addr_detail || "");
-  }, [data]);
+  }, [
+    data,
+    form.account_name,
+    form.account_number,
+    form.bank,
+    form.post_zipcode,
+    form.post_address,
+    form.post_addr_detail,
+  ]);
 
   const [modal, setModal] = useState<boolean>(false);
 
@@ -70,6 +88,7 @@ export default function EditAccountInfo() {
         },
       });
       console.log("입금 폼 수정 성공", res);
+      router.push(`/profile/${userId}/mySalesList`);
     } catch (error) {
       console.error("수정 실패", error);
     }
@@ -77,7 +96,7 @@ export default function EditAccountInfo() {
 
   return (
     <AccountInfoMain>
-      <h2 className="text_h2">입금 폼 수정</h2>
+      <h2 className="heading">입금 정보 수정</h2>
       <form>
         <label htmlFor="select-bank">은행</label>
         <select

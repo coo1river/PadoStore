@@ -12,13 +12,14 @@ interface Chat {
   message: string;
   insert_dt: string;
   chat_room_id: number;
+  read_status: "true" | "false";
 }
 
 interface User {
   user_id: string;
   nickname: string;
   file_group_id: string | null;
-  org_file: string | null;
+  up_file: string | null;
 }
 
 export interface ChatDetail {

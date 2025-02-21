@@ -1,8 +1,7 @@
 import { DetailModalDiv } from "@/styles/detailModalStyle";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import deleteApi from "@/api/deleteApi";
-import useAuthStore from "@/store/useAuthStore";
 import { Res } from "@/api/postDetailApi";
 import statusUpdateApi from "@/api/statusUpdateApi";
 
@@ -13,11 +12,6 @@ interface Props {
 
 const DetailModal: React.FC<Props> = ({ data, setMenuModal }) => {
   const router = useRouter();
-
-  console.log("디테일 모달 데이터:", data);
-
-  // zustand에서 token 가져오기
-  const { token, setToken } = useAuthStore();
 
   const path = usePathname();
 

@@ -1,16 +1,18 @@
 import axios from "axios";
 
-export interface chatRoomRes {
+export interface ChatRoomRes {
   chat_room_id: number;
-  user_id: string;
-  user_status: string;
+  user1_id: string;
+  user2_id: string;
+  user1_status: "online" | "offline";
+  user2_status: "online" | "offline";
 }
 
 export default async function chatEnterApi(chat_room_id: number) {
   const url = "/api/chat/enter";
 
   try {
-    const res = await axios.post(
+    const res = await axios.put(
       url,
       { chat_room_id },
       {

@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 
 const MySalesList: React.FC = () => {
   // zustand에서 token 가져오기
-  const { token, setToken } = useAuthStore();
+  const { token } = useAuthStore();
 
   const [list, setList] = useState<Data | null>(null);
 
@@ -36,7 +36,7 @@ const MySalesList: React.FC = () => {
     };
 
     fetchData();
-  }, [listState]);
+  }, [listState, params]);
 
   return (
     <>

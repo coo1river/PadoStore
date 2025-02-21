@@ -1,7 +1,7 @@
 "use client";
 import orderDetailApi, { OrderData } from "@/api/orderDetail";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import IconCheck from "@/../public/assets/svgs/check-circle.svg";
 import {
   OrderDetArticle,
@@ -11,7 +11,8 @@ import {
   ProgressBarWrap,
 } from "@/styles/orderStyle";
 import postDetailApi, { Res } from "@/api/postDetailApi";
-import OrdederdetailInfo from "@/components/orderDetailInfo";
+import OrderdetailInfo from "@/components/orderDetailInfo";
+import editOrderApi from "@/api/editOrderApi";
 
 const GroupManage: React.FC = () => {
   const params = useParams();
@@ -19,6 +20,21 @@ const GroupManage: React.FC = () => {
   const [orderData, setOrderData] = useState<OrderData | null>(null);
 
   const [postData, setPostData] = useState<Res | null>(null);
+
+  const handleCompleteTrade = async (e: FormEvent) => {
+    e.preventDefault();
+
+    try {
+      await editOrderApi({
+        order_id: orderData?.order_id,
+        order: {
+          order_status: "거래 종료",
+        },
+      });
+    } catch (error) {
+      console.error("거래 종료 API 호출 중 오류 발생:", error);
+    }
+  };
 
   // 최초 렌더링 시 주문 정보와 상품 정보 가져오기
   useEffect(() => {
@@ -47,7 +63,7 @@ const GroupManage: React.FC = () => {
           <ProductImg
             src={
               postData?.file && postData?.file[0]?.up_file
-                ? `/upload/${postData?.file[0]?.up_file}`
+                ? `/api/file/${postData?.file[0]?.up_file}`
                 : undefined
             }
             alt="상품 이미지"
@@ -58,7 +74,9 @@ const GroupManage: React.FC = () => {
           </div>
         </div>
         <div>
-          <button className="btn_end">거래 종료</button>
+          <button className="btn_end" onClick={handleCompleteTrade}>
+            거래 종료
+          </button>
         </div>
       </OrderDetArticle>
 
@@ -107,7 +125,7 @@ const GroupManage: React.FC = () => {
       </article>
 
       {/* 주문 상세 데이터 */}
-      <OrdederdetailInfo data={orderData} />
+      <OrderdetailInfo data={orderData} />
     </OrderDetail>
   );
 };

@@ -8,7 +8,7 @@ import DaumPostcode, { AddressData } from "./daumPostcode";
 import ModalFilter from "./modal/modalFilter";
 import { BankOptions } from "./selectOption";
 
-const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
+const OrderdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
   // useInput으로 value, onChange 할당
   const form = {
     userName: useInput(""),
@@ -63,7 +63,7 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
     form.userName.setValue(data?.user.user_name || "");
     form.userNumber.setValue(data?.user.phone_number || "");
     form.userEmail.setValue(data?.user.email || "");
-  }, [isOrderEditable]);
+  }, [data, isOrderEditable]);
 
   // 배송 수정 상태 변경 시 setValue 설정
   useEffect(() => {
@@ -71,12 +71,12 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
     form.zipcode.setValue(data?.user.addr_post || "");
     form.address.setValue(data?.user.addr || "");
     form.addrDetail.setValue(data?.user.addr_detail || "");
-  }, [isShippingEditable]);
+  }, [data, isShippingEditable]);
 
   useEffect(() => {
     form.bank.setValue(data?.user.bank || "");
     form.accountNumber.setValue(data?.user.account_number || "");
-  }, [isRefundEditable]);
+  }, [data, isRefundEditable]);
 
   const req = {
     order_id: data?.order_id,
@@ -372,12 +372,12 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
         <OrderInfo>
           <h3>추가 질문</h3>
           <p>
-            <strong>질문</strong>
-            <span>
-              {data?.questionList.map((item, index) => (
-                <p key={index}>{item}</p>
-              ))}
-            </span>
+            {data?.questionList.map((item, index) => (
+              <strong key={index}>{item.input}</strong>
+            ))}
+            {data?.answerList.map((item, index) => (
+              <span key={index}>{item.answer}</span>
+            ))}
           </p>
         </OrderInfo>
       </div>
@@ -385,4 +385,4 @@ const OrdederdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
   );
 };
 
-export default OrdederdetailInfo;
+export default OrderdetailInfo;

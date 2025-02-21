@@ -58,13 +58,23 @@ const MyGroupList: React.FC<Props> = ({ groupList, routePath }) => {
   const router = useRouter();
 
   // zustand에서 token 가져오기
-  const { token, setToken } = useAuthStore();
+  const { token } = useAuthStore();
 
   // 토큰 디코딩 커스텀 훅으로 user id 추출
   const userId = useDecodedToken(token!);
 
+  if (groupList.length === 0) {
+    return (
+      <ul>
+        <li className="no_post">
+          <p>거래 내역이 없습니다.</p>
+        </li>
+      </ul>
+    );
+  }
+
   return (
-    <ul className="myProfile_list">
+    <ul>
       {groupList.map((item) => {
         // GroupOrder와 GroupItem 구분하기
         const isGroupOrder = "post" in item;
@@ -88,16 +98,30 @@ const MyGroupList: React.FC<Props> = ({ groupList, routePath }) => {
         return (
           <li
             key={postId}
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               const routeId = isGroupOrder ? item.order.order_id : postId;
               routePath === "groupManage"
-                ? router.push(`/${routePath}/${routeId}`)
+                ? router.push(`/groupDetail/${routeId}`)
                 : router.push(`/profile/${userId}/${routePath}/${routeId}`);
             }}
           >
             <p className="product_id">{postId}</p>
             <p className="product_title">{title}</p>
             <div className="nickname_dt_wrap">
+              {!isGroupOrder && (
+                <button
+                  className="manage_btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+
+                    const routeId = item.groupOrder.post_id;
+                    router.push(`/${routePath}/${routeId}`);
+                  }}
+                >
+                  관리
+                </button>
+              )}
               <p className="product_nickname">{nickname}</p>
               <p className="product_date">{date}</p>
             </div>

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { GroupForm } from "./UploadStyle";
+import { GroupForm } from "./uploadStyle";
 import { HomeMain } from "./homeStyle";
 import iconMenu from "@/../public/assets/svgs/menu-dots.svg?url";
 import iconSoldOut from "@/../public/assets/images/soldout.png";
@@ -7,6 +7,9 @@ import iconSoldOut from "@/../public/assets/images/soldout.png";
 export const ProductMain = styled(HomeMain)`
   .product_detail {
     width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 `;
 
@@ -37,9 +40,14 @@ export const ProductInfo = styled.article`
   .product_intro {
     display: flex;
     flex-direction: column;
-    gap: 30px;
-    padding-bottom: 60px;
+    gap: 25px;
+    padding-bottom: 30px;
     border-bottom: 2px solid var(--color-trans-grey);
+    .product_condition_ship {
+      p {
+        margin-bottom: 10px;
+      }
+    }
   }
 
   .title_update {
@@ -146,13 +154,15 @@ export const ProductImg = styled.img`
 
 export const ProductContent = styled.article`
   display: flex;
+  flex: 1;
+  height: auto;
+  justify-content: space-between;
   flex-direction: column;
-  justify-content: center;
-  margin-bottom: 30px;
+  padding: 40px 0;
 
   .product_contents {
     line-height: 1.5rem;
-    margin: 60px 0;
+    margin-bottom: 40px;
     font-size: 18px;
     font-weight: 500;
   }
@@ -189,5 +199,21 @@ export const SubmitCompleted = styled.main`
     margin: 20px;
     font-size: 22px;
     font-weight: bold;
+  }
+
+  .btn_wrap {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+  }
+
+  button {
+    background-color: var(--color-main);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    position: relative;
   }
 `;

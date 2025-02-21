@@ -8,12 +8,13 @@ import { ImgProfile } from "@/styles/profileStyle";
 import mySalesListApi from "@/api/mySalesListApi";
 import { Data } from "@/components/postList/marketTab";
 import useDecodedToken from "@/hooks/useDecodedToken";
+import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
 
 function ProfileLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
-  // zustand에서 token 가져오기
-  const { token, setToken } = useAuthStore();
+  // zustand에서 저장된 값 가져오기
+  const { token } = useAuthStore();
 
   // 토큰 디코딩 커스텀 훅으로 user id 추출
   const userId = useDecodedToken(token!);
@@ -23,13 +24,11 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
   const [list, setList] = useState<Data | null>(null);
 
   // 현재 페이지 관리 기본 값 1페이지
-  const [page, setPage] = useState<number>(1);
+  const [page] = useState<number>(1);
 
   // 현재 리스트 타입(마켓/공구) 관리
+  const [listMenu, setListMenu] = useState("mySales");
   const [listType, setListType] = useState<string>("market");
-
-  const [listTab, setListTab] = useState<string>("Sales");
-
   const [listState, setListState] = useState<string>("InProgress");
 
   const params = {
@@ -39,11 +38,13 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
     post_status: listState,
     current_page: page,
     sort_by: "post_id",
-    order: "ASC",
+    order: "D",
   };
 
-  // 최초 렌더링 시 user 데이터 가져오기
+  // profile data 가져오기
   useEffect(() => {
+    if (!userId) return;
+
     const fetchData = async () => {
       try {
         const [profileData, listData] = await Promise.all([
@@ -59,9 +60,7 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
     };
 
     fetchData();
-  }, []);
-
-  const [listMenu, setListMenu] = useState("mySales");
+  }, [userId, listType, listState, page]);
 
   // 각 탭에 따른 컴포넌트 렌더
   useEffect(() => {
@@ -79,27 +78,18 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
       case "myGroupPurchase":
         path = `/profile/${userId}/myGroupPurchaseList`;
         break;
+      case "postLike":
+        path = `/profile/${userId}/postLikeList`;
+        break;
+      case "review":
+        path = `/profile/${userId}/reviewList`;
+        break;
       default:
         return;
     }
 
     router.push(path);
-  }, [listMenu]);
-
-  useEffect(() => {
-    switch (listMenu) {
-      case "mySales":
-      case "myGroupSales":
-        setListTab("Sales");
-        break;
-      case "myPurchase":
-      case "myGroupPurchase":
-        setListTab("Purchase");
-        break;
-      default:
-        break;
-    }
-  }, [listMenu]);
+  }, [listMenu, userId]);
 
   return (
     <ProfileMain>
@@ -108,23 +98,29 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
         {/* 유저 프로필 */}
         <ImgProfile
           src={
-            data?.userFile ? `/upload/${data?.userFile?.up_file}` : undefined
+            data?.userFile
+              ? `/api/file/${data?.userFile?.up_file}`
+              : ImgProfileBasic.src
           }
         />
         <div>
           <p className="nickname">{data?.user.nickname}</p>
           <p className="rating">⭐5.0</p>
         </div>
-        <div className="btns_wrap">
-          <button
-            onClick={() => router.push(`/profile/${userId}/postLikeList`)}
+        <ul className="like_review_wrap">
+          <li
+            className={listMenu === "postLike" ? "active" : ""}
+            onClick={() => setListMenu("postLike")}
           >
-            찜 목록 <span>{data?.favoriteCount}</span>
-          </button>
-          <button onClick={() => router.push(`/profile/${userId}/reviewList`)}>
-            후기 <span>{data?.reviewCount}</span>
-          </button>
-        </div>
+            찜 목록 <strong>{data?.favoriteCount}</strong>
+          </li>
+          <li
+            className={listMenu === "review" ? "active" : ""}
+            onClick={() => setListMenu("review")}
+          >
+            후기 <strong>{data?.reviewCount}</strong>
+          </li>
+        </ul>
       </UserProfile>
 
       {/* 사이드 메뉴 바 */}
@@ -172,10 +168,10 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
             </li>
             <p>개인정보 수정</p>
             <li onClick={() => router.push(`/editProfile/${userId}`)}>
-              프로필 설정
+              프로필 수정
             </li>
             <li onClick={() => router.push(`/editAccountInfo/${userId}`)}>
-              입금 폼 설정
+              입금 정보 수정
             </li>
           </ul>
         </nav>

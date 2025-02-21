@@ -13,7 +13,7 @@ export default function Naver() {
       ? new URL(window.location.href).searchParams.get("code")
       : null;
 
-  const { token, setToken } = useAuthStore();
+  const { token } = useAuthStore();
   const userId = useDecodedToken(token!);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function Naver() {
           console.error("네이버 로그인 실패:", error);
         });
     }
-  }, [code, router]);
+  }, [code, router, userId]);
 
   return <div>로딩중</div>;
 }

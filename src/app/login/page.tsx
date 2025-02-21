@@ -19,8 +19,8 @@ const Login: React.FC = () => {
 
   const [error, setError] = useState<string>("");
 
-  const { authState, setAuthState } = useAuthStore();
-  const { token, setToken } = useAuthStore();
+  const { setAuthState } = useAuthStore();
+  const { setToken } = useAuthStore();
 
   // 로그인 함수(로그인 유효성 검사, api 호출)
   const handleLogin = async (e: FormEvent) => {
@@ -43,7 +43,6 @@ const Login: React.FC = () => {
 
         // zustand로 토큰 전역 관리, 세션 스토리지에 관리
         setToken(loginRes);
-        useAuthStore.getState().setToken(loginRes);
         setAuthState(true);
         sessionStorage.setItem("userToken", loginRes);
         router.push("/home");
@@ -85,6 +84,14 @@ const Login: React.FC = () => {
         <ErrorMessage>{error}</ErrorMessage>
         <LoginBtn onClick={handleLogin}>로그인</LoginBtn>
       </form>
+
+      <div className="find_wrap">
+        <button onClick={() => router.push("/find/id")}>아이디 찾기</button>
+        <span>|</span>
+        <button onClick={() => router.push("/find/password")}>
+          비밀번호 찾기
+        </button>
+      </div>
 
       <div className="text_join">
         <p>아직 회원이 아니신가요?</p>

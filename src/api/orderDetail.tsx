@@ -32,8 +32,14 @@ interface OrderProduct {
   product_detail_id: number;
 }
 
+interface Question {
+  input: string;
+  post_id: number;
+  product_quetion_id: number;
+}
+
 export interface OrderData {
-  order_id: number;
+  order_id: number | undefined;
   post_id: number;
   order_status: string;
   purchase_user_id: string;
@@ -42,7 +48,7 @@ export interface OrderData {
   deposit_dt: string;
   total_price: string;
   user: User;
-  questionList: [];
+  questionList: Question[];
   answerList: Answer[];
   orderProductList: OrderProduct[];
 }

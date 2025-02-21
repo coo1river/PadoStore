@@ -15,13 +15,13 @@ interface Error {
 }
 
 interface Data {
-  email: string;
-  user_id: string;
+  email?: string;
+  user_id?: string;
   password: string;
   pwCheck: string;
-  user_name: string;
-  nickname: string;
-  number: string;
+  user_name?: string;
+  nickname?: string;
+  number?: string;
 }
 
 const useValid = (

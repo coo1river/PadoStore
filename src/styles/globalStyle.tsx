@@ -27,6 +27,12 @@ ${reset}
     --font-main: 'Pretendard', sans-serif;
 }
 
+html,body{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 body {
     color: #333333;
     font-family: 'Pretendard', sans-serif;

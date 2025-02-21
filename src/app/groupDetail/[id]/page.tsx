@@ -31,7 +31,7 @@ const GroupDetail: React.FC = () => {
   const { authState } = useAuthStore();
 
   // 토큰 가져오기
-  const { token, setToken } = useAuthStore();
+  const { token } = useAuthStore();
 
   // 토큰 디코딩 커스텀 훅으로 user id 추출
   const userId = useDecodedToken(token!);
@@ -52,7 +52,7 @@ const GroupDetail: React.FC = () => {
       setData(res);
     };
     detail();
-  }, []);
+  }, [params.id]);
 
   // 게시물 메뉴 모달 상태 관리
   const [menuModal, setMenuModal] = useState<boolean>(false);
@@ -75,6 +75,15 @@ const GroupDetail: React.FC = () => {
     setMenuModal(!menuModal);
   };
 
+  // 채팅으로 라우팅
+  const handleClickChat = () => {
+    if (userId === data?.user_id) {
+      alert("본인과는 채팅이 불가능합니다.");
+      return;
+    }
+    router.push(`/chat/${userId}/${data?.user_id}`);
+  };
+
   return (
     <ProductMain>
       <h2 className="a11y-hidden">상품 페이지</h2>
@@ -83,7 +92,7 @@ const GroupDetail: React.FC = () => {
           <ProductImg
             src={
               data?.file && data?.file[0]?.up_file
-                ? `/upload/${data?.file[0]?.up_file}`
+                ? `/api/file/${data?.file[0]?.up_file}`
                 : undefined
             }
             alt="상품 이미지"
@@ -94,7 +103,11 @@ const GroupDetail: React.FC = () => {
                 <h3 className="product_title">{data?.title}</h3>
                 {data?.user_id === userId ? (
                   <>
-                    <button className="btn_update" onClick={handleClickMenu} />
+                    <button
+                      className="btn_update"
+                      aria-label="수정"
+                      onClick={handleClickMenu}
+                    />
                     {menuModal ? (
                       <DetailModal data={data} setMenuModal={handleClickMenu} />
                     ) : null}
@@ -102,11 +115,11 @@ const GroupDetail: React.FC = () => {
                 ) : null}
               </div>
               <p>
-                <strong>• 판매 기간 : </strong>
+                <strong>판매 기간 : </strong>
                 {data?.product.start_dt} ~ {data?.product.end_dt}
               </p>
               <p>
-                <strong>• 배송 방법 : </strong>
+                <strong>배송 방법 : </strong>
                 {data?.product.post_method}
               </p>
             </div>
@@ -116,7 +129,7 @@ const GroupDetail: React.FC = () => {
                   className="img_profile"
                   src={
                     data?.userFile && data?.userFile.up_file
-                      ? `/upload/${data?.userFile.up_file}`
+                      ? `/api/file/${data?.userFile.up_file}`
                       : undefined
                   }
                   alt="프로필 이미지"
@@ -141,7 +154,9 @@ const GroupDetail: React.FC = () => {
                   <IconBasicHeart width="20" height="20" fill="#3EABFA" />
                 )}
               </button>
-              <button className="btn_purchase">구매하기</button>
+              <button className="btn_purchase" onClick={handleClickChat}>
+                구매 문의하기
+              </button>
             </div>
           </div>
         </ProductInfo>
@@ -159,10 +174,14 @@ const GroupDetail: React.FC = () => {
               <li key={index}>{item}</li>
             ))}
           </ul>
-          <GroupSubmit>
-            {/* 입금자 정보 폼 */}
-            <AccountFormInfo data={data} />
-          </GroupSubmit>
+
+          {/* 작성자가 아닌 경우에만 폼 표시 */}
+          {userId !== data?.user_id && (
+            <GroupSubmit>
+              {/* 입금자 정보 폼 */}
+              <AccountFormInfo data={data} />
+            </GroupSubmit>
+          )}
         </ProductContent>
       </section>
     </ProductMain>

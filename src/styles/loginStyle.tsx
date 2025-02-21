@@ -10,10 +10,25 @@ export const LoginMain = styled.main`
   color: #2c2c2c;
   height: calc(100vh - 215px);
 
+  .heading {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 30px 0;
+  }
+
   .login_text {
     margin: 25px;
     font-size: 18px;
     font-weight: 700;
+  }
+
+  .find_wrap {
+    margin-bottom: 10px;
+
+    button {
+      color: var(--main-blackgrey);
+      font-size: 15px;
+    }
   }
 
   .text_join {
@@ -82,7 +97,7 @@ export const SnsLogin = styled.div`
   align-items: center;
 
   h4 {
-    margin: 40px 0 20px 0;
+    margin: 30px 0 20px 0;
 
     &::before {
       content: "";

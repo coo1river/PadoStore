@@ -11,7 +11,6 @@ import homeListApi from "@/api/homeListApi";
 import MarketTab, { MarketItem } from "@/components/postList/marketTab";
 import GroupPurchaseTab from "@/components/postList/groupPurchaseTab";
 import { useRouter } from "next/navigation";
-import Pagination from "@/components/pagination";
 
 export interface HomeList {
   post_id: number;
@@ -35,6 +34,9 @@ const Home: React.FC = () => {
   const [data, setData] = useState<HomeData | null>(null);
   const router = useRouter();
 
+  // 탭 관리
+  const [tabStatus, setTabStatus] = useState<string>("Home");
+
   useEffect(() => {
     const homeData = async () => {
       const data = await homeListApi("InProgress");
@@ -43,17 +45,9 @@ const Home: React.FC = () => {
     homeData();
   }, []);
 
-  const [tabStatus, setTabStatus] = useState<string>("Home");
-
   const setActiveClass = (status: string) => {
     return tabStatus === status ? "active" : "";
   };
-
-  // 총 포스트 개수 관리
-  const [totalPosts, setTotalPosts] = useState<number>(0);
-
-  // 현재 페이지 관리
-  const [page, setPage] = useState<number>(1);
 
   const renderTabContent = () => {
     switch (tabStatus) {
@@ -65,27 +59,9 @@ const Home: React.FC = () => {
           </>
         );
       case "Market":
-        return (
-          <>
-            <MarketTab
-              api={"hometab"}
-              page={page}
-              setTotalPosts={setTotalPosts}
-            />
-            <Pagination totalPosts={totalPosts} page={page} setPage={setPage} />
-          </>
-        );
+        return <MarketTab api={"hometab"} />;
       case "GroupPurchase":
-        return (
-          <>
-            <GroupPurchaseTab
-              api={"hometab"}
-              page={page}
-              setTotalPosts={setTotalPosts}
-            />
-            <Pagination totalPosts={totalPosts} page={page} setPage={setPage} />
-          </>
-        );
+        return <GroupPurchaseTab api={"hometab"} />;
       default:
         return null;
     }

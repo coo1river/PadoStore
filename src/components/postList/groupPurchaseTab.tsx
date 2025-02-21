@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import homeTabApi from "@/api/homeTabApi";
 import { Product, User } from "./marketTab";
 import searchApi from "@/api/searchApi";
+import Pagination from "../pagination";
+import Image from "next/image";
 
 export interface GroupItem {
   fileList: {
@@ -34,20 +36,19 @@ export interface Data {
 }
 
 interface Props {
-  page: number;
+  page?: number;
   api: string;
   keywords?: string;
-  setTotalPosts: (total: number) => void;
+  setTotalPosts?: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const GroupPurchaseTab: React.FC<Props> = ({
-  page,
-  api,
-  keywords,
-  setTotalPosts,
-}) => {
+const GroupPurchaseTab: React.FC<Props> = ({ api, keywords }) => {
   const router = useRouter();
   const [data, setData] = useState<Data | null>(null);
+
+  // 현재 페이지, 총 포스트 개수 관리
+  const [totalPosts, setTotalPosts] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
 
   const params = {
     board_type: "GroupPurchase",
@@ -96,11 +97,13 @@ const GroupPurchaseTab: React.FC<Props> = ({
                     router.push(`/productDetail/${item.groupOrder.post_id}`);
                   }}
                 >
-                  <img
+                  <Image
+                    width={220}
+                    height={220}
                     src={
                       item.fileList && item.fileList.length > 0
-                        ? `/upload/${item.fileList[0]?.up_file}`
-                        : undefined
+                        ? `/api/file/${item.fileList[0]?.up_file}`
+                        : ""
                     }
                     alt="상품 이미지"
                   />
@@ -115,6 +118,9 @@ const GroupPurchaseTab: React.FC<Props> = ({
               );
             })}
         </div>
+        {api !== "search" ? (
+          <Pagination totalPosts={totalPosts} page={page} setPage={setPage} />
+        ) : null}
       </ProductTab>
     </>
   );

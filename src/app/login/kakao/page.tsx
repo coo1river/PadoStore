@@ -13,7 +13,7 @@ export default function Kakao() {
       ? new URL(window.location.href).searchParams.get("code")
       : null;
 
-  const { token, setToken } = useAuthStore();
+  const { token } = useAuthStore();
   const userId = useDecodedToken(token!);
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export default function Kakao() {
           console.error("카카오 로그인 실패:", error);
         });
     }
-  }, [code, router]);
+  }, [code, router, userId]);
 
-  return <div>로딩중</div>;
+  return <p>로딩 중</p>;
 }

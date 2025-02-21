@@ -3,6 +3,7 @@ import searchIcon from "../../public/assets/svgs/search.svg?url";
 
 export const CommonHeader = styled.header`
   display: flex;
+  flex: 0 0 auto;
   margin: 0 auto;
   justify-content: center;
   align-items: center;
@@ -30,7 +31,7 @@ export const LogoImg = styled.img`
 export const SearchIptBox = styled.div`
   position: relative;
 
-  .search_btn {
+  .btn_search {
     width: 30px;
     height: 30px;
 
@@ -120,7 +121,7 @@ export const LoginJoin = styled.div`
     font-size: 14px;
   }
 
-  .btn-chat {
+  .btn_chat {
     margin: 5px 10px 0 20px;
     padding: 10px;
   }

@@ -10,8 +10,8 @@ interface ChatRoom {
   path: string | null;
   unread_count: number;
   up_file: string;
-  user1_status: boolean;
-  user2_status: boolean;
+  user1_status: "true" | "false";
+  user2_status: "true" | "false";
 }
 
 export interface ListRes {

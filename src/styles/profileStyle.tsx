@@ -4,8 +4,28 @@ import { LoginMain } from "./loginStyle";
 export const ProfileMain = styled(LoginMain)`
   justify-content: start;
   align-items: start;
-  height: 100%;
-  min-height: calc(100vh - 215px);
+  flex: 1 1 auto;
+  height: auto;
+
+  .like_review_wrap {
+    display: flex;
+
+    .active {
+      background-color: var(--color-lightgrey);
+    }
+
+    li {
+      border-radius: 10px;
+      cursor: pointer;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: 600;
+
+      strong {
+        font-weight: 700;
+      }
+    }
+  }
 
   .list_wrap {
     background-color: white;
@@ -130,13 +150,20 @@ export const ArticleList = styled.article`
   li {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 5px 0;
     border-bottom: 2px solid var(--color-trans-grey);
     cursor: pointer;
   }
 
-  p {
+  .no_post {
+    border-bottom: none;
     text-align: center;
+
+    p {
+      width: 100%;
+      font-weight: 600;
+    }
   }
 
   .product_id {
@@ -148,12 +175,29 @@ export const ArticleList = styled.article`
   }
 
   .nickname_dt_wrap {
+    min-width: 190px;
+    align-items: center;
+    justify-content: space-around;
     display: flex;
-    gap: 10px;
+
+    button {
+      margin: 0 10px 0 0;
+    }
   }
 
   .product_date {
     font-size: 13px;
+  }
+`;
+
+export const GroupPurchaseList = styled(ArticleList)`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  button {
+    align-self: end;
+    width: 80px;
   }
 `;
 

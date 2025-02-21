@@ -2,6 +2,7 @@
 import { ProductArticle, ProductTab } from "@/styles/homeStyle";
 import { useRouter } from "next/navigation";
 import { MarketItem, Product, User } from "../postList/marketTab";
+import Image from "next/image";
 
 export interface GroupOrderList {
   fileList: {
@@ -58,11 +59,13 @@ const ProductSection: React.FC<ProductSectionProps> = ({ marketList }) => {
                   router.push(`/productDetail/${item.market.post_id}`);
                 }}
               >
-                <img
+                <Image
+                  width={220}
+                  height={220}
                   src={
                     item.fileList && item.fileList.length > 0
-                      ? `/upload/${item.fileList[0]?.up_file}`
-                      : undefined
+                      ? `/api/file/${item.fileList[0]?.up_file}`
+                      : ""
                   }
                   alt="상품 이미지"
                 />

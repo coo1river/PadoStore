@@ -9,8 +9,19 @@ interface Props {
 
 const MyMarketList: React.FC<Props> = ({ marketList }) => {
   const router = useRouter();
+
+  if (marketList.length === 0) {
+    return (
+      <ul>
+        <li className="no_post">
+          <p>거래 내역이 없습니다.</p>
+        </li>
+      </ul>
+    );
+  }
+
   return (
-    <ul className="myProfile_list">
+    <ul>
       {marketList.map((item) => {
         const date = item.market.insert_dt.split("-").slice(1).join("-");
         return (

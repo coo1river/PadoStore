@@ -30,7 +30,7 @@ const ProductDetail: React.FC = () => {
   const { authState } = useAuthStore();
 
   // 토큰 가져오기
-  const { token, setToken } = useAuthStore();
+  const { token } = useAuthStore();
 
   // 토큰 디코딩 커스텀 훅으로 user id 추출
   const userId = useDecodedToken(token!);
@@ -51,7 +51,7 @@ const ProductDetail: React.FC = () => {
       setData(res);
     };
     detail();
-  }, []);
+  }, [params.id]);
 
   const [menuModal, setMenuModal] = useState<boolean>(false);
 
@@ -72,6 +72,15 @@ const ProductDetail: React.FC = () => {
     setMenuModal(!menuModal);
   };
 
+  // 채팅으로 라우팅
+  const handleClickChat = () => {
+    if (userId === data?.user_id) {
+      alert("본인과는 채팅이 불가능합니다.");
+      return;
+    }
+    router.push(`/chat/${userId}/${data?.user_id}`);
+  };
+
   return (
     <ProductMain>
       <h2 className="a11y-hidden">상품 페이지</h2>
@@ -81,7 +90,7 @@ const ProductDetail: React.FC = () => {
           <ProductImg
             src={
               data?.file && data?.file[0]?.up_file
-                ? `/upload/${data?.file[0]?.up_file}`
+                ? `/api/file/${data?.file[0]?.up_file}`
                 : undefined
             }
             alt="상품 이미지"
@@ -92,22 +101,28 @@ const ProductDetail: React.FC = () => {
                 <h3 className="product_title">{data?.title}</h3>
                 {data?.user_id === userId ? (
                   <>
-                    <button className="btn_update" onClick={handleClickMenu} />
+                    <button
+                      className="btn_update"
+                      aria-label="수정"
+                      onClick={handleClickMenu}
+                    />
                     {menuModal ? (
                       <DetailModal data={data} setMenuModal={handleClickMenu} />
                     ) : null}
                   </>
                 ) : null}
               </div>
-              <p className="product_price"></p>
-              <p>
-                <strong>• 상품 상태 : </strong>
-                {data?.product.product_status}
-              </p>
-              <p>
-                <strong>• 배송 방법 : </strong>
-                {data?.product.post_method}
-              </p>
+              <p className="product_price">{data?.product.price}원</p>
+              <div className="product_condition_ship">
+                <p>
+                  <strong>상품 상태 : </strong>
+                  {data?.product.product_status}
+                </p>
+                <p>
+                  <strong>배송 방법 : </strong>
+                  {data?.product.post_method}
+                </p>
+              </div>
             </div>
             <div className="profile_wrap">
               {data?.userFile && data?.userFile.up_file ? (
@@ -115,7 +130,7 @@ const ProductDetail: React.FC = () => {
                   className="img_profile"
                   src={
                     data?.userFile && data?.userFile.up_file
-                      ? `/upload/${data?.userFile.up_file}`
+                      ? `/api/file/${data?.userFile.up_file}`
                       : undefined
                   }
                   alt="프로필 이미지"
@@ -129,6 +144,7 @@ const ProductDetail: React.FC = () => {
             <div className="btns_wrap">
               <button
                 className="btn_like"
+                aria-label="찜하기"
                 onClick={() => {
                   authState ? handlePostLike() : router.push("/login");
                 }}
@@ -142,9 +158,8 @@ const ProductDetail: React.FC = () => {
               </button>
               <button
                 className="btn_chat"
-                onClick={() => {
-                  router.push(`/chat/${userId}/${data?.user_id}`);
-                }}
+                aria-label="채팅"
+                onClick={handleClickChat}
               >
                 구매 채팅하기
               </button>

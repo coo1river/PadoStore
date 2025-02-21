@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { KeyboardEvent, useState } from "react";
 
 interface TagInputProps {
   tagList: string;
@@ -27,6 +27,7 @@ const TagInput: React.FC<TagInputProps> = ({ tagList, setTagList }) => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
+
     if (!value.startsWith("#")) {
       setTagValue("#" + value);
     } else {
@@ -43,11 +44,29 @@ const TagInput: React.FC<TagInputProps> = ({ tagList, setTagList }) => {
     setTagList(updatedTagList);
   };
 
+  // enter 키로 태그 추가하기
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === " ") {
+      event.preventDefault();
+      return;
+    }
+
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleAddTag();
+    }
+  };
+
   return (
     <div>
       <label htmlFor="product-tag">상품 태그(3개)</label>
       <div className="tag_wrap">
-        <input type="text" value={tagValue} onChange={handleChange} />
+        <input
+          type="text"
+          value={tagValue}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+        />
         <button onClick={handleAddTag}>추가</button>
       </div>
       <ul className="tag_list">

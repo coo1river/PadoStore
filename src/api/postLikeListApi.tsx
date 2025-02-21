@@ -1,5 +1,18 @@
 import axios from "axios";
 
+interface Favorite {
+  board_type: string;
+  insert_dt: string;
+  nickname: string;
+  post_id: number;
+  title: string;
+}
+
+export interface FavoriteList {
+  favoriteList: Favorite[];
+  totalCount: number;
+}
+
 export default async function postLikeListApi(
   limit: number,
   current_page: number

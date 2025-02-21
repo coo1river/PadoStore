@@ -7,6 +7,6 @@ interface GroupManageProps {
   listMenu: string;
 }
 
-export default function GroupManage({ children, listMenu }: GroupManageProps) {
+export default function GroupManage({ listMenu }: GroupManageProps) {
   return <>{listMenu === "order" ? <DepositList /> : <StockList />}</>;
 }

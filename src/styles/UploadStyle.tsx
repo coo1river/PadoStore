@@ -219,8 +219,8 @@ export const UploadForm = styled.article`
 
 export const GroupForm = styled(UploadForm)`
   article {
-    margin-bottom: 20px;
     background-color: white;
+    margin-bottom: 20px;
     border-radius: 15px;
     padding: 20px 25px;
   }
@@ -300,8 +300,6 @@ export const GroupForm = styled(UploadForm)`
     padding: 16px;
   }
 `;
-
-export const SalePeriod = styled.article``;
 
 export const UserAccount = styled.article`
   display: flex;
@@ -384,6 +382,11 @@ export const ProductList = styled.article`
     display: flex;
     justify-content: space-between;
 
+    .count_price_wrap {
+      width: 200px;
+      justify-content: space-between;
+    }
+
     div {
       display: flex;
       align-items: center;
@@ -449,7 +452,7 @@ export const AddInputList = styled.article`
   .switch_label:hover {
     background: #efefef;
   }
-  .onf_btn {
+  .btn_onf {
     position: absolute;
     top: 4px;
     left: 3px;
@@ -472,7 +475,7 @@ export const AddInputList = styled.article`
   }
 
   /* move */
-  #input_switch:checked + .switch_label .onf_btn {
+  #input_switch:checked + .switch_label .btn_onf {
     left: 34px;
     background: #fff;
     box-shadow: 1px 2px 3px #00000020;

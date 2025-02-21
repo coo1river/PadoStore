@@ -27,6 +27,10 @@ export const ChatList = styled.article`
     border-bottom: 2px solid var(--color-lightgrey);
   }
 
+  .none {
+    display: none;
+  }
+
   .nickname_chat_wrap {
     line-height: 1.2rem;
   }
@@ -65,6 +69,7 @@ export const ChatRoomWrap = styled.article`
 
 export const ChatRoom = styled.article`
   width: 100%;
+  height: 100%;
   overflow-y: scroll;
   box-sizing: border-box;
   display: flex;
@@ -78,6 +83,8 @@ export const ChatRoom = styled.article`
 
   .chat {
     max-width: 350px;
+    line-height: 25px;
+    white-space: pre-wrap;
     display: flex;
     flex-direction: column;
     padding: 13px 15px;
@@ -90,17 +97,23 @@ export const ChatRoom = styled.article`
 
   .message_other_wrap {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
   }
 
   .profile_image {
-    width: 35px;
-    height: 35px;
+    margin-top: 13px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     margin-left: 10px;
   }
 
-  .time_stamp {
+  .read_status {
+    margin: 0 5px;
+  }
+
+  .time_stamp,
+  .read_status {
     align-self: end;
     font-size: 12px;
     margin-bottom: 15px;
@@ -131,19 +144,60 @@ export const ChatInputWrap = styled.div`
   .input_message {
     width: 100%;
     background-color: var(--color-trans-grey);
-    padding: 15px 25px;
+    padding: 15px 55px;
     border-radius: 30px;
     font-size: 15px;
   }
 
-  .btn_send {
+  .btn_input {
     margin: 0 10px;
     right: 5px;
     top: 4px;
     position: absolute;
-    color: white;
-    padding: 8px;
+    padding: 8px 10px;
     font-weight: 600;
     border-radius: 30px;
+  }
+
+  .btn_menu {
+    left: 0;
+    top: 6px;
+    width: fit-content;
+  }
+`;
+
+// chat modal style
+export const ChatModalDiv = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  position: absolute;
+  background-color: var(--color-trans-grey);
+  border-radius: 20px;
+  bottom: 0;
+  padding: 20px 30px;
+  z-index: 100;
+  height: 100px;
+  box-sizing: border-box;
+
+  .btn_exit {
+    position: absolute;
+    right: 5px;
+    top: 0;
+    padding: 5px 3px;
+  }
+
+  .btn_modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+
+    p {
+      font-weight: 800;
+      color: var(--color-main);
+      font-size: 14px;
+    }
   }
 `;

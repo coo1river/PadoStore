@@ -1,31 +1,11 @@
 "use client";
-import { ArticleList, ManageMain } from "@/styles/profileStyle";
-import React, { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import useAuthStore from "@/store/useAuthStore";
-import { ViewProfileRes } from "@/api/viewProfileApi";
-import { Data } from "@/components/postList/marketTab";
+import { GroupPurchaseList, ManageMain } from "@/styles/profileStyle";
+import React, { useState } from "react";
 import GroupManage from "./page";
 
 function ManageLayout({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
-  const params = useParams();
-
-  // zustand에서 token 가져오기
-  const { token, setToken } = useAuthStore();
-
-  // api로 data와 list 정보 담기
-  const [data, setData] = useState<ViewProfileRes | null>(null);
-  const [list, setList] = useState<Data | null>(null);
-
-  // 현재 페이지 관리 기본 값 1페이지
-  const [page, setPage] = useState<number>(1);
-
+  // 공구 or 주문 상태 관리
   const [listMenu, setListMenu] = useState<string>("order");
-
-  useEffect(() => {
-    console.log(listMenu);
-  }, [listMenu]);
 
   return (
     <ManageMain>
@@ -54,10 +34,10 @@ function ManageLayout({ children }: { children: React.ReactNode }) {
           </ul>
         </nav>
 
-        {/* 게시물 목록 */}
-        <ArticleList>
+        {/* 주문, 재고 목록 */}
+        <GroupPurchaseList>
           <GroupManage listMenu={listMenu}>{children}</GroupManage>
-        </ArticleList>
+        </GroupPurchaseList>
       </section>
     </ManageMain>
   );

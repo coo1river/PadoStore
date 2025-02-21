@@ -6,7 +6,6 @@ import uploadApi from "@/api/uploadApi";
 import { BankOptions, DeliveryOptions } from "@/components/selectOption";
 import TagInput from "@/components/tagInput";
 import useInput from "@/hooks/useInput";
-import useAuthStore from "@/store/useAuthStore";
 import {
   GroupForm,
   UploadMain,
@@ -15,10 +14,9 @@ import {
   ImgWrap,
   AddInputList,
   UserAccount,
-  SalePeriod,
   ImgFile,
   BasicImg,
-} from "@/styles/UploadStyle";
+} from "@/styles/uploadStyle";
 import { useParams, useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 
@@ -39,9 +37,6 @@ const GroupPurchaseUpdate: React.FC = () => {
 
   // 수정할 데이터 저장하기
   const [data, setData] = useState<Res | null>(null);
-
-  // zustand에서 token 가져오기
-  const { token, setToken } = useAuthStore();
 
   const [imgFile, setImgFile] = useState<string | File | undefined>("");
 
@@ -221,7 +216,6 @@ const GroupPurchaseUpdate: React.FC = () => {
 
   const handleUpload = (e: FormEvent) => {
     e.preventDefault();
-    console.log(dataReq);
 
     // 각 input에 값이 비었을 경우 alert 창 띄우기
     if (
@@ -282,7 +276,7 @@ const GroupPurchaseUpdate: React.FC = () => {
             <ImgFile
               src={
                 typeof imgFile === "string"
-                  ? `/upload/${imgFile}`
+                  ? `/api/file/${imgFile}`
                   : imgFile
                   ? URL.createObjectURL(imgFile)
                   : undefined
@@ -310,16 +304,10 @@ const GroupPurchaseUpdate: React.FC = () => {
           value={form.title.value}
           onChange={form.title.onChange}
         />
-        <label htmlFor="product-type">상품 종류</label>
-        <input
-          id="product-type"
-          type="text"
-          placeholder="상품의 종류를 입력해 주세요"
-        />
 
         {/* 판매 기간 */}
         <h3 className="product_title">판매 기간</h3>
-        <SalePeriod>
+        <article>
           <label htmlFor="sale-period" />
           <div className="sale_period_wrap">
             <span>시작 날짜</span>
@@ -338,7 +326,7 @@ const GroupPurchaseUpdate: React.FC = () => {
               onChange={form.end_dt.onChange}
             />
           </div>
-        </SalePeriod>
+        </article>
 
         {/* 계좌 정보 */}
         <h3 className="product_title">판매 계좌 정보</h3>
@@ -455,15 +443,17 @@ const GroupPurchaseUpdate: React.FC = () => {
                     <div>
                       <p className="product_name"> {product.product_name}</p>
                     </div>
-                    <div>
+                    <div className="count_price_wrap">
                       <p className="product_count">{product.org_quantity}개</p>
-                      <p className="product_price">
-                        {Number(product.product_price).toLocaleString()}원
-                      </p>
-                      <button
-                        className="btn_del"
-                        onClick={() => handleRemoveProduct(index)}
-                      />
+                      <div>
+                        <p className="product_price">
+                          {Number(product.product_price).toLocaleString()}원
+                        </p>
+                        <button
+                          className="btn_del"
+                          onClick={() => handleRemoveProduct(index)}
+                        />
+                      </div>
                     </div>
                   </li>
                 ))}
@@ -501,7 +491,7 @@ const GroupPurchaseUpdate: React.FC = () => {
               }}
             />
             <label htmlFor="input_switch" className="switch_label">
-              <span className="onf_btn" />
+              <span className="btn_onf" />
             </label>
           </div>
 
