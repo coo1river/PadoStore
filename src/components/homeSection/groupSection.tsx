@@ -1,6 +1,7 @@
 import { ProductArticle, ProductTab } from "@/styles/homeStyle";
 import { useRouter } from "next/navigation";
 import { GroupOrderList } from "./productSection";
+import Image from "next/image";
 
 export interface GroupSectionProps {
   groupOrderList: GroupOrderList[];
@@ -24,11 +25,13 @@ const GroupSection: React.FC<GroupSectionProps> = ({ groupOrderList }) => {
                   router.push(`/groupDetail/${item.groupOrder.post_id}`);
                 }}
               >
-                <img
+                <Image
+                  width={220}
+                  height={220}
                   src={
                     item.fileList && item.fileList.length > 0
                       ? `/api/file/${item.fileList[0]?.up_file}`
-                      : undefined
+                      : ""
                   }
                   alt="상품 이미지"
                 />

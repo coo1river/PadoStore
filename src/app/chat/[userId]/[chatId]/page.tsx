@@ -25,6 +25,7 @@ import ChatModal from "@/components/modal/chatModal";
 import userInfoApi, { UserInfo } from "@/api/chat/userInfoApi";
 import useAuthStore from "@/store/useAuthStore";
 import useDecodedToken from "@/hooks/useDecodedToken";
+import Image from "next/image";
 
 interface Message {
   chat_id: number;
@@ -370,7 +371,9 @@ export default function UserChat() {
           key={chat_id}
         >
           {!isSelf && (
-            <img
+            <Image
+              width={45}
+              height={45}
               className="profile_image"
               src={
                 detailData?.user1.user_id === receiver
@@ -381,7 +384,7 @@ export default function UserChat() {
                   ? `/api/file/${detailData?.user2.up_file}`
                   : ImgProfileBasic.src
               }
-              alt="프로필 사진"
+              alt="프로필 이미지"
             />
           )}
           {isSelf && (

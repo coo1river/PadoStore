@@ -36,7 +36,7 @@ const MyGroupPurchaseList: React.FC = () => {
     };
 
     fetchData();
-  }, [listState]);
+  }, [listState, params]);
 
   return (
     <>

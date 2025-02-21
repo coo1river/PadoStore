@@ -5,7 +5,6 @@ import uploadApi from "@/api/uploadApi";
 import { DeliveryOptions, ProductStatus } from "@/components/selectOption";
 import TagInput from "@/components/tagInput";
 import useInput from "@/hooks/useInput";
-import useAuthStore from "@/store/useAuthStore";
 import {
   BasicImg,
   ImgFile,
@@ -41,19 +40,15 @@ export default function ProductUpdate() {
       setData(res);
     };
     update();
-  }, []);
+  }, [id]);
 
-  // board type 불러오기
+  // board type, Img 불러오기
   useEffect(() => {
-    setBoardType(data?.board_type);
-  }, [data?.board_type]);
-
-  useEffect(() => {
-    setImgFile(data?.file[0].up_file);
-  }, [data?.file]);
-
-  // zustand에서 token 가져오기
-  const { token, setToken } = useAuthStore();
+    if (data) {
+      setBoardType(data.board_type);
+      setImgFile(data.file[0].up_file);
+    }
+  }, [data]);
 
   // useInput 사용으로 사용 정보 내용 담기
   const title = useInput("");

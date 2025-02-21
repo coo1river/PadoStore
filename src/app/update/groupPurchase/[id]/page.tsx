@@ -6,7 +6,6 @@ import uploadApi from "@/api/uploadApi";
 import { BankOptions, DeliveryOptions } from "@/components/selectOption";
 import TagInput from "@/components/tagInput";
 import useInput from "@/hooks/useInput";
-import useAuthStore from "@/store/useAuthStore";
 import {
   GroupForm,
   UploadMain,
@@ -15,7 +14,6 @@ import {
   ImgWrap,
   AddInputList,
   UserAccount,
-  SalePeriod,
   ImgFile,
   BasicImg,
 } from "@/styles/uploadStyle";
@@ -309,7 +307,7 @@ const GroupPurchaseUpdate: React.FC = () => {
 
         {/* 판매 기간 */}
         <h3 className="product_title">판매 기간</h3>
-        <SalePeriod>
+        <article>
           <label htmlFor="sale-period" />
           <div className="sale_period_wrap">
             <span>시작 날짜</span>
@@ -328,7 +326,7 @@ const GroupPurchaseUpdate: React.FC = () => {
               onChange={form.end_dt.onChange}
             />
           </div>
-        </SalePeriod>
+        </article>
 
         {/* 계좌 정보 */}
         <h3 className="product_title">판매 계좌 정보</h3>

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import iconNaver from "../../../public/assets/images/icon-naver.png";
 
 export default function NaverLogin() {
@@ -12,7 +13,7 @@ export default function NaverLogin() {
   };
   return (
     <button className="icon_naver" onClick={handleNaverLogin}>
-      <img src={iconNaver.src} alt="네이버 로고" />
+      <Image width={200} height={40} src={iconNaver.src} alt="네이버 로고" />
       네이버로 로그인
     </button>
   );

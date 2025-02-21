@@ -97,12 +97,13 @@ export const ChatRoom = styled.article`
 
   .message_other_wrap {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
   }
 
   .profile_image {
-    width: 35px;
-    height: 35px;
+    margin-top: 13px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     margin-left: 10px;
   }

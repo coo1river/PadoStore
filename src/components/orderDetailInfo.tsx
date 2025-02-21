@@ -63,7 +63,7 @@ const OrderdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
     form.userName.setValue(data?.user.user_name || "");
     form.userNumber.setValue(data?.user.phone_number || "");
     form.userEmail.setValue(data?.user.email || "");
-  }, [isOrderEditable]);
+  }, [data, isOrderEditable]);
 
   // 배송 수정 상태 변경 시 setValue 설정
   useEffect(() => {
@@ -71,12 +71,12 @@ const OrderdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
     form.zipcode.setValue(data?.user.addr_post || "");
     form.address.setValue(data?.user.addr || "");
     form.addrDetail.setValue(data?.user.addr_detail || "");
-  }, [isShippingEditable]);
+  }, [data, isShippingEditable]);
 
   useEffect(() => {
     form.bank.setValue(data?.user.bank || "");
     form.accountNumber.setValue(data?.user.account_number || "");
-  }, [isRefundEditable]);
+  }, [data, isRefundEditable]);
 
   const req = {
     order_id: data?.order_id,

@@ -36,7 +36,7 @@ const MyGroupSalesList: React.FC = () => {
     };
 
     fetchData();
-  }, [listState]);
+  }, [listState, params]);
 
   return (
     <>

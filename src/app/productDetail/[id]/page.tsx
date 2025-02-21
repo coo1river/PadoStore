@@ -51,7 +51,7 @@ const ProductDetail: React.FC = () => {
       setData(res);
     };
     detail();
-  }, []);
+  }, [params.id]);
 
   const [menuModal, setMenuModal] = useState<boolean>(false);
 

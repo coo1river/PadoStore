@@ -33,7 +33,7 @@ export default function Naver() {
           console.error("네이버 로그인 실패:", error);
         });
     }
-  }, [code, router]);
+  }, [code, router, userId]);
 
   return <div>로딩중</div>;
 }

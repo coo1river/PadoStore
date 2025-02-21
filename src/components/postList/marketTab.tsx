@@ -6,6 +6,7 @@ import homeTabApi from "@/api/homeTabApi";
 import searchApi from "@/api/searchApi";
 import { GroupItem } from "./groupPurchaseTab";
 import Pagination from "../pagination";
+import Image from "next/image";
 
 export interface Product {
   end_dt: string | null;
@@ -136,11 +137,13 @@ const MarketTab: React.FC<Props> = ({ api, keywords }) => {
                     router.push(`/productDetail/${item.market.post_id}`);
                   }}
                 >
-                  <img
+                  <Image
+                    width={220}
+                    height={220}
                     src={
                       item.fileList && item.fileList.length > 0
                         ? `/api/file/${item.fileList[0]?.up_file}`
-                        : undefined
+                        : ""
                     }
                     alt="상품 이미지"
                   />

@@ -24,7 +24,7 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
   const [list, setList] = useState<Data | null>(null);
 
   // 현재 페이지 관리 기본 값 1페이지
-  const [page, setPage] = useState<number>(1);
+  const [page] = useState<number>(1);
 
   // 현재 리스트 타입(마켓/공구) 관리
   const [listMenu, setListMenu] = useState("mySales");
@@ -89,7 +89,7 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
     }
 
     router.push(path);
-  }, [listMenu]);
+  }, [listMenu, userId]);
 
   return (
     <ProfileMain>

@@ -52,7 +52,7 @@ const GroupDetail: React.FC = () => {
       setData(res);
     };
     detail();
-  }, []);
+  }, [params.id]);
 
   // 게시물 메뉴 모달 상태 관리
   const [menuModal, setMenuModal] = useState<boolean>(false);

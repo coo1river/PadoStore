@@ -22,7 +22,7 @@ export default function PostLikeList() {
       setData(res);
     };
     fetchList();
-  }, []);
+  }, [params]);
 
   return (
     <PostLikeListMain>

@@ -1,8 +1,6 @@
 "use client";
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-
-// 스타일 import
 import {
   ErrorMessage,
   ImgInput,
@@ -12,11 +10,7 @@ import {
   InfoText,
   JoinMain,
 } from "@/styles/joinStyle";
-
-// 기본 프로필 이미지 import
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
-
-// 커스텀 훅, api import
 import useInput from "@/hooks/useInput";
 import useValid from "@/hooks/useValid";
 import editProfileApi, { EditRes } from "@/api/editProfileApi";
@@ -78,7 +72,7 @@ const EditProfile: React.FC = () => {
     form.email.setValue(data?.user.email || "");
     form.username.setValue(data?.user.user_name || "");
     form.number.setValue(data?.user.phone_number || "");
-  }, [data]);
+  }, [data, form.id, form.nickname, form.email, form.username, form.number]);
 
   // 기존 프로필 이미지 설정
   useEffect(() => {

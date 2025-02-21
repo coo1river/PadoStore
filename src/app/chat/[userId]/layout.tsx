@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import useDecodedToken from "@/hooks/useDecodedToken";
 import useAuthStore from "@/store/useAuthStore";
 import useChatStore from "@/store/useChatStore";
+import Image from "next/image";
 
 export default function ChatLayout({
   children,
@@ -17,7 +18,7 @@ export default function ChatLayout({
   const router = useRouter();
 
   // 토큰 디코딩 커스텀 훅으로 user id 추출
-  const { token, setToken } = useAuthStore();
+  const { token } = useAuthStore();
   const userId = useDecodedToken(token!);
 
   // zustand에서 채팅 목록 refresh 값 가져오기
@@ -59,7 +60,10 @@ export default function ChatLayout({
                 }
               }}
             >
-              <img
+              <Image
+                width={100}
+                height={100}
+                alt="프로필 이미지"
                 className="profile_img"
                 src={
                   item.up_file

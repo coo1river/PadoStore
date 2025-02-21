@@ -32,7 +32,7 @@ export default function Kakao() {
           console.error("카카오 로그인 실패:", error);
         });
     }
-  }, [code, router]);
+  }, [code, router, userId]);
 
-  return <p>로딩중</p>;
+  return <p>로딩 중</p>;
 }

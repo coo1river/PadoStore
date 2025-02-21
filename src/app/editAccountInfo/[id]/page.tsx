@@ -47,7 +47,15 @@ export default function EditAccountInfo() {
     form.post_zipcode.setValue(data?.user.addr_post || "");
     form.post_address.setValue(data?.user.addr || "");
     form.post_addr_detail.setValue(data?.user.addr_detail || "");
-  }, [data]);
+  }, [
+    data,
+    form.account_name,
+    form.account_number,
+    form.bank,
+    form.post_zipcode,
+    form.post_address,
+    form.post_addr_detail,
+  ]);
 
   const [modal, setModal] = useState<boolean>(false);
 
