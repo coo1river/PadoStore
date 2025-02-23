@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const OrderDetail = styled.main`
+export const OrderMain = styled.main`
   display: flex;
   align-items: center;
   flex-direction: column;

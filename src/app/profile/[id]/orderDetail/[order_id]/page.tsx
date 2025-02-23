@@ -5,7 +5,7 @@ import { FormEvent, useEffect, useState } from "react";
 import IconCheck from "@/../public/assets/svgs/check-circle.svg";
 import {
   OrderDetArticle,
-  OrderDetail,
+  OrderMain,
   OrderProgressBar,
   ProductImg,
   ProgressBarWrap,
@@ -14,7 +14,7 @@ import postDetailApi, { Res } from "@/api/postDetailApi";
 import OrderdetailInfo from "@/components/orderDetailInfo";
 import editOrderApi from "@/api/editOrderApi";
 
-const GroupManage: React.FC = () => {
+const OrderDetail: React.FC = () => {
   const params = useParams();
 
   const [orderData, setOrderData] = useState<OrderData | null>(null);
@@ -55,7 +55,7 @@ const GroupManage: React.FC = () => {
   }, [params.order_id]);
 
   return (
-    <OrderDetail>
+    <OrderMain>
       <h2>주문 상세</h2>
 
       <OrderDetArticle>
@@ -126,8 +126,8 @@ const GroupManage: React.FC = () => {
 
       {/* 주문 상세 데이터 */}
       <OrderdetailInfo data={orderData} />
-    </OrderDetail>
+    </OrderMain>
   );
 };
 
-export default GroupManage;
+export default OrderDetail;

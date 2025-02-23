@@ -27,14 +27,7 @@ function ProfileLayout({ children }: { children: React.ReactNode }) {
   const [page] = useState<number>(1);
 
   // 현재 리스트 타입(마켓/공구) 관리
-  const [listMenu, setListMenu] = useState<
-    | "mySales"
-    | "myPurchase"
-    | "myGroupSales"
-    | "myGroupPurchase"
-    | "postLike"
-    | "review"
-  >("mySales");
+  const [listMenu, setListMenu] = useState<string>("mySales");
   const [listType, setListType] = useState<string>("market");
   const [listState, setListState] = useState<string>("InProgress");
 

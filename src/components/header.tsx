@@ -92,19 +92,17 @@ const Header: React.FC = () => {
           // 채팅 나가기 성공 후 로그아웃 상태 처리
           setAuthState(false);
           setToken(null);
-          console.log(token);
           sessionStorage.removeItem("userToken");
-          router.push("/home");
         })
         .catch((error) => {
           console.error("chatExitApi error:", error);
         });
     } else {
       // 채팅방이 없으면 바로 로그아웃 처리
+      router.push("/home");
       setAuthState(false);
       setToken(null);
       sessionStorage.removeItem("userToken");
-      router.push("/home");
     }
   };
 
