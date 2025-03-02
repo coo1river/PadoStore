@@ -10,7 +10,7 @@
 1. [프로젝트 소개](#intro)
 2. [프로젝트 멤버](#team)
 3. [기술 스택](#technology-stack)
-4. [기능 및 구조]
+4. [기능 및 구조](#function-and-structure)
 5. [협업 방식]
 
 <br>
@@ -84,3 +84,37 @@
 
 - **Styled-Components**
   - 서버 사이드 렌더링을 지원하며 초기 로딩 시 스타일이 포함된 HTML을 제공함으로써 빠른 페이지 로딩, SEO 성능 극대화가 가능합니다. 동적 스타일링 기능을 통해 사용자 경험을 향상시키며 유지보수에 용이합니다.
+
+
+ <br>
+
+## <span id="function-and-structure">3. 기능 및 구조
+
+- ### 홈
+  ![녹화_2025_03_01_02_46_46_688](https://github.com/user-attachments/assets/9e947728-b114-47de-b67d-72838404adb4)
+
+- ### 회원가입
+  ![녹화_2025_03_01_02_54_03_922](https://github.com/user-attachments/assets/123f72ee-3d57-4251-91fa-bd74b18c4bad)
+
+- ### 로그인
+  ![녹화_2025_03_01_03_00_41_260](https://github.com/user-attachments/assets/04880e19-f1d1-41ce-b42b-725a44e5151b)
+
+- ### 판매 글 등록
+  ![녹화_2025_03_01_03_04_06_106](https://github.com/user-attachments/assets/695a8686-721a-4cfc-956e-314e506b1834)
+
+- ### 공동구매 글 등록
+  ![녹화_2025_03_01_03_14_49_351](https://github.com/user-attachments/assets/316e8f9c-eaf2-44b2-ba8b-e1bb8f1b6a16)
+
+- ### 게시물 상세
+  ![녹화_2025_03_01_03_19_12_442](https://github.com/user-attachments/assets/11347877-f865-4cdf-8989-940428ec294e)
+
+- ### 게시물 찜하기
+  ![녹화_2025_03_01_03_21_46_757](https://github.com/user-attachments/assets/a6e99022-9b1c-4386-987c-3011df97fca0)
+
+- ### 게시물 수정하기
+  ![녹화_2025_03_02_19_56_31_229](https://github.com/user-attachments/assets/bb02e0b8-732e-41db-b275-b15974cc968a)
+
+- ### 유저 간 채팅
+  ![녹화_2025_03_02_19_41_05_591](https://github.com/user-attachments/assets/9219548a-5ef5-4bea-8156-da8258e76e0e)
+  ![녹화_2025_03_02_19_43_25_18](https://github.com/user-attachments/assets/779d771a-ae19-4f3e-82f0-6b270c63d769)
+
