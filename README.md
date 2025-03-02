@@ -1,4 +1,4 @@
-![녹화_2025_03_03_00_11_04_61](https://github.com/user-attachments/assets/a4a0d6bb-f37f-4807-b647-3cf1c6d395ff)<h1>🌊파도상점🌊</h1>
+<h1>🌊파도상점🌊</h1>
 
 ![Group 2 (3)](https://github.com/coo1river/PadoStore/assets/122965945/5fe9b7ca-54e5-4d0f-b466-068e56710d98)
 
