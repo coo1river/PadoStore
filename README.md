@@ -110,3 +110,11 @@
 
 - ### 게시물 찜하기
   ![녹화_2025_03_01_03_21_46_757](https://github.com/user-attachments/assets/a6e99022-9b1c-4386-987c-3011df97fca0)
+
+- ### 게시물 수정하기
+  ![녹화_2025_03_02_19_56_31_229](https://github.com/user-attachments/assets/bb02e0b8-732e-41db-b275-b15974cc968a)
+
+- ### 유저 간 채팅
+  ![녹화_2025_03_02_19_41_05_591](https://github.com/user-attachments/assets/9219548a-5ef5-4bea-8156-da8258e76e0e)
+  ![녹화_2025_03_02_19_43_25_18](https://github.com/user-attachments/assets/779d771a-ae19-4f3e-82f0-6b270c63d769)
+
