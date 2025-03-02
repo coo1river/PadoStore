@@ -212,18 +212,8 @@ const GroupPurchaseUpdate: React.FC = () => {
       setAddInputState(true);
       setAddInputList(data?.questionList || []);
     }
-  }, [
-    data,
-    form.account_name,
-    form.account_number,
-    form.bank,
-    form.content,
-    form.end_dt,
-    form.post_method,
-    form.post_price,
-    form.start_dt,
-    form.title,
-  ]);
+    setTagList(data?.tag || "");
+  }, [data]);
 
   const handleUpload = (e: FormEvent) => {
     e.preventDefault();
@@ -270,7 +260,7 @@ const GroupPurchaseUpdate: React.FC = () => {
       })
         .then((data) => {
           console.log("수정 성공", data);
-          router.push("/home");
+          router.back();
         })
         .catch((error) => {
           console.error("수정 실패", error);
@@ -536,6 +526,7 @@ const GroupPurchaseUpdate: React.FC = () => {
           ) : null}
         </AddInputList>
 
+        {/* 상품 태그 */}
         <TagInput tagList={tagList || ""} setTagList={setTagList} />
 
         <button className="btn_upload" onClick={handleUpload}>

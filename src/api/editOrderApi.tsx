@@ -11,6 +11,7 @@ interface User {
 }
 
 interface Order {
+  order_id?: number;
   post_id?: number;
   purchase_user_id?: number;
   post_number?: string;

@@ -200,7 +200,7 @@ export default function UserChat() {
     };
 
     updateMessages();
-  }, [enterData, chatList]);
+  }, [enterData]);
 
   const handleScroll = useCallback(async () => {
     if (chatRoomRef.current) {

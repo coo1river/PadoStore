@@ -28,6 +28,7 @@ const OrderDetail: React.FC = () => {
       await editOrderApi({
         order_id: orderData?.order_id,
         order: {
+          order_id: orderData?.order_id,
           order_status: "거래 종료",
         },
       });

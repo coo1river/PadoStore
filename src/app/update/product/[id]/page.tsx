@@ -59,6 +59,7 @@ export default function ProductUpdate() {
     post_method: useInput(""),
   };
 
+  // 태그 관리
   const [tagList, setTagList] = useState<string>("");
 
   // data 값이 업데이트 되면 input value 업데이트
@@ -69,14 +70,7 @@ export default function ProductUpdate() {
     productInfo.product_status.setValue(data?.product.product_status || "");
     productInfo.post_method.setValue(data?.product.post_method || "");
     setTagList(data?.tag || "");
-  }, [
-    data,
-    content,
-    title,
-    productInfo.price,
-    productInfo.product_status,
-    productInfo.post_method,
-  ]);
+  }, [data]);
 
   // useRef 사용
   const InputRef = useRef<HTMLInputElement>(null);
@@ -146,7 +140,7 @@ export default function ProductUpdate() {
       })
         .then((data) => {
           console.log("수정 성공", data);
-          router.push("/home");
+          router.back();
         })
         .catch((error) => {
           console.error("수정 실패", error);

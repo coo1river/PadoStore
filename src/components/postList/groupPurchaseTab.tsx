@@ -97,7 +97,7 @@ const GroupPurchaseTab: React.FC<Props> = ({ api, keywords }) => {
                 <ProductArticle
                   key={item.groupOrder.post_id}
                   onClick={() => {
-                    router.push(`/productDetail/${item.groupOrder.post_id}`);
+                    router.push(`/groupDetail/${item.groupOrder.post_id}`);
                   }}
                 >
                   <Image

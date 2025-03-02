@@ -72,7 +72,7 @@ const EditProfile: React.FC = () => {
     form.email.setValue(data?.user.email || "");
     form.username.setValue(data?.user.user_name || "");
     form.number.setValue(data?.user.phone_number || "");
-  }, [data, form.id, form.nickname, form.email, form.username, form.number]);
+  }, [data]);
 
   // 기존 프로필 이미지 설정
   useEffect(() => {
@@ -105,7 +105,6 @@ const EditProfile: React.FC = () => {
   //  프로필 수정 api 통신
   const handleEditProfile = async (e: FormEvent) => {
     e.preventDefault();
-    console.log("왜안됨");
 
     try {
       const uploadPromise = selectedFile

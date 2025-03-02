@@ -40,6 +40,21 @@ export interface Res {
       input: string;
     }
   ];
+  loginUser: {
+    account_name: string;
+    account_number: string;
+    addr: null;
+    addr_detail: null;
+    addr_post: null;
+    bank: string;
+    email: string;
+    file_group_id: string;
+    nickname: string;
+    password: null;
+    phone_number: string;
+    user_id: string;
+    user_name: string;
+  };
   user: {
     user_id: string;
     password: string;

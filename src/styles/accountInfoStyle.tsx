@@ -207,7 +207,8 @@ export const InputWrap = styled.article`
 
   label {
     display: inline-block;
-    width: 90px;
+    min-width: 110px;
+    max-width: 150px;
     margin-bottom: 25px;
   }
 

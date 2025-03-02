@@ -22,7 +22,7 @@ interface Props {
 
 const AccountFormInfo: React.FC<Props> = ({ data }) => {
   // zustand에서 token 가져오기
-  const { token, setToken } = useAuthStore();
+  const { token } = useAuthStore();
 
   const router = useRouter();
 
@@ -37,11 +37,22 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
         () => 0
       );
       setCountArray(generatedCountArray);
+
+      // 데이터 가져와서 input value 값 넣기
+      if (data?.user) {
+        form.name.setValue(data.loginUser.user_name || "");
+        form.email.setValue(data.loginUser.email || "");
+        form.number.setValue(data.loginUser.phone_number || "");
+        form.account_bank.setValue(data.loginUser.bank || "");
+        form.account_name.setValue(data.loginUser.user_name || "");
+        form.account_number.setValue(data.loginUser.account_number || "");
+      }
     }
   }, [data?.productDetail]);
 
   // 상품 카운트 함수
   const handleClick = (index: number, increment: number) => {
+    data?.user.user_name;
     setCountArray((prevCountArray) => {
       const updatedCount = [...prevCountArray];
       if (increment === 1 || (increment === -1 && updatedCount[index] > 0)) {
