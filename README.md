@@ -1,4 +1,4 @@
-<h1>🌊파도상점🌊</h1>
+![녹화_2025_03_03_00_11_04_61](https://github.com/user-attachments/assets/a4a0d6bb-f37f-4807-b647-3cf1c6d395ff)<h1>🌊파도상점🌊</h1>
 
 ![Group 2 (3)](https://github.com/coo1river/PadoStore/assets/122965945/5fe9b7ca-54e5-4d0f-b466-068e56710d98)
 
@@ -117,4 +117,10 @@
 - ### 유저 간 채팅
   ![녹화_2025_03_02_19_41_05_591](https://github.com/user-attachments/assets/9219548a-5ef5-4bea-8156-da8258e76e0e)
   ![녹화_2025_03_02_19_43_25_18](https://github.com/user-attachments/assets/779d771a-ae19-4f3e-82f0-6b270c63d769)
+
+- ### 프로필 수정
+  ![녹화_2025_03_02_21_07_42_631](https://github.com/user-attachments/assets/a65a6ac4-60ea-43da-abf4-6f8e8d6f9910)
+
+- ### 공동구매 폼 제출
+  ![녹화_2025_03_03_00_11_04_61](https://github.com/user-attachments/assets/e5ed9b6e-c8b9-495b-8dd6-25a35fe913cd)
 
