@@ -16,6 +16,17 @@ interface User {
   file_group_id: number | null;
 }
 
+interface OrderUser {
+  user_name: string;
+  phone_number: string;
+  addr_post: string;
+  addr: string;
+  addr_detail: string;
+  bank: string;
+  account_name: string;
+  account_number: string;
+}
+
 interface Answer {
   order_answer_id: number;
   order_id: number;
@@ -48,6 +59,7 @@ export interface OrderData {
   deposit_dt: string;
   total_price: string;
   user: User;
+  orderUser: OrderUser;
   questionList: Question[];
   answerList: Answer[];
   orderProductList: OrderProduct[];

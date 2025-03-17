@@ -77,6 +77,10 @@ export const OrderDetArticle = styled.article`
     color: white;
     font-weight: 500;
   }
+
+  .disable {
+    background-color: var(--color-lightgrey);
+  }
 `;
 
 export const ProductImg = styled.img`

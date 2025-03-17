@@ -14,7 +14,7 @@ import {
 import IconChat from "@/../public/assets/svgs/messages.svg";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
-import ModalFilter from "./modal/modalFilter";
+import ModalFilter from "../modal/modalFilter";
 import useInput from "@/hooks/useInput";
 import useDecodedToken from "@/hooks/useDecodedToken";
 import useChatStore from "@/store/useChatStore";

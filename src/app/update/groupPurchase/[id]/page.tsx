@@ -3,8 +3,8 @@ import { GroupReq } from "@/api/groupUploadApi";
 import { Res } from "@/api/postDetailApi";
 import updateApi from "@/api/updateApi";
 import uploadApi from "@/api/uploadApi";
-import { BankOptions, DeliveryOptions } from "@/components/selectOption";
-import TagInput from "@/components/tagInput";
+import { BankOptions, DeliveryOptions } from "@/components/common/selectOption";
+import TagInput from "@/components/common/tagInput";
 import useInput from "@/hooks/useInput";
 import {
   GroupForm,
@@ -152,16 +152,16 @@ const GroupPurchaseUpdate: React.FC = () => {
 
   // 추가 질문 등록 함수
   const handleAddInput = () => {
-    if (addInput) {
+    if (addInput && addInput.input.value.trim() !== "") {
       const newInput: Input = {
-        input: addInput.input.value,
+        input: addInput.input.value.trim(),
       };
       setAddInputList((prevList) => [...prevList, newInput]);
-    }
 
-    addInput.input.onChange({
-      target: { value: "" },
-    } as React.ChangeEvent<HTMLInputElement>);
+      addInput.input.onChange({
+        target: { value: "" },
+      } as React.ChangeEvent<HTMLInputElement>);
+    }
   };
 
   const handleRemoveInput = (index: number) => {
@@ -530,7 +530,7 @@ const GroupPurchaseUpdate: React.FC = () => {
         <TagInput tagList={tagList || ""} setTagList={setTagList} />
 
         <button className="btn_upload" onClick={handleUpload}>
-          폼 업로드 하기
+          폼 수정하기
         </button>
       </GroupForm>
     </UploadMain>

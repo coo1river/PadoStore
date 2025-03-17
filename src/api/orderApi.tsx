@@ -9,9 +9,15 @@ export interface OrderData {
     deposit_dt: string;
   };
   user: {
+    user_id: string | null;
+  };
+
+  orderUser: {
+    user_name: string;
     addr_post: string;
     addr: string;
     addr_detail: string;
+    phone_number: string;
     bank: string;
     account_name: string;
     account_number: string;

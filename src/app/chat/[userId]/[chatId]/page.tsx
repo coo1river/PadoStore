@@ -341,7 +341,7 @@ export default function UserChat() {
     closeModal();
   };
 
-  // 주소 정보 전송 함수
+  // 배송 정보 전송 함수
   const sendAddress = async () => {
     let fetchedUserData = userData;
 

@@ -1,8 +1,11 @@
 "use client";
 import productUploadApi from "@/api/productUploadApi";
 import uploadApi from "@/api/uploadApi";
-import { DeliveryOptions, ProductStatus } from "@/components/selectOption";
-import TagInput from "@/components/tagInput";
+import {
+  DeliveryOptions,
+  ProductStatus,
+} from "@/components/common/selectOption";
+import TagInput from "@/components/common/tagInput";
 import useInput from "@/hooks/useInput";
 import useAuthStore from "@/store/useAuthStore";
 import {

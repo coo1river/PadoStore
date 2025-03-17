@@ -2,8 +2,11 @@
 import { Res } from "@/api/postDetailApi";
 import updateApi from "@/api/updateApi";
 import uploadApi from "@/api/uploadApi";
-import { DeliveryOptions, ProductStatus } from "@/components/selectOption";
-import TagInput from "@/components/tagInput";
+import {
+  DeliveryOptions,
+  ProductStatus,
+} from "@/components/common/selectOption";
+import TagInput from "@/components/common/tagInput";
 import useInput from "@/hooks/useInput";
 import {
   BasicImg,
@@ -263,7 +266,7 @@ export default function ProductUpdate() {
           <TagInput tagList={tagList || ""} setTagList={setTagList} />
 
           <button className="btn_upload" onClick={handleUpdate}>
-            상품 업로드 하기
+            상품 수정하기
           </button>
         </UploadForm>
       </article>

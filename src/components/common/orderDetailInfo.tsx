@@ -1,11 +1,11 @@
 "use client";
 import React, { FormEvent, useEffect, useState } from "react";
-import { OrderData } from "@/api/orderDetail";
+import { OrderData } from "@/api/orderDetailApi";
 import { OrderInfo, OrderInfoWrap } from "@/styles/orderStyle";
 import useInput from "@/hooks/useInput";
 import editOrderApi from "@/api/editOrderApi";
 import DaumPostcode, { AddressData } from "./daumPostcode";
-import ModalFilter from "./modal/modalFilter";
+import ModalFilter from "../modal/modalFilter";
 import { BankOptions } from "./selectOption";
 
 const OrderdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
@@ -15,6 +15,7 @@ const OrderdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
     userNumber: useInput(""),
     userEmail: useInput(""),
     postName: useInput(""),
+    postNumber: useInput(""),
     zipcode: useInput(""),
     address: useInput(""),
     addrDetail: useInput(""),
@@ -244,6 +245,10 @@ const OrderdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
                 <span>{data?.user.user_name}</span>
               </p>
               <p>
+                <strong>전화번호</strong>
+                <span>{data?.post_number}</span>
+              </p>
+              <p>
                 <strong>우편번호</strong>
                 <span>{data?.user.addr_post}</span>
               </p>
@@ -269,6 +274,14 @@ const OrderdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
                   type="text"
                   value={form.postName.value}
                   onChange={form.postName.onChange}
+                />
+              </p>
+              <p>
+                <strong>전화번호</strong>
+                <input
+                  type="number"
+                  value={form.postNumber.value}
+                  onChange={form.postNumber.onChange}
                 />
               </p>
               <p>

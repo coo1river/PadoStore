@@ -9,7 +9,7 @@ import {
 } from "@/styles/productStyle";
 import IconBasicHeart from "@/../public/assets/svgs/basic-heart.svg";
 import IconFullHeart from "@/../public/assets/svgs/full-heart.svg";
-import AccountFormInfo from "@/components/accountInfo";
+import AccountFormInfo from "@/components/common/accountInfo";
 import React, { useEffect, useState } from "react";
 import postDetailApi, { Res } from "@/api/postDetailApi";
 import DetailModal from "@/components/modal/detailModal";
@@ -18,9 +18,12 @@ import { useParams, useRouter } from "next/navigation";
 import postLikeApi from "@/api/postLikeApi";
 import useAuthStore from "@/store/useAuthStore";
 import useDecodedToken from "@/hooks/useDecodedToken";
+import { AccountInfoWrap } from "@/styles/accountInfoStyle";
 
 const GroupDetail: React.FC = () => {
   const params = useParams();
+
+  // 라우터 사용
   const router = useRouter();
 
   const [data, setData] = useState<Res | null>(null);
@@ -39,20 +42,32 @@ const GroupDetail: React.FC = () => {
   // 찜 상태 관리
   const [like, setLike] = useState<boolean | undefined>(false);
 
-  // 프로필 이미지 가져오기, 찜한 상태 가져오기
-  useEffect(() => {
-    setImgFile(data?.file[0].up_file);
-    setLike(data?.favorite);
-  }, [data?.file, data?.favorite]);
+  const [isFormExpired, setIsFormExpired] = useState<boolean>(false);
+
+  const [isIdCompare, setIsIdCompare] = useState<boolean>(false);
+
+  // 오늘 날짜 가져오기
+  const date = new Date();
+  date.setDate(date.getDate());
+  const today = new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+    .toISOString()
+    .split("T")[0];
 
   // 게시물 정보 가져오기
   useEffect(() => {
     const detail = async () => {
       const res = await postDetailApi(params.id);
       setData(res);
+
+      Promise.resolve().then(() => {
+        setImgFile(res?.file[0]?.up_file);
+        setLike(res?.favorite);
+        setIsIdCompare(Boolean(userId) && userId == res?.user_id);
+        setIsFormExpired(res?.product?.end_dt < today);
+      });
     };
     detail();
-  }, [params.id]);
+  }, [params.id, userId, today]);
 
   // 게시물 메뉴 모달 상태 관리
   const [menuModal, setMenuModal] = useState<boolean>(false);
@@ -174,13 +189,15 @@ const GroupDetail: React.FC = () => {
               <li key={index}>{item}</li>
             ))}
           </ul>
-
-          {/* 작성자가 아닌 경우에만 폼 표시 */}
-          {userId !== data?.user_id && (
+          {/* 작성자가 본인이 아닌 경우 + 날짜가 안 지난 경우에만 폼 표시 */}
+          {isIdCompare ? null : !isFormExpired ? (
             <GroupSubmit>
-              {/* 입금자 정보 폼 */}
               <AccountFormInfo data={data} />
             </GroupSubmit>
+          ) : (
+            <AccountInfoWrap>
+              <p>폼 작성 기간이 지났습니다.</p>
+            </AccountInfoWrap>
           )}
         </ProductContent>
       </section>

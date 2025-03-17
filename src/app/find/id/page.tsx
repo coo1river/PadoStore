@@ -4,7 +4,7 @@ import { FindMain } from "@/styles/joinStyle";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import accountFindApi from "@/api/idFindApi";
-import AuthMessage from "@/components/authMessage";
+import AuthMessage from "@/components/common/authMessage";
 import FindForm from "@/components/form/findForm";
 
 const IdFind: React.FC = () => {

@@ -1,6 +1,6 @@
 "use client";
 import searchApi from "@/api/searchApi";
-import Pagination from "@/components/pagination";
+import Pagination from "@/components/common/pagination";
 import GroupPurchaseTab from "@/components/postList/groupPurchaseTab";
 import MarketTab from "@/components/postList/marketTab";
 import { HomeMain } from "@/styles/homeStyle";

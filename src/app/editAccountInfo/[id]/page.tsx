@@ -1,8 +1,8 @@
 "use client";
 import editProfileApi, { EditRes } from "@/api/editProfileApi";
-import DaumPostcode, { AddressData } from "@/components/daumPostcode";
+import DaumPostcode, { AddressData } from "@/components/common/daumPostcode";
 import ModalFilter from "@/components/modal/modalFilter";
-import { BankOptions } from "@/components/selectOption";
+import { BankOptions } from "@/components/common/selectOption";
 import useDecodedToken from "@/hooks/useDecodedToken";
 import useInput from "@/hooks/useInput";
 import useAuthStore from "@/store/useAuthStore";

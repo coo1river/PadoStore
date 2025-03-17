@@ -1,5 +1,5 @@
 "use client";
-import orderDetailApi, { OrderData } from "@/api/orderDetail";
+import orderDetailApi, { OrderData } from "@/api/orderDetailApi";
 import { useParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import IconCheck from "@/../public/assets/svgs/check-circle.svg";
@@ -11,7 +11,7 @@ import {
   ProgressBarWrap,
 } from "@/styles/orderStyle";
 import postDetailApi, { Res } from "@/api/postDetailApi";
-import OrderdetailInfo from "@/components/orderDetailInfo";
+import OrderdetailInfo from "@/components/common/orderDetailInfo";
 import editOrderApi from "@/api/editOrderApi";
 
 const OrderDetail: React.FC = () => {
@@ -75,7 +75,13 @@ const OrderDetail: React.FC = () => {
           </div>
         </div>
         <div>
-          <button className="btn_end" onClick={handleCompleteTrade}>
+          <button
+            className={`btn_end ${
+              orderData?.order_status === "거래 종료" ? "disable" : ""
+            }`}
+            onClick={handleCompleteTrade}
+            disabled={orderData?.order_status === "거래 종료"}
+          >
             거래 종료
           </button>
         </div>

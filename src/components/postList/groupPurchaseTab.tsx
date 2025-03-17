@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import homeTabApi from "@/api/homeTabApi";
 import { Product, User } from "./marketTab";
 import searchApi from "@/api/searchApi";
-import Pagination from "../pagination";
+import Pagination from "../common/pagination";
 import Image from "next/image";
 
 export interface GroupItem {

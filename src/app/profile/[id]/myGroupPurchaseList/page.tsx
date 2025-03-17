@@ -4,11 +4,15 @@ import TradeStatusBtn from "@/components/button/tradeStatusBtn";
 import { Data } from "@/components/postList/marketTab";
 import MyGroupList from "@/components/profilePostList/myGroupList";
 import useAuthStore from "@/store/useAuthStore";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
 
 const MyGroupPurchaseList: React.FC = () => {
   // zustand에서 token 가져오기
   const { token } = useAuthStore();
+
+  // 라우터 사용
+  const router = useRouter();
 
   const [list, setList] = useState<Data | null>(null);
 
@@ -33,6 +37,13 @@ const MyGroupPurchaseList: React.FC = () => {
 
   // 최초 렌더링 시 데이터 가져오기
   useEffect(() => {
+    if (!token) {
+      Promise.resolve().then(() => {
+        router.push("/home");
+      });
+      return;
+    }
+
     const fetchData = async () => {
       const data = await myPurchaseListApi("group", params);
       setList(data);

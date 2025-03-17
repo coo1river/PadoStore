@@ -1,7 +1,7 @@
 import React from "react";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import styled from "styled-components";
-import ModalFilter from "./modal/modalFilter";
+import ModalFilter from "../modal/modalFilter";
 
 export interface AddressData {
   zonecode: string;

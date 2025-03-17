@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import GlobalStyle from "@/styles/globalStyle";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
+import Header from "@/components/common/header";
+import Footer from "@/components/common/footer";
 import ScrollToTop from "./scrollToTop";
 import StyledComponentsRegistry from "@/styles/registry";
 

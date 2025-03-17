@@ -1,8 +1,8 @@
 "use client";
 import groupUploadApi, { GroupReq } from "@/api/groupUploadApi";
 import uploadApi from "@/api/uploadApi";
-import { BankOptions, DeliveryOptions } from "@/components/selectOption";
-import TagInput from "@/components/tagInput";
+import { BankOptions, DeliveryOptions } from "@/components/common/selectOption";
+import TagInput from "@/components/common/tagInput";
 import useInput from "@/hooks/useInput";
 import {
   GroupForm,

@@ -11,6 +11,7 @@ const MySalesList: React.FC = () => {
   // zustand에서 token 가져오기
   const { token } = useAuthStore();
 
+  // 라우터 사용
   const router = useRouter();
 
   const [list, setList] = useState<Data | null>(null);

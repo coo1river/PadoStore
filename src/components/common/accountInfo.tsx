@@ -44,7 +44,7 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
         form.email.setValue(data.loginUser.email || "");
         form.number.setValue(data.loginUser.phone_number || "");
         form.account_bank.setValue(data.loginUser.bank || "");
-        form.account_name.setValue(data.loginUser.user_name || "");
+        form.account_name.setValue(data.loginUser.account_name || "");
         form.account_number.setValue(data.loginUser.account_number || "");
       }
     }
@@ -70,6 +70,7 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
     email: useInput(""),
     number: useInput(""),
     post_name: useInput(""),
+    post_number: useInput(""),
     post_zipcode: useInput(""),
     post_address: useInput(""),
     post_addr_detail: useInput(""),
@@ -135,12 +136,18 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
       deposit_dt: `${form.deposit_date.value} ${form.deposit_time.value}`,
     },
     user: {
+      user_id: token,
+    },
+
+    orderUser: {
       addr_post: form.post_zipcode.value,
       addr: form.post_address.value,
       addr_detail: form.post_addr_detail.value,
       bank: form.account_bank.value,
+      user_name: form.post_name.value,
       account_name: form.account_name.value,
       account_number: form.account_number.value,
+      phone_number: form.post_number.value,
     },
     answerList: answerList.map((item) => ({ answer: item.input })),
     orderProductList: orderProductList || [],

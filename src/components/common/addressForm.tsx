@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import DaumPostcode, { AddressData } from "./daumPostcode";
-import ModalFilter from "./modal/modalFilter";
+import ModalFilter from "../modal/modalFilter";
 
 interface FormField {
   value: string | undefined;
@@ -11,6 +11,7 @@ interface FormField {
 
 interface Form {
   post_name: FormField;
+  post_number: FormField;
   post_zipcode: FormField;
   post_address: FormField;
   post_addr_detail: FormField;
@@ -34,7 +35,7 @@ export default function AddressForm({ form }: Props) {
 
   return (
     <AddressInputWrap>
-      <h3>주소 정보</h3>
+      <h3>배송 정보</h3>
 
       <label htmlFor="input-name">받는 사람</label>
       <input
@@ -44,6 +45,17 @@ export default function AddressForm({ form }: Props) {
         value={form.post_name.value}
         onChange={form.post_name.onChange}
       />
+
+      <div>
+        <label htmlFor="input-name">전화번호</label>
+        <input
+          id="input-name"
+          type="number"
+          placeholder="전화번호"
+          value={form.post_number.value}
+          onChange={form.post_number.onChange}
+        />
+      </div>
 
       <div>
         <label htmlFor="input-zipcode">우편번호</label>
