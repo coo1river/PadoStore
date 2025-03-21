@@ -200,6 +200,7 @@ export default function UserChat() {
     };
 
     updateMessages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enterData]);
 
   const handleScroll = useCallback(async () => {

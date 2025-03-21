@@ -213,6 +213,7 @@ const GroupPurchaseUpdate: React.FC = () => {
       setAddInputList(data?.questionList || []);
     }
     setTagList(data?.tag || "");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const handleUpload = (e: FormEvent) => {

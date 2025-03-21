@@ -1,6 +1,6 @@
 "use client";
 import orderDetailApi, { OrderData } from "@/api/orderDetailApi";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import IconCheck from "@/../public/assets/svgs/check-circle.svg";
 import {
@@ -15,6 +15,9 @@ import OrderdetailInfo from "@/components/common/orderDetailInfo";
 import editOrderApi from "@/api/editOrderApi";
 
 const OrderDetail: React.FC = () => {
+  // 라우터 사용
+  const router = useRouter();
+
   const params = useParams();
 
   const [orderData, setOrderData] = useState<OrderData | null>(null);
@@ -60,7 +63,10 @@ const OrderDetail: React.FC = () => {
       <h2>주문 상세</h2>
 
       <OrderDetArticle>
-        <div className="img_and_info">
+        <div
+          className="img_and_info"
+          onClick={() => router.push(`/groupDetail/${postData?.post_id}`)}
+        >
           <ProductImg
             src={
               postData?.file && postData?.file[0]?.up_file
@@ -132,7 +138,7 @@ const OrderDetail: React.FC = () => {
       </article>
 
       {/* 주문 상세 데이터 */}
-      <OrderdetailInfo data={orderData} />
+      <OrderdetailInfo data={orderData} onUpdate={setOrderData} />
     </OrderMain>
   );
 };

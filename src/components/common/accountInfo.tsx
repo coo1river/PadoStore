@@ -48,6 +48,7 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
         form.account_number.setValue(data.loginUser.account_number || "");
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.productDetail]);
 
   // 상품 카운트 함수
@@ -163,6 +164,7 @@ const AccountFormInfo: React.FC<Props> = ({ data }) => {
       !form.email.value ||
       !form.number.value ||
       !form.post_name.value ||
+      !form.post_number.value ||
       !form.post_zipcode.value ||
       !form.post_address.value ||
       !form.post_addr_detail.value ||

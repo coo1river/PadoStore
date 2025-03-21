@@ -50,7 +50,7 @@ const MyGroupPurchaseList: React.FC = () => {
     };
 
     fetchData();
-  }, [listState, params]);
+  }, [listState, params, router, token]);
 
   return (
     <>

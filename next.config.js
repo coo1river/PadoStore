@@ -2,6 +2,7 @@ const nextConfig = {
   reactStrictMode: false,
   compiler: {
     styledComponents: true,
+    removeConsole: true,
   },
 };
 
@@ -15,12 +16,12 @@ module.exports = Object.assign({}, nextConfig, {
       {
         ...fileLoaderRule,
         test: /\.svg$/i,
-        resourceQuery: /url/, // *.svg?url
+        resourceQuery: /url/,
       },
       {
         test: /\.svg$/i,
         issuer: fileLoaderRule.issuer,
-        resourceQuery: { not: [...fileLoaderRule.resourceQuery.not, /url/] }, // exclude if *.svg?url
+        resourceQuery: { not: [...fileLoaderRule.resourceQuery.not, /url/] },
         use: ["@svgr/webpack"],
       }
     );
@@ -30,7 +31,7 @@ module.exports = Object.assign({}, nextConfig, {
     return [
       {
         source: "/api/:path*",
-        destination: "http://localhost:8080/api/:path*", // 해당 서버 포트
+        destination: "https://api-pado.info/api/:path*",
       },
     ];
   },

@@ -41,12 +41,15 @@ export default function EditAccountInfo() {
 
   // 데이터 값 input 기본 value로 불러오기
   useEffect(() => {
-    form.account_name.setValue(data?.user.account_name || "");
-    form.account_number.setValue(data?.user.account_number || "");
-    form.bank.setValue(data?.user.bank || "");
-    form.post_zipcode.setValue(data?.user.addr_post || "");
-    form.post_address.setValue(data?.user.addr || "");
-    form.post_addr_detail.setValue(data?.user.addr_detail || "");
+    if (data?.user) {
+      form.account_name.setValue(data.user.account_name || "");
+      form.account_number.setValue(data.user.account_number || "");
+      form.bank.setValue(data.user.bank || "");
+      form.post_zipcode.setValue(data.user.addr_post || "");
+      form.post_address.setValue(data.user.addr || "");
+      form.post_addr_detail.setValue(data.user.addr_detail || "");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const [modal, setModal] = useState<boolean>(false);

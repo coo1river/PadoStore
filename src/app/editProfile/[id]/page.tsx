@@ -72,6 +72,7 @@ const EditProfile: React.FC = () => {
     form.email.setValue(data?.user.email || "");
     form.username.setValue(data?.user.user_name || "");
     form.number.setValue(data?.user.phone_number || "");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   // 기존 프로필 이미지 설정

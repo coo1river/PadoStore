@@ -8,7 +8,10 @@ import DaumPostcode, { AddressData } from "./daumPostcode";
 import ModalFilter from "../modal/modalFilter";
 import { BankOptions } from "./selectOption";
 
-const OrderdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
+const OrderdetailInfo: React.FC<{
+  data: OrderData | null;
+  onUpdate: (data: OrderData | null) => void;
+}> = ({ data, onUpdate }) => {
   // useInput으로 value, onChange 할당
   const form = {
     userName: useInput(""),
@@ -35,7 +38,6 @@ const OrderdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
     setModal(false);
   };
 
-  const [isOrderEditable, setIsOrderEditable] = useState(false);
   const [isShippingEditable, setIsShippingEditable] = useState(false);
   const [isRefundEditable, setIsRefundEditable] = useState(false);
   const [isQuestionEditable, setIsQuestionEditable] = useState(false);
@@ -43,9 +45,6 @@ const OrderdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
   // 수정 항목 토글 함수
   const handleEditToggle = (section: string) => {
     switch (section) {
-      case "order":
-        setIsOrderEditable(!isOrderEditable);
-        break;
       case "shipping":
         setIsShippingEditable(!isShippingEditable);
         break;
@@ -60,58 +59,65 @@ const OrderdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
     }
   };
 
-  // 이름, 번호, 이메일 수정 시 setValue 설정
-  useEffect(() => {
-    form.userName.setValue(data?.user.user_name || "");
-    form.userNumber.setValue(data?.user.phone_number || "");
-    form.userEmail.setValue(data?.user.email || "");
-  }, [data]);
-
   // 배송 수정 시 setValue 설정
   useEffect(() => {
-    form.postName.setValue(data?.user.user_name || "");
-    form.zipcode.setValue(data?.user.addr_post || "");
-    form.address.setValue(data?.user.addr || "");
+    form.postName.setValue(data?.orderUser.user_name || "");
+    form.postNumber.setValue(data?.orderUser.phone_number || "");
+    form.zipcode.setValue(data?.orderUser.addr_post || "");
+    form.address.setValue(data?.orderUser.addr || "");
     form.addrDetail.setValue(data?.user.addr_detail || "");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   // 은행 및 계좌 수정 시 setValue 설정
   useEffect(() => {
-    form.accountName.setValue(data?.user.account_name || "");
-    form.bank.setValue(data?.user.bank || "");
-    form.accountNumber.setValue(data?.user.account_number || "");
+    if (data && isRefundEditable) {
+      form.accountName.setValue(data.orderUser.account_name || "");
+      form.accountNumber.setValue(data.orderUser.account_number || "");
+      form.bank.setValue(data.orderUser.bank || "");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
-  const req = {
-    order_id: data?.order_id,
-    user: {
-      user_id: data?.user.user_id,
-      user_name: form.userName.value || data?.user.user_name,
-      phone_number: data?.user.phone_number,
-      addr_post: form.zipcode.value || data?.user.addr_post,
-      addr: form.address.value || data?.user.addr,
-      addr_detail: form.addrDetail.value || data?.user.addr_detail,
-      account_name: form.accountName.value || data?.user.account_name,
-      account_number: form.accountNumber.value || data?.user.account_number,
-      bank: form.bank.value || data?.user.bank,
-    },
-    order: {
-      post_id: data?.post_id,
-      purchase_user_id: data?.order_id,
-      post_number: data?.post_number,
-    },
-    answerList: data?.answerList,
-    orderProductList: data?.orderProductList,
-  };
-
-  const handleEditOrder = async (e: FormEvent) => {
+  // 수정 함수
+  const handleEditOrder = async (e: FormEvent, section: string) => {
     e.preventDefault();
+    if (!data) return;
+
+    let updatedFields = {};
+    if (section === "shipping") {
+      updatedFields = {
+        order_id: data.order_id,
+        orderUser: {
+          ...data.orderUser,
+          user_name: form.postName.value,
+          phone_number: form.postNumber.value,
+          addr_post: form.zipcode.value,
+          addr: form.address.value,
+          addr_detail: form.addrDetail.value,
+        },
+      };
+    } else if (section === "refund") {
+      updatedFields = {
+        orderUser: {
+          ...data.orderUser,
+          account_name: form.accountName.value,
+          account_number: form.accountNumber.value,
+          bank: form.bank.value,
+        },
+      };
+    }
+
+    const updatedData: OrderData = {
+      ...data,
+      ...updatedFields,
+    };
 
     try {
-      await editOrderApi(req);
-      window.location.reload();
-    } catch {
-      console.error("Error:");
+      await editOrderApi(updatedData);
+      onUpdate(updatedData);
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
 
@@ -119,68 +125,22 @@ const OrderdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
     <OrderInfoWrap>
       <div>
         <OrderInfo>
-          <div className="title_btn_wrap">
-            <h3>주문자 정보</h3>
-            {data?.order_status === "입금 대기" && (
-              <button
-                className="btn_edit"
-                onClick={(e) => {
-                  if (isOrderEditable) {
-                    handleEditOrder(e);
-                    handleEditToggle("order");
-                  } else {
-                    handleEditToggle("order");
-                  }
-                }}
-              >
-                {isOrderEditable ? "저장" : "수정"}
-              </button>
-            )}
-          </div>
+          <h3>주문자 정보</h3>
 
-          {!isOrderEditable ? (
-            <div>
-              <p>
-                <strong>이름</strong>
-                <span>{data?.user.user_name}</span>
-              </p>
-              <p>
-                <strong>전화번호</strong>
-                <span>{data?.user.phone_number}</span>
-              </p>
-              <p>
-                <strong>이메일</strong>
-                <span>{data?.user.email}</span>
-              </p>
-            </div>
-          ) : (
-            <div>
-              <p>
-                <label>이름</label>
-                <input
-                  type="text"
-                  value={form.userName.value}
-                  onChange={form.userName.onChange}
-                />
-              </p>
-              <p>
-                <label>전화번호</label>
-                <input
-                  type="text"
-                  value={form.userNumber.value}
-                  onChange={form.userNumber.onChange}
-                />
-              </p>
-              <p>
-                <label>이메일</label>
-                <input
-                  type="text"
-                  value={form.userEmail.value}
-                  onChange={form.userEmail.onChange}
-                />
-              </p>
-            </div>
-          )}
+          <div>
+            <p>
+              <strong>이름</strong>
+              <span>{data?.user.user_name}</span>
+            </p>
+            <p>
+              <strong>전화번호</strong>
+              <span>{data?.user.phone_number}</span>
+            </p>
+            <p>
+              <strong>이메일</strong>
+              <span>{data?.user.email}</span>
+            </p>
+          </div>
         </OrderInfo>
 
         <OrderInfo>
@@ -226,7 +186,7 @@ const OrderdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
                 className="btn_edit"
                 onClick={(e) => {
                   if (isShippingEditable) {
-                    handleEditOrder(e);
+                    handleEditOrder(e, "shipping");
                     handleEditToggle("shipping");
                   } else {
                     handleEditToggle("shipping");
@@ -242,23 +202,23 @@ const OrderdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
             <>
               <p>
                 <strong>받는 사람</strong>
-                <span>{data?.user.user_name}</span>
+                <span>{data?.orderUser.user_name}</span>
               </p>
               <p>
                 <strong>전화번호</strong>
-                <span>{data?.post_number}</span>
+                <span>{data?.orderUser.phone_number}</span>
               </p>
               <p>
                 <strong>우편번호</strong>
-                <span>{data?.user.addr_post}</span>
+                <span>{data?.orderUser.addr_post}</span>
               </p>
               <p>
                 <strong>주소</strong>
-                <span>{data?.user.addr}</span>
+                <span>{data?.orderUser.addr}</span>
               </p>
               <p>
                 <strong>상세 주소</strong>
-                <span>{data?.user.addr_detail}</span>
+                <span>{data?.orderUser.addr_detail}</span>
               </p>
             </>
           ) : (
@@ -330,7 +290,7 @@ const OrderdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
                 className="btn_edit"
                 onClick={(e) => {
                   if (isRefundEditable) {
-                    handleEditOrder(e);
+                    handleEditOrder(e, "refund");
                     handleEditToggle("refund");
                   } else {
                     handleEditToggle("refund");
@@ -346,15 +306,15 @@ const OrderdetailInfo: React.FC<{ data: OrderData | null }> = ({ data }) => {
             <>
               <p>
                 <strong>예금주</strong>
-                <span>{data?.user.account_name}</span>
+                <span>{data?.orderUser.account_name}</span>
               </p>
               <p>
                 <strong>은행</strong>
-                <span>{data?.user.bank}</span>
+                <span>{data?.orderUser.bank}</span>
               </p>
               <p>
                 <strong>계좌 번호</strong>
-                <span>{data?.user.account_number}</span>
+                <span>{data?.orderUser.account_number}</span>
               </p>
             </>
           ) : (

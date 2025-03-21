@@ -50,7 +50,8 @@ const MyGroupSalesList: React.FC = () => {
     };
 
     fetchData();
-  }, [listState, params]);
+  }, [listState, params, router, token]);
+
   return (
     <>
       <TradeStatusBtn listState={listState} setListState={setListState} />

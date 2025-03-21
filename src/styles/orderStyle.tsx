@@ -52,6 +52,7 @@ export const OrderDetArticle = styled.article`
   position: relative;
 
   .img_and_info {
+    cursor: pointer;
     display: flex;
     gap: 30px;
   }
@@ -65,6 +66,7 @@ export const OrderDetArticle = styled.article`
 
   .product_title {
     font-size: 20px;
+    font-weight: 700;
   }
 
   .product_nickname {

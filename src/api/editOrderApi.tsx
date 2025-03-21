@@ -33,7 +33,7 @@ interface OrderProduct {
 export interface OrderData {
   order_id: number | undefined;
   user?: User;
-  order: Order;
+  order?: Order;
   answerList?: Answer[] | undefined;
   orderProductList?: OrderProduct[] | undefined;
 }

@@ -73,6 +73,7 @@ export default function ProductUpdate() {
     productInfo.product_status.setValue(data?.product.product_status || "");
     productInfo.post_method.setValue(data?.product.post_method || "");
     setTagList(data?.tag || "");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   // useRef 사용
