@@ -7,27 +7,27 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 export default function Kakao() {
+  // 라우팅 사용
   const router = useRouter();
 
   const { setToken } = useAuthStore();
 
+  // 토큰 로컬 상태 관리
   const [token, setLocalToken] = useState<string | null>(null);
   const code =
     typeof window !== "undefined"
       ? new URL(window.location.href).searchParams.get("code")
       : null;
 
-  // 토큰 디코딩 및 페이지 이동 처리
-  useEffect(() => {
-    if (token) {
-      const decodedUserId = useDecodedToken(token);
-      if (decodedUserId) {
-        router.push(`/editProfile/${decodedUserId}`);
-      }
-    }
-  }, [token, router]);
+  // 토큰 디코딩 처리
+  const decodedUserId = useDecodedToken(token!); //
 
-  // 카카오 로그인 요청 처리
+  useEffect(() => {
+    if (decodedUserId) {
+      router.push(`/editProfile/${decodedUserId}`);
+    }
+  }, [decodedUserId, router]);
+
   useEffect(() => {
     if (code) {
       axios
@@ -35,8 +35,8 @@ export default function Kakao() {
         .then((res) => {
           if (res.status === 200) {
             console.log("카카오 로그인 성공:", res.data);
-            const newToken = res.headers.authorization;
 
+            const newToken = res.headers.authorization;
             setToken(newToken);
             sessionStorage.setItem("userToken", newToken);
 
