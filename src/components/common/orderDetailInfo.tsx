@@ -65,7 +65,7 @@ const OrderdetailInfo: React.FC<{
     form.postNumber.setValue(data?.orderUser.phone_number || "");
     form.zipcode.setValue(data?.orderUser.addr_post || "");
     form.address.setValue(data?.orderUser.addr || "");
-    form.addrDetail.setValue(data?.user.addr_detail || "");
+    form.addrDetail.setValue(data?.orderUser.addr_detail || "");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
@@ -77,7 +77,7 @@ const OrderdetailInfo: React.FC<{
       form.bank.setValue(data.orderUser.bank || "");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
+  }, [data, isRefundEditable]);
 
   // 수정 함수
   const handleEditOrder = async (e: FormEvent, section: string) => {

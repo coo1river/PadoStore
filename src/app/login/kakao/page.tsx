@@ -1,6 +1,7 @@
 "use client";
 import useDecodedToken from "@/hooks/useDecodedToken";
 import useAuthStore from "@/store/useAuthStore";
+import { LoginMain } from "@/styles/loginStyle";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
@@ -34,5 +35,5 @@ export default function Kakao() {
     }
   }, [code, router, userId]);
 
-  return <p>로딩 중</p>;
+  return <LoginMain />;
 }

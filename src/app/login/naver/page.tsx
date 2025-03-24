@@ -1,6 +1,7 @@
 "use client";
 import useDecodedToken from "@/hooks/useDecodedToken";
 import useAuthStore from "@/store/useAuthStore";
+import { LoginMain } from "@/styles/loginStyle";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
@@ -35,5 +36,5 @@ export default function Naver() {
     }
   }, [code, router, userId]);
 
-  return <div>로딩중</div>;
+  return <LoginMain />;
 }

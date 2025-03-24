@@ -35,11 +35,14 @@ const OrderDetail: React.FC = () => {
           order_status: "거래 종료",
         },
       });
+
+      setOrderData((prev) =>
+        prev ? { ...prev, order_status: "거래 종료" } : prev
+      );
     } catch (error) {
       console.error("거래 종료 API 호출 중 오류 발생:", error);
     }
   };
-
   // 최초 렌더링 시 주문 정보와 상품 정보 가져오기
   useEffect(() => {
     const fetchData = async () => {
