@@ -5,13 +5,23 @@
 
 <br>
 
+<div align="center">
+
+<b>[파도상점 배포 주소🌊]([https://talkhoogam.netlify.app/](https://pado-store.vercel.app/))🔗</b> <br>
+Test ID : `test123` <br>
+Test PW : `test123@` <br>
+
+</div>
+
+<br>
+
 ## 목차
 
 1. [프로젝트 소개](#intro)
 2. [프로젝트 멤버](#team)
 3. [기술 스택](#technology-stack)
 4. [기능 및 구조](#function-and-structure)
-5. [협업 방식]
+5. [협업 방식](#cooperation)
 
 <br>
 
@@ -99,6 +109,10 @@
 - ### 로그인
   ![녹화_2025_03_01_03_00_41_260](https://github.com/user-attachments/assets/04880e19-f1d1-41ce-b42b-725a44e5151b)
 
+- ### SNS 로그인
+  ![녹화_2025_03_25_00_34_27_38](https://github.com/user-attachments/assets/09bcd024-6958-47b5-b669-a2fea07a57b3)
+
+
 - ### 판매 글 등록
   ![녹화_2025_03_01_03_04_06_106](https://github.com/user-attachments/assets/695a8686-721a-4cfc-956e-314e506b1834)
 
@@ -114,6 +128,9 @@
 - ### 게시물 수정하기
   ![녹화_2025_03_02_19_56_31_229](https://github.com/user-attachments/assets/bb02e0b8-732e-41db-b275-b15974cc968a)
 
+- ### 게시물 검색
+  ![녹화_2025_03_19_19_18_19_12](https://github.com/user-attachments/assets/481fee69-bbb9-4114-92ad-029952868587)
+
 - ### 유저 간 채팅
   ![녹화_2025_03_02_19_41_05_591](https://github.com/user-attachments/assets/9219548a-5ef5-4bea-8156-da8258e76e0e)
   ![녹화_2025_03_02_19_43_25_18](https://github.com/user-attachments/assets/779d771a-ae19-4f3e-82f0-6b270c63d769)
@@ -123,4 +140,40 @@
 
 - ### 공동구매 폼 제출
   ![녹화_2025_03_03_00_11_04_61](https://github.com/user-attachments/assets/e5ed9b6e-c8b9-495b-8dd6-25a35fe913cd)
+
+- ### 공동구매 판매 폼 관리
+  ![녹화_2025_03_24_20_30_18_32](https://github.com/user-attachments/assets/398cfd9e-43c3-4828-9a9b-935a430619e1)
+
+- ### 공동구매 구매 폼 상세 및 수정
+  ![녹화_2025_03_24_21_03_35_830](https://github.com/user-attachments/assets/465473c8-e504-4847-9bcd-aa5fa1454236)
+
+- ### 아이디 찾기
+  ![녹화_2025_03_24_22_43_34_521](https://github.com/user-attachments/assets/b54cee31-cc9f-4706-99a8-e67acb8edb44)
+
+- ### 비밀번호 재설정
+  ![녹화_2025_03_24_22_45_24_871](https://github.com/user-attachments/assets/24e5bb3b-32ee-44d5-b5ac-948cf1287037)
+
+
+<br>
+
+## <span id="cooperation"> 5. 협업 방식
+
+- 주 2회 회의
+- Notion을 통해 기획 및 의견 조율
+- Discord 및 TeamViewer를 이용하여 문제 해결
+
+---
+
+[Notion](https://www.notion.so/essential196/Pado-b54b79bb1bbe42a99778dae52ad5184e)
+![image](https://github.com/user-attachments/assets/b21e035e-6e3d-4547-80bf-674669045c59)
+
+- [Q%A](https://www.notion.so/essential196/ae3834c9600c4932a81633c42bfb37aa?v=eae14dde00dc4c19a91f433f3be38372)
+  ![image](https://github.com/user-attachments/assets/3c8c89b9-59e6-4f3c-a0d8-301583d20767)
+
+
+- [회의록](https://www.notion.so/essential196/08d03825e7f64f168c5d4c393c62bbeb)
+  ![image](https://github.com/user-attachments/assets/7e2d1d23-a771-4b9d-a656-83dbf97c8d17)
+
+- [To-do리스트](https://www.notion.so/essential196/ba420a1bc86e4eac8a243b736ee5de79?v=0235868b7cb0454181135a14406a3436)
+  ![image](https://github.com/user-attachments/assets/eece49c6-795e-424e-b818-31dfcf5b20f3)
 
