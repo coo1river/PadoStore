@@ -149,10 +149,10 @@ export default function UserChat() {
         Authorization: sessionStorage.getItem("userToken")!,
       },
       onConnect: async () => {
-        if (!createData || enterData) {
-          subscribe();
-          return;
-        }
+        // if (!createData || enterData) {
+        //   subscribe();
+        //   return;
+        // }
         console.log("Connected 성공");
 
         const enterRes = await chatEnterApi(createData.chat_room_id);
@@ -206,14 +206,6 @@ export default function UserChat() {
     updateMessages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enterData]);
-
-  // 콘솔 확인
-  useEffect(() => {
-    console.log(
-      "보낸 메시지 insert_dt:",
-      chatList.map((chat) => chat.insert_dt)
-    );
-  }, [chatList]);
 
   const handleScroll = useCallback(async () => {
     if (chatRoomRef.current) {
