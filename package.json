@@ -38,6 +38,5 @@
     "eslint": "^8",
     "eslint-config-next": "14.1.0",
     "typescript": "^5.7.3"
-  },
-  "proxy": "http://localhost:8080"
+  }
 }

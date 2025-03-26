@@ -144,7 +144,7 @@ export default function UserChat() {
     if (!createData) return;
 
     const clientInstance = new StompJs.Client({
-      brokerURL: "ws://https://api-pado.info/api/connect",
+      brokerURL: "wss://api-pado.info/connect",
       connectHeaders: {
         Authorization: sessionStorage.getItem("userToken")!,
       },
