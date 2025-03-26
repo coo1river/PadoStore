@@ -7,7 +7,7 @@
 
 <div align="center">
 
-<b>[파도상점 배포 주소🌊]([https://talkhoogam.netlify.app/](https://pado-store.vercel.app/))🔗</b> <br>
+<b>[파도상점 배포 주소🌊](https://pado-store.vercel.app/)🔗</b> <br>
 Test ID : `test123` <br>
 Test PW : `test123@` <br>
 
