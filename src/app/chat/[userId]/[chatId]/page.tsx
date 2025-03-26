@@ -149,10 +149,10 @@ export default function UserChat() {
         Authorization: sessionStorage.getItem("userToken")!,
       },
       onConnect: async () => {
-        // if (!createData || enterData) {
-        //   subscribe();
-        //   return;
-        // }
+        if (!createData || enterData) {
+          subscribe();
+          return;
+        }
         console.log("Connected 성공");
 
         const enterRes = await chatEnterApi(createData.chat_room_id);
