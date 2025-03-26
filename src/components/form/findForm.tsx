@@ -21,7 +21,7 @@ const FindForm: React.FC<FindFormProps> = ({
 }) => (
   <div className="find_wrap">
     <label htmlFor="input-field">{label}</label>
-    <p className="infor_text">가입 시 입력하신 {infoText}를 입력해 주세요.</p>
+    <p className="infor_text">{infoText}를 입력해 주세요.</p>
     <input
       type="text"
       id="input-field"

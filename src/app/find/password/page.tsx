@@ -144,11 +144,11 @@ const PasswordFind: React.FC = () => {
           <ErrorMessage>{error.pwErr as string}</ErrorMessage>
 
           <div className="find_wrap">
-            <label htmlFor="reset-pw">비밀번호 확인</label>
+            <label htmlFor="reset-pw-check">비밀번호 확인</label>
             <p className="infor_text">동일한 비밀번호를 입력해 주세요</p>
             <input
               type="password"
-              id="reset-pw"
+              id="reset-pw-check"
               placeholder="비밀번호"
               onChange={pwCheck.onChange}
               onBlur={PwCheckValid}
