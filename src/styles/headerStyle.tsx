@@ -119,6 +119,7 @@ export const LoginJoin = styled.div`
 
   button {
     font-size: 14px;
+    font-weight: 500;
   }
 
   .btn_chat {

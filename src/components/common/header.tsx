@@ -168,7 +168,7 @@ const Header: React.FC = () => {
         </LoginJoin>
       ) : (
         <LoginJoin>
-          <div className="null"></div>
+          <div className="null" />
           <button onClick={() => router.push("/login")}>로그인</button>
           <button onClick={() => router.push("/join")}>회원가입</button>
         </LoginJoin>

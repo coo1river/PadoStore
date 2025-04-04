@@ -28,6 +28,7 @@ export const LoginMain = styled.main`
     button {
       color: var(--main-blackgrey);
       font-size: 15px;
+      font-weight: 500;
     }
   }
 
@@ -37,6 +38,8 @@ export const LoginMain = styled.main`
 
     p {
       margin-top: 1px;
+      font-size: 15px;
+      font-weight: 500;
     }
   }
 

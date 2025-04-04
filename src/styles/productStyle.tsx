@@ -43,9 +43,15 @@ export const ProductInfo = styled.article`
     gap: 25px;
     padding-bottom: 30px;
     border-bottom: 2px solid var(--color-trans-grey);
+
     .product_condition_ship {
+      strong {
+        font-weight: 600;
+      }
+
       p {
         margin-bottom: 10px;
+        font-weight: 500;
       }
     }
   }
@@ -170,6 +176,7 @@ export const ProductContent = styled.article`
   .tag_list {
     display: flex;
     gap: 10px;
+    font-weight: 600;
 
     li {
       background-color: var(--color-trans-grey);

@@ -141,7 +141,8 @@ export const ProductArticle = styled.article`
     height: 30px;
     margin-bottom: 16px;
     font-size: 16px;
-    line-height: 1.1rem;
+    line-height: 20px;
+    font-weight: 500;
   }
 
   .user_name {
@@ -150,7 +151,7 @@ export const ProductArticle = styled.article`
 
   .product_price {
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .period {
