@@ -3,7 +3,7 @@ import React from "react";
 import { GroupItem } from "../postList/groupPurchaseTab";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
-import useDecodedToken from "@/hooks/useDecodedToken";
+import useDecodedToken from "@/hooks/common/useDecodedToken";
 
 interface Props {
   groupList: GroupOrder[] | GroupItem[];

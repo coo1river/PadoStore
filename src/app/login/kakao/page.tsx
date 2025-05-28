@@ -1,5 +1,5 @@
 "use client";
-import useDecodedToken from "@/hooks/useDecodedToken";
+import useDecodedToken from "@/hooks/common/useDecodedToken";
 import useAuthStore from "@/store/useAuthStore";
 import { LoginMain } from "@/styles/loginStyle";
 import axios from "axios";

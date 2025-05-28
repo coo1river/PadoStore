@@ -6,7 +6,7 @@ import {
   ProductStatus,
 } from "@/components/common/selectOption";
 import TagInput from "@/components/common/tagInput";
-import useInput from "@/hooks/useInput";
+import useInput from "@/hooks/common/useInput";
 import useAuthStore from "@/store/useAuthStore";
 import {
   BasicImg,

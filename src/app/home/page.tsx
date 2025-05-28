@@ -7,10 +7,10 @@ import ProductSection, {
   GroupOrderList,
 } from "@/components/homeSection/productSection";
 import GroupSection from "@/components/homeSection/groupSection";
-import homeListApi from "@/api/homeListApi";
 import MarketTab, { MarketItem } from "@/components/postList/marketTab";
 import GroupPurchaseTab from "@/components/postList/groupPurchaseTab";
 import { useRouter } from "next/navigation";
+import useApi from "@/hooks/common/useApi";
 
 export interface HomeList {
   post_id: number;
@@ -38,11 +38,20 @@ const Home: React.FC = () => {
   const [tabStatus, setTabStatus] = useState<string>("Home");
 
   useEffect(() => {
-    const homeData = async () => {
-      const data = await homeListApi("InProgress");
-      setData(data);
+    const fetchHomeData = async () => {
+      try {
+        const res = await useApi({
+          method: "get",
+          url: "home/list",
+          params: { status: "InProgress" },
+        });
+        setData(res);
+      } catch (error) {
+        console.error("홈 데이터 불러오기 실패:", error);
+      }
     };
-    homeData();
+
+    fetchHomeData();
   }, []);
 
   const setActiveClass = (status: string) => {
@@ -69,7 +78,7 @@ const Home: React.FC = () => {
 
   return (
     <HomeMain>
-      <h2 className="a11y-hidden">홈</h2>
+      <h1 className="a11y-hidden">홈</h1>
       <MainBanner>
         <Image
           onClick={() => router.push("/groupDetail/InProgress/11")}

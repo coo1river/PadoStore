@@ -4,7 +4,7 @@ import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
 import React, { useEffect, useState } from "react";
 import chatListApi, { ListRes } from "@/api/chat/chatListApi";
 import { useRouter } from "next/navigation";
-import useDecodedToken from "@/hooks/useDecodedToken";
+import useDecodedToken from "@/hooks/common/useDecodedToken";
 import useAuthStore from "@/store/useAuthStore";
 import useChatStore from "@/store/useChatStore";
 import Image from "next/image";

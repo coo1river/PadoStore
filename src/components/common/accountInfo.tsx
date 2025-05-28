@@ -11,7 +11,7 @@ import { BankOptions } from "./selectOption";
 import { Res } from "@/api/postDetailApi";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import AddressForm from "./addressForm";
-import useInput from "@/hooks/useInput";
+import useInput from "@/hooks/common/useInput";
 import useAuthStore from "@/store/useAuthStore";
 import orderApi, { OrderData } from "@/api/orderApi";
 import { useRouter } from "next/navigation";

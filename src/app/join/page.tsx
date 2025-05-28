@@ -11,9 +11,9 @@ import {
   JoinMain,
 } from "@/styles/joinStyle";
 import ImgProfileBasic from "../../../public/assets/images/img-user-basic.png";
-import useInput from "@/hooks/useInput";
+import useInput from "@/hooks/common/useInput";
 import joinApi from "@/api/joinApi";
-import useValid from "@/hooks/useValid";
+import useValid from "@/hooks/common/useValid";
 
 const Join: React.FC = () => {
   // 라우터 사용

@@ -1,5 +1,5 @@
 "use client";
-import useInput from "@/hooks/useInput";
+import useInput from "@/hooks/common/useInput";
 import { FindMain } from "@/styles/joinStyle";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";

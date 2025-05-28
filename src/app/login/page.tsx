@@ -1,7 +1,7 @@
 "use client";
 import { LoginInput, LoginBtn, SnsLogin, LoginMain } from "@/styles/loginStyle";
 import React, { FormEvent, useState } from "react";
-import useInput from "@/hooks/useInput";
+import useInput from "@/hooks/common/useInput";
 import loginApi from "@/api/loginApi";
 import { ErrorMessage } from "@/styles/joinStyle";
 import { useRouter } from "next/navigation";

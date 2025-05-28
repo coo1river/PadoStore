@@ -17,7 +17,7 @@ import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
 import { useParams, useRouter } from "next/navigation";
 import postLikeApi from "@/api/postLikeApi";
 import useAuthStore from "@/store/useAuthStore";
-import useDecodedToken from "@/hooks/useDecodedToken";
+import useDecodedToken from "@/hooks/common/useDecodedToken";
 import { AccountInfoWrap } from "@/styles/accountInfoStyle";
 
 const GroupDetail: React.FC = () => {

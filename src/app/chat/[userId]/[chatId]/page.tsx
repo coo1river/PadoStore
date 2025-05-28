@@ -12,7 +12,7 @@ import createChatApi, { ChatRes } from "@/api/chat/createChatApi";
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
 import IconExit from "@/../public/assets/svgs/free-icon-font-exit-3917349.svg";
 import IconMenu from "@/../public/assets/svgs/free-icon-font-plus-3917043.svg";
-import useInput from "@/hooks/useInput";
+import useInput from "@/hooks/common/useInput";
 import chatDetailApi, { ChatDetail, ChatReq } from "@/api/chat/chatDetailApi";
 import IconSend from "@/../public/assets/svgs/free-icon-font-paper-plane.svg";
 import { ChatInputWrap, ChatRoom, ChatRoomWrap } from "@/styles/chatStyle";
@@ -24,7 +24,7 @@ import chatUserInfoApi from "@/api/chat/chatUserInfoApi";
 import ChatModal from "@/components/modal/chatModal";
 import userInfoApi, { UserInfo } from "@/api/chat/userInfoApi";
 import useAuthStore from "@/store/useAuthStore";
-import useDecodedToken from "@/hooks/useDecodedToken";
+import useDecodedToken from "@/hooks/common/useDecodedToken";
 import Image from "next/image";
 
 interface Message {

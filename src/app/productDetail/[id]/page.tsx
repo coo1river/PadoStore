@@ -16,7 +16,7 @@ import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
 import { useParams, useRouter } from "next/navigation";
 import postLikeApi from "@/api/postLikeApi";
 import useAuthStore from "@/store/useAuthStore";
-import useDecodedToken from "@/hooks/useDecodedToken";
+import useDecodedToken from "@/hooks/common/useDecodedToken";
 
 const ProductDetail: React.FC = () => {
   const params = useParams();

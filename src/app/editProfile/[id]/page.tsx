@@ -11,12 +11,12 @@ import {
   JoinMain,
 } from "@/styles/joinStyle";
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
-import useInput from "@/hooks/useInput";
-import useValid from "@/hooks/useValid";
+import useInput from "@/hooks/common/useInput";
+import useValid from "@/hooks/common/useValid";
 import editProfileApi, { EditRes } from "@/api/editProfileApi";
 import useAuthStore from "@/store/useAuthStore";
 import profileUploadApi from "@/api/profileUploadApi";
-import useDecodedToken from "@/hooks/useDecodedToken";
+import useDecodedToken from "@/hooks/common/useDecodedToken";
 
 const EditProfile: React.FC = () => {
   // 라우터 사용
