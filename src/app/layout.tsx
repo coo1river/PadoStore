@@ -1,9 +1,5 @@
 import type { Metadata } from "next";
-import GlobalStyle from "@/styles/globalStyle";
-import Header from "@/components/common/header";
-import Footer from "@/components/common/footer";
-import ScrollToTop from "./scrollToTop";
-import StyledComponentsRegistry from "@/styles/registry";
+import { Providers } from "@/components/common/Providers";
 
 export const metadata: Metadata = {
   title: "파도상점",
@@ -22,13 +18,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <StyledComponentsRegistry>
-          <GlobalStyle />
-          <ScrollToTop />
-          <Header />
-          {children}
-          <Footer />
-        </StyledComponentsRegistry>
+        <Providers children={children} />
       </body>
     </html>
   );
