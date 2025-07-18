@@ -7,7 +7,6 @@ import React, {
   useState,
 } from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import * as StompJs from "@stomp/stompjs";
 import createChatApi, { ChatRes } from "@/api/chat/createChatApi";
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
 import IconExit from "@/../public/assets/svgs/free-icon-font-exit-3917349.svg";
@@ -16,16 +15,16 @@ import useInput from "@/hooks/common/useInput";
 import chatDetailApi, { ChatDetail, ChatReq } from "@/api/chat/chatDetailApi";
 import IconSend from "@/../public/assets/svgs/free-icon-font-paper-plane.svg";
 import { ChatInputWrap, ChatRoom, ChatRoomWrap } from "@/styles/chatStyle";
-import chatEnterApi, { ChatRoomRes } from "@/api/chat/chatEnterApi";
+import { ChatRoomRes } from "@/api/chat/chatEnterApi";
 import chatDelete from "@/api/chat/chatDeleteApi";
 import chatExitApi from "@/api/chat/chatExitApi";
 import useChatStore from "@/store/useChatStore";
-import chatUserInfoApi from "@/api/chat/chatUserInfoApi";
 import ChatModal from "@/components/modal/chatModal";
 import userInfoApi, { UserInfo } from "@/api/chat/userInfoApi";
 import useAuthStore from "@/store/useAuthStore";
 import useDecodedToken from "@/hooks/common/useDecodedToken";
 import Image from "next/image";
+import { useStompClient } from "@/hooks/pages/chat/useStompClient";
 
 interface Message {
   chat_id: number;
@@ -37,7 +36,7 @@ interface Message {
 }
 
 export default function UserChat() {
-  //  useParams 사용하여 URL 매개변수 가져오기
+  //  useParams 사용하여 URL 매개변수 가져오기
   const params = useParams();
   const pathname = usePathname();
   const receiver = params.chatId;
@@ -70,10 +69,46 @@ export default function UserChat() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isFetching, setIsFetching] = useState(false);
 
-  const client = useRef<StompJs.Client | null>(null);
   const chatRoomRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<HTMLDivElement>(null);
   const [prevScrollHeight, setPrevScrollHeight] = useState(0);
+
+  // STOMP 클라이언트 훅 사용
+  const { publish } = useStompClient({
+    createData,
+    setEnterData,
+    setChatList,
+    chatDetails: useCallback(async () => {
+      if (!createData) return;
+      const chatParam: ChatReq = {
+        chat_room_id: createData.chat_room_id,
+        limit: 15,
+        current_page: currentPage,
+      };
+      try {
+        const chatDetailsRes = await chatDetailApi(chatParam);
+        if (chatDetailsRes) {
+          const reversedChatDetails = {
+            ...chatDetailsRes,
+            chat: chatDetailsRes.chat.reverse(),
+          };
+          setDetailData((prevDetailData) => ({
+            ...reversedChatDetails,
+            chat: [
+              ...reversedChatDetails.chat,
+              ...(prevDetailData?.chat || []),
+            ],
+          }));
+        }
+      } catch (error) {
+        console.error(
+          "채팅 상세 정보를 불러오는 중 오류가 발생했습니다.",
+          error
+        );
+      }
+    }, [createData, currentPage]),
+    enterDataRef,
+  });
 
   // 채팅방 생성
   useEffect(() => {
@@ -89,92 +124,6 @@ export default function UserChat() {
 
     fetchData();
   }, [receiver]);
-
-  // 채팅 상세
-  const chatDetails = useCallback(async () => {
-    if (!createData) return;
-    const chatParam: ChatReq = {
-      chat_room_id: createData.chat_room_id,
-      limit: 15,
-      current_page: currentPage,
-    };
-    try {
-      const chatDetails = await chatDetailApi(chatParam);
-      if (chatDetails) {
-        const reversedChatDetails = {
-          ...chatDetails,
-          chat: chatDetails.chat.reverse(),
-        };
-        setDetailData((prevDetailData) => ({
-          ...reversedChatDetails,
-          chat: [...reversedChatDetails.chat, ...(prevDetailData?.chat || [])],
-        }));
-      }
-    } catch (error) {
-      console.error("채팅 상세 정보를 불러오는 중 오류가 발생했습니다.", error);
-    }
-  }, [createData, currentPage]);
-
-  // STOMP 구독
-  const subscribe = useCallback(() => {
-    if (client.current && createData) {
-      client.current.subscribe(
-        `/sub/chat/${createData.chat_room_id}`,
-        async (message) => {
-          const receivedMessage = JSON.parse(message.body);
-          console.log("구독 성공", message.body);
-
-          const enterInfo = await chatUserInfoApi(createData.chat_room_id);
-          setEnterData(enterInfo);
-          enterDataRef.current = enterInfo;
-
-          setChatList((prevChatList) => [
-            ...prevChatList,
-            { ...receivedMessage },
-          ]);
-        },
-        {
-          Authorization: sessionStorage.getItem("userToken")!,
-        }
-      );
-    }
-  }, [createData]);
-
-  useEffect(() => {
-    if (!createData) return;
-
-    const clientInstance = new StompJs.Client({
-      brokerURL: "wss://api-pado.info/connect",
-      connectHeaders: {
-        Authorization: sessionStorage.getItem("userToken")!,
-      },
-      onConnect: async () => {
-        if (!createData || enterData) {
-          subscribe();
-          return;
-        }
-        console.log("Connected 성공");
-
-        const enterRes = await chatEnterApi(createData.chat_room_id);
-        enterDataRef.current = enterRes;
-        setEnterData(enterRes);
-        chatDetails();
-        subscribe();
-      },
-      onStompError: (error) => {
-        console.error("STOMP error", error);
-      },
-    });
-
-    client.current = clientInstance;
-    clientInstance.activate();
-
-    return () => {
-      if (clientInstance) {
-        clientInstance.deactivate();
-      }
-    };
-  }, [createData, chatDetails, subscribe]);
 
   useEffect(() => {
     if (!enterData) return;
@@ -217,7 +166,25 @@ export default function UserChat() {
         try {
           // 페이지 증가 및 데이터 패칭
           setCurrentPage((prevPage) => prevPage + 1);
-          await chatDetails();
+          const chatParam: ChatReq = {
+            chat_room_id: createData!.chat_room_id,
+            limit: 15,
+            current_page: currentPage + 1, // 증가된 페이지로 요청
+          };
+          const chatDetailsRes = await chatDetailApi(chatParam);
+          if (chatDetailsRes) {
+            const reversedChatDetails = {
+              ...chatDetailsRes,
+              chat: chatDetailsRes.chat.reverse(),
+            };
+            setDetailData((prevDetailData) => ({
+              ...reversedChatDetails,
+              chat: [
+                ...reversedChatDetails.chat,
+                ...(prevDetailData?.chat || []),
+              ],
+            }));
+          }
         } catch (error) {
           console.error("데이터 패칭 에러", error);
         } finally {
@@ -225,7 +192,7 @@ export default function UserChat() {
         }
       }
     }
-  }, [isFetching, chatDetails]);
+  }, [isFetching, createData, currentPage]);
 
   // 스크롤 관리
   useEffect(() => {
@@ -261,34 +228,6 @@ export default function UserChat() {
     }
   }, [currentPage, isFetching, handleScroll]);
 
-  const publish = (chats: string) => {
-    if (client.current && client.current.connected && createData) {
-      client.current.publish({
-        destination: "/pub/chat",
-        headers: {
-          Authorization: sessionStorage.getItem("userToken")!,
-        },
-        body: JSON.stringify({
-          chat_room_id: createData.chat_room_id,
-          message: chats,
-        }),
-      });
-
-      // input value 초기화
-      chat.setValue("");
-
-      // 채팅 목록 갱신
-      refreshChatList();
-
-      // 스크롤을 맨 아래로 이동
-      if (chatRoomRef.current) {
-        chatRoomRef.current.scrollTop = chatRoomRef.current.scrollHeight;
-      }
-    } else {
-      console.error("STOMP connection not established.");
-    }
-  };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     chat.setValue(e.target.value);
   };
@@ -296,6 +235,17 @@ export default function UserChat() {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     publish(chat.value);
+
+    // input value 초기화
+    chat.setValue("");
+
+    // 채팅 목록 갱신
+    refreshChatList();
+
+    // 스크롤을 맨 아래로 이동
+    if (chatRoomRef.current) {
+      chatRoomRef.current.scrollTop = chatRoomRef.current.scrollHeight;
+    }
   };
 
   // 채팅방 나가기
@@ -305,12 +255,13 @@ export default function UserChat() {
     router.push(`/chat/${userId}`);
   };
 
-  //  경로 변경 시 채팅방 나가기 호출
+  //  경로 변경 시 채팅방 나가기 호출
   useEffect(() => {
     let initialMount = true;
 
     const handleRouteChange = async () => {
-      if (!initialMount && createData && sessionStorage.getItem("token")) {
+      if (!initialMount && createData && sessionStorage.getItem("userToken")) {
+        // userToken으로 변경
         await chatExitApi(createData.chat_room_id);
       }
     };

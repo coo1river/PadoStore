@@ -4,7 +4,9 @@ export const ChatMain = styled.main`
   width: 1200px;
   height: calc(100vh - 215px);
   margin: 0 auto;
+  padding-bottom: 2rem;
   display: flex;
+  box-sizing: border-box;
 `;
 
 export const ChatList = styled.article`
