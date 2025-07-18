@@ -1,14 +1,5 @@
 import axios from "axios";
 
-export interface ChatRes {
-  chat_room_id: number;
-  chat_room_status: string;
-  chat_user1: string;
-  chat_user2: string;
-  insert_dt: string;
-  update_dt: string;
-}
-
 export default async function createChatApi(receiver: string | string[]) {
   const url = "/api/chat/new";
 

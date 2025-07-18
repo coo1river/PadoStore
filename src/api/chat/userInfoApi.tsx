@@ -1,20 +1,10 @@
+import { ChatUserInfo } from "@/types/chat/chat.types";
 import axios from "axios";
-
-export interface UserInfo {
-  user_id: string;
-  user_name: string;
-  phone_number: string;
-  addr_post: string;
-  addr_detail: string;
-  bank: string;
-  account_name: string;
-  account_number: string;
-}
 
 export default async function userInfoApi() {
   const url = "/api/chat/info";
   try {
-    const res = await axios.get(url, {
+    const res = await axios.get<ChatUserInfo>(url, {
       headers: {
         Authorization: sessionStorage.getItem("userToken"),
       },

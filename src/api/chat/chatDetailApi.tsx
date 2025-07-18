@@ -1,38 +1,13 @@
+import { ChatDetailReq, ChatDetailRes } from "@/types/chat/chat.types";
 import axios from "axios";
 
-export interface ChatReq {
-  chat_room_id: number | undefined;
-  limit: number;
-  current_page: number;
-}
-
-interface Chat {
-  chat_id: number;
-  sender_id: string;
-  message: string;
-  insert_dt: string;
-  chat_room_id: number;
-  read_status: "true" | "false";
-}
-
-interface User {
-  user_id: string;
-  nickname: string;
-  file_group_id: string | null;
-  up_file: string | null;
-}
-
-export interface ChatDetail {
-  chat: Chat[];
-  user1: User;
-  user2: User;
-}
-
-export default async function chatDetailApi(data: ChatReq) {
+export default async function chatDetailApi(
+  data: ChatDetailReq
+): Promise<ChatDetailRes> {
   const url = "/api/chat/room";
 
   try {
-    const res = await axios.get(url, {
+    const res = await axios.get<ChatDetailRes>(url, {
       headers: {
         Authorization: sessionStorage.getItem("userToken"),
       },

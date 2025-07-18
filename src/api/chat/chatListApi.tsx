@@ -1,28 +1,11 @@
+import { ChatListRes } from "@/types/chat/chat.types";
 import axios from "axios";
 
-interface ChatRoom {
-  chat_room_id: number;
-  chat_user1: string;
-  chat_user2: string;
-  last_insert_dt: string;
-  last_message: string;
-  nickname: string;
-  path: string | null;
-  unread_count: number;
-  up_file: string;
-  user1_status: "true" | "false";
-  user2_status: "true" | "false";
-}
-
-export interface ListRes {
-  chatList: ChatRoom[];
-}
-
-export default async function chatListApi() {
+export default async function chatListApi(): Promise<ChatListRes> {
   const url = "/api/chat/list";
 
   try {
-    const res = await axios.get(url, {
+    const res = await axios.get<ChatListRes>(url, {
       headers: {
         Authorization: sessionStorage.getItem("userToken"),
       },
