@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
-import userInfoApi, { UserInfo } from "@/api/chat/userInfoApi";
+import userInfoApi from "@/api/chat/userInfoApi";
+import { ChatUserInfo } from "@/types/chat/chat.types";
 
 interface UseUserChatActionsProps {
   publish: (message: string) => void;
@@ -16,7 +17,7 @@ interface UseUserChatActionsReturn {
 export const useUserChatActions = ({
   publish,
 }: UseUserChatActionsProps): UseUserChatActionsReturn => {
-  const [userData, setUserData] = useState<UserInfo | null>(null);
+  const [userData, setUserData] = useState<ChatUserInfo | null>(null);
   const [modalState, setModalState] = useState<boolean>(false);
 
   // 메뉴 모달 닫기 함수
