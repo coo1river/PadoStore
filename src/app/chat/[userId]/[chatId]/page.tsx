@@ -6,7 +6,6 @@ import IconMenu from "@/../public/assets/svgs/free-icon-font-plus-3917043.svg";
 import IconSend from "@/../public/assets/svgs/free-icon-font-paper-plane.svg";
 import { ChatInputWrap, ChatRoom, ChatRoomWrap } from "@/styles/chatStyle";
 import ChatModal from "@/components/modal/chatModal";
-import { useStompClient } from "@/hooks/pages/chat/useStompClient";
 import { useChatRoomData } from "@/hooks/pages/chat/useChatRoomData";
 import ChatMessage from "@/components/pages/chat/ChatMessage";
 import { useInfiniteChatScroll } from "@/hooks/pages/chat/useInfiniteChatScroll";
@@ -16,6 +15,7 @@ import { useUserChatActions } from "@/hooks/pages/chat/useUserChatActions";
 import { useUserId } from "@/hooks/common/useUserId";
 import { useQueryClient } from "@tanstack/react-query";
 import { ChatRoomRes, Message } from "@/types/chat/chat.types";
+import { useStompClient } from "@/hooks/pages/chat/useStompClient";
 
 export default function UserChat() {
   const params = useParams();

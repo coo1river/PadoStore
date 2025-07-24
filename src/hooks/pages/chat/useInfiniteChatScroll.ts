@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect, useCallback } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { ChatRoomInfoRes, Message } from "@/types/chat/chat.types";
 
 interface UseInfiniteChatScrollProps {
@@ -29,12 +29,11 @@ export const useInfiniteChatScroll = ({
 
   const CHAT_MESSAGES_QUERY_KEY = (roomId: number) => ["chatMessages", roomId];
 
-  const { data: currentChatMessages } = useQuery<Message[]>({
-    queryKey: chatRoomId ? CHAT_MESSAGES_QUERY_KEY(chatRoomId) : [],
-    initialData: [],
-    enabled: !!chatRoomId,
-    staleTime: Infinity,
-  });
+  const queryClient = useQueryClient();
+  const currentChatMessages =
+    queryClient.getQueryData<Message[]>(
+      chatRoomId ? CHAT_MESSAGES_QUERY_KEY(chatRoomId) : []
+    ) ?? [];
 
   const handleScroll = useCallback(async () => {
     if (chatRoomRef.current) {
