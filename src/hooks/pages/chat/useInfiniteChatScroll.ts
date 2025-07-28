@@ -40,7 +40,11 @@ export const useInfiniteChatScroll = ({
       const chatRoom = chatRoomRef.current;
       const { scrollTop } = chatRoom;
 
-      if (scrollTop < 10 && !isFetching && chatRoomId) {
+      if (isFetching || chatRoomId === undefined) {
+        return;
+      }
+
+      if (scrollTop < 1 && !isFetching && chatRoomId) {
         setIsFetching(true);
         try {
           const nextPage = currentPage + 1;
@@ -59,29 +63,44 @@ export const useInfiniteChatScroll = ({
   useEffect(() => {
     if (chatRoomRef.current && detailData) {
       const chatRoom = chatRoomRef.current;
-      const { scrollTop } = chatRoom;
 
       if (currentPage === 1) {
-        chatRoom.scrollTop = chatRoom.scrollHeight;
+        requestAnimationFrame(() => {
+          chatRoom.scrollTop = chatRoom.scrollHeight;
+        });
+        setPrevScrollHeight(chatRoom.scrollHeight);
+        return;
       }
 
-      if (currentPage > 1) {
+      if (!isFetching && chatRoom.scrollHeight !== prevScrollHeight) {
         const deltaHeight = chatRoom.scrollHeight - prevScrollHeight;
-        chatRoom.scrollTop = scrollTop + deltaHeight;
+        requestAnimationFrame(() => {
+          chatRoom.scrollTop = chatRoom.scrollTop + deltaHeight;
+        });
       }
 
       setPrevScrollHeight(chatRoom.scrollHeight);
     }
-  }, [currentChatMessages, currentPage, prevScrollHeight, detailData]);
+  }, [currentChatMessages, currentPage, isFetching, detailData]);
 
   // 스크롤 이벤트 등록
   useEffect(() => {
     const chatRoomCurrent = chatRoomRef.current;
     if (chatRoomCurrent) {
-      chatRoomCurrent.addEventListener("scroll", handleScroll);
+      let timeoutId: NodeJS.Timeout;
+
+      const debounceHandleScroll = () => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          handleScroll();
+        }, 100);
+      };
+
+      chatRoomCurrent.addEventListener("scroll", debounceHandleScroll);
 
       return () => {
-        chatRoomCurrent.removeEventListener("scroll", handleScroll);
+        chatRoomCurrent.removeEventListener("scroll", debounceHandleScroll);
+        clearTimeout(timeoutId);
       };
     }
   }, [handleScroll]);
