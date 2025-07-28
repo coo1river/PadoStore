@@ -127,7 +127,7 @@ const Header: React.FC = () => {
 
       {/* 검색 창 */}
       <SearchIptBox>
-        <label htmlFor="search-input" />
+        <label htmlFor="search-input sr-only">검색어를 입력해 주세요.</label>
         <SearchInput
           id="search-input"
           type="text"
