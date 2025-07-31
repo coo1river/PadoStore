@@ -1,6 +1,8 @@
 import axios from "axios";
 
-export default async function createChatApi(receiver: string | string[]) {
+export default async function createChatApi(
+  receiver: string | string[] | undefined
+) {
   const url = "/api/chat/new";
 
   try {
