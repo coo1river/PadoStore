@@ -1,4 +1,10 @@
-import { useRef, useState, useEffect, useCallback } from "react";
+import {
+  useRef,
+  useState,
+  useEffect,
+  useCallback,
+  useLayoutEffect,
+} from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { ChatRoomInfoRes, Message } from "@/types/chat/chat.types";
 
@@ -10,22 +16,18 @@ interface UseInfiniteChatScrollProps {
   detailData: ChatRoomInfoRes | null;
 }
 
-interface UseInfiniteChatScrollReturn {
-  chatRoomRef: React.RefObject<HTMLDivElement>;
-  observerRef: React.RefObject<HTMLDivElement>;
-}
-
 export const useInfiniteChatScroll = ({
   currentPage,
   setCurrentPage,
   fetchChatDetails,
   chatRoomId,
   detailData,
-}: UseInfiniteChatScrollProps): UseInfiniteChatScrollReturn => {
+}: UseInfiniteChatScrollProps) => {
   const chatRoomRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<HTMLDivElement>(null);
   const [isFetching, setIsFetching] = useState(false);
-  const [prevScrollHeight, setPrevScrollHeight] = useState(0);
+  const prevScrollHeightRef = useRef(0);
+  const prevScrollTopRef = useRef(0);
 
   const CHAT_MESSAGES_QUERY_KEY = (roomId: number) => ["chatMessages", roomId];
 
@@ -43,9 +45,10 @@ export const useInfiniteChatScroll = ({
       if (isFetching || chatRoomId === undefined) {
         return;
       }
-
-      if (scrollTop < 1 && !isFetching && chatRoomId) {
+      if (scrollTop < 10 && !isFetching && chatRoomId) {
         setIsFetching(true);
+        prevScrollTopRef.current = chatRoom.scrollHeight - chatRoom.scrollTop;
+
         try {
           const nextPage = currentPage + 1;
           setCurrentPage(nextPage);
@@ -58,30 +61,6 @@ export const useInfiniteChatScroll = ({
       }
     }
   }, [isFetching, chatRoomId, currentPage, setCurrentPage, fetchChatDetails]);
-
-  // 스크롤 관리
-  useEffect(() => {
-    if (chatRoomRef.current && detailData) {
-      const chatRoom = chatRoomRef.current;
-
-      if (currentPage === 1) {
-        requestAnimationFrame(() => {
-          chatRoom.scrollTop = chatRoom.scrollHeight;
-        });
-        setPrevScrollHeight(chatRoom.scrollHeight);
-        return;
-      }
-
-      if (!isFetching && chatRoom.scrollHeight !== prevScrollHeight) {
-        const deltaHeight = chatRoom.scrollHeight - prevScrollHeight;
-        requestAnimationFrame(() => {
-          chatRoom.scrollTop = chatRoom.scrollTop + deltaHeight;
-        });
-      }
-
-      setPrevScrollHeight(chatRoom.scrollHeight);
-    }
-  }, [currentChatMessages, currentPage, isFetching, detailData]);
 
   // 스크롤 이벤트 등록
   useEffect(() => {
@@ -104,6 +83,26 @@ export const useInfiniteChatScroll = ({
       };
     }
   }, [handleScroll]);
+
+  // 스크롤 관리
+  useLayoutEffect(() => {
+    if (chatRoomRef.current && detailData) {
+      const chatRoom = chatRoomRef.current;
+      const currentScrollHeight = chatRoom.scrollHeight;
+
+      if (currentPage === 1) {
+        chatRoom.scrollTop = currentScrollHeight;
+      } else if (
+        !isFetching &&
+        currentScrollHeight > prevScrollHeightRef.current
+      ) {
+        const newScrollTop = currentScrollHeight - prevScrollTopRef.current;
+        chatRoom.scrollTop = newScrollTop;
+      }
+
+      prevScrollHeightRef.current = currentScrollHeight;
+    }
+  }, [currentChatMessages, currentPage, isFetching, detailData]);
 
   return { chatRoomRef, observerRef };
 };
