@@ -24,20 +24,12 @@ export const useStompConnect = ({
       return;
     }
 
-    if (client.current && client.current.active) {
+    if (client.current?.active || client.current?.connected) {
       console.log("이미 STOMP가 활성화 상태입니다.");
       return;
     }
-    if (client.current && (client.current.active || client.current.connected)) {
-      client.current.deactivate();
-      client.current = null;
-    }
 
-    const connectHeaders: { Authorization?: string } = {};
-    if (token) {
-      connectHeaders.Authorization = token;
-    }
-
+    const connectHeaders = { Authorization: token };
     const clientInstance = new StompJs.Client({
       brokerURL,
       connectHeaders,
@@ -56,9 +48,6 @@ export const useStompConnect = ({
       },
       onDisconnect: () => {
         console.log("STOMP 연결 해제");
-        if (client.current) {
-          client.current = null;
-        }
       },
     });
 
@@ -69,7 +58,6 @@ export const useStompConnect = ({
       if (clientInstance.connected) {
         clientInstance.deactivate();
       }
-      client.current = null;
     };
   }, [token]);
 

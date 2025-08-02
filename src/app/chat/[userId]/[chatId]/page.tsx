@@ -17,9 +17,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { ChatRoomRes, Message } from "@/types/chat/chat.types";
 import { useStompClient } from "@/hooks/pages/chat/useStompClient";
 
-export default function UserChat() {
-  const params = useParams();
-  const receiver = params.chatId;
+export default function Chat() {
+  const { chatId: receiver } = useParams();
   const userId = useUserId();
   const queryClient = useQueryClient();
 
@@ -34,14 +33,16 @@ export default function UserChat() {
     fetchChatDetails,
   } = useChatRoomData({ receiver });
 
+  const chatDetails = useCallback(async () => {
+    if (createData?.chat_room_id) {
+      await fetchChatDetails(currentPage, createData.chat_room_id);
+    }
+  }, [createData?.chat_room_id, currentPage, fetchChatDetails]);
+
   const { publish } = useStompClient({
     createData,
     setEnterData,
-    chatDetails: useCallback(async () => {
-      if (createData?.chat_room_id) {
-        await fetchChatDetails(currentPage, createData.chat_room_id);
-      }
-    }, [createData, currentPage, fetchChatDetails]),
+    chatDetails,
     enterDataRef,
   });
 
@@ -87,7 +88,7 @@ export default function UserChat() {
       receiverNickname: profile.nickname,
       otherUserProfileForMessage: profile,
     };
-  }, [detailData, receiver]);
+  }, [detailData]);
 
   return (
     <ChatRoomWrap>

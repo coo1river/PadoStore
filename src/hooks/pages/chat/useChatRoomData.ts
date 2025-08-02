@@ -11,7 +11,7 @@ import chatDetailApi from "@/api/chat/chatDetailApi";
 import createChatApi from "@/api/chat/createChatApi";
 
 interface UseChatRoomDataProps {
-  receiver: string | string[];
+  receiver: string | string[] | undefined;
   initialPage?: number;
 }
 

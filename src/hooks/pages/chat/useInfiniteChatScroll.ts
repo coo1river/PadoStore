@@ -45,7 +45,7 @@ export const useInfiniteChatScroll = ({
       if (isFetching || chatRoomId === undefined) {
         return;
       }
-      if (scrollTop < 10 && !isFetching && chatRoomId) {
+      if (scrollTop < 1 && !isFetching && chatRoomId) {
         setIsFetching(true);
         prevScrollTopRef.current = chatRoom.scrollHeight - chatRoom.scrollTop;
 
@@ -65,23 +65,25 @@ export const useInfiniteChatScroll = ({
   // 스크롤 이벤트 등록
   useEffect(() => {
     const chatRoomCurrent = chatRoomRef.current;
-    if (chatRoomCurrent) {
-      let timeoutId: NodeJS.Timeout;
+    if (!chatRoomCurrent) return;
 
-      const debounceHandleScroll = () => {
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => {
-          handleScroll();
-        }, 100);
-      };
+    let rafId: number | null = null;
 
-      chatRoomCurrent.addEventListener("scroll", debounceHandleScroll);
+    const rafHandleScroll = () => {
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+      }
+      rafId = requestAnimationFrame(handleScroll);
+    };
 
-      return () => {
-        chatRoomCurrent.removeEventListener("scroll", debounceHandleScroll);
-        clearTimeout(timeoutId);
-      };
-    }
+    chatRoomCurrent.addEventListener("scroll", rafHandleScroll);
+
+    return () => {
+      chatRoomCurrent.removeEventListener("scroll", rafHandleScroll);
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+      }
+    };
   }, [handleScroll]);
 
   // 스크롤 관리

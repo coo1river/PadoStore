@@ -9,7 +9,7 @@ interface UseChatSubscriptionProps {
   createData: ChatRes | null;
   setEnterData: React.Dispatch<React.SetStateAction<ChatRoomRes | null>>;
   enterDataRef: React.MutableRefObject<ChatRoomRes | null>;
-  getChatQueryKey: (roomId: number) => (string | number)[];
+  getChatKey: (roomId: number) => (string | number)[];
   token: string | null;
   queryClient: QueryClient;
 }
@@ -20,10 +20,10 @@ export const useChatSubscription = ({
   setEnterData,
   enterDataRef,
   queryClient,
-  getChatQueryKey,
+  getChatKey,
   token,
 }: UseChatSubscriptionProps) => {
-  const handleReceiveMessage = useCallback(
+  const handleReceive = useCallback(
     async (message: StompJs.IMessage) => {
       if (!createData) return;
       const receivedMessage: Message = JSON.parse(message.body);
@@ -38,7 +38,7 @@ export const useChatSubscription = ({
       }
 
       queryClient.setQueryData<Message[]>(
-        getChatQueryKey(createData.chat_room_id),
+        getChatKey(createData.chat_room_id),
         (oldMessages = []) => {
           const isDuplicate = oldMessages.some(
             (m) =>
@@ -52,25 +52,20 @@ export const useChatSubscription = ({
         }
       );
     },
-    [createData, queryClient, setEnterData, enterDataRef, getChatQueryKey]
+    [createData, queryClient, setEnterData, enterDataRef, getChatKey]
   );
 
   const subscribe = useCallback(() => {
-    if (!client.current || !client.current.connected || !createData || !token) {
-      console.warn(
-        "클라이언트가 연결되지 않았거나, 채팅 데이터 또는 토큰이 없습니다."
-      );
-      return;
-    }
+    if (!client.current?.connected || !createData || !token) return;
 
     client.current.subscribe(
       `/sub/chat/${createData.chat_room_id}`,
-      handleReceiveMessage,
+      handleReceive,
       {
         Authorization: token,
       }
     );
-  }, [client, createData, handleReceiveMessage, token]);
+  }, [client, handleReceive, token, createData]);
 
-  return { subscribe, handleReceiveMessage };
+  return { subscribe };
 };

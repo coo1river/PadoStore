@@ -1,12 +1,12 @@
-import * as StompJs from "@stomp/stompjs";
 import { useCallback, useEffect, useRef } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import chatEnterApi from "@/api/chat/chatEnterApi";
 import { ChatRes, ChatRoomRes } from "@/types/chat/chat.types";
 import { useChatSubscription } from "./useChatSubscription";
-import { useChatMessageSender } from "./useMessageSender";
+import { useChatSender } from "./useMessageSender";
 import { useStompConnect } from "./useStompConnect";
 import { useUserId } from "@/hooks/common/useUserId";
+import useAuthStore from "@/store/useAuthStore";
 
 interface UseStompClientProps {
   createData: ChatRes | null;
@@ -22,40 +22,34 @@ export const useStompClient = ({
   enterDataRef,
 }: UseStompClientProps) => {
   const queryClient = useQueryClient();
-  const token = sessionStorage.getItem("userToken");
+  const token = useAuthStore((state) => state.token);
   const createDataRef = useRef(createData);
-  const userId = useUserId()!;
+  const userId = useUserId();
 
-  const getChatQueryKey = (roomId: number) => ["chatMessages", roomId];
+  const getChatKey = (roomId: number) => ["chatMessages", roomId];
 
   useEffect(() => {
     createDataRef.current = createData;
   }, [createData]);
 
   // STOMP 연결 성공 시 입장 및 구독
-  const handleConnect = useCallback(
-    async (stompClientInstance: StompJs.Client) => {
-      if (!createDataRef.current) return;
+  const handleConnect = useCallback(async () => {
+    if (client.current?.active || client.current?.connected) {
+      console.log("STOMP 이미 연결된 상태입니다.");
+      return;
+    }
 
-      if (!enterDataRef.current) {
-        const enterRes = await chatEnterApi(createDataRef.current.chat_room_id);
-        enterDataRef.current = enterRes;
-        setEnterData(enterRes);
-        await chatDetails();
-      }
+    if (!createDataRef.current) return;
 
-      if (stompClientInstance.connected && token) {
-        subscribe();
-      } else {
-        console.warn("구독 실패 조건", {
-          connected: client.current?.connected,
-          token,
-          createData: createDataRef.current,
-        });
-      }
-    },
-    [token]
-  );
+    if (!enterDataRef.current) {
+      const enterRes = await chatEnterApi(createDataRef.current.chat_room_id);
+      enterDataRef.current = enterRes;
+      setEnterData(enterRes);
+      await chatDetails();
+    }
+
+    subscribe();
+  }, [chatDetails, setEnterData]);
 
   // STOMP 연결 훅 사용
   const client = useStompConnect({
@@ -72,12 +66,12 @@ export const useStompClient = ({
     setEnterData,
     enterDataRef,
     queryClient,
-    getChatQueryKey,
+    getChatKey,
     token,
   });
 
   // 메시지 전송 훅 사용
-  const { publish } = useChatMessageSender({
+  const { publish } = useChatSender({
     client,
     createData,
     token,

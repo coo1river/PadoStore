@@ -3,19 +3,19 @@ import * as StompJs from "@stomp/stompjs";
 import { ChatRes, Message } from "@/types/chat/chat.types";
 import { useQueryClient } from "@tanstack/react-query";
 
-interface UseChatMessageSenderProps {
+interface UseChatSenderProps {
   client: React.MutableRefObject<StompJs.Client | null>;
   createData: ChatRes | null;
   token: string | null;
   userId: string;
 }
 
-export const useChatMessageSender = ({
+export const useChatSender = ({
   client,
   createData,
   token,
   userId,
-}: UseChatMessageSenderProps) => {
+}: UseChatSenderProps) => {
   const queryClient = useQueryClient();
 
   const publish = useCallback(
