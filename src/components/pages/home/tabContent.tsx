@@ -20,6 +20,7 @@ export default function TabContent({
     case "Home":
       return (
         <>
+          <h2 className="a11y-hidden">메인 탭</h2>
           <ProductSection marketList={marketList} />
           <GroupSection groupOrderList={groupOrderList} />
         </>
