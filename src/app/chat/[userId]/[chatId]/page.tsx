@@ -46,7 +46,7 @@ export default function Chat() {
     enterDataRef,
   });
 
-  const { chatRoomRef, observerRef } = useInfiniteChatScroll({
+  const { chatRoomRef } = useInfiniteChatScroll({
     currentPage,
     setCurrentPage,
     fetchChatDetails,
@@ -104,7 +104,7 @@ export default function Chat() {
       </div>
 
       <ChatRoom ref={chatRoomRef}>
-        <div ref={observerRef} />
+        <div />
         {messages.map((message, index) => {
           const date = new Date(message.insert_dt);
           const timeString = date.toLocaleTimeString([], {

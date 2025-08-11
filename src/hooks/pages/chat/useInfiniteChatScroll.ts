@@ -24,7 +24,6 @@ export const useInfiniteChatScroll = ({
   detailData,
 }: UseInfiniteChatScrollProps) => {
   const chatRoomRef = useRef<HTMLDivElement>(null);
-  const observerRef = useRef<HTMLDivElement>(null);
   const [isFetching, setIsFetching] = useState(false);
   const prevScrollHeightRef = useRef(0);
   const prevScrollTopRef = useRef(0);
@@ -106,5 +105,5 @@ export const useInfiniteChatScroll = ({
     }
   }, [currentChatMessages, currentPage, isFetching, detailData]);
 
-  return { chatRoomRef, observerRef };
+  return { chatRoomRef };
 };
