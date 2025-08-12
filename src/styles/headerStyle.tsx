@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import searchIcon from "../../public/assets/svgs/search.svg?url";
+import Image from "next/image";
 
 export const CommonHeader = styled.header`
   display: flex;
@@ -23,8 +24,9 @@ export const LogoText = styled.h1`
   font-family: "SEOLLEIMcool";
 `;
 
-export const LogoImg = styled.img`
+export const LogoImg = styled(Image)`
   width: 40px;
+  height: auto;
   margin-right: 10px;
 `;
 

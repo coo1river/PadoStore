@@ -120,7 +120,12 @@ const Header: React.FC = () => {
     <CommonHeader>
       <LogoText>
         <LogoDiv onClick={() => router.push("/home")}>
-          <LogoImg src="/assets/images/logo.png" alt="로고 이미지" />
+          <LogoImg
+            src="/assets/images/logo.png"
+            alt="로고 이미지"
+            width={40}
+            height={51}
+          />
           파도상점
         </LogoDiv>
       </LogoText>
