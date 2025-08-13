@@ -56,6 +56,7 @@ const GroupDetail: React.FC = () => {
   // 게시물 정보 가져오기
   useEffect(() => {
     const detail = async () => {
+      if (!params.id) return;
       const res = await postDetailApi(params.id);
       setData(res);
 
@@ -104,14 +105,21 @@ const GroupDetail: React.FC = () => {
       <h2 className="a11y-hidden">상품 페이지</h2>
       <section className="product_detail">
         <ProductInfo>
-          <ProductImg
-            src={
-              data?.file && data?.file[0]?.up_file
-                ? `/api/file/${data?.file[0]?.up_file}`
-                : undefined
-            }
-            alt="상품 이미지"
-          />
+          {data?.file && data?.file[0]?.up_file ? (
+            <ProductImg
+              src={`/api/file/${data?.file[0]?.up_file}`}
+              alt="상품 이미지"
+              width={400}
+              height={400}
+            />
+          ) : (
+            <ProductImg
+              src="/assets/images/placeholder.png"
+              alt="기본 이미지"
+              width={400}
+              height={400}
+            />
+          )}
           <div className="product_intro_button">
             <div className="product_intro">
               <div className="title_update">
