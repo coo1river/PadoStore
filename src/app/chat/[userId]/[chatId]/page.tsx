@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import IconExit from "@/../public/assets/svgs/free-icon-font-exit-3917349.svg";
 import IconMenu from "@/../public/assets/svgs/free-icon-font-plus-3917043.svg";
@@ -13,45 +13,29 @@ import { useChatInput } from "@/hooks/pages/chat/useChatInput";
 import { useChatRoomActions } from "@/hooks/pages/chat/useChatRoomActions";
 import { useUserChatActions } from "@/hooks/pages/chat/useUserChatActions";
 import { useUserId } from "@/hooks/common/useUserId";
-import { useQueryClient } from "@tanstack/react-query";
-import { ChatRoomRes, Message } from "@/types/chat/chat.types";
+import { ChatRoomRes } from "@/types/chat/chat.types";
 import { useStompClient } from "@/hooks/pages/chat/useStompClient";
+import { useChatQuery } from "@/hooks/pages/chat/useChatQuery";
 
 export default function Chat() {
   const { chatId: receiver } = useParams();
   const userId = useUserId();
-  const queryClient = useQueryClient();
-
   const [enterData, setEnterData] = useState<ChatRoomRes | null>(null);
   const enterDataRef = useRef<ChatRoomRes | null>(null);
 
-  const {
-    createData,
-    detailData,
-    currentPage,
-    setCurrentPage,
-    fetchChatDetails,
-  } = useChatRoomData({ receiver });
+  const { createData, detailData } = useChatRoomData(receiver);
+  const chatMessagesQuery = useChatQuery(createData?.chat_room_id);
+  const { chatRoomRef } = useInfiniteChatScroll(chatMessagesQuery);
 
-  const chatDetails = useCallback(async () => {
-    if (createData?.chat_room_id) {
-      await fetchChatDetails(currentPage, createData.chat_room_id);
-    }
-  }, [createData?.chat_room_id, currentPage, fetchChatDetails]);
+  const chatDetails = async () => {
+    await chatMessagesQuery.refetch();
+  };
 
   const { publish } = useStompClient({
     createData,
     setEnterData,
     chatDetails,
     enterDataRef,
-  });
-
-  const { chatRoomRef } = useInfiniteChatScroll({
-    currentPage,
-    setCurrentPage,
-    fetchChatDetails,
-    chatRoomId: createData?.chat_room_id,
-    detailData,
   });
 
   const { chat, handleSubmit } = useChatInput({ publish, chatRoomRef });
@@ -68,11 +52,14 @@ export default function Chat() {
     sendAddress,
   } = useUserChatActions({ publish });
 
-  const messages =
-    queryClient.getQueryData<Message[]>([
-      "chatMessages",
-      createData?.chat_room_id,
-    ]) || [];
+  const allMessages = useMemo(() => {
+    return (
+      chatMessagesQuery.data?.pages
+        .slice()
+        .reverse()
+        .flatMap((p) => p.chat.slice().reverse()) ?? []
+    );
+  }, [chatMessagesQuery.data]);
 
   const { receiverNickname, otherUserProfileForMessage } = useMemo(() => {
     const user1 = detailData?.user1;
@@ -105,7 +92,7 @@ export default function Chat() {
 
       <ChatRoom ref={chatRoomRef}>
         <div />
-        {messages.map((message, index) => {
+        {allMessages.map((message, index) => {
           const date = new Date(message.insert_dt);
           const timeString = date.toLocaleTimeString([], {
             hour: "2-digit",

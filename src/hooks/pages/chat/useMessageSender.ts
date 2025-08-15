@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import * as StompJs from "@stomp/stompjs";
-import { ChatRes, Message } from "@/types/chat/chat.types";
-import { useQueryClient } from "@tanstack/react-query";
+import { ChatDetailRes, ChatRes, Message } from "@/types/chat/chat.types";
+import { InfiniteData, useQueryClient } from "@tanstack/react-query";
 
 interface UseChatSenderProps {
   client: React.MutableRefObject<StompJs.Client | null>;
@@ -45,9 +45,28 @@ export const useChatSender = ({
         chat_room_id: createData.chat_room_id,
       };
 
-      queryClient.setQueryData<Message[]>(
+      queryClient.setQueryData<InfiniteData<ChatDetailRes>>(
         ["chatMessages", createData.chat_room_id],
-        (oldMessages = []) => [...oldMessages, newMessage]
+        (oldData) => {
+          if (!oldData) {
+            return undefined;
+          }
+
+          const updatedPages = oldData.pages.map((page, index) => {
+            if (index === 0) {
+              return {
+                ...page,
+                chat: [newMessage, ...page.chat],
+              };
+            }
+            return page;
+          });
+
+          return {
+            ...oldData,
+            pages: updatedPages,
+          };
+        }
       );
     },
     [client, createData, token, queryClient, userId]

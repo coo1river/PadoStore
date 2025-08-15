@@ -1,109 +1,54 @@
-import {
-  useRef,
-  useState,
-  useEffect,
-  useCallback,
-  useLayoutEffect,
-} from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import { ChatRoomInfoRes, Message } from "@/types/chat/chat.types";
+import { useRef, useEffect, useCallback, useLayoutEffect } from "react";
+import { InfiniteData, UseInfiniteQueryResult } from "@tanstack/react-query";
+import { ChatDetailRes } from "@/types/chat/chat.types";
 
-interface UseInfiniteChatScrollProps {
-  currentPage: number;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-  fetchChatDetails: (page: number, chatRoomId: number) => Promise<void>;
-  chatRoomId: number | undefined;
-  detailData: ChatRoomInfoRes | null;
-}
-
-export const useInfiniteChatScroll = ({
-  currentPage,
-  setCurrentPage,
-  fetchChatDetails,
-  chatRoomId,
-  detailData,
-}: UseInfiniteChatScrollProps) => {
+export const useInfiniteChatScroll = (
+  queryResult: UseInfiniteQueryResult<InfiniteData<ChatDetailRes>, unknown>
+) => {
   const chatRoomRef = useRef<HTMLDivElement>(null);
-  const [isFetching, setIsFetching] = useState(false);
   const prevScrollHeightRef = useRef(0);
-  const prevScrollTopRef = useRef(0);
+  const isInitialLoadRef = useRef(true);
 
-  const CHAT_MESSAGES_QUERY_KEY = (roomId: number) => ["chatMessages", roomId];
-
-  const queryClient = useQueryClient();
-  const currentChatMessages =
-    queryClient.getQueryData<Message[]>(
-      chatRoomId ? CHAT_MESSAGES_QUERY_KEY(chatRoomId) : []
-    ) ?? [];
+  const { data, fetchNextPage, hasNextPage, isFetching } = queryResult;
 
   const handleScroll = useCallback(async () => {
-    if (chatRoomRef.current) {
-      const chatRoom = chatRoomRef.current;
-      const { scrollTop } = chatRoom;
+    const chatRoom = chatRoomRef.current;
+    if (!chatRoom) return;
 
-      if (isFetching || chatRoomId === undefined) {
-        return;
-      }
-      if (scrollTop < 1 && !isFetching && chatRoomId) {
-        setIsFetching(true);
-        prevScrollTopRef.current = chatRoom.scrollHeight - chatRoom.scrollTop;
-
-        try {
-          const nextPage = currentPage + 1;
-          setCurrentPage(nextPage);
-          await fetchChatDetails(nextPage, chatRoomId);
-        } catch (error) {
-          console.error("데이터 패칭 에러", error);
-        } finally {
-          setIsFetching(false);
-        }
-      }
+    if (chatRoom.scrollTop < 1 && hasNextPage && !isFetching) {
+      prevScrollHeightRef.current = chatRoom.scrollHeight;
+      fetchNextPage();
     }
-  }, [isFetching, chatRoomId, currentPage, setCurrentPage, fetchChatDetails]);
+  }, [hasNextPage, isFetching, fetchNextPage]);
 
   // 스크롤 이벤트 등록
   useEffect(() => {
-    const chatRoomCurrent = chatRoomRef.current;
-    if (!chatRoomCurrent) return;
-
-    let rafId: number | null = null;
-
-    const rafHandleScroll = () => {
-      if (rafId) {
-        cancelAnimationFrame(rafId);
-      }
-      rafId = requestAnimationFrame(handleScroll);
-    };
-
-    chatRoomCurrent.addEventListener("scroll", rafHandleScroll);
-
-    return () => {
-      chatRoomCurrent.removeEventListener("scroll", rafHandleScroll);
-      if (rafId) {
-        cancelAnimationFrame(rafId);
-      }
-    };
+    const container = chatRoomRef.current;
+    if (!container) return;
+    container.addEventListener("scroll", handleScroll);
+    return () => container.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
   // 스크롤 관리
   useLayoutEffect(() => {
-    if (chatRoomRef.current && detailData) {
-      const chatRoom = chatRoomRef.current;
-      const currentScrollHeight = chatRoom.scrollHeight;
+    const chatRoom = chatRoomRef.current;
+    if (!chatRoom || !data) return;
 
-      if (currentPage === 1) {
+    const currentScrollHeight = chatRoom.scrollHeight;
+    const totalChats = data.pages.flatMap((p) => p.chat).length;
+
+    if (data.pages.length === 1 && isInitialLoadRef.current) {
+      chatRoom.scrollTop = currentScrollHeight;
+      isInitialLoadRef.current = false;
+    } else if (prevScrollHeightRef.current > 0) {
+      if (data.pages.length > 1) {
+        chatRoom.scrollTop = currentScrollHeight - prevScrollHeightRef.current;
+      } else if (totalChats !== prevScrollHeightRef.current) {
         chatRoom.scrollTop = currentScrollHeight;
-      } else if (
-        !isFetching &&
-        currentScrollHeight > prevScrollHeightRef.current
-      ) {
-        const newScrollTop = currentScrollHeight - prevScrollTopRef.current;
-        chatRoom.scrollTop = newScrollTop;
       }
-
-      prevScrollHeightRef.current = currentScrollHeight;
     }
-  }, [currentChatMessages, currentPage, isFetching, detailData]);
+    prevScrollHeightRef.current = currentScrollHeight;
+  }, [data]);
 
   return { chatRoomRef };
 };
