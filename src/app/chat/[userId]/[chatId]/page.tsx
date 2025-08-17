@@ -16,16 +16,29 @@ import { useUserId } from "@/hooks/common/useUserId";
 import { ChatRoomRes } from "@/types/chat/chat.types";
 import { useStompClient } from "@/hooks/pages/chat/useStompClient";
 import { useChatQuery } from "@/hooks/pages/chat/useChatQuery";
+import { useChatMessages } from "@/hooks/pages/chat/useChatMessages";
 
 export default function Chat() {
   const { chatId: receiver } = useParams();
   const userId = useUserId();
   const [enterData, setEnterData] = useState<ChatRoomRes | null>(null);
   const enterDataRef = useRef<ChatRoomRes | null>(null);
-
   const { createData, detailData } = useChatRoomData(receiver);
   const chatMessagesQuery = useChatQuery(createData?.chat_room_id);
   const { chatRoomRef } = useInfiniteChatScroll(chatMessagesQuery);
+
+  const {
+    allMessages,
+    receiverNickname,
+    otherUserProfileForMessage,
+    getReadStatus,
+  } = useChatMessages({
+    detailData,
+    chatData: chatMessagesQuery.data,
+    receiver,
+    userId,
+    enterData,
+  });
 
   const chatDetails = async () => {
     await chatMessagesQuery.refetch();
@@ -52,31 +65,6 @@ export default function Chat() {
     sendAddress,
   } = useUserChatActions({ publish });
 
-  const allMessages = useMemo(() => {
-    return (
-      chatMessagesQuery.data?.pages
-        .slice()
-        .reverse()
-        .flatMap((p) => p.chat.slice().reverse()) ?? []
-    );
-  }, [chatMessagesQuery.data]);
-
-  const { receiverNickname, otherUserProfileForMessage } = useMemo(() => {
-    const user1 = detailData?.user1;
-    const user2 = detailData?.user2;
-
-    if (!user1 || !user2)
-      return { receiverNickname: receiver, otherUserProfileForMessage: null };
-
-    const isUser1 = user1.user_id === receiver;
-    const profile = isUser1 ? user1 : user2;
-
-    return {
-      receiverNickname: profile.nickname,
-      otherUserProfileForMessage: profile,
-    };
-  }, [detailData]);
-
   return (
     <ChatRoomWrap>
       <div className="chat_header">
@@ -99,12 +87,7 @@ export default function Chat() {
             minute: "2-digit",
           });
 
-          const isRead =
-            message.read_status === "true"
-              ? "online"
-              : message.sender_id === enterData?.user1_id
-              ? enterData?.user2_status || "offline"
-              : enterData?.user1_status || "offline";
+          const isRead = getReadStatus(message);
 
           return (
             <ChatMessage
