@@ -41,11 +41,7 @@ export const useChatSubscription = ({
         getChatKey(createData.chat_room_id),
         (oldMessages = []) => {
           const isDuplicate = oldMessages.some(
-            (m) =>
-              m.chat_id === receivedMessage.chat_id ||
-              (m.message === receivedMessage.message &&
-                m.sender_id === receivedMessage.sender_id &&
-                m.insert_dt === receivedMessage.insert_dt)
+            (m) => m.chat_id === receivedMessage.chat_id
           );
 
           return isDuplicate ? oldMessages : [...oldMessages, receivedMessage];
