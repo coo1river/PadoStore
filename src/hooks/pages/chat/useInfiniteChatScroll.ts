@@ -35,19 +35,27 @@ export const useInfiniteChatScroll = (
     if (!chatRoom || !data) return;
 
     const currentScrollHeight = chatRoom.scrollHeight;
-    const totalChats = data.pages.flatMap((p) => p.chat).length;
 
     if (data.pages.length === 1 && isInitialLoadRef.current) {
       chatRoom.scrollTop = currentScrollHeight;
       isInitialLoadRef.current = false;
     } else if (prevScrollHeightRef.current > 0) {
-      if (data.pages.length > 1) {
-        chatRoom.scrollTop = currentScrollHeight - prevScrollHeightRef.current;
-      } else if (totalChats !== prevScrollHeightRef.current) {
-        chatRoom.scrollTop = currentScrollHeight;
-      }
+      chatRoom.scrollTop = currentScrollHeight - prevScrollHeightRef.current;
     }
     prevScrollHeightRef.current = currentScrollHeight;
+  }, [data]);
+
+  // 새 메시지 전송 시 스크롤 최하단 이동
+  useEffect(() => {
+    const chatRoom = chatRoomRef.current;
+    if (!chatRoom || !data) return;
+
+    const isBottom =
+      chatRoom.scrollHeight - chatRoom.scrollTop < chatRoom.clientHeight + 100;
+
+    if (isBottom) {
+      chatRoom.scrollTop = chatRoom.scrollHeight;
+    }
   }, [data]);
 
   return { chatRoomRef };
