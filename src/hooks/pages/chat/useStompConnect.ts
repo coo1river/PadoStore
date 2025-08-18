@@ -59,7 +59,7 @@ export const useStompConnect = ({
         clientInstance.deactivate();
       }
     };
-  }, [token]);
+  }, [token, brokerURL, onConnect, onStompError, reconnectDelay]);
 
   return client;
 };

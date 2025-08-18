@@ -1,4 +1,5 @@
-import axios, { Method } from "axios";
+import axios from "axios";
+import { useState, useCallback } from "react";
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "",
@@ -6,7 +7,7 @@ const axiosInstance = axios.create({
 });
 
 interface UseApiParams {
-  method: Method;
+  method: string;
   url: string;
   data?: any;
   params?: any;
@@ -14,30 +15,45 @@ interface UseApiParams {
   headers?: Record<string, string>;
 }
 
-export default async function useApi<T = any>({
-  method,
-  url,
-  data,
-  params,
-  useAuth = true, // 토큰 기본 필요 값 O
-  headers = {},
-}: UseApiParams): Promise<T> {
-  try {
-    const token = sessionStorage.getItem("userToken");
-    const res = await axiosInstance({
+export default function useApi<T = any>() {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<any>(null);
+
+  const fetchApi = useCallback(
+    async ({
       method,
       url,
       data,
       params,
-      headers: {
-        ...(useAuth && token ? { Authorization: token } : {}),
-        ...headers,
-      },
-    });
-    console.log("API 응답:", res.data);
-    return res.data;
-  } catch (error) {
-    console.log("API 에러:", error);
-    throw error;
-  }
+      useAuth = true,
+      headers = {},
+    }: UseApiParams): Promise<T> => {
+      setLoading(true);
+      setError(null);
+      try {
+        const token = sessionStorage.getItem("userToken");
+        const res = await axiosInstance({
+          method,
+          url,
+          data,
+          params,
+          headers: {
+            ...(useAuth && token ? { Authorization: token } : {}),
+            ...headers,
+          },
+        });
+        setLoading(false);
+        console.log("API 응답:", res.data);
+        return res.data;
+      } catch (err) {
+        setLoading(false);
+        setError(err);
+        console.error("API 에러:", err);
+        throw err;
+      }
+    },
+    []
+  );
+
+  return { fetchApi, loading, error };
 }

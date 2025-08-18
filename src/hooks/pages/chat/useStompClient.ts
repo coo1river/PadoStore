@@ -49,6 +49,7 @@ export const useStompClient = ({
     }
 
     subscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chatDetails, setEnterData]);
 
   // STOMP 연결 훅 사용

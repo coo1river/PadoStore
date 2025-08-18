@@ -13,7 +13,7 @@ export default function StockList() {
 
   const param = useMemo(
     () => ({
-      post_id: params.id,
+      post_id: params.id || "",
       limit: 10,
       current_page: page,
       sort_by: "post_id",

@@ -6,10 +6,12 @@ import { useEffect, useState } from "react";
 export default function useHomeData() {
   const [data, setData] = useState<HomeData | null>(null);
 
+  const { fetchApi } = useApi<HomeData>();
+
   useEffect(() => {
     const fetchHomeData = async () => {
       try {
-        const res = await useApi({
+        const res = await fetchApi({
           method: "get",
           url: "home/list",
           params: { status: "InProgress" },
@@ -21,7 +23,7 @@ export default function useHomeData() {
     };
 
     fetchHomeData();
-  }, []);
+  }, [fetchApi]);
 
   return { data };
 }
