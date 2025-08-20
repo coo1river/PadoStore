@@ -14,7 +14,7 @@ export default function DepositList() {
 
   const param = useMemo(
     () => ({
-      post_id: params.id,
+      post_id: params.id || "",
       limit: 10,
       current_page: page,
       sort_by: "post_id",
@@ -43,6 +43,7 @@ export default function DepositList() {
   // 최초 렌더링 시 데이터 가져오기
   useEffect(() => {
     const fetchData = async () => {
+      if (!param) return;
       try {
         const res = await manageDepositApi(param);
         setData(res);
@@ -54,7 +55,7 @@ export default function DepositList() {
 
         res.orderManageList.forEach((order: Order) => {
           initialStatusValues[order.order_id] =
-            order.order_status || "입금 대기"; // 기본 값 설정
+            order.order_status || "입금 대기";
           initialTrackingNumValues[order.order_id] = order.post_number || "";
         });
 

@@ -5,7 +5,7 @@ import updateApi from "@/api/updateApi";
 import uploadApi from "@/api/uploadApi";
 import { BankOptions, DeliveryOptions } from "@/components/common/selectOption";
 import TagInput from "@/components/common/tagInput";
-import useInput from "@/hooks/useInput";
+import useInput from "@/hooks/common/useInput";
 import {
   GroupForm,
   UploadMain,

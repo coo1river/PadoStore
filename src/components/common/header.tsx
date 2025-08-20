@@ -15,8 +15,8 @@ import IconChat from "@/../public/assets/svgs/messages.svg";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
 import ModalFilter from "../modal/modalFilter";
-import useInput from "@/hooks/useInput";
-import useDecodedToken from "@/hooks/useDecodedToken";
+import useInput from "@/hooks/common/useInput";
+import useDecodedToken from "@/hooks/common/useDecodedToken";
 import useChatStore from "@/store/useChatStore";
 import chatExitApi from "@/api/chat/chatExitApi";
 
@@ -120,14 +120,21 @@ const Header: React.FC = () => {
     <CommonHeader>
       <LogoText>
         <LogoDiv onClick={() => router.push("/home")}>
-          <LogoImg src="/assets/images/logo.png" alt="로고 이미지" />
+          <LogoImg
+            src="/assets/images/logo.png"
+            alt="로고 이미지"
+            width={40}
+            height={51}
+          />
           파도상점
         </LogoDiv>
       </LogoText>
 
       {/* 검색 창 */}
       <SearchIptBox>
-        <label htmlFor="search-input" />
+        <label htmlFor="search-input" className="a11y-hidden">
+          검색어를 입력해 주세요.
+        </label>
         <SearchInput
           id="search-input"
           type="text"

@@ -46,6 +46,7 @@ const OrderDetail: React.FC = () => {
   // 최초 렌더링 시 주문 정보와 상품 정보 가져오기
   useEffect(() => {
     const fetchData = async () => {
+      if (!params.order_id) return;
       orderDetailApi(params.order_id)
         .then((orderRes) => {
           setOrderData(orderRes);

@@ -7,7 +7,7 @@ import viewProfileApi, { ViewProfileRes } from "@/api/viewProfileApi";
 import { ImgProfile } from "@/styles/profileStyle";
 import mySalesListApi from "@/api/mySalesListApi";
 import { Data } from "@/components/postList/marketTab";
-import useDecodedToken from "@/hooks/useDecodedToken";
+import useDecodedToken from "@/hooks/common/useDecodedToken";
 import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
 
 function ProfileLayout({ children }: { children: React.ReactNode }) {

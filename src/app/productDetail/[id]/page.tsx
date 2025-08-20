@@ -16,7 +16,7 @@ import ImgProfileBasic from "@/../public/assets/images/img-user-basic.png";
 import { useParams, useRouter } from "next/navigation";
 import postLikeApi from "@/api/postLikeApi";
 import useAuthStore from "@/store/useAuthStore";
-import useDecodedToken from "@/hooks/useDecodedToken";
+import useDecodedToken from "@/hooks/common/useDecodedToken";
 
 const ProductDetail: React.FC = () => {
   const params = useParams();
@@ -46,6 +46,7 @@ const ProductDetail: React.FC = () => {
 
   useEffect(() => {
     const detail = async () => {
+      if (!params.id) return;
       const res = await postDetailApi(params.id);
       console.log(res);
       setData(res);
@@ -87,14 +88,21 @@ const ProductDetail: React.FC = () => {
       <section className="product_detail">
         <ProductInfo>
           {data?.post_status === "Completed" ? <SoldOutFilter /> : null}
-          <ProductImg
-            src={
-              data?.file && data?.file[0]?.up_file
-                ? `/api/file/${data?.file[0]?.up_file}`
-                : undefined
-            }
-            alt="상품 이미지"
-          />
+          {data?.file && data?.file[0]?.up_file ? (
+            <ProductImg
+              src={`/api/file/${data?.file[0]?.up_file}`}
+              alt="상품 이미지"
+              width={400}
+              height={400}
+            />
+          ) : (
+            <ProductImg
+              src="/assets/images/placeholder.png"
+              alt="기본 이미지"
+              width={400}
+              height={400}
+            />
+          )}
           <div className="product_intro_button">
             <div className="product_intro">
               <div className="title_update">

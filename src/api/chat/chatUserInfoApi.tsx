@@ -1,13 +1,5 @@
 import axios from "axios";
 
-export interface ChatRoomInfo {
-  chat_room_id: number;
-  user1_id: string;
-  user2_id: string;
-  user1_status: "online" | "offline";
-  user2_status: "online" | "offline";
-}
-
 export default async function chatUserInfoApi(chat_room_id: number) {
   const url = "/api/chat/enter";
 

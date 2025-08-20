@@ -3,6 +3,7 @@ import { GroupForm } from "./uploadStyle";
 import { HomeMain } from "./homeStyle";
 import iconMenu from "@/../public/assets/svgs/menu-dots.svg?url";
 import iconSoldOut from "@/../public/assets/images/soldout.png";
+import Image from "next/image";
 
 export const ProductMain = styled(HomeMain)`
   .product_detail {
@@ -150,7 +151,7 @@ export const SoldOutFilter = styled.div`
   border-radius: 15px;
 `;
 
-export const ProductImg = styled.img`
+export const ProductImg = styled(Image)`
   object-fit: contain;
   width: 400px;
   height: 400px;

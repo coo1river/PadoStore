@@ -1,4 +1,4 @@
-import useInput from "@/hooks/useInput";
+import useInput from "@/hooks/common/useInput";
 import { ErrorMessage } from "@/styles/joinStyle";
 import { FormEvent } from "react";
 

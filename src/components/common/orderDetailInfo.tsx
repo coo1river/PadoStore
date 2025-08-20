@@ -2,7 +2,7 @@
 import React, { FormEvent, useEffect, useState } from "react";
 import { OrderData } from "@/api/orderDetailApi";
 import { OrderInfo, OrderInfoWrap } from "@/styles/orderStyle";
-import useInput from "@/hooks/useInput";
+import useInput from "@/hooks/common/useInput";
 import editOrderApi from "@/api/editOrderApi";
 import DaumPostcode, { AddressData } from "./daumPostcode";
 import ModalFilter from "../modal/modalFilter";
