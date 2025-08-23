@@ -12,19 +12,8 @@ export const useChatQuery = (chatRoomId?: number) => {
   >({
     queryKey: ["chatMessages", chatRoomId ?? 0],
     queryFn: async ({ pageParam = 1 }) => {
-      if (!chatRoomId) {
-        return {
-          chat_room_id: 0,
-          product_id: 0,
-          user1: {} as any,
-          user2: {} as any,
-          chat: [],
-          next_page: 0,
-        };
-      }
-
       const chatParam: ChatDetailReq = {
-        chat_room_id: chatRoomId,
+        chat_room_id: chatRoomId!,
         limit: 15,
         current_page: pageParam,
       };
