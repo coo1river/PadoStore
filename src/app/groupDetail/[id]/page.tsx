@@ -111,6 +111,7 @@ const GroupDetail: React.FC = () => {
               alt="상품 이미지"
               width={400}
               height={400}
+              priority
             />
           ) : (
             <ProductImg
@@ -118,6 +119,7 @@ const GroupDetail: React.FC = () => {
               alt="기본 이미지"
               width={400}
               height={400}
+              priority
             />
           )}
           <div className="product_intro_button">
